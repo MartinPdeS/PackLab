@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>A full workflow example with PackLab &#8212; PackLab  documentation</title>
+    <title>Polydisperse RSA simulation &#8212; PackLab  documentation</title>
   
   
   
@@ -47,22 +47,22 @@
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/workflow';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/mono_disperse';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.0.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.0.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
     <link rel="icon" href="../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="References" href="../references.html" />
+    <link rel="next" title="A full workflow example with PackLab" href="poly_disperse.html" />
     <link rel="prev" title="Examples: Tutorials" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.0.1" />
+  <meta name="docsearch:version" content="0.0.2" />
   </head>
   
   
@@ -405,7 +405,8 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">A full workflow example with PackLab</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Polydisperse RSA simulation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="poly_disperse.html">A full workflow example with PackLab</a></li>
 </ul>
 </div>
 </nav></div>
@@ -449,7 +450,7 @@
     
     <li class="breadcrumb-item"><a href="index.html" class="nav-link">Examples: Tutorials</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">A full workflow example with PackLab</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Polydisperse RSA simulation</span></li>
   </ul>
 </nav>
 </div>
@@ -468,27 +469,28 @@
                   
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#sphx-glr-download-gallery-workflow-py"><span class="std std-ref">Go to the end</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-gallery-mono-disperse-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="a-full-workflow-example-with-packlab">
-<span id="sphx-glr-gallery-workflow-py"></span><h1>A full workflow example with PackLab<a class="headerlink" href="#a-full-workflow-example-with-packlab" title="Link to this heading">#</a></h1>
-<p>This example shows the complete workflow of using PackLab to perform a
-Random Sequential Addition (RSA) simulation in three dimensions.</p>
-<p>It demonstrates the following steps:</p>
+<section class="sphx-glr-example-title" id="polydisperse-rsa-simulation">
+<span id="sphx-glr-gallery-mono-disperse-py"></span><h1>Polydisperse RSA simulation<a class="headerlink" href="#polydisperse-rsa-simulation" title="Link to this heading">#</a></h1>
+<p>This example demonstrates a Random Sequential Addition (RSA) simulation
+with polydisperse spheres. In a polydisperse system, each sphere radius
+is sampled from a continuous distribution rather than using a fixed value.</p>
+<p>The workflow illustrates:</p>
 <ol class="arabic simple">
-<li><p>Create a simulation domain</p></li>
-<li><p>Define a radius sampler for particle sizes</p></li>
-<li><p>Configure simulation options</p></li>
-<li><p>Construct and run the RSA simulator</p></li>
-<li><p>Access the simulation statistics</p></li>
-<li><p>Visualize the resulting configuration and pair correlation function</p></li>
+<li><p>Creating a simulation domain</p></li>
+<li><p>Sampling radii from a uniform distribution</p></li>
+<li><p>Running the simulator with polydispersity</p></li>
+<li><p>Inspecting statistics</p></li>
+<li><p>Plotting a slice of the configuration</p></li>
+<li><p>Computing and displaying the pair correlation function</p></li>
 </ol>
-<p>This is the recommended starting point when learning how to use PackLab.</p>
+<p>Polydisperse systems are useful when modelling realistic physical packings,
+microstructures, or biological particle systems with non uniform sizes.</p>
 <section id="simulation-domain">
 <h2>Simulation domain<a class="headerlink" href="#simulation-domain" title="Link to this heading">#</a></h2>
-<p>The domain defines the physical volume of the simulation.
-Here we use periodic boundary conditions on a cubic box.</p>
+<p>We create a cube with periodic boundaries.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">Domain</span><span class="p">,</span> <span class="n">Options</span><span class="p">,</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">UniformRadiusSampler</span>
 
 <span class="n">domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">(</span>
@@ -500,31 +502,32 @@ Here we use periodic boundary conditions on a cubic box.</p>
 </pre></div>
 </div>
 </section>
-<section id="radius-sampler">
-<h2>Radius sampler<a class="headerlink" href="#radius-sampler" title="Link to this heading">#</a></h2>
-<p>All spheres will have radius 0.2 in this example.</p>
+<section id="polydisperse-radius-sampler">
+<h2>Polydisperse radius sampler<a class="headerlink" href="#polydisperse-radius-sampler" title="Link to this heading">#</a></h2>
+<p>Radii are drawn from a uniform distribution between 0.1 and 0.4.
+This gives a wide range of sphere sizes.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">radius_sampler</span> <span class="o">=</span> <span class="n">UniformRadiusSampler</span><span class="p">(</span>
-    <span class="n">minimum_radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
-    <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.15</span>
+    <span class="n">minimum_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.4</span>
 <span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="simulation-options">
 <h2>Simulation options<a class="headerlink" href="#simulation-options" title="Link to this heading">#</a></h2>
-<p>These control the stochastic behaviour of the RSA algorithm.</p>
+<p>We increase the number of attempts since small spheres will continue
+to find space even when the large ones are already rejected.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
-<span class="n">options</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">123</span>
-<span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span> <span class="o">=</span> <span class="mi">2_500_000</span>
-<span class="n">options</span><span class="o">.</span><span class="n">maximum_consecutive_rejections</span> <span class="o">=</span> <span class="mi">50_000</span>
-<span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span> <span class="o">=</span> <span class="mf">0.50</span>
+<span class="n">options</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span> <span class="o">=</span> <span class="mi">4_000_000</span>
+<span class="n">options</span><span class="o">.</span><span class="n">maximum_consecutive_rejections</span> <span class="o">=</span> <span class="mi">80_000</span>
+<span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span> <span class="o">=</span> <span class="mf">0.55</span>
 <span class="n">options</span><span class="o">.</span><span class="n">minimum_center_separation_addition</span> <span class="o">=</span> <span class="mf">0.0</span>
 </pre></div>
 </div>
 </section>
-<section id="run-the-simulator">
-<h2>Run the simulator<a class="headerlink" href="#run-the-simulator" title="Link to this heading">#</a></h2>
-<p>Construct the simulator and run the RSA process.</p>
+<section id="run-the-polydisperse-rsa-simulation">
+<h2>Run the polydisperse RSA simulation<a class="headerlink" href="#run-the-polydisperse-rsa-simulation" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">rsa_simulator</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
     <span class="n">radius_sampler</span><span class="o">=</span><span class="n">radius_sampler</span><span class="p">,</span>
@@ -535,26 +538,20 @@ Here we use periodic boundary conditions on a cubic box.</p>
 </pre></div>
 </div>
 </section>
-<section id="print-statistics">
-<h2>Print statistics<a class="headerlink" href="#print-statistics" title="Link to this heading">#</a></h2>
-<p>The statistics object reports attempts, accepted insertions,
-packing fraction and other useful diagnostic information.</p>
+<section id="inspect-simulation-statistics">
+<h2>Inspect simulation statistics<a class="headerlink" href="#inspect-simulation-statistics" title="Link to this heading">#</a></h2>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="plot-a-2d-slice-of-the-configuration">
-<h2>Plot a 2D slice of the configuration<a class="headerlink" href="#plot-a-2d-slice-of-the-configuration" title="Link to this heading">#</a></h2>
-<p>This provides a visual view of the spatial arrangement of spheres.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_slice_2d</span><span class="p">(</span>
-    <span class="n">slice_axis</span><span class="o">=</span><span class="s2">&quot;z&quot;</span><span class="p">,</span>
-    <span class="n">slice_center_fraction</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-    <span class="n">slice_thickness_fraction</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
-    <span class="n">maximum_circles_in_slice</span><span class="o">=</span><span class="mi">2500</span><span class="p">,</span>
-<span class="p">)</span>
+<section id="plot-a-slice-of-the-configuration">
+<h2>Plot a slice of the configuration<a class="headerlink" href="#plot-a-slice-of-the-configuration" title="Link to this heading">#</a></h2>
+<p>This gives a quick visual impression of the spatial structure,
+which is more complex than in the monodisperse case.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_slice_2d</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_workflow_001.png" srcset="../_images/sphx_glr_workflow_001.png" alt="2D slice at z≈3.00, thickness 0.48 | showing 415 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/MPSPlots/helper.py:77: UserWarning: Glyph 8776 (\N{ALMOST EQUAL TO}) missing from font(s) cmr10.
+<img src="../_images/sphx_glr_mono_disperse_001.png" srcset="../_images/sphx_glr_mono_disperse_001.png" alt="2D slice at z≈3.00, thickness 0.48 | showing 532 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/MPSPlots/helper.py:77: UserWarning: Glyph 8776 (\N{ALMOST EQUAL TO}) missing from font(s) cmr10.
   figure.tight_layout()
 
 &lt;Figure size 800x500 with 1 Axes&gt;
@@ -563,27 +560,24 @@ packing fraction and other useful diagnostic information.</p>
 </section>
 <section id="pair-correlation-function">
 <h2>Pair correlation function<a class="headerlink" href="#pair-correlation-function" title="Link to this heading">#</a></h2>
-<p>We finally compute and plot the pair correlation function g(r)
-using Monte Carlo sampling of particle pairs.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_pair_correlation</span><span class="p">(</span>
-    <span class="n">pair_correlation_bins</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-    <span class="n">maximum_number_of_pairs</span><span class="o">=</span><span class="mi">20_000_000</span>
-<span class="p">)</span>
+<p>Compute and plot the pair correlation function g(r)
+for the polydisperse configuration.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_pair_correlation</span><span class="p">(</span><span class="n">maximum_number_of_pairs</span><span class="o">=</span><span class="mi">3_000_000</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_workflow_002.png" srcset="../_images/sphx_glr_workflow_002.png" alt="Pair correlation function (minimum image)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
+<img src="../_images/sphx_glr_mono_disperse_002.png" srcset="../_images/sphx_glr_mono_disperse_002.png" alt="Pair correlation function (minimum image)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.074 seconds)</p>
-<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-workflow-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 15.069 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-mono-disperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/41125c336e4e3c3f05d6c417dd13e207/workflow.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">workflow.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/83e3794a6f260ba12ccedcb17e8e912f/mono_disperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">mono_disperse.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/a4f94c81795423385a2260e8e4feb140/workflow.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">workflow.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/75bb6fba64905c829eda6ec5e95a038d/mono_disperse.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">mono_disperse.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-zip docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/bc4fb104f68c7dd24c7b75d0c69aa5c3/workflow.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">workflow.zip</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/5ff1f971eeeb8300ae45138ddd4f357c/mono_disperse.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">mono_disperse.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -614,11 +608,11 @@ using Monte Carlo sampling of particle pairs.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-domain">Simulation domain</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#radius-sampler">Radius sampler</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#polydisperse-radius-sampler">Polydisperse radius sampler</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-options">Simulation options</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-simulator">Run the simulator</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#print-statistics">Print statistics</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-a-2d-slice-of-the-configuration">Plot a 2D slice of the configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-polydisperse-rsa-simulation">Run the polydisperse RSA simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-simulation-statistics">Inspect simulation statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-a-slice-of-the-configuration">Plot a slice of the configuration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pair-correlation-function">Pair correlation function</a></li>
 </ul>
   </nav></div>
@@ -627,7 +621,7 @@ using Monte Carlo sampling of particle pairs.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/gallery/workflow.rst.txt"
+      <li><a href="../_sources/gallery/mono_disperse.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
