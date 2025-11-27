@@ -1,4 +1,4 @@
-from typing import Literal, Optional, Tuple
+from typing import Literal
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
@@ -17,6 +17,20 @@ class Result(Result):
     Holds arrays plus domain metadata, computed statistics, and plotting helpers.
     """
     def __init__(self, positions: np.ndarray, radii: np.ndarray, domain: Domain, statistics):
+        """
+        Initialize the Result object with positions, radii, domain, and statistics.
+
+        Parameters
+        ----------
+        positions : np.ndarray
+            Array of shape (N, 3) containing the sphere center positions.
+        radii : np.ndarray
+            Array of shape (N,) containing the sphere radii.
+        domain : Domain
+            The simulation domain.
+        statistics : Statistics
+            The statistics object containing simulation metrics.
+        """
         super().__init__(
             positions=positions,
             radii=radii,
@@ -104,16 +118,21 @@ class Result(Result):
         return figure
 
     @helper.post_mpl_plot
-    def plot_slice_2d(
-        self,
-        slice_axis: Literal["x", "y", "z"] = "z",
-        slice_center_fraction: float = 0.5,
-        slice_thickness_fraction: float = 0.08,
-        maximum_circles_in_slice: int = 2500,
-    ) -> plt.Figure:
-        positions = self.positions
-        radii = self.radii
+    def plot_slice_2d(self, slice_axis: Literal["x", "y", "z"] = "z", slice_center_fraction: float = 0.5, slice_thickness_fraction: float = 0.08, maximum_circles_in_slice: int = 2500) -> plt.Figure:
+        """
+        Plot a 2D slice of the sphere configuration.
 
+        Parameters
+        ----------
+        slice_axis : Literal["x", "y", "z"]
+            Axis along which to take the slice.
+        slice_center_fraction : float
+            Fractional position along the slice axis where the slice is centered (0.0 to 1.0).
+        slice_thickness_fraction : float
+            Fractional thickness of the slice relative to the box length along the slice axis (0.0 to 1.0).
+        maximum_circles_in_slice : int
+            Maximum number of circles to plot in the slice (subsampling if necessary).
+        """
         box_lengths = [self.domain.length_x, self.domain.length_y, self.domain.length_z]
 
         axis_to_index = {"x": 0, "y": 1, "z": 2}
@@ -127,15 +146,15 @@ class Result(Result):
         slice_center = slice_center_fraction * box_lengths[slice_axis_index]
         slice_thickness = slice_thickness_fraction * box_lengths[slice_axis_index]
 
-        coord = positions[:, slice_axis_index]
+        coord = self.positions[:, slice_axis_index]
         if self.domain.use_periodic_boundaries:
             delta = _minimum_image_displacement(coord - slice_center, box_lengths[slice_axis_index])
             slice_mask = np.abs(delta) <= 0.5 * slice_thickness
         else:
             slice_mask = np.abs(coord - slice_center) <= 0.5 * slice_thickness
 
-        slice_positions = positions[slice_mask]
-        slice_radii = radii[slice_mask]
+        slice_positions = self.positions[slice_mask]
+        slice_radii = self.radii[slice_mask]
 
         if slice_axis == "z":
             a_index, b_index = 0, 1

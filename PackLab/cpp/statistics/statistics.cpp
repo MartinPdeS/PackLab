@@ -22,5 +22,5 @@ void Statistics::print() const {
     print_row("radius std", std::to_string(radius_std));
     print_row("total_runtime [seconds]", std::to_string(total_runtime_seconds));
 
-    std::cout << "+--------------------------------+-----------------+\n";
+    std::cout << "+--------------------------------+-----------------+\n"<< std::endl;
 }
