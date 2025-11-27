@@ -6,12 +6,12 @@ import os
 from sphinx_gallery.sorting import FileNameSortKey
 from MPSPlots.styles import use_mpsplots_style
 from pathlib import Path
-import PyPacker
-from PyPacker.directories import doc_css_path
+import PackLab
+from PackLab.directories import doc_css_path
 
 
-package_name = "PyPacker"
-version = PyPacker.__version__
+package_name = "PackLab"
+version = PackLab.__version__
 
 current_dir = Path(".")
 
