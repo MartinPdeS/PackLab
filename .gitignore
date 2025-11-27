@@ -14,6 +14,7 @@ Unignore the docs directory
 
 
 !.nojekyll
+!docs/empty.txt
 !index.html
 !version_switcher.json
 !.gitignore
