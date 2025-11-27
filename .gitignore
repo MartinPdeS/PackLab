@@ -1,0 +1,22 @@
+*
+
+Unignore the docs directory
+!docs/
+
+!docs/latest
+!docs/latest/**
+!docs/latest/**/*
+
+!docs/v*
+!docs/v*/**
+!docs/v*/**/*
+!update_version_switcher.py
+
+
+!.nojekyll
+!index.html
+!version_switcher.json
+!.gitignore
+!.git
+!.github/
+!.github/**
