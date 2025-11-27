@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from MPSPlots import helper
 
-from PackLab.utils import _pair_distance_pdf, _minimum_image_displacement
+from PackLab.utils import _minimum_image_displacement
 from PackLab.binary.interface_domain import Domain
 from PackLab.binary.interface_result import Result
 
@@ -184,10 +184,10 @@ class Result(Result):
         return figure
 
     @helper.post_mpl_plot
-    def plot_pair_correlation_function(
+    def plot_pair_correlation(
         self,
         pair_correlation_bins: int = 90,
-        maximum_number_of_pairs: int = 250_000
+        maximum_number_of_pairs: int = 2_000_000
     ) -> plt.Figure:
         """
         Plot the radial pair correlation function g(r) using particles in the
