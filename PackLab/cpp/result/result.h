@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cmath>
+#include <algorithm>
 
 #include "../utils/utils.h"
 #include "../domain/domain.h"
