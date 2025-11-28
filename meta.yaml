@@ -17,15 +17,13 @@ channels:
 
 requirements:
   host:
-    - {{ compiler('cxx') }}
-    - clang =18
-    - libcxx =18
+    - "{{ compiler('cxx') }}"
+    - "{{ compiler('fortran') }}"
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
-    - llvm-openmp
   run:
     - pandas ~=2.3.0
     - martinpdes::mpsplots
