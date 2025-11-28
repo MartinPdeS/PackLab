@@ -34,15 +34,19 @@ requirements:
 about:
   home: https://github.com/MartinPdeS/PackLab
   license: MIT
-  summary: "A package Forex stocks backtesting."
-  description: The library is a tool for strategies testing for the Forex current exchange market.
+  summary: "A package for particle packing simulation."
+  description: "PackLab"
   dev_url: https://github.com/MartinPdeS/PackLab
   doc_url: https://martinpdes.github.io/PackLab/
   license_file: LICENSE
   keywords:
-    - optics
-    - refractive index
-    - material
+    - packing
+    - particle
+    - simulation
+
+files:
+  include:
+    - "PackLab/binary/*.so"
 
 test:
   imports:
