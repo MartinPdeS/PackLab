@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
-#include <cmath>
-#include <algorithm>
+#include <vector>   // for std::vector
+#include <cmath>    // for std::exp
+#include <algorithm> // for std::min
 
 #include "../utils/utils.h"
 #include "../domain/domain.h"

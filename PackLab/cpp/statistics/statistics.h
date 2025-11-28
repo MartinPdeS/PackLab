@@ -1,8 +1,8 @@
 #pragma once
 
-#include <iostream>
-#include <iomanip>
-#include <chrono>
+#include <iostream>  // for std::cout, std::endl
+#include <iomanip>   // for std::setprecision
+#include <chrono>    // for std::chrono
 
 struct Statistics {
     std::size_t attempted_insertions = 0;

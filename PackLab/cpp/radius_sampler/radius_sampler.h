@@ -4,6 +4,7 @@
 #include <random> // for std::mt19937_64
 #include <vector> // for std::vector
 #include <functional> // for std::function
+#include <stdexcept>
 
 #include "../utils/utils.h"
 
