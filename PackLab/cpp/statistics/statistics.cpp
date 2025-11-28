@@ -1,7 +1,23 @@
 #include "statistics.h"
 
 
-#include <chrono>    // for std::chrono
+#define _LIBCPP_REMOVE_AVAILABILITY
+#include <chrono>
+
+#include "statistics.h"
+
+void Statistics::start_benchmark() {
+    benchmark_start_seconds =
+        std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+}
+
+void Statistics::end_benchmark() {
+    benchmark_end_seconds =
+        std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
+    total_runtime_seconds =
+        benchmark_end_seconds - benchmark_start_seconds;
+}
 
 void Statistics::print() const {
     auto print_row = [&](const std::string& key, const std::string& value) {
@@ -26,13 +42,3 @@ void Statistics::print() const {
 
     std::cout << "+--------------------------------+-----------------+\n"<< std::endl;
 }
-
-
-    void Statistics::start_benchmark() {
-        this->start_time = std::chrono::high_resolution_clock::now();
-    }
-
-    void Statistics::end_benchmark() {
-        this->end_time = std::chrono::high_resolution_clock::now();
-        this->total_runtime_seconds = std::chrono::duration<double>(this->end_time - this->start_time).count();
-    }

@@ -25,7 +25,7 @@ local_scheme = "no-local-version"
 name = "PackLab"
 dynamic = ["version"]
 description = "A package for RSA particle packing."
-license = {file = "LICENSE"}
+license = "MIT"
 readme = "README.rst"
 requires-python = ">=3.10"
 authors = [{name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
