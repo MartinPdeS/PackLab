@@ -41,8 +41,6 @@ endif()
 # Compiler and linker options
 add_compile_options(-Wall -Wextra -pedantic-errors)
 
-
-
 message(STATUS "")
 message(STATUS "==================== Build configuration ====================")
 

@@ -7,8 +7,7 @@ source:
   git_url: https://github.com/MartinPdeS/PackLab.git
 
 build:
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
   number: 0
 
 channels:
@@ -25,12 +24,12 @@ requirements:
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
   run:
-    - pandas ~=2.3.0
+    - python {{PY_VER}}*
     - martinpdes::mpsplots
+    - pandas ~=2.3.0
     - matplotlib ~=3.8
     - numpy ==2.2.6
     - pydantic ~=2.9
-    - llvm-openmp
 
 about:
   home: https://github.com/MartinPdeS/PackLab
