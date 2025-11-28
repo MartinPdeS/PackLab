@@ -3,6 +3,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <memory>
 
 static pybind11::array_t<double> vector3d_list_to_numpy(const std::vector<Vector3d>& values) {
     const pybind11::ssize_t count = static_cast<pybind11::ssize_t>(values.size());
