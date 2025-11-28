@@ -1,9 +1,9 @@
 #pragma once
+#define _LIBCPP_REMOVE_AVAILABILITY
 
 #include <iostream>  // for std::cout, std::endl
 #include <iomanip>   // for std::setprecision
 
-#define _LIBCPP_REMOVE_AVAILABILITY
 #include <chrono>    // for std::chrono
 
 struct Statistics {

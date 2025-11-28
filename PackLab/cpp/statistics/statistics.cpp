@@ -20,7 +20,7 @@ void Statistics::print() const {
     print_row("radius mean", std::to_string(radius_mean));
     print_row("radius median", std::to_string(radius_median));
     print_row("radius std", std::to_string(radius_std));
-    print_row("total_runtime [seconds]", std::to_string(total_runtime_seconds));
+    // print_row("total_runtime [seconds]", std::to_string(total_runtime_seconds));
 
     std::cout << "+--------------------------------+-----------------+\n"<< std::endl;
 }

@@ -31,4 +31,4 @@ __commit_id__: COMMIT_ID
 __version__ = version = '0.0.5'
 __version_tuple__ = version_tuple = (0, 0, 5)
 
-__commit_id__ = commit_id = 'ga1f76589d'
+__commit_id__ = commit_id = 'gb3e57b6fa'
