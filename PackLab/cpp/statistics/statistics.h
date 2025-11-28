@@ -1,16 +1,16 @@
 #pragma once
-#define _LIBCPP_REMOVE_AVAILABILITY
 
 #include <iostream>  // for std::cout, std::endl
 #include <iomanip>   // for std::setprecision
-
-#include <chrono>    // for std::chrono
 
 struct Statistics {
     std::size_t attempted_insertions = 0;
     std::size_t accepted_insertions = 0;
     std::size_t rejected_insertions = 0;
     std::size_t consecutive_rejections = 0;
+
+    std::chrono::high_resolution_clock::time_point start_time;
+    std::chrono::high_resolution_clock::time_point end_time;
 
     std::size_t sphere_count = 0;
 
@@ -26,4 +26,8 @@ struct Statistics {
     double total_runtime_seconds = 0.0;
 
     void print() const;
+
+    void start_benchmark();
+
+    void end_benchmark();
 };

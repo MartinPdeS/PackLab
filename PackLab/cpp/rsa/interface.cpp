@@ -63,7 +63,7 @@ PYBIND11_MODULE(interface_rsa, module) {
         .def("_cpp_run", &Simulator::run)
         .def("_cpp_attempt_single_insertion", &Simulator::attempt_single_insertion)
         .def_property_readonly("sphere_configuration", &Simulator::sphere_configuration, pybind11::return_value_policy::reference_internal)
-        .def_property_readonly("_cpp_statistics", &Simulator::statistics, pybind11::return_value_policy::reference_internal)
+        .def_readonly("_cpp_statistics", &Simulator::statistics, pybind11::return_value_policy::reference_internal)
         .def_readonly("domain", &Simulator::domain, pybind11::return_value_policy::reference_internal)
         .def("_cpp_attempted_positions_numpy", [](const Simulator& simulator) {return vector3d_list_to_numpy(simulator.attempted_positions());})
         ;

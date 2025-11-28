@@ -4,7 +4,7 @@
 #include <cstdint>    // for std::uint64_t
 #include <vector>     // for std::vector
 #include <cmath>      // for std::max
-#include <memory>   // for std::shared_ptr, std::unique_ptr
+#include <memory>     // for std::shared_ptr, std::unique_ptr
 
 #include "../radius_sampler/radius_sampler.h"
 #include "../utils/utils.h"
@@ -17,6 +17,7 @@
 class Simulator {
 public:
     Domain domain;
+    mutable Statistics statistics;
 
     Simulator(
         Domain domain,
@@ -46,12 +47,6 @@ public:
     @return A reference to the sphere configuration.
     */
     const SphereConfiguration& sphere_configuration() const { return sphere_configuration_value_; }
-
-    /*
-    Get the current simulation statistics.
-    @return A reference to the statistics structure.
-    */
-    const Statistics& statistics() const { return statistics_value_; }
 
     /*
     Collect the attempted insertion positions.
@@ -114,10 +109,8 @@ private:
     Options options_;
 
     std::mt19937_64 random_generator_;
-    std::chrono::high_resolution_clock::time_point start_time_point_;
 
     SphereConfiguration sphere_configuration_value_;
-    mutable Statistics statistics_value_;
 
     double maximum_radius_observed_ = 0.0;
     bool spatial_grid_initialized_ = false;

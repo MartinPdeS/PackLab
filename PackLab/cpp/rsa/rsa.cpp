@@ -17,7 +17,7 @@ Simulator::Simulator(Domain domain, std::shared_ptr<RadiusSampler> radius_sample
 
 void Simulator::reset() {
     sphere_configuration_value_ = SphereConfiguration{};
-    statistics_value_ = Statistics{};
+    this->statistics = Statistics{};
 
     maximum_radius_observed_ = 0.0;
     spatial_grid_initialized_ = false;
@@ -25,7 +25,7 @@ void Simulator::reset() {
 
     attempted_positions_values_.clear();
 
-    start_time_point_ = std::chrono::high_resolution_clock::now();
+    this->statistics.start_benchmark();
 }
 
 bool Simulator::sphere_fits_inside_domain_if_walls(const Vector3d& center_position, double radius) const {
@@ -123,7 +123,7 @@ bool Simulator::overlaps_any_existing_sphere(const Vector3d& center_position, do
 }
 
 bool Simulator::attempt_single_insertion() {
-    statistics_value_.attempted_insertions += 1;
+    this->statistics.attempted_insertions += 1;
 
     const double radius = radius_sampler_->sample_radius(random_generator_);
     maximum_radius_observed_ = std::max(maximum_radius_observed_, radius);
@@ -137,14 +137,14 @@ bool Simulator::attempt_single_insertion() {
     }
 
     if (!sphere_fits_inside_domain_if_walls(proposed_center, radius)) {
-        statistics_value_.rejected_insertions += 1;
-        statistics_value_.consecutive_rejections += 1;
+        this->statistics.rejected_insertions += 1;
+        this->statistics.consecutive_rejections += 1;
         return false;
     }
 
     if (overlaps_any_existing_sphere(proposed_center, radius)) {
-        statistics_value_.rejected_insertions += 1;
-        statistics_value_.consecutive_rejections += 1;
+        this->statistics.rejected_insertions += 1;
+        this->statistics.consecutive_rejections += 1;
         return false;
     }
 
@@ -157,30 +157,30 @@ bool Simulator::attempt_single_insertion() {
     spatial_grid_index_->insert_sphere(new_index, proposed_center);
 
 
-    statistics_value_.accepted_insertions += 1;
-    statistics_value_.consecutive_rejections = 0;
+    this->statistics.accepted_insertions += 1;
+    this->statistics.consecutive_rejections = 0;
 
-    statistics_value_.sphere_count = sphere_configuration_value_.radii_values_.size();
+    this->statistics.sphere_count = sphere_configuration_value_.radii_values_.size();
 
-    statistics_value_.packing_fraction_simulator =
+    this->statistics.packing_fraction_simulator =
         sphere_configuration_value_.total_sphere_volume() / domain.volume();
 
     // update radius stats incrementally
     const auto& radii = sphere_configuration_value_.radii_values_;
     const double new_radius = radii.back();
 
-    if (statistics_value_.sphere_count == 1) {
-        statistics_value_.radius_min = new_radius;
-        statistics_value_.radius_max = new_radius;
-        statistics_value_.radius_mean = new_radius;
+    if (this->statistics.sphere_count == 1) {
+        this->statistics.radius_min = new_radius;
+        this->statistics.radius_max = new_radius;
+        this->statistics.radius_mean = new_radius;
     } else {
-        statistics_value_.radius_min = std::min(statistics_value_.radius_min, new_radius);
-        statistics_value_.radius_max = std::max(statistics_value_.radius_max, new_radius);
+        this->statistics.radius_min = std::min(this->statistics.radius_min, new_radius);
+        this->statistics.radius_max = std::max(this->statistics.radius_max, new_radius);
 
         // running mean
-        const double n = static_cast<double>(statistics_value_.sphere_count);
-        statistics_value_.radius_mean =
-            statistics_value_.radius_mean * (n - 1.0) / n + new_radius / n;
+        const double n = static_cast<double>(this->statistics.sphere_count);
+        this->statistics.radius_mean =
+            this->statistics.radius_mean * (n - 1.0) / n + new_radius / n;
     }
 
     return true;
@@ -194,10 +194,10 @@ Result Simulator::run() {
         if (options_.maximum_spheres > 0 && sphere_configuration_value_.radii_values_.size() >= options_.maximum_spheres)
             break;
 
-        if (options_.target_packing_fraction > 0.0 && statistics_value_.packing_fraction_simulator >= options_.target_packing_fraction)
+        if (options_.target_packing_fraction > 0.0 && this->statistics.packing_fraction_simulator >= options_.target_packing_fraction)
             break;
 
-        if (options_.maximum_consecutive_rejections > 0 && statistics_value_.consecutive_rejections >= options_.maximum_consecutive_rejections)
+        if (options_.maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options_.maximum_consecutive_rejections)
             break;
 
 
@@ -213,30 +213,29 @@ Result Simulator::run() {
         std::sort(radii_copy.begin(), radii_copy.end());
         const std::size_t n = radii_copy.size();
         if (n % 2 == 0) {
-            statistics_value_.radius_median =
+            this->statistics.radius_median =
                 0.5 * (radii_copy[n / 2 - 1] + radii_copy[n / 2]);
         } else {
-            statistics_value_.radius_median = radii_copy[n / 2];
+            this->statistics.radius_median = radii_copy[n / 2];
         }
 
         // compute standard deviation
-        double mean = statistics_value_.radius_mean;
+        double mean = this->statistics.radius_mean;
         double variance_sum = 0.0;
         for (double r : radii) {
             const double diff = r - mean;
             variance_sum += diff * diff;
         }
-        statistics_value_.radius_std = std::sqrt(variance_sum / n);
+        this->statistics.radius_std = std::sqrt(variance_sum / n);
 
         // set geometric packing fraction only once
-        statistics_value_.packing_fraction_geometry =
+        this->statistics.packing_fraction_geometry =
             sphere_configuration_value_.total_sphere_volume() /
             domain.volume();
     }
 
     // runtime
-    auto end_time_point = std::chrono::high_resolution_clock::now();
-    statistics_value_.total_runtime_seconds = std::chrono::duration<double>(end_time_point - start_time_point_).count();
+    this->statistics.end_benchmark();
 
     Result result{
         sphere_configuration_value_.center_positions_values_,

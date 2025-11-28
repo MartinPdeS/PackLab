@@ -1,6 +1,8 @@
 #include "statistics.h"
 
 
+#include <chrono>    // for std::chrono
+
 void Statistics::print() const {
     auto print_row = [&](const std::string& key, const std::string& value) {
         std::cout << "| " << std::left << std::setw(30) << key
@@ -20,7 +22,17 @@ void Statistics::print() const {
     print_row("radius mean", std::to_string(radius_mean));
     print_row("radius median", std::to_string(radius_median));
     print_row("radius std", std::to_string(radius_std));
-    // print_row("total_runtime [seconds]", std::to_string(total_runtime_seconds));
+    print_row("total_runtime [seconds]", std::to_string(total_runtime_seconds));
 
     std::cout << "+--------------------------------+-----------------+\n"<< std::endl;
 }
+
+
+    void Statistics::start_benchmark() {
+        this->start_time = std::chrono::high_resolution_clock::now();
+    }
+
+    void Statistics::end_benchmark() {
+        this->end_time = std::chrono::high_resolution_clock::now();
+        this->total_runtime_seconds = std::chrono::duration<double>(this->end_time - this->start_time).count();
+    }
