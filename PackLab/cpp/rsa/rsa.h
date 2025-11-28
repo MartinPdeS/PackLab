@@ -4,6 +4,7 @@
 #include <cstdint>    // for std::uint64_t
 #include <vector>     // for std::vector
 #include <cmath>      // for std::max
+#include <memory>   // for std::shared_ptr, std::unique_ptr
 
 #include "../radius_sampler/radius_sampler.h"
 #include "../utils/utils.h"
