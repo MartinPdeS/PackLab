@@ -1,13 +1,9 @@
 // domain_box.hpp
 #pragma once
 
-#include <memory>
-#include <random>
-#include <utility>
 #include <vector>
-#include <cmath>
-#include <limits>
 #include <stdexcept>
+#include <random>
 
 #include "../utils/utils.h"
 

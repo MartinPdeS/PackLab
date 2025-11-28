@@ -1,8 +1,7 @@
 #include "domain.h"
 
-#include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
+
 
 
 PYBIND11_MODULE(interface_domain, module) {
