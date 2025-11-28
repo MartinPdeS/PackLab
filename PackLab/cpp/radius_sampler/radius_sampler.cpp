@@ -1,4 +1,3 @@
-// radius_sampler.cpp
 #include "radius_sampler.h"
 
 ConstantRadiusSampler::ConstantRadiusSampler(double radius)

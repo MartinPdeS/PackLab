@@ -1,12 +1,9 @@
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
-#include <memory>
-#include <random>
-#include <vector>
-#include <numeric>
-#include <cmath>
+#include <cstddef>    // for std::size_t
+#include <cstdint>    // for std::uint64_t
+#include <vector>     // for std::vector
+#include <cmath>      // for std::max
 
 #include "../radius_sampler/radius_sampler.h"
 #include "../utils/utils.h"

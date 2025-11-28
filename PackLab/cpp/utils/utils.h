@@ -1,9 +1,9 @@
 #pragma once
 
-#include <cstdint>
-#include <cstddef>
-#include <functional>
-#include <cmath>
+#include <cstdint>    // for std::int64_t
+#include <cstddef>    // for std::size_t, std::int64_t
+#include <functional> // for std::hash
+#include <cmath>      // for std::sqrt, std::exp
 
 static const double PI = 3.141592653589793238462643383279502884;
 

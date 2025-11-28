@@ -1,9 +1,9 @@
 // domain_box.hpp
 #pragma once
 
-#include <vector>
-#include <stdexcept>
-#include <random>
+#include <vector> // for std::vector
+#include <stdexcept> // for std::invalid_argument
+#include <random> // for std::mt19937_64
 
 #include "../utils/utils.h"
 

@@ -1,9 +1,9 @@
 // rsa.hpp
 #pragma once
 
-#include <random>
-#include <vector>
-#include <stdexcept>
+#include <random> // for std::mt19937_64
+#include <vector> // for std::vector
+#include <functional> // for std::function
 
 #include "../utils/utils.h"
 
