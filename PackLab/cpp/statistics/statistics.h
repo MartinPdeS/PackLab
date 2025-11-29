@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <iostream>
 #include <iomanip>
+#include <string>   // std::to_string
 
 struct Statistics {
     // Counters
