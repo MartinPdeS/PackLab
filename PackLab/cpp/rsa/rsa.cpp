@@ -328,7 +328,7 @@ Simulator::compute_pair_correlation_function(std::size_t bins, std::size_t maxim
         const double r_outer = (i + 1) * dr;
 
         const double shell_volume =
-            (4.0 * M_PI / 3.0) * (std::pow(r_outer, 3) - std::pow(r_inner, 3));
+            (4.0 * PI / 3.0) * (std::pow(r_outer, 3) - std::pow(r_inner, 3));
 
         const double expected =
             number_density * shell_volume * normalization_factor;
