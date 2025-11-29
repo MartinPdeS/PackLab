@@ -15,9 +15,9 @@ channels:
   - martinpdes
 
 requirements:
-  host:
+  build:
     - "{{ compiler('cxx') }}"
-    - "{{ compiler('fortran') }}"
+  host:
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
