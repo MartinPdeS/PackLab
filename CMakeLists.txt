@@ -39,7 +39,13 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 # Compiler and linker options
-add_compile_options(-Wall -Wextra -pedantic-errors)
+
+if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    add_compile_options(/W4 /permissive-)
+else()
+    add_compile_options(-Wall -Wextra -pedantic-errors)
+endif()
+
 
 message(STATUS "")
 message(STATUS "==================== Build configuration ====================")
