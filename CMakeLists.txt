@@ -40,7 +40,7 @@ endif()
 
 # Compiler and linker options
 
-if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/W4 /permissive-)
 else()
     add_compile_options(-Wall -Wextra -pedantic-errors)
