@@ -24,27 +24,40 @@ local_scheme = "no-local-version"
 [project]
 name = "PackLab"
 dynamic = ["version"]
-description = "A package for RSA particle packing."
+description = "Random Sequential Addition (RSA) particle packing with a fast C++ core."
 license = "MIT"
 readme = "README.rst"
 requires-python = ">=3.10"
 authors = [{name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
+keywords = ["rsa", "packing", "particles", "spheres", "simulation"]
 classifiers = [
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.11',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: Implementation :: CPython',
-    'Development Status :: 4 - Beta',
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: C++",
+  "Operating System :: MacOS",
+  "Operating System :: Microsoft :: Windows",
+  "Operating System :: POSIX :: Linux",
+  "Topic :: Scientific/Engineering",
 ]
-
-keywords = ["particle", "packing", "addition"]
-
 dependencies = [
     "pydantic>=2.6.3",
     "MPSPlots",
     "numpy",
 ]
+
+[project.urls]
+Homepage = "https://github.com/MartinPdeS/PackLab"
+Repository = "https://github.com/MartinPdeS/PackLab"
+Issues = "https://github.com/MartinPdeS/PackLab/issues"
+Documentation = "https://martinpdes.github.io/PackLab/docs/latest/index.html"
 
 
 [tool.setuptools]
