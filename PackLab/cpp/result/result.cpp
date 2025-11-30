@@ -78,7 +78,7 @@ void Result::compute_pair_correlation_function(std::size_t bins, std::size_t max
         const double radius_inner = i * dr;
         const double radius_outer = (i + 1) * dr;
 
-        const double shell_volume = (4.0 * M_PI / 3.0) * (std::pow(radius_outer, 3) - std::pow(radius_inner, 3));
+        const double shell_volume = (4.0 * PI / 3.0) * (std::pow(radius_outer, 3) - std::pow(radius_inner, 3));
 
         pair_correlation_centers_[i] = (radius_inner + radius_outer) * 0.5;
         const double expected = number_density * shell_volume * normalization_factor;
