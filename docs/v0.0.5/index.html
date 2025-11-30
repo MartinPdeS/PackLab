@@ -463,29 +463,103 @@
 </div>
 <section id="packlab">
 <h1>PackLab<a class="headerlink" href="#packlab" title="Link to this heading">#</a></h1>
+<p>PackLab is a fast Random Sequential Addition (RSA) particle packing library with a C plus plus core and Python bindings.
+It helps you generate non overlapping sphere configurations inside a 3D box with optional periodic boundaries.
+It supports mono disperse and poly disperse radius sampling through a flexible sampling interface.</p>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Fast C++ implementation with Python bindings</p></li>
+<li><p>3D box domain with optional periodic boundaries</p></li>
+<li><p>Configurable stopping criteria: maximum attempts, maximum consecutive rejections, target packing fraction, maximum spheres</p></li>
+<li><p>Radius samplers designed for future extension to poly disperse systems</p></li>
+<li><p>Python level convenience API with plotting utilities and summary statistics</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>From PyPI:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>packlab
+</pre></div>
+</div>
+<p>From conda:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>martinpdes<span class="w"> </span>packlab
+</pre></div>
+</div>
+<p>From source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/MartinPdeS/PackLab.git
+<span class="nb">cd</span><span class="w"> </span>PackLab
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>testing<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">Domain</span><span class="p">,</span> <span class="n">Options</span><span class="p">,</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">UniformRadiusSampler</span>
+
+ <span class="n">domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">(</span>
+     <span class="n">length_x</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+     <span class="n">length_y</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+     <span class="n">length_z</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+     <span class="n">use_periodic_boundaries</span><span class="o">=</span><span class="kc">True</span>
+ <span class="p">)</span>
+
+ <span class="n">radius_sampler</span> <span class="o">=</span> <span class="n">UniformRadiusSampler</span><span class="p">(</span>
+     <span class="n">minimum_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+     <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.4</span>
+ <span class="p">)</span>
+
+ <span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+ <span class="n">options</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">42</span>
+ <span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span> <span class="o">=</span> <span class="mi">4_000_000</span>
+ <span class="n">options</span><span class="o">.</span><span class="n">maximum_consecutive_rejections</span> <span class="o">=</span> <span class="mi">80_000</span>
+ <span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span> <span class="o">=</span> <span class="mf">0.55</span>
+ <span class="n">options</span><span class="o">.</span><span class="n">minimum_center_separation_addition</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+ <span class="n">rsa_simulator</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span>
+     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
+     <span class="n">radius_sampler</span><span class="o">=</span><span class="n">radius_sampler</span><span class="p">,</span>
+     <span class="n">options</span><span class="o">=</span><span class="n">options</span>
+ <span class="p">)</span>
+
+ <span class="n">result</span> <span class="o">=</span> <span class="n">rsa_simulator</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+ <span class="n">result</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
+
+ <span class="n">result</span><span class="o">.</span><span class="n">plot_slice_2d</span><span class="p">()</span>
+
+ <span class="n">result</span><span class="o">.</span><span class="n">plot_pair_correlation</span><span class="p">(</span><span class="n">maximum_number_of_pairs</span><span class="o">=</span><span class="mi">3_000_000</span><span class="p">)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">PackLab</span>
+</pre></div>
+</div>
+</section>
 <section id="testing">
 <h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
-<p>To test localy (with cloning the GitHub repository) you’ll need to install the dependencies and run the coverage command as</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">MartinPdeS</span><span class="o">/</span><span class="n">PackLab</span><span class="o">.</span><span class="n">git</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">cd</span> <span class="n">PackLab</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">pytest</span>
+<p>To test locally, clone the repository, install dependencies, and run pytest.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/MartinPdeS/PackLab.git
+<span class="nb">cd</span><span class="w"> </span>PackLab
+pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>testing<span class="o">]</span>
+pytest
 </pre></div>
 </div>
 </section>
-<hr class="docutils" />
-<section id="coding-example">
-<h2>Coding example<a class="headerlink" href="#coding-example" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">PackLab</span>
-</pre></div>
-</div>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
+<p>The documentation includes tutorials, API reference, and gallery examples.</p>
+<p>See <a class="reference external" href="https://martinpdes.github.io/PackLab/"><img alt="Documentation Status" src="https://github.com/martinpdes/packlab/actions/workflows/deploy_documentation.yml/badge.svg" /></a>.</p>
 </section>
-<hr class="docutils" />
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h2>
+<p>Issues and pull requests are welcome.
+If you are using PackLab in research, citations and links to your work are appreciated.</p>
+</section>
 <section id="contact-information">
 <h2>Contact Information<a class="headerlink" href="#contact-information" title="Link to this heading">#</a></h2>
-<p>As of 2025, the project is still under development. If you want to collaborate, it would be a pleasure! I encourage you to contact me.</p>
-<p>PackLab was written by <a class="reference external" href="https://github.com/MartinPdS">Martin Poinsinet de Sivry-Houle</a>  .</p>
-<p>Email:<a class="reference external" href="mailto:martin&#46;poinsinet&#46;de&#46;sivry&#37;&#52;&#48;gmail&#46;com?subject=PackLab">martin<span>&#46;</span>poinsinet-de-sivry<span>&#64;</span>polymtl<span>&#46;</span>ca</a> .</p>
+<p>As of 2025, the project is still under development.
+If you want to collaborate, it would be a pleasure. Feel free to contact me.</p>
+<p>PackLab was written by <a class="reference external" href="https://github.com/MartinPdS">Martin Poinsinet de Sivry Houle</a>.</p>
+<p>Email: <a class="reference external" href="mailto:martin&#46;poinsinet&#46;de&#46;sivry&#37;&#52;&#48;gmail&#46;com?subject=PackLab">martin<span>&#46;</span>poinsinet<span>&#46;</span>de<span>&#46;</span>sivry<span>&#64;</span>gmail<span>&#46;</span>com</a>.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -514,8 +588,12 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick start</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-example">Coding example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contact-information">Contact Information</a></li>
 </ul>
   </nav></div>
