@@ -2,12 +2,13 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                 |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
-|--------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
-| PackLab/results.py   |       99 |       81 |       22 |        0 |     14.88% |34-50, 67-93, 109-118, 136-203, 227-244 |
-| PackLab/simulator.py |       14 |        7 |        0 |        0 |     50.00% |16-19, 34-39 |
-| PackLab/utils.py     |       30 |       24 |        6 |        0 |     16.67% | 16, 26-55 |
-|            **TOTAL** |  **143** |  **112** |   **28** |    **0** | **18.13%** |           |
+| Name               |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
+|------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
+| PackLab/results.py |       99 |       38 |       22 |        8 |     58.68% |41, 43, 45, 67-93, 109-118, 142, 144, 154, 163-170, 174-176 |
+| PackLab/utils.py   |       30 |       23 |        6 |        0 |     19.44% |     26-55 |
+|          **TOTAL** |  **143** |   **61** |   **28** |    **8** | **53.80%** |           |
+
+1 file skipped due to complete coverage.
 
 
 ## Setup coverage badge
