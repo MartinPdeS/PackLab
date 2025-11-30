@@ -17,13 +17,13 @@ It demonstrates the following steps:
 This is the recommended starting point when learning how to use PackLab.
 """
 
+from PackLab import Domain, Options, Simulator, UniformRadiusSampler
+
 # %%
 # Simulation domain
 # -----------------
 # The domain defines the physical volume of the simulation.
 # Here we use periodic boundary conditions on a cubic box.
-
-from PackLab import Domain, Options, Simulator, UniformRadiusSampler
 
 domain = Domain(
     length_x=6.0,
