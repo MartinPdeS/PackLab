@@ -29,8 +29,8 @@ public:
     @param particle_radii Vector of particle radii.
     @param domain Simulation domain box.
     */
-    Result(const std::vector<std::vector<double>>& raw_positions, std::vector<double> particle_radii, Domain domain)
-        : domain(std::move(domain)), particle_radii_(std::move(particle_radii))
+    Result(const std::vector<std::vector<double>>& raw_positions, std::vector<double> particle_radii, Domain _domain)
+        : domain(std::move(_domain)), particle_radii_(std::move(particle_radii))
     {
         particle_positions_.reserve(raw_positions.size());
 
