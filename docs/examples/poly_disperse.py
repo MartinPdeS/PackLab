@@ -94,6 +94,6 @@ result.plot_slice_2d(
 # using Monte Carlo sampling of particle pairs.
 
 result.plot_pair_correlation(
-    pair_correlation_bins=300,
+    bins=300,
     maximum_number_of_pairs=20_000_000
 )
