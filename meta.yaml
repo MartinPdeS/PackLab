@@ -18,6 +18,7 @@ requirements:
   build:
     - "{{ compiler('cxx') }}"
   host:
+    - clang =18
     - libcxx =18
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
