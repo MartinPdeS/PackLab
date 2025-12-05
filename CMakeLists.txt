@@ -1,3 +1,4 @@
+# --------------------- CMake configuration --------------------
 cmake_minimum_required(VERSION 3.20)
 set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum OS X deployment version")
 project(PackLab LANGUAGES CXX)
@@ -8,15 +9,16 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
+# --------------------- CMake configuration --------------------
 
-# Set the output directory for libraries
+
+# --------------------- Set the output directory for libraries --------------------
 set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
 set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/binary")
+include_directories(${NAME} ${LOCAL_CXX_DIR})
+# --------------------- Set the output directory for libraries --------------------
 
-# Include directories
-include_directories("${LOCAL_CXX_DIR}")
-
-# Find dependencies
+# --------------------- Platform-specific compiler and linker options --------------------
 if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     set(OpenMP_CXX_FLAGS "-Xpreprocessor -fopenmp" CACHE STRING "")
     set(OpenMP_CXX_LIB_NAMES "omp" CACHE STRING "")
@@ -26,10 +28,6 @@ if(APPLE AND CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     endif()
 endif()
 
-find_package(OpenMP REQUIRED)
-find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
-find_package(pybind11 CONFIG REQUIRED)
-
 # Platform-specific settings for static linking
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message("MinGW detected on Windows")
@@ -38,15 +36,20 @@ if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     add_link_options(-static -fopenmp -Wl,--whole-archive -lgomp -Wl,--no-whole-archive)
 endif()
 
-# Compiler and linker options
-
 if (WIN32 AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/W4 /permissive-)
 else()
-    add_compile_options(-Wall -Wextra -pedantic-errors)
+    add_compile_options(-Wall -Wextra -pedantic-errors -Wno-unused-parameter)
 endif()
+# --------------------- Platform-specific compiler and linker options --------------------
 
+# --------------------- Find dependencies and compile options --------------------
+find_package(OpenMP REQUIRED)
+find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
+find_package(pybind11 CONFIG REQUIRED)
+# --------------------- Find dependencies and compile options --------------------
 
+# ----------------- logging build configuration --------------------
 message(STATUS "")
 message(STATUS "==================== Build configuration ====================")
 
@@ -87,12 +90,23 @@ message(STATUS "  Binary output path   : ${LOCAL_BIN_DIR}")
 
 message(STATUS "==============================================================")
 message(STATUS "")
+# ----------------- logging build configuration --------------------
 
-
+# ----------------- collect subdirectories --------------------
 add_subdirectory(PackLab/cpp/utils)             # utils
 add_subdirectory(PackLab/cpp/result)            # result
 add_subdirectory(PackLab/cpp/domain)            # domain
 add_subdirectory(PackLab/cpp/statistics)        # statistics
 add_subdirectory(PackLab/cpp/radius_sampler)    # radius_sampler
 add_subdirectory(PackLab/cpp/rsa)               # rsa
+# ----------------- collect subdirectories --------------------
+
+get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)
+
+install(
+    TARGETS ${PACKLAB_TARGETS}
+    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
+    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
+    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
+)
 
