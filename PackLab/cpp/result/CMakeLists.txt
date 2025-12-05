@@ -5,7 +5,7 @@ set(NAME "result")
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")
 
-target_link_libraries("${NAME}" PUBLIC pybind11::module utils)
+target_link_libraries("${NAME}" PUBLIC pybind11::module utils domain)
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)

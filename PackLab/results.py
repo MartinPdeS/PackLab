@@ -240,8 +240,6 @@ class Result(Result):
 
         figure, axes = plt.subplots()
 
-        # print(self.pair_correlation_centers.shape, self.pair_correlation_values.shape)
-
         axes.plot(self.pair_correlation_centers, self.pair_correlation_values, linewidth=1.6)
 
         axes.set_xlabel("radial distance r")
