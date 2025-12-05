@@ -20,16 +20,16 @@ requirements:
     - llvm-openmp  # [osx]
   host:
     - python {{ PY_VER }}*
-    - scikit-build-core ~=0.3
-    - pybind11 ~=2.13
-    - python-build ~=1.2
-    - setuptools_scm[toml] ~=8.0
-    - numpy ==2.2.6
+    - scikit-build-core ~=0.3.*
+    - pybind11 ~=2.13.*
+    - python-build ~=1.2.*
+    - setuptools_scm[toml] ~=8.0.*
+    - numpy ==2.2.*
   run:
     - pandas ==2.3.*
     - martinpdes::mpsplots
     - matplotlib ==3.8.*
-    - numpy ==2.2.6
+    - numpy ==2.2.*
     - pydantic ==2.9.*
 
 about:
@@ -54,10 +54,10 @@ test:
     - PackLab
   requires:
     - python {{ PY_VER }}*
-    - pytest>=0.6
-    - pytest-cov>=2.0
-    - pytest-json-report==1.5.0
-    - coverage==7.6.1
+    - pytest >=0.6.*
+    - pytest-cov >=2.0.*
+    - pytest-json-report ==1.5.*
+    - coverage ==7.6.*
   commands:
     - python -m pytest
   source_files:
