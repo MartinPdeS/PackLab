@@ -206,7 +206,8 @@ class Result(Result):
     def plot_pair_correlation(
         self,
         pair_correlation_bins: int = 90,
-        maximum_number_of_pairs: int = 2_000_000
+        maximum_number_of_pairs: int = 2_000_000,
+        maximum_distance: float = 0.0,
     ) -> plt.Figure:
         """
         Plot the radial pair correlation function g(r) using particles in the
@@ -218,6 +219,8 @@ class Result(Result):
             Number of histogram bins for the radial distance.
         pair_correlation_maximum_pairs : int
             Maximum number of random particle pairs used to approximate g(r).
+        maximum_distance : float
+            Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
 
         Returns
         -------
@@ -228,6 +231,7 @@ class Result(Result):
             bins=pair_correlation_bins,
             maximum_number_of_pairs=maximum_number_of_pairs,
             random_seed=0,
+            maximum_distance=maximum_distance
         )
 
         figure, axes = plt.subplots()
@@ -243,3 +247,81 @@ class Result(Result):
 
         return figure
 
+    @helper.post_mpl_plot
+    def plot_pair_correlation(
+        self,
+        pair_correlation_bins: int = 90,
+        maximum_number_of_pairs: int = 2_000_000,
+        maximum_distance: float = 0.0,
+        plot_mean_and_std: bool = False,
+        repeats: int = 8,
+        random_seed: int = 0,
+    ) -> plt.Figure:
+        """
+        Plot the radial pair correlation function g(r).
+
+        If plot_mean_and_std is True, the pair correlation function is computed
+        multiple times and the mean and standard deviation are plotted. The
+        standard deviation is shown as a shaded band.
+
+        Parameters
+        ----------
+        pair_correlation_bins : int
+            Number of histogram bins for the radial distance.
+        maximum_number_of_pairs : int
+            Maximum number of random particle pairs used per repetition.
+        maximum_distance : float
+            Maximum distance to consider for g(r). If zero or negative, it defaults
+            to half the smallest box length.
+        plot_mean_and_std : bool
+            If True, compute g(r) repeats times and plot mean and standard deviation.
+            If False, compute and plot a single g(r).
+        repeats : int
+            Number of repetitions used when plot_mean_and_std is True.
+        random_seed : int
+            Base random seed used for reproducible Monte Carlo sampling.
+
+        Returns
+        -------
+        matplotlib.figure.Figure
+            The Matplotlib figure containing the plot.
+        """
+        if plot_mean_and_std:
+            self.compute_pair_correlation_function_mean_and_std(
+                bins=pair_correlation_bins,
+                maximum_number_of_pairs=maximum_number_of_pairs,
+                repeats=repeats,
+                random_seed=random_seed,
+                maximum_distance=maximum_distance,
+            )
+            centers = self.pair_correlation_centers
+            mean_values = self.pair_correlation_mean_values
+            std_values = self.pair_correlation_std_values
+        else:
+            self.compute_pair_correlation_function(
+                bins=pair_correlation_bins,
+                maximum_number_of_pairs=maximum_number_of_pairs,
+                random_seed=random_seed,
+                maximum_distance=maximum_distance,
+            )
+            centers = self.pair_correlation_centers
+            mean_values = self.pair_correlation_values
+            std_values = None
+
+        figure, axes = plt.subplots()
+
+        axes.plot(centers, mean_values, linewidth=1.6)
+
+        if std_values is not None:
+            lower = mean_values - std_values
+            upper = mean_values + std_values
+            axes.fill_between(centers, lower, upper, alpha=0.25)
+
+        axes.set_xlabel("radial distance r")
+        axes.set_ylabel("g(r)")
+        axes.set_title(
+            "Pair correlation function"
+            + (" (minimum image)" if self.domain.use_periodic_boundaries else "")
+        )
+
+        return figure

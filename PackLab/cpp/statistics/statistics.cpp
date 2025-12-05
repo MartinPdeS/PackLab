@@ -1,20 +1,20 @@
 #define _LIBCPP_REMOVE_AVAILABILITY
-// #include <chrono>
+#include <chrono>
 
 
 #include "statistics.h"
 
 void Statistics::start_benchmark() {
-    // benchmark_start_seconds =
-        // std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    benchmark_start_seconds =
+        std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 }
 
 void Statistics::end_benchmark() {
-    // benchmark_end_seconds =
-    //     std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+    benchmark_end_seconds =
+        std::chrono::duration<double>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
-    // total_runtime_seconds =
-    //     benchmark_end_seconds - benchmark_start_seconds;
+    total_runtime_seconds =
+        benchmark_end_seconds - benchmark_start_seconds;
 }
 
 void Statistics::print() const {

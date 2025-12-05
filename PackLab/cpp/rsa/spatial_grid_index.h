@@ -63,6 +63,46 @@ class SpatialGridIndex {
             return neighbor_indices;
         }
 
+    std::vector<std::size_t> query_neighbor_sphere_indices(const Vector3d& center_position, std::int64_t cell_range) const
+    {
+        const CellIndex base_cell = cell_index_from_position(center_position);
+
+        std::vector<std::size_t> neighbor_indices;
+        neighbor_indices.reserve(256);
+
+        for (std::int64_t di = -cell_range; di <= cell_range; ++di) {
+            for (std::int64_t dj = -cell_range; dj <= cell_range; ++dj) {
+                for (std::int64_t dk = -cell_range; dk <= cell_range; ++dk) {
+
+                    std::int64_t neighbor_i = base_cell.i + di;
+                    std::int64_t neighbor_j = base_cell.j + dj;
+                    std::int64_t neighbor_k = base_cell.k + dk;
+
+                    if (use_periodic_boundaries_value_) {
+                        neighbor_i = wrap_cell_index(neighbor_i, number_of_cells_x_value_);
+                        neighbor_j = wrap_cell_index(neighbor_j, number_of_cells_y_value_);
+                        neighbor_k = wrap_cell_index(neighbor_k, number_of_cells_z_value_);
+                    } else {
+                        if (neighbor_i < 0 || neighbor_i >= number_of_cells_x_value_) continue;
+                        if (neighbor_j < 0 || neighbor_j >= number_of_cells_y_value_) continue;
+                        if (neighbor_k < 0 || neighbor_k >= number_of_cells_z_value_) continue;
+                    }
+
+                    const CellIndex neighbor_cell{neighbor_i, neighbor_j, neighbor_k};
+
+                    auto iterator = cell_to_sphere_indices_.find(neighbor_cell);
+                    if (iterator != cell_to_sphere_indices_.end()) {
+                        const auto& cell_list = iterator->second;
+                        neighbor_indices.insert(neighbor_indices.end(), cell_list.begin(), cell_list.end());
+                    }
+                }
+            }
+        }
+
+        return neighbor_indices;
+    }
+
+
     CellIndex cell_index_from_position(const Vector3d& center_position) const {
         std::int64_t cell_i = static_cast<std::int64_t>(std::floor(center_position.x / cell_size_value_));
         std::int64_t cell_j = static_cast<std::int64_t>(std::floor(center_position.y / cell_size_value_));

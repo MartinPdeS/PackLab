@@ -34,7 +34,6 @@ PYBIND11_MODULE(interface_result, module) {
             },
             "Particle positions as a NumPy array of shape (N, 3)"
         )
-
         .def_property_readonly(
             "radii",
             [](const Result& r) {
@@ -43,7 +42,6 @@ PYBIND11_MODULE(interface_result, module) {
             },
             "Particle radii as a NumPy array of shape (N)"
         )
-
         .def_property_readonly(
             "domain_box",
             [](const Result& r) -> const Domain& {
@@ -52,7 +50,6 @@ PYBIND11_MODULE(interface_result, module) {
             pybind11::return_value_policy::reference_internal,
             "Simulation domain box object"
         )
-
         .def_property_readonly(
             "pair_correlation_centers",
             [](const Result& r) {
@@ -61,7 +58,22 @@ PYBIND11_MODULE(interface_result, module) {
             },
             "Bin centers for the pair correlation function"
         )
-
+        .def_property_readonly(
+            "pair_correlation_mean_values",
+            [](const Result& r) {
+                const auto& centers = r.pair_correlation_mean_values();
+                return pybind11::array_t<double>(centers.size(), centers.data());
+            },
+            "Bin centers for the mean pair correlation function"
+        )
+        .def_property_readonly(
+            "pair_correlation_std_values",
+            [](const Result& r) {
+                const auto& centers = r.pair_correlation_std_values();
+                return pybind11::array_t<double>(centers.size(), centers.data());
+            },
+            "Bin centers for the standard deviation of the pair correlation function"
+        )
         .def_property_readonly(
             "pair_correlation_values",
             [](const Result& r) {
@@ -83,7 +95,19 @@ PYBIND11_MODULE(interface_result, module) {
             pybind11::arg("bins") = 90,
             pybind11::arg("maximum_number_of_pairs") = 250000,
             pybind11::arg("random_seed") = 0,
+            pybind11::arg("maximum_distance") = 0.0,
             "Compute the pair correlation function and store the result internally"
-        );
+        )
+        .def(
+            "compute_pair_correlation_function_mean_and_std",
+            &Result::compute_pair_correlation_function_mean_and_std,
+            pybind11::arg("bins") = 90,
+            pybind11::arg("maximum_number_of_pairs") = 250000,
+            pybind11::arg("repeats") = 8,
+            pybind11::arg("random_seed") = 0,
+            pybind11::arg("maximum_distance") = 0.0,
+            "Compute the pair correlation function and store the result internally"
+        )
+    ;
 
 }

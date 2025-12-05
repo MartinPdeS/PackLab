@@ -77,13 +77,63 @@ public:
     }
 
     /*
+    Accessor for pair correlation mean values.
+    @return Reference to the internal vector of mean g(r) values.
+    */
+    const std::vector<double>& pair_correlation_mean_values() const {
+        return pair_correlation_mean_values_;
+    }
+
+    /*
+    Accessor for pair correlation standard deviation values.
+    @return Reference to the internal vector of g(r) standard deviation values.
+    */
+    const std::vector<double>& pair_correlation_std_values() const {
+        return pair_correlation_std_values_;
+    }
+
+    /*
     Compute the pair correlation function (g(r)) of the particle configuration.
     @param bins Number of bins to use for the histogram.
     @param maximum_pairs Maximum number of random pairs to sample for the calculation.
     @param random_seed Seed for the random number generator used to sample pairs.
+    @param maximum_distance Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
     */
-    void compute_pair_correlation_function(std::size_t bins, std::size_t maximum_pairs, std::uint64_t random_seed);
+    void compute_pair_correlation_function(std::size_t bins, std::size_t maximum_pairs, std::uint64_t random_seed, double maximum_distance = 0.0);
 
+
+    /*
+    Compute the mean and standard deviation of the pair correlation function
+    over multiple repeats to assess statistical variability.
+    @param bins Number of bins to use for the histogram.
+    @param maximum_pairs Maximum number of random pairs to sample for each calculation.
+    @param repeats Number of times to repeat the calculation.
+    @param random_seed Seed for the random number generator used to sample pairs.
+    @param maximum_distance Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
+    */
+    void compute_pair_correlation_function_mean_and_std(
+        std::size_t bins = 90,
+        std::size_t maximum_number_of_pairs = 250000,
+        std::size_t repeats = 8,
+        std::uint64_t random_seed = 0,
+        double maximum_distance = 0.0
+    );
+
+    /*
+    optional helper to compute a single g(r) without touching the public members
+    Compute the pair correlation function (g(r)) once without modifying internal state.
+    @param bins Number of bins to use for the histogram.
+    @param maximum_pairs Maximum number of random pairs to sample for the calculation.
+    @param random_seed Seed for the random number generator used to sample pairs.
+    @param maximum_distance Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
+    @return Vector of computed g(r) values.
+    */
+    std::vector<double> compute_pair_correlation_values_once(
+        std::size_t bins,
+        std::size_t maximum_number_of_pairs,
+        std::uint64_t random_seed,
+        double distance_maximum
+    );
 
 private:
     Vector3d apply_minimum_image(Vector3d d, const Domain& domain) const;
@@ -94,4 +144,7 @@ private:
 
     std::vector<double> pair_correlation_centers_;
     std::vector<double> pair_correlation_values_;
+
+    std::vector<double> pair_correlation_mean_values_;
+    std::vector<double> pair_correlation_std_values_;
 };
