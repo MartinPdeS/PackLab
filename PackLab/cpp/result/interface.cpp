@@ -87,27 +87,16 @@ PYBIND11_MODULE(interface_result, module) {
             &Result::domain,
             "Simulation domain box object"
         )
-
-        // Methods
         .def(
             "compute_pair_correlation_function",
             &Result::compute_pair_correlation_function,
             pybind11::arg("bins") = 90,
-            pybind11::arg("maximum_number_of_pairs") = 250000,
-            pybind11::arg("random_seed") = 0,
             pybind11::arg("maximum_distance") = 0.0,
-            "Compute the pair correlation function and store the result internally"
-        )
-        .def(
-            "compute_pair_correlation_function_mean_and_std",
-            &Result::compute_pair_correlation_function_mean_and_std,
-            pybind11::arg("bins") = 90,
-            pybind11::arg("maximum_number_of_pairs") = 250000,
-            pybind11::arg("repeats") = 8,
+            pybind11::arg("method") = "grid",
+            pybind11::arg("maximum_number_of_pairs") = 100000000,
             pybind11::arg("random_seed") = 0,
-            pybind11::arg("maximum_distance") = 0.0,
+            pybind11::arg("grid_cell_size") = 0.0,
             "Compute the pair correlation function and store the result internally"
         )
     ;
-
 }

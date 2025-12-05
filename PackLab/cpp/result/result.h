@@ -3,9 +3,13 @@
 #include <vector>   // for std::vector
 #include <cmath>    // for std::exp
 #include <algorithm> // for std::min
+#include <cctype>
+#include <stdexcept>
+#include <string>
 
 #include "../utils/utils.h"
 #include "../domain/domain.h"
+#include "../rsa/spatial_grid_index.h"
 
 class Result {
 public:
@@ -96,37 +100,83 @@ public:
     Compute the pair correlation function (g(r)) of the particle configuration.
     @param bins Number of bins to use for the histogram.
     @param maximum_pairs Maximum number of random pairs to sample for the calculation.
+    @param method Method to use for computation: "grid" or "monte-carlo".
     @param random_seed Seed for the random number generator used to sample pairs.
     @param maximum_distance Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
+    @param grid_cell_size Size of the grid cells used for spatial partitioning in the calculation.
     */
-    void compute_pair_correlation_function(std::size_t bins, std::size_t maximum_pairs, std::uint64_t random_seed, double maximum_distance = 0.0);
-
-
-    /*
-    Compute the mean and standard deviation of the pair correlation function
-    over multiple repeats to assess statistical variability.
-    @param bins Number of bins to use for the histogram.
-    @param maximum_pairs Maximum number of random pairs to sample for each calculation.
-    @param repeats Number of times to repeat the calculation.
-    @param random_seed Seed for the random number generator used to sample pairs.
-    @param maximum_distance Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
-    */
-    void compute_pair_correlation_function_mean_and_std(
-        std::size_t bins = 90,
-        std::size_t maximum_number_of_pairs = 250000,
-        std::size_t repeats = 8,
-        std::uint64_t random_seed = 0,
-        double maximum_distance = 0.0
+    void compute_pair_correlation_function(
+        std::size_t bins,
+        double maximum_distance,
+        const std::string& method,
+        std::size_t maximum_number_of_pairs,
+        std::uint64_t random_seed,
+        double grid_cell_size
     );
 
+
+
+private:
+
     /*
-    optional helper to compute a single g(r) without touching the public members
-    Compute the pair correlation function (g(r)) once without modifying internal state.
-    @param bins Number of bins to use for the histogram.
-    @param maximum_pairs Maximum number of random pairs to sample for the calculation.
-    @param random_seed Seed for the random number generator used to sample pairs.
-    @param maximum_distance Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
+    Fill the pair correlation histogram using Monte Carlo sampling of particle pairs.
+    @param histogram Reference to the histogram vector to fill.
+    @param bins Number of bins in the histogram.
+    @param maximum_number_of_pairs Maximum number of random pairs to sample.
+    @param random_seed Seed for the random number generator.
+    @param maximum_distance Maximum distance to consider for g(r).
+    @param radial_bin_width Width of each radial bin.
+    */
+    void fill_pair_correlation_histogram_monte_carlo(
+        std::vector<std::size_t>& histogram,
+        std::size_t bins,
+        std::size_t maximum_number_of_pairs,
+        std::uint64_t random_seed,
+        double maximum_distance,
+        double radial_bin_width) const;
+
+    /*
+    Compute pair correlation values from the histogram.
+    @param bins Number of bins in the histogram.
+    @param maximum_number_of_pairs Maximum number of random pairs sampled.
+    @param random_seed Seed for the random number generator.
+    @param maximum_distance Maximum distance considered for g(r).
     @return Vector of computed g(r) values.
+    */
+    std::vector<double> compute_pair_correlation_values_once(
+        std::size_t bins,
+        std::size_t maximum_number_of_pairs,
+        std::uint64_t random_seed,
+        double maximum_distance
+    ) const;
+
+
+    /*
+    Fill the pair correlation histogram using a spatial grid index for efficiency.
+    @param histogram Reference to the histogram vector to fill.
+    @param bins Number of bins in the histogram.
+    @param maximum_distance Maximum distance to consider for g(r).
+    @param radial_bin_width Width of each radial bin.
+    @param grid_cell_size Size of the grid cells used for spatial partitioning.
+    */
+    void fill_pair_correlation_histogram_grid(
+        std::vector<std::size_t>& histogram,
+        std::size_t bins,
+        double maximum_distance,
+        double radial_bin_width,
+        double grid_cell_size
+    ) const;
+
+    /*
+    Compute pair correlation values from the histogram.
+    @param pair_correlation_values Reference to the vector to store g(r) values.
+    @param histogram Reference to the histogram vector.
+    @param number_of_particles Number of particles in the configuration.
+    @param bins Number of bins in the histogram.
+    @param radial_bin_width Width of each radial bin.
+    @param maximum_distance Maximum distance considered for g(r).
+    @param domain_volume Volume of the simulation domain.
+    @param total_pairs_used Total number of particle pairs sampled.
     */
     std::vector<double> compute_pair_correlation_values_once(
         std::size_t bins,
@@ -135,9 +185,21 @@ public:
         double distance_maximum
     );
 
-private:
+    /*
+    Compute pair correlation values using a spatial grid index for efficiency.
+    @param bins Number of bins in the histogram.
+    @param maximum_distance Maximum distance to consider for g(r).
+    @param grid_cell_size Size of the grid cells used for spatial partitioning.
+    @return Vector of computed g(r) values.
+    */
+    std::vector<double> compute_pair_correlation_values_once_grid(
+        std::size_t bins,
+        double maximum_distance,
+        double grid_cell_size
+    ) const;
+
     Vector3d apply_minimum_image(Vector3d d, const Domain& domain) const;
-    double sample_distance(std::size_t number_of_particles, const std::vector<Vector3d>& positions, std::mt19937_64& rng, const Domain& domain);
+    double sample_distance(std::size_t number_of_particles, const std::vector<Vector3d>& positions, std::mt19937_64& rng, const Domain& domain) const;
 
     std::vector<Vector3d> particle_positions_;
     std::vector<double> particle_radii_;
