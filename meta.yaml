@@ -16,22 +16,21 @@ channels:
 
 requirements:
   build:
-    - "{{ compiler('cxx') }}"
+    - {{ compiler('cxx') }}
+    - llvm-openmp  # [osx]
   host:
-    - clang =18
-    - libcxx =18
     - python {{ PY_VER }}*
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
-  run:
-    - python {{PY_VER}}*
-    - martinpdes::mpsplots
-    - pandas ~=2.3.0
-    - matplotlib ~=3.8
     - numpy ==2.2.6
-    - pydantic ~=2.9
+  run:
+    - pandas ==2.3.*
+    - martinpdes::mpsplots
+    - matplotlib ==3.8.*
+    - numpy ==2.2.6
+    - pydantic ==2.9.*
 
 about:
   home: https://github.com/MartinPdeS/PackLab
