@@ -24,13 +24,13 @@ requirements:
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
-    - numpy ==2.2
+    - numpy >=2.0,<3
   run:
     - pandas ==2.3
     - martinpdes::mpsplots
-    - matplotlib ==3.8
-    - numpy ==2.2
-    - pydantic ==2.9
+    - matplotlib >=3.9,<4
+    - numpy >=2.0,<3
+    - pydantic >=2.8,<3
 
 about:
   home: https://github.com/MartinPdeS/PackLab
