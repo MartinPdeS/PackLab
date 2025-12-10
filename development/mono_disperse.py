@@ -27,9 +27,9 @@ microstructures, or biological particle systems with non uniform sizes.
 from PackLab import Domain, Options, Simulator, UniformRadiusSampler
 
 domain = Domain(
-    length_x=6.0,
-    length_y=6.0,
-    length_z=6.0,
+    length_x=72.0 * 1,
+    length_y=72.0 * 1,
+    length_z=72.0 * 1,
     use_periodic_boundaries=True
 )
 
@@ -40,11 +40,11 @@ domain = Domain(
 # This gives a wide range of sphere sizes.
 
 radius_sampler = UniformRadiusSampler(
-    minimum_radius=0.1,
-    maximum_radius=0.4
+    minimum_radius=1,
+    maximum_radius=3
 )
 
-radius_sampler.set_number_of_bins(20)
+radius_sampler.set_number_of_bins(0)
 
 # %%
 # Simulation options
@@ -56,7 +56,7 @@ options = Options()
 options.random_seed = 42
 options.maximum_attempts = 4_000_000
 options.maximum_consecutive_rejections = 80_000
-options.target_packing_fraction = 0.2
+options.target_packing_fraction = 0.227
 options.minimum_center_separation_addition = 0.0
 
 # %%
@@ -71,6 +71,7 @@ rsa_simulator = Simulator(
 
 result = rsa_simulator.run()
 
+
 # %%
 # Inspect simulation statistics
 # -----------------------------
@@ -78,16 +79,11 @@ result = rsa_simulator.run()
 result.statistics.print()
 
 # %%
-# Plot radius distribution
-# ------------------------
-result.plot_radius_distribution()
-
-# %%
 # Plot a slice of the configuration
 # ---------------------------------
 # This gives a quick visual impression of the spatial structure,
 # which is more complex than in the monodisperse case.
-result.plot_slice_2d()
+result.plot_radius_distribution()
 
 # %%
 # Pair correlation function
@@ -95,4 +91,10 @@ result.plot_slice_2d()
 # Compute and plot the pair correlation function g(r)
 # for the polydisperse configuration.
 
-result.plot_pair_correlation(maximum_number_of_pairs=3_000_000)
+result.plot_pair_correlation(
+    bins=100,
+    maximum_distance=15,
+    method='grid',
+    maximum_number_of_pairs=10_000_000,
+    grid_cell_size=15.0
+)

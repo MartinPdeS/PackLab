@@ -10,44 +10,74 @@ from PackLab.binary.interface_result import Result
 
 
 
-class Result(Result):
+class Result():
     """
     Output container for an RSA simulation run.
 
     Holds arrays plus domain metadata, computed statistics, and plotting helpers.
     """
-    def __init__(self, positions: np.ndarray, radii: np.ndarray, domain: Domain, statistics):
-        """
-        Initialize the Result object with positions, radii, domain, and statistics.
+    def __init__(self, binding):
+        self.binding = binding
 
-        Parameters
-        ----------
-        positions : np.ndarray
-            Array of shape (N, 3) containing the sphere center positions.
-        radii : np.ndarray
-            Array of shape (N,) containing the sphere radii.
-        domain : Domain
+    @property
+    def positions(self) -> np.ndarray:
+        """
+        Get the sphere center positions as a NumPy array of shape (N, 3).
+
+        Returns
+        -------
+        np.ndarray
+            Array of sphere center positions.
+        """
+        return self.sphere_configuration.positions_numpy()
+
+    @property
+    def radii(self) -> np.ndarray:
+        """
+        Get the sphere radii as a NumPy array of shape (N,).
+
+        Returns
+        -------
+        np.ndarray
+            Array of sphere radii.
+        """
+        return self.sphere_configuration.radii_numpy()
+
+    @property
+    def domain(self) -> Domain:
+        """
+        Get the simulation domain.
+
+        Returns
+        -------
+        Domain
             The simulation domain.
-        statistics : Statistics
-            The statistics object containing simulation metrics.
         """
-        super().__init__(
-            positions=positions,
-            radii=radii,
-            domain=domain
-        )
+        return self.binding.domain
 
-        if self.positions.ndim != 2 or self.positions.shape[1] != 3:
-            raise ValueError(f"positions must have shape (N, 3), got {self.positions.shape}")
-        if self.radii.ndim != 1:
-            raise ValueError(f"radii must have shape (N,), got {self.radii.shape}")
-        if self.positions.shape[0] != self.radii.shape[0]:
-            raise ValueError("positions and radii must have matching N")
+    @property
+    def statistics(self):
+        """
+        Get the simulation statistics.
 
+        Returns
+        -------
+        Statistics
+            The simulation statistics.
+        """
+        return self.binding.statistics
 
-        self._random_generator = np.random.default_rng
+    def compute_pair_correlation_function(self, **kwargs) -> None:
+        return self.binding.compute_pair_correlation_function(**kwargs)
 
-        self.statistics = statistics
+    @property
+    def pair_correlation_centers(self) -> np.ndarray:
+        return np.asarray(self.binding.pair_correlation_centers)
+
+    @property
+    def pair_correlation_values(self) -> np.ndarray:
+        return np.asarray(self.binding.pair_correlation_values)
+
 
     @helper.post_mpl_plot
     def plot_centers_3d(self, maximum_points_3d: int = 10_000) -> plt.Figure:
@@ -169,7 +199,7 @@ class Result(Result):
             a_label, b_label = "y", "z"
             a_max, b_max = self.domain.length_y, self.domain.length_z
 
-        random_generator = self._random_generator()
+        random_generator = np.random.default_rng()
         if slice_positions.shape[0] > maximum_circles_in_slice:
             chosen = random_generator.choice(slice_positions.shape[0], size=maximum_circles_in_slice, replace=False)
             slice_positions = slice_positions[chosen]
@@ -248,5 +278,97 @@ class Result(Result):
             "Pair correlation function"
             + (" (minimum image)" if self.domain.use_periodic_boundaries else "")
         )
+
+        return figure
+
+    @helper.post_mpl_plot
+    def plot_partial_pair_correlation(
+        self,
+        number_of_distance_bins: int = 80,
+        maximum_pairs: int = 300_000,
+        random_seed: int = 0,
+        colormap: str = "viridis",
+        figsize: tuple = (10, 8),
+    ) -> plt.Figure:
+        """
+        Plot the partial pair correlation functions g_ij(r) obtained from the RSA
+        configuration. Produces a K by K panel grid, where K is the number of size
+        classes defined by the radius sampler.
+
+        Parameters
+        ----------
+        number_of_distance_bins : int
+            Number of radial distance bins.
+        maximum_pairs : int
+            Number of Monte Carlo sampled pairs used for estimation.
+        random_seed : int
+            Seed for sampling.
+        colormap : str
+            Matplotlib colormap used for consistent line coloring.
+        figsize : tuple
+            Figure size.
+
+        Returns
+        -------
+        matplotlib.figure.Figure
+            Figure containing the grid plot of g_ij(r).
+        """
+
+        # Call C++ to compute (centers, g_ij)
+        centers, g_matrix = self.binding.compute_partial_pair_correlation_function(
+            number_of_distance_bins=number_of_distance_bins,
+            maximum_pairs=maximum_pairs,
+            random_seed=random_seed,
+        )
+
+        centers = np.asarray(centers)
+        g_matrix = np.asarray(g_matrix)  # shape (K, K, bins)
+        K = g_matrix.shape[0]
+
+        # Create the panel grid
+        figure, axes = plt.subplots(
+            nrows=K,
+            ncols=K,
+            figsize=figsize,
+            sharex=True,
+            sharey=True,
+        )
+
+        # If K == 1, axes is not a 2D array
+        if K == 1:
+            axes = np.array([[axes]])
+
+        # Prepare line colors for each j row
+        cmap = plt.get_cmap(colormap)
+        colors = [cmap(i / max(1, K - 1)) for i in range(K)]
+
+        for i in range(K):
+            for j in range(K):
+                ax = axes[i, j]
+                gij = g_matrix[i, j]
+
+                ax.plot(
+                    centers,
+                    gij,
+                    color=colors[j],
+                    linewidth=1.3,
+                )
+
+                # Axis labels on left column and bottom row
+                if j == 0:
+                    ax.set_ylabel(f"g[{i},{j}](r)")
+                if i == K - 1:
+                    ax.set_xlabel("r")
+
+                # Light grid
+                ax.grid(alpha=0.2)
+
+        figure.suptitle(
+            f"Partial pair correlation functions g_ij(r)\n"
+            f"K={K} size classes, periodic={self.domain.use_periodic_boundaries}",
+            fontsize=14,
+            weight="bold",
+        )
+        figure.tight_layout(rect=[0, 0, 1, 0.96])
 
         return figure

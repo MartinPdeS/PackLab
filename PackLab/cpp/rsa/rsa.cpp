@@ -153,6 +153,8 @@ bool Simulator::attempt_single_insertion() {
     const std::size_t new_index = sphere_configuration_value_.center_positions_values_.size();
     sphere_configuration_value_.center_positions_values_.push_back(proposed_center);
     sphere_configuration_value_.radii_values_.push_back(radius);
+    const int cls = radius_sampler_->bin_index(radius);
+    sphere_configuration_value_.class_index_values_.push_back(cls);
 
     spatial_grid_index_->insert_sphere(new_index, proposed_center);
 
@@ -238,9 +240,10 @@ Result Simulator::run() {
     this->statistics.end_benchmark();
 
     Result result{
-        sphere_configuration_value_.center_positions_values_,
-        sphere_configuration_value_.radii_values_,
-        domain
+        this->sphere_configuration_value_,
+        domain,
+        this->statistics,
+        static_cast<int>(radius_sampler_->number_of_bins())
     };
 
     return result;

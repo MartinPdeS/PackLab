@@ -31,16 +31,13 @@ class Simulator(Simulator):
         Result
             The result of the simulation, including sphere positions, radii, statistics, and plotting helpers
         """
-        self._cpp_run()
+        binding = self._cpp_run()
 
-        positions = self.sphere_configuration.positions_numpy()
-        radii = self.sphere_configuration.radii_numpy()
-
-        return Result(
-            positions=positions,
-            radii=radii,
-            domain=self.domain,
-            statistics=self._cpp_statistics
-
+        result = Result(
+            binding=binding,
         )
+
+        result.sphere_configuration = self.sphere_configuration
+
+        return result
 

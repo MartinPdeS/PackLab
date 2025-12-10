@@ -66,6 +66,28 @@ PYBIND11_MODULE(interface_rsa, module) {
         .def_readonly("_cpp_statistics", &Simulator::statistics, pybind11::return_value_policy::reference_internal)
         .def_readonly("domain", &Simulator::domain, pybind11::return_value_policy::reference_internal)
         .def("_cpp_attempted_positions_numpy", [](const Simulator& simulator) {return vector3d_list_to_numpy(simulator.attempted_positions());})
+        .def_property_readonly(
+            "particle_classes",
+            [](const Simulator& sim) {
+                const auto& cls = sim.sphere_configuration().class_index_values_;
+                return pybind11::array_t<int>(cls.size(), cls.data());
+            },
+            "Integer class index for each sphere"
+        )
+        .def_property_readonly(
+            "number_of_classes",
+            [](const Simulator& sim) {
+                const auto& cls = sim.sphere_configuration().class_index_values_;
+                if (cls.empty()) return 0;
+
+                int max_class = -1;
+                for (int c : cls) {
+                    if (c > max_class) max_class = c;
+                }
+                return max_class + 1;
+            },
+            "Number of distinct particle radius classes"
+        )
         ;
 
 
