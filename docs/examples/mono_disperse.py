@@ -41,10 +41,8 @@ domain = Domain(
 
 radius_sampler = UniformRadiusSampler(
     minimum_radius=0.1,
-    maximum_radius=0.4
+    maximum_radius=0.1,
 )
-
-radius_sampler.set_number_of_bins(20)
 
 # %%
 # Simulation options
@@ -56,7 +54,7 @@ options = Options()
 options.random_seed = 42
 options.maximum_attempts = 4_000_000
 options.maximum_consecutive_rejections = 80_000
-options.target_packing_fraction = 0.2
+options.target_packing_fraction = 0.3
 options.minimum_center_separation_addition = 0.0
 
 # %%
