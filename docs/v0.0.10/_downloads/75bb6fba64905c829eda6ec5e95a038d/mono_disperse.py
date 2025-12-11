@@ -41,7 +41,7 @@ domain = Domain(
 
 radius_sampler = UniformRadiusSampler(
     minimum_radius=0.1,
-    maximum_radius=0.4
+    maximum_radius=0.1,
 )
 
 # %%
@@ -54,7 +54,7 @@ options = Options()
 options.random_seed = 42
 options.maximum_attempts = 4_000_000
 options.maximum_consecutive_rejections = 80_000
-options.target_packing_fraction = 0.55
+options.target_packing_fraction = 0.3
 options.minimum_center_separation_addition = 0.0
 
 # %%
@@ -76,11 +76,15 @@ result = rsa_simulator.run()
 result.statistics.print()
 
 # %%
+# Plot radius distribution
+# ------------------------
+result.plot_radius_distribution()
+
+# %%
 # Plot a slice of the configuration
 # ---------------------------------
 # This gives a quick visual impression of the spatial structure,
 # which is more complex than in the monodisperse case.
-
 result.plot_slice_2d()
 
 # %%

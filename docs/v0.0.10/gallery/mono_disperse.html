@@ -508,7 +508,7 @@ microstructures, or biological particle systems with non uniform sizes.</p>
 This gives a wide range of sphere sizes.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">radius_sampler</span> <span class="o">=</span> <span class="n">UniformRadiusSampler</span><span class="p">(</span>
     <span class="n">minimum_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
-    <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.4</span>
+    <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -521,7 +521,7 @@ to find space even when the large ones are already rejected.</p>
 <span class="n">options</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">42</span>
 <span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span> <span class="o">=</span> <span class="mi">4_000_000</span>
 <span class="n">options</span><span class="o">.</span><span class="n">maximum_consecutive_rejections</span> <span class="o">=</span> <span class="mi">80_000</span>
-<span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span> <span class="o">=</span> <span class="mf">0.55</span>
+<span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span> <span class="o">=</span> <span class="mf">0.3</span>
 <span class="n">options</span><span class="o">.</span><span class="n">minimum_center_separation_addition</span> <span class="o">=</span> <span class="mf">0.0</span>
 </pre></div>
 </div>
@@ -544,6 +544,15 @@ to find space even when the large ones are already rejected.</p>
 </pre></div>
 </div>
 </section>
+<section id="plot-radius-distribution">
+<h2>Plot radius distribution<a class="headerlink" href="#plot-radius-distribution" title="Link to this heading">#</a></h2>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_radius_distribution</span><span class="p">()</span>
+</pre></div>
+</div>
+<img src="../_images/sphx_glr_mono_disperse_001.png" srcset="../_images/sphx_glr_mono_disperse_001.png" alt="Radius distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
+</pre></div>
+</div>
+</section>
 <section id="plot-a-slice-of-the-configuration">
 <h2>Plot a slice of the configuration<a class="headerlink" href="#plot-a-slice-of-the-configuration" title="Link to this heading">#</a></h2>
 <p>This gives a quick visual impression of the spatial structure,
@@ -551,7 +560,7 @@ which is more complex than in the monodisperse case.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_slice_2d</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_mono_disperse_001.png" srcset="../_images/sphx_glr_mono_disperse_001.png" alt="2D slice at z≈3.00, thickness 0.48 | showing 532 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/MPSPlots/helper.py:77: UserWarning: Glyph 8776 (\N{ALMOST EQUAL TO}) missing from font(s) cmr10.
+<img src="../_images/sphx_glr_mono_disperse_002.png" srcset="../_images/sphx_glr_mono_disperse_002.png" alt="2D slice at z≈3.00, thickness 0.48 | showing 1242 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/MPSPlots/helper.py:77: UserWarning: Glyph 8776 (\N{ALMOST EQUAL TO}) missing from font(s) cmr10.
   figure.tight_layout()
 
 &lt;Figure size 800x500 with 1 Axes&gt;
@@ -565,10 +574,10 @@ for the polydisperse configuration.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">plot_pair_correlation</span><span class="p">(</span><span class="n">maximum_number_of_pairs</span><span class="o">=</span><span class="mi">3_000_000</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_mono_disperse_002.png" srcset="../_images/sphx_glr_mono_disperse_002.png" alt="Pair correlation function (minimum image)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
+<img src="../_images/sphx_glr_mono_disperse_003.png" srcset="../_images/sphx_glr_mono_disperse_003.png" alt="Pair correlation function (minimum image)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 15.423 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 13.337 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-mono-disperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/83e3794a6f260ba12ccedcb17e8e912f/mono_disperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">mono_disperse.ipynb</span></code></a></p>
@@ -612,6 +621,7 @@ for the polydisperse configuration.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-options">Simulation options</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-the-polydisperse-rsa-simulation">Run the polydisperse RSA simulation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspect-simulation-statistics">Inspect simulation statistics</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-radius-distribution">Plot radius distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plot-a-slice-of-the-configuration">Plot a slice of the configuration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pair-correlation-function">Pair correlation function</a></li>
 </ul>

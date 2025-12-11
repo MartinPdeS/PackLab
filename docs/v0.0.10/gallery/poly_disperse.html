@@ -507,7 +507,8 @@ Here we use periodic boundary conditions on a cubic box.</p>
 <p>All spheres will have radius 0.2 in this example.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">radius_sampler</span> <span class="o">=</span> <span class="n">UniformRadiusSampler</span><span class="p">(</span>
     <span class="n">minimum_radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span>
-    <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.15</span>
+    <span class="n">maximum_radius</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">bins</span><span class="o">=</span><span class="mi">20</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -556,7 +557,7 @@ packing fraction and other useful diagnostic information.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_poly_disperse_001.png" srcset="../_images/sphx_glr_poly_disperse_001.png" alt="2D slice at z≈3.00, thickness 0.48 | showing 415 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/MPSPlots/helper.py:77: UserWarning: Glyph 8776 (\N{ALMOST EQUAL TO}) missing from font(s) cmr10.
+<img src="../_images/sphx_glr_poly_disperse_001.png" srcset="../_images/sphx_glr_poly_disperse_001.png" alt="2D slice at z≈3.00, thickness 0.48 | showing 202 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/MPSPlots/helper.py:77: UserWarning: Glyph 8776 (\N{ALMOST EQUAL TO}) missing from font(s) cmr10.
   figure.tight_layout()
 
 &lt;Figure size 800x500 with 1 Axes&gt;
@@ -576,7 +577,7 @@ using Monte Carlo sampling of particle pairs.</p>
 <img src="../_images/sphx_glr_poly_disperse_002.png" srcset="../_images/sphx_glr_poly_disperse_002.png" alt="Pair correlation function (minimum image)" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.106 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.223 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-poly-disperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/870c0727de1c89261de568444da8cfcb/poly_disperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">poly_disperse.ipynb</span></code></a></p>

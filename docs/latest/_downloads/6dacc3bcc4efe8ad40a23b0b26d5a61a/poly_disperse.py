@@ -39,7 +39,8 @@ domain = Domain(
 
 radius_sampler = UniformRadiusSampler(
     minimum_radius=0.15,
-    maximum_radius=0.15
+    maximum_radius=0.4,
+    bins=20
 )
 
 # %%
