@@ -24,7 +24,7 @@ microstructures, or biological particle systems with non uniform sizes.
 # -----------------
 # We create a cube with periodic boundaries.
 
-from PackLab import Domain, Options, Simulator, UniformRadiusSampler
+from PackLab.monte_carlo import Domain, Options, Simulator, UniformRadiusSampler
 
 domain = Domain(
     length_x=6.0,
@@ -33,23 +33,10 @@ domain = Domain(
     use_periodic_boundaries=True
 )
 
-# %%
-# Polydisperse radius sampler
-# ---------------------------
-# Radii are drawn from a uniform distribution between 0.1 and 0.4.
-# This gives a wide range of sphere sizes.
-
 radius_sampler = UniformRadiusSampler(
     minimum_radius=0.1,
     maximum_radius=0.1,
 )
-
-# %%
-# Simulation options
-# ------------------
-# We increase the number of attempts since small spheres will continue
-# to find space even when the large ones are already rejected.
-
 options = Options()
 options.random_seed = 42
 options.maximum_attempts = 4_000_000

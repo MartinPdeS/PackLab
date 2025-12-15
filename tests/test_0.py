@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 from unittest.mock import patch
 
-from PackLab import (
+from PackLab.monte_carlo import (
     Domain,
     Options,
     Simulator,

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from MPSPlots import helper
 
-from PackLab.utils import _minimum_image_displacement
+from PackLab.monte_carlo.utils import _minimum_image_displacement
 from PackLab.binary.interface_domain import Domain
 from PackLab.binary.interface_result import Result
 
@@ -235,60 +235,8 @@ class Result():
     @helper.post_mpl_plot
     def plot_pair_correlation(
         self,
-        bins: int = 90,
-        method='grid',
-        maximum_distance: float = 0.0,
-        maximum_number_of_pairs: int = 20_000_000,
-        grid_cell_size: float = 0.0
-    ) -> plt.Figure:
-        """
-        Plot the radial pair correlation function g(r) using particles in the
-        simulation domain.
-
-        Parameters
-        ----------
-        bins : int
-            Number of histogram bins for the radial distance.
-        distance_maximum : float
-            Maximum distance to consider for g(r). If zero or negative, it defaults to half the smallest box length.
-        grid_cell_size : float
-            Size of the grid cells used for spatial acceleration. If zero or negative, no grid is used.
-
-        Returns
-        -------
-        matplotlib.figure.Figure
-            The Matplotlib figure containing the plot.
-        """
-        self.compute_pair_correlation_function(
-            bins=bins,
-            maximum_number_of_pairs=maximum_number_of_pairs,
-            random_seed=0,
-            method=method,
-            maximum_distance=maximum_distance,
-            grid_cell_size=grid_cell_size
-        )
-
-        figure, axes = plt.subplots()
-
-        axes.plot(self.pair_correlation_centers, self.pair_correlation_values, linewidth=1.6)
-
-        axes.set_xlabel("radial distance r")
-        axes.set_ylabel("g(r)")
-        axes.set_title(
-            "Pair correlation function"
-            + (" (minimum image)" if self.domain.use_periodic_boundaries else "")
-        )
-
-        return figure
-
-    @helper.post_mpl_plot
-    def plot_partial_pair_correlation(
-        self,
-        number_of_distance_bins: int = 80,
+        bins: int = 80,
         maximum_pairs: int = 300_000,
-        random_seed: int = 0,
-        colormap: str = "viridis",
-        figsize: tuple = (10, 8),
     ) -> plt.Figure:
         """
         Plot the partial pair correlation functions g_ij(r) obtained from the RSA
@@ -301,12 +249,6 @@ class Result():
             Number of radial distance bins.
         maximum_pairs : int
             Number of Monte Carlo sampled pairs used for estimation.
-        random_seed : int
-            Seed for sampling.
-        colormap : str
-            Matplotlib colormap used for consistent line coloring.
-        figsize : tuple
-            Figure size.
 
         Returns
         -------
@@ -316,9 +258,8 @@ class Result():
 
         # Call C++ to compute (centers, g_ij)
         centers, g_matrix = self.binding.compute_partial_pair_correlation_function(
-            number_of_distance_bins=number_of_distance_bins,
+            number_of_distance_bins=bins,
             maximum_pairs=maximum_pairs,
-            random_seed=random_seed,
         )
 
         centers = np.asarray(centers)
@@ -329,7 +270,6 @@ class Result():
         figure, axes = plt.subplots(
             nrows=K,
             ncols=K,
-            figsize=figsize,
             sharex=True,
             sharey=True,
         )
@@ -338,21 +278,12 @@ class Result():
         if K == 1:
             axes = np.array([[axes]])
 
-        # Prepare line colors for each j row
-        cmap = plt.get_cmap(colormap)
-        colors = [cmap(i / max(1, K - 1)) for i in range(K)]
-
         for i in range(K):
             for j in range(K):
                 ax = axes[i, j]
                 gij = g_matrix[i, j]
 
-                ax.plot(
-                    centers,
-                    gij,
-                    color=colors[j],
-                    linewidth=1.3,
-                )
+                ax.plot(centers, gij, color='black', linewidth=1.3)
 
                 # Axis labels on left column and bottom row
                 if j == 0:

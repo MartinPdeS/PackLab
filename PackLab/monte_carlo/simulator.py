@@ -2,7 +2,7 @@ from PackLab.binary.interface_rsa import Options, Simulator
 from PackLab.binary.interface_domain import Domain
 from PackLab.binary.interface_radius_sampler import UniformRadiusSampler
 
-from PackLab.results import Result
+from PackLab.monte_carlo.results import Result
 
 class Simulator(Simulator):
     """

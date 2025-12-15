@@ -17,7 +17,7 @@ It demonstrates the following steps:
 This is the recommended starting point when learning how to use PackLab.
 """
 
-from PackLab import Domain, Options, Simulator, UniformRadiusSampler
+from PackLab.monte_carlo import Domain, Options, Simulator, UniformRadiusSampler
 
 # %%
 # Simulation domain
@@ -32,21 +32,11 @@ domain = Domain(
     use_periodic_boundaries=True
 )
 
-# %%
-# Radius sampler
-# --------------
-# All spheres will have radius 0.2 in this example.
-
 radius_sampler = UniformRadiusSampler(
     minimum_radius=0.15,
-    maximum_radius=0.4,
-    bins=20
+    maximum_radius=0.20,
+    bins=2
 )
-
-# %%
-# Simulation options
-# ------------------
-# These control the stochastic behaviour of the RSA algorithm.
 
 options = Options()
 options.random_seed = 123
@@ -54,11 +44,6 @@ options.maximum_attempts = 2_500_000
 options.maximum_consecutive_rejections = 50_000
 options.target_packing_fraction = 0.50
 options.minimum_center_separation_addition = 0.0
-
-# %%
-# Run the simulator
-# -----------------
-# Construct the simulator and run the RSA process.
 
 rsa_simulator = Simulator(
     domain=domain,
@@ -68,18 +53,7 @@ rsa_simulator = Simulator(
 
 result = rsa_simulator.run()
 
-# %%
-# Print statistics
-# ----------------
-# The statistics object reports attempts, accepted insertions,
-# packing fraction and other useful diagnostic information.
-
 result.statistics.print()
-
-# %%
-# Plot a 2D slice of the configuration
-# ------------------------------------
-# This provides a visual view of the spatial arrangement of spheres.
 
 result.plot_slice_2d(
     slice_axis="z",
@@ -88,13 +62,7 @@ result.plot_slice_2d(
     maximum_circles_in_slice=2500,
 )
 
-# %%
-# Pair correlation function
-# -------------------------
-# We finally compute and plot the pair correlation function g(r)
-# using Monte Carlo sampling of particle pairs.
-
 result.plot_pair_correlation(
-    bins=300,
-    maximum_number_of_pairs=20_000_000
+    bins=150,
+    maximum_pairs=20_000_000
 )
