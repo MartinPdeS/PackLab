@@ -31,6 +31,7 @@ requirements:
   run:
     - pandas ==2.3
     - martinpdes::mpsplots
+    - martinpdes::typedunit
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3
     - pydantic >=2.8,<3

@@ -49,6 +49,7 @@ dependencies = [
     "pydantic>=2.6.3",
     "MPSPlots",
     "numpy",
+    "TypedUnit"
 ]
 
 [project.urls]

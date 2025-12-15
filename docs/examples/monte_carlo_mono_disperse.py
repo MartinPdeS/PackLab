@@ -80,4 +80,4 @@ result.plot_slice_2d()
 # Compute and plot the pair correlation function g(r)
 # for the polydisperse configuration.
 
-result.plot_pair_correlation(maximum_number_of_pairs=3_000_000)
+result.plot_pair_correlation(maximum_pairs=3_000_000)
