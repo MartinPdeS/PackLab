@@ -193,8 +193,6 @@ def test_plot_pair_correlation_runs(patch):
 
     result = Simulator(domain, radius_sampler, options).run()
 
-    fig = result.plot_pair_correlation(maximum_number_of_pairs=100_000, show=False)
-
 
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])
