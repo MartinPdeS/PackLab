@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:07.237** total execution time for 2 files **from gallery**:
+**00:07.059** total execution time for 2 files **from gallery**:
 
 .. container::
 
@@ -33,8 +33,8 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_monte_carlo_poly_disperse.py` (``monte_carlo_poly_disperse.py``)
-     - 00:04.803
+     - 00:04.788
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_poly_disperse.py` (``analytical_poly_disperse.py``)
-     - 00:02.435
+     - 00:02.271
      - 0.0
