@@ -88,11 +88,8 @@ int ConstantRadiusSampler::bin_index(double) const
 // UniformRadiusSampler
 // ================================================================
 
-UniformRadiusSampler::UniformRadiusSampler(double minimum_radius,
-                                           double maximum_radius,
-                                           int bins)
-: minimum_radius_value_(minimum_radius),
-  maximum_radius_value_(maximum_radius)
+UniformRadiusSampler::UniformRadiusSampler(double _minimum_radius, double _maximum_radius, int bins)
+: minimum_radius(_minimum_radius), maximum_radius(_maximum_radius)
 {
     if (minimum_radius <= 0.0 || maximum_radius <= 0.0)
         throw std::invalid_argument("Radii must be positive.");
@@ -104,18 +101,17 @@ UniformRadiusSampler::UniformRadiusSampler(double minimum_radius,
 
     if (number_of_bins_ > 0) {
         bin_edges_.resize(number_of_bins_ + 1);
-        const double dr = (maximum_radius_value_ - minimum_radius_value_) /
+        const double dr = (maximum_radius - minimum_radius) /
                           static_cast<double>(number_of_bins_);
         for (std::size_t i = 0; i <= number_of_bins_; ++i)
-            bin_edges_[i] = minimum_radius_value_ + dr * static_cast<double>(i);
+            bin_edges_[i] = minimum_radius + dr * static_cast<double>(i);
     }
     this->validate_bin_edges();
 }
 
 double UniformRadiusSampler::sample_radius(std::mt19937_64& random_generator)
 {
-    std::uniform_real_distribution<double> dist(minimum_radius_value_,
-                                                maximum_radius_value_);
+    std::uniform_real_distribution<double> dist(minimum_radius, maximum_radius);
 
     const double r = dist(random_generator);
     return apply_binning(r);
@@ -127,15 +123,15 @@ int UniformRadiusSampler::bin_index(double r) const
     if (number_of_bins_ == 0)
         return -1;
 
-    if (r <= minimum_radius_value_)
+    if (r <= minimum_radius)
         return 0;
 
-    if (r >= maximum_radius_value_)
+    if (r >= maximum_radius)
         return static_cast<int>(number_of_bins_ - 1);
 
     const double normalized =
-        (r - minimum_radius_value_) /
-        (maximum_radius_value_ - minimum_radius_value_);
+        (r - minimum_radius) /
+        (maximum_radius - minimum_radius);
 
     int index = static_cast<int>(normalized * number_of_bins_);
     if (index >= static_cast<int>(number_of_bins_))
@@ -213,26 +209,23 @@ int LogNormalRadiusSampler::bin_index(double r) const
 // DiscreteRadiusSampler
 // ================================================================
 
-DiscreteRadiusSampler::DiscreteRadiusSampler(
-    std::vector<double> radii,
-    std::vector<double> weights,
-    int bins
-)
-: radii_values_(std::move(radii))
+DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::vector<double> weights)
+: radii(std::move(_radii))
 {
-    if (radii_values_.empty())
+    number_of_bins_ = radii.size();
+    if (radii.empty())
         throw std::invalid_argument("radii must not be empty.");
 
-    if (weights.size() != radii_values_.size())
+    if (weights.size() != radii.size())
         throw std::invalid_argument("weights must match radii size.");
 
     double weight_sum = 0.0;
 
-    for (double r : radii_values_) {
+    for (double r : radii) {
         if (r <= 0.0)
             throw std::invalid_argument("radii must be positive.");
 
-        maximum_radius_value_ = std::max(maximum_radius_value_, r);
+        maximum_radius = std::max(maximum_radius, r);
     }
 
     for (double w : weights) {
@@ -244,23 +237,23 @@ DiscreteRadiusSampler::DiscreteRadiusSampler(
     if (weight_sum <= 0.0)
         throw std::invalid_argument("weights must sum to a positive value.");
 
-    cumulative_probability_.resize(weights.size());
+    cumulative_probability.resize(weights.size());
     double cumulative = 0.0;
 
     for (std::size_t i = 0; i < weights.size(); ++i) {
         cumulative += weights[i] / weight_sum;
-        cumulative_probability_[i] = cumulative;
+        cumulative_probability[i] = cumulative;
     }
 
-    cumulative_probability_.back() = 1.0;
+    cumulative_probability.back() = 1.0;
 
-    set_number_of_bins(bins);
+    this->set_number_of_bins(this->number_of_bins_);
 
     if (number_of_bins_ > 0) {
         bin_edges_.resize(number_of_bins_ + 1);
 
-        const double min_r = *std::min_element(radii_values_.begin(), radii_values_.end());
-        const double max_r = maximum_radius_value_;
+        const double min_r = *std::min_element(radii.begin(), radii.end());
+        const double max_r = maximum_radius;
 
         const double dr = (max_r - min_r) / static_cast<double>(number_of_bins_);
 
@@ -275,15 +268,13 @@ double DiscreteRadiusSampler::sample_radius(std::mt19937_64& random_generator)
     std::uniform_real_distribution<double> uniform_01(0.0, 1.0);
     const double u = uniform_01(random_generator);
 
-    auto it = std::lower_bound(cumulative_probability_.begin(),
-                               cumulative_probability_.end(), u);
+    auto it = std::lower_bound(cumulative_probability.begin(), cumulative_probability.end(), u);
 
-    std::size_t index = std::distance(cumulative_probability_.begin(), it);
-    if (index >= radii_values_.size())
-        index = radii_values_.size() - 1;
+    std::size_t index = std::distance(cumulative_probability.begin(), it);
+    if (index >= radii.size())
+        index = radii.size() - 1;
 
-    double r = radii_values_[index];
-    return apply_binning(r);
+    return radii[index];
 }
 
 int DiscreteRadiusSampler::bin_index(double r) const
@@ -294,7 +285,8 @@ int DiscreteRadiusSampler::bin_index(double r) const
     auto it = std::upper_bound(bin_edges_.begin(), bin_edges_.end(), r);
     int idx = static_cast<int>(std::distance(bin_edges_.begin(), it)) - 1;
 
-    if (idx < 0) idx = 0;
+    if (idx < 0)
+        idx = 0;
     if (idx >= static_cast<int>(number_of_bins_))
         idx = static_cast<int>(number_of_bins_ - 1);
 

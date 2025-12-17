@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Optional, Sequence, Literal
 import numpy as np
 from numpy import pi
+from TypedUnit import ureg
 
 from MPSPlots import helper
 from tabulate import tabulate
@@ -44,14 +45,10 @@ class PolydisperseDomain:
         rounding_mode: Rounding strategy used when converting inferred particle counts to integers.
             Allowed values are "floor" and "round".
     """
-
     size: object
     particle_radii: object
     volume_fraction: Optional[object] = None
-
     number_fractions: Optional[Sequence[float]] = None
-    volume_fractions: Optional[object] = None
-    particle_densities: Optional[object] = None
 
     rounding_mode: Literal["floor", "round"] = "floor"
 
@@ -67,54 +64,30 @@ class PolydisperseDomain:
             ValueError: If particle_densities are invalid or do not match radii length.
             ValueError: If rounding_mode is not supported.
         """
+
+        # self.size = 1 * ureg.micrometer
         self.particle_radii = np.asarray(self.particle_radii.magnitude) * self.particle_radii.units
+
+
         if self.particle_radii.ndim != 1:
             raise ValueError("particle_radii must be a one dimensional array.")
 
-        specification_count = sum(
-            value is not None
-            for value in (self.number_fractions, self.volume_fractions, self.particle_densities)
-        )
-        if specification_count != 1:
-            raise ValueError(
-                "Specify exactly one of: number_fractions, volume_fractions, particle_densities."
-            )
+        self.particle_densities = None
+        self.volume_fractions = None
 
-        if self.volume_fraction is None and self.particle_densities is None:
-            raise ValueError("volume_fraction must be provided unless particle_densities is provided.")
+        self.number_fractions = np.asarray(self.number_fractions, dtype=float)
 
-        if self.number_fractions is not None:
-            self.number_fractions = np.asarray(self.number_fractions, dtype=float)
-            if self.number_fractions.shape != (self.particle_radii.size,):
-                raise ValueError("number_fractions must have the same length as particle_radii.")
-            if np.any(self.number_fractions < 0.0):
-                raise ValueError("number_fractions must be non negative.")
-            total = float(np.sum(self.number_fractions))
-            if total <= 0.0:
-                raise ValueError("number_fractions must sum to a positive value.")
-            self.number_fractions = self.number_fractions / total
+        if self.number_fractions.shape != (self.particle_radii.size,):
+            raise ValueError("number_fractions must have the same length as particle_radii.")
 
-        if self.volume_fractions is not None:
-            self.volume_fractions = np.asarray(self.volume_fractions)
-            if self.volume_fractions.shape != (self.particle_radii.size,):
-                raise ValueError("volume_fractions must have the same length as particle_radii.")
-            if np.any(self.volume_fractions < 0):
-                raise ValueError("volume_fractions must be non negative.")
-            if self.volume_fraction is not None:
-                expected_total = self.volume_fraction
-                actual_total = self.volume_fractions.sum()
-                if not np.isclose(
-                    actual_total.to_base_units().magnitude,
-                    expected_total.to_base_units().magnitude,
-                ):
-                    raise ValueError("volume_fractions must sum to volume_fraction.")
+        if np.any(self.number_fractions < 0.0):
+            raise ValueError("number_fractions must be non negative.")
 
-        if self.particle_densities is not None:
-            self.particle_densities = np.asarray(self.particle_densities)
-            if self.particle_densities.shape != (self.particle_radii.size,):
-                raise ValueError("particle_densities must have the same length as particle_radii.")
-            if np.any(self.particle_densities < 0):
-                raise ValueError("particle_densities must be non negative.")
+        total = float(np.sum(self.number_fractions))
+        if total <= 0.0:
+            raise ValueError("number_fractions must sum to a positive value.")
+
+        self.number_fractions = self.number_fractions / total
 
         if self.rounding_mode not in ("floor", "round"):
             raise ValueError("rounding_mode must be either 'floor' or 'round'.")
@@ -147,8 +120,6 @@ class PolydisperseDomain:
         Returns:
             Total volume occupied by all particles.
         """
-        if self.volume_fraction is None:
-            return self.number_of_particles_total * self.mean_particle_volume_number_weighted
         return self.volume_fraction * self.volume
 
     @property
@@ -182,9 +153,6 @@ class PolydisperseDomain:
             counts = self.particle_densities * self.volume
             return int(np.sum(self._apply_rounding(counts)))
 
-        if self.volume_fraction is None:
-            raise RuntimeError("volume_fraction is required to infer counts when particle_densities is not provided.")
-
         total_occupied_volume = self.volume_fraction * self.volume
 
         if self.volume_fractions is not None:
@@ -215,9 +183,6 @@ class PolydisperseDomain:
         if self.particle_densities is not None:
             counts = self.particle_densities * self.volume
             return self._apply_rounding(counts).astype(int)
-
-        if self.volume_fraction is None:
-            raise RuntimeError("volume_fraction is required to infer counts when particle_densities is not provided.")
 
         if self.volume_fractions is not None:
             counts = (self.volume_fractions * self.volume) / self.particle_volumes
@@ -273,15 +238,6 @@ class PolydisperseDomain:
         occupied_volume_per_radius = self.number_of_particles_per_radius * self.particle_volumes
         return occupied_volume_per_radius / self.volume
 
-    @property
-    def inferred_volume_fraction(self):
-        """Volume fraction inferred from the current per bin configuration.
-
-        Returns:
-            The sum of ``volume_fraction_per_radius``.
-        """
-        return np.sum(self.volume_fraction_per_radius)
-
     def _apply_rounding(self, values):
         """Apply configured rounding mode.
 
@@ -321,16 +277,6 @@ class PolydisperseDomain:
         )
         return self.particle_radii[indices]
 
-    def _get_specification_name(self) -> str:
-        """Return the name of the active population specification."""
-        if self.number_fractions is not None:
-            return "number_fractions"
-        if self.volume_fractions is not None:
-            return "volume_fractions"
-        if self.particle_densities is not None:
-            return "particle_densities"
-        return "unknown"
-
     @staticmethod
     def _format_value(value: object, precision: int = 6) -> str:
         """Format a value for human readable printing.
@@ -365,47 +311,7 @@ class PolydisperseDomain:
         except Exception:
             return str(value)
 
-    def print_summary(
-        self,
-        precision: int = 6,
-        table_format: str = "github",
-    ) -> None:
-        """Print a compact overview of the domain.
-
-        The output is intended for interactive use and debugging. This method prints a
-        small table containing the high level domain configuration and inferred totals.
-
-        Args:
-            precision: Significant digits used when rendering numeric values.
-            table_format: Tabulate format string, for example "github", "simple", "rst".
-
-        Returns:
-            None. Prints directly to stdout.
-        """
-        n_bins = int(self.particle_radii.size)
-        specification = self._get_specification_name()
-
-        overview_rows = [
-            ["size", self._format_value(self.size, precision=precision)],
-            ["volume", self._format_value(self.volume, precision=precision)],
-            ["number_of_bins", f"{n_bins:d}"],
-            ["rounding_mode", str(self.rounding_mode)],
-            ["specification", specification],
-            ["volume_fraction_input", self._format_value(self.volume_fraction, precision=precision)],
-            ["volume_fraction_inferred", self._format_value(self.inferred_volume_fraction, precision=precision)],
-            ["number_of_particles_total", f"{int(self.number_of_particles_total):d}"],
-            ["particle_density_total", self._format_value(self.particle_density_total, precision=precision)],
-            ["total_particle_volume", self._format_value(self.total_particle_volume, precision=precision)],
-        ]
-
-        print(tabulate(overview_rows, headers=["Field", "Value"], tablefmt=table_format))
-
-    def print_bins(
-        self,
-        precision: int = 6,
-        table_format: str = "github",
-        max_bins: Optional[int] = None,
-    ) -> None:
+    def print_bins(self, precision: int = 6) -> None:
         """Print a per bin table describing the polydisperse population.
 
         The table includes radii, per particle volumes, per bin number fractions
@@ -414,8 +320,6 @@ class PolydisperseDomain:
 
         Args:
             precision: Significant digits used when rendering numeric values.
-            table_format: Tabulate format string, for example "github", "simple", "rst".
-            max_bins: Optional cap on the number of bins printed. The first ``max_bins`` bins are shown.
 
         Returns:
             None. Prints directly to stdout.
@@ -423,8 +327,6 @@ class PolydisperseDomain:
         n_bins = int(self.particle_radii.size)
 
         indices = np.arange(n_bins, dtype=int)
-        if max_bins is not None:
-            indices = indices[: int(max_bins)]
 
         radii = self.particle_radii[indices]
         particle_volumes = self.particle_volumes[indices]
@@ -463,17 +365,11 @@ class PolydisperseDomain:
                     "particle_count",
                     "number_density",
                 ],
-                tablefmt=table_format,
             )
         )
 
     @helper.post_mpl_plot
-    def plot_radius_distribution(
-        self,
-        normalize: bool = True,
-        show_volume_weighted: bool = False,
-        use_bar: bool = True,
-    ) -> None:
+    def plot_radius_distribution(self,normalize: bool = True, show_volume_weighted: bool = False) -> None:
         """
         Plot the discretized radius distribution used by this domain.
 
@@ -518,10 +414,8 @@ class PolydisperseDomain:
 
         figure, ax = plt.subplots(1, 1)
 
-        if use_bar:
-            ax.bar(x, y, width=np.diff(x).min() if x.size > 1 else 1.0, align="center", alpha=0.6, label=label)
-        else:
-            ax.plot(x, y, marker="o", label=label)
+        ax.bar(x, y, width=np.diff(x).min() if x.size > 1 else 1.0, align="center", alpha=0.6, label=label, edgecolor='black')
+
 
         if show_volume_weighted:
             weights = np.asarray((self.particle_volumes / self.particle_volumes.max()).to("").magnitude, dtype=float)

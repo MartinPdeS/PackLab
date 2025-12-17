@@ -13,10 +13,10 @@ class SpatialGridIndex {
 public:
     SpatialGridIndex(double cell_size, Domain domain_box)
         : cell_size_value_(cell_size),
-          length_x_value_(domain_box.length_x()),
-          length_y_value_(domain_box.length_y()),
-          length_z_value_(domain_box.length_z()),
-          use_periodic_boundaries_value_(domain_box.use_periodic_boundaries())
+          length_x_value_(domain_box.length_x),
+          length_y_value_(domain_box.length_y),
+          length_z_value_(domain_box.length_z),
+          use_periodic_boundaries(domain_box.use_periodic_boundaries)
     {
         if (cell_size_value_ <= 0.0) {
             throw std::invalid_argument("cell_size must be positive.");
@@ -78,7 +78,7 @@ public:
                     std::int64_t neighbor_j = base_cell.j + dj;
                     std::int64_t neighbor_k = base_cell.k + dk;
 
-                    if (use_periodic_boundaries_value_) {
+                    if (use_periodic_boundaries) {
                         neighbor_i = wrap_cell_index_periodic(neighbor_i, number_of_cells_x_value_);
                         neighbor_j = wrap_cell_index_periodic(neighbor_j, number_of_cells_y_value_);
                         neighbor_k = wrap_cell_index_periodic(neighbor_k, number_of_cells_z_value_);
@@ -107,7 +107,7 @@ public:
         std::int64_t cell_j = static_cast<std::int64_t>(std::floor(center_position.y / cell_size_value_));
         std::int64_t cell_k = static_cast<std::int64_t>(std::floor(center_position.z / cell_size_value_));
 
-        if (use_periodic_boundaries_value_) {
+        if (use_periodic_boundaries) {
             cell_i = wrap_cell_index_periodic(cell_i, number_of_cells_x_value_);
             cell_j = wrap_cell_index_periodic(cell_j, number_of_cells_y_value_);
             cell_k = wrap_cell_index_periodic(cell_k, number_of_cells_z_value_);
@@ -133,7 +133,7 @@ private:
     double length_y_value_ = 1.0;
     double length_z_value_ = 1.0;
 
-    bool use_periodic_boundaries_value_ = true;
+    bool use_periodic_boundaries = true;
 
     std::int64_t number_of_cells_x_value_ = 1;
     std::int64_t number_of_cells_y_value_ = 1;

@@ -17,7 +17,7 @@ It demonstrates the following steps:
 This is the recommended starting point when learning how to use PackLab.
 """
 
-from PackLab.monte_carlo import Domain, Options, Simulator, UniformRadiusSampler
+from PackLab.monte_carlo import Domain, Options, Simulator, DiscreteRadiusSampler
 
 # %%
 # Simulation domain
@@ -32,10 +32,9 @@ domain = Domain(
     use_periodic_boundaries=True
 )
 
-radius_sampler = UniformRadiusSampler(
-    minimum_radius=0.15,
-    maximum_radius=0.20,
-    bins=2
+radius_sampler = DiscreteRadiusSampler(
+    radii=[0.1, 0.2],
+    weights=[0.5, 0.5],
 )
 
 options = Options()

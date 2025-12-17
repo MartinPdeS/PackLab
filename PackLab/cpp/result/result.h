@@ -13,6 +13,14 @@
 #include "../rsa/spatial_grid_index.h"
 #include "../rsa/sphere_configuration.h"
 
+
+struct RadialGrid {
+    double r_max = 0.0;
+    double dr = 0.0;
+    std::vector<double> centers;
+    std::vector<double> shell_volumes;
+};
+
 /*
 Result stores a completed RSA configuration along with utilities for
 computing total and partial pair correlation functions g(r) and g_ij(r).
@@ -20,21 +28,18 @@ computing total and partial pair correlation functions g(r) and g_ij(r).
 class Result {
 public:
     Domain domain;
-    int number_of_classes_ = 0;
+    std::size_t number_of_classes = 0;
+    std::vector<double> partial_volume_fractions;
+    std::vector<double> partial_volumes;
 
     /*
-    Each particle is assigned a discrete class index in [0, number_of_classes_-1].
+    Each particle is assigned a discrete class index in [0, number_of_classes-1].
     This enables partial pair-correlation functions g_ij(r).
     */
     SphereConfiguration sphere_configuration;
 
-    // Total g(r)
-    std::vector<double> pair_correlation_centers_;
-    std::vector<double> pair_correlation_values_;
+    void compute_partial_sphere_volumes();
 
-    // Optional: mean and std if user samples repeatedly
-    std::vector<double> pair_correlation_mean_values_;
-    std::vector<double> pair_correlation_std_values_;
 
     Statistics statistics;
 
@@ -48,53 +53,30 @@ public:
     @param domain Simulation domain.
     @param number_of_classes Total number of distinct classes.
     */
-    Result(
-        SphereConfiguration sphere_configuration,
-        Domain domain,
-        Statistics statistics,
-        int number_of_classes
-    )
+    Result(SphereConfiguration sphere_configuration, Domain domain, Statistics statistics, std::size_t _number_of_classes)
         : domain(std::move(domain)),
-          number_of_classes_(number_of_classes),
+          number_of_classes(_number_of_classes),
           sphere_configuration(std::move(sphere_configuration)),
           statistics(std::move(statistics))
     {
-        if (this->sphere_configuration.center_positions_values_.size() != this->sphere_configuration.radii_values_.size())
+        if (this->sphere_configuration.center_positions.size() != this->sphere_configuration.radii_values.size())
             throw std::invalid_argument("positions and radii must have same length.");
 
-        if (!this->sphere_configuration.class_index_values_.empty() &&
-            this->sphere_configuration.class_index_values_.size() != this->sphere_configuration.center_positions_values_.size())
-        {
-            throw std::invalid_argument(
-                "classes must have same length as positions."
-            );
-        }
+        if (!this->sphere_configuration.class_index_values.empty() && this->sphere_configuration.class_index_values.size() != this->sphere_configuration.center_positions.size())
+            throw std::invalid_argument("classes must have same length as positions.");
+
+        this->compute_partial_sphere_volumes();
+
     }
 
     // --------------------- Accessors -------------------------
 
     const std::vector<Vector3d>& particle_positions() const {
-        return this->sphere_configuration.center_positions_values_;
+        return this->sphere_configuration.center_positions;
     }
 
     const std::vector<double>& particle_radii() const {
-        return this->sphere_configuration.radii_values_;
-    }
-
-    const std::vector<double>& pair_correlation_centers() const {
-        return pair_correlation_centers_;
-    }
-
-    const std::vector<double>& pair_correlation_values() const {
-        return pair_correlation_values_;
-    }
-
-    const std::vector<double>& pair_correlation_mean_values() const {
-        return pair_correlation_mean_values_;
-    }
-
-    const std::vector<double>& pair_correlation_std_values() const {
-        return pair_correlation_std_values_;
+        return this->sphere_configuration.radii_values;
     }
 
     // --------------------- Total g(r) -------------------------
@@ -123,7 +105,7 @@ public:
     /*
     Compute partial pair correlation g_ij(r) for class-labeled particles.
 
-    @param number_of_distance_bins Number of r-bins.
+    @param n_bins Number of r-bins.
     @param maximum_pairs Maximum number of random pairs to sample.
     @param random_seed RNG seed.
 
@@ -131,54 +113,58 @@ public:
             - bin_centers[k] is center of bin k,
             - g_ij[k][i][j] is the partial pair-correlation between class i and j at bin k.
     */
-    std::tuple<
-        std::vector<double>,
-        std::vector<std::vector<std::vector<double>>>
-    >
+    std::tuple<std::vector<double>, std::vector<std::vector<std::vector<double>>>>
     compute_partial_pair_correlation_function(
-        std::size_t number_of_distance_bins,
-        std::size_t maximum_pairs,
-        std::uint64_t random_seed
+        std::size_t n_bins,
+        std::size_t maximum_pairs
+    ) const;
+
+    /*
+        Compute all pair distances along with their class indices.
+        @param maximum_pairs Maximum number of random pairs to sample.
+        @return (distances, class_i_indices, class_j_indices)
+    */
+    std::tuple<std::vector<double>, std::vector<int>, std::vector<int>>
+    compute_partial_pair_distances(
+        std::size_t maximum_pairs
     ) const;
 
 private:
-    // ---------------- Monte Carlo histogram fill ----------------
 
-    void fill_pair_correlation_histogram_monte_carlo(
-        std::vector<std::size_t>& histogram,
-        std::size_t bins,
-        std::size_t maximum_number_of_pairs,
-        std::uint64_t random_seed,
-        double maximum_distance,
-        double radial_bin_width
+    RadialGrid get_radial_grid(std::size_t number_of_distance_bins) const;
+
+    void validate_partial_pair_inputs(std::size_t number_of_distance_bins) const;
+
+    std::vector<std::size_t> count_particles_per_class() const;
+
+    std::vector<std::vector<std::vector<double>>> make_zero_matrix_double(std::size_t K, std::size_t B) const;
+
+    std::vector<std::vector<std::vector<double>>> make_zero_matrix_expected(std::size_t K, std::size_t B) const;
+
+    double compute_pair_sampling_scale(
+        std::size_t N,
+        std::size_t examined_unordered_pairs
     ) const;
 
-    // ---------------- MC g(r) computation --------------------
-
-    std::vector<double> compute_pair_correlation_values_once(
-        std::size_t bins,
-        std::size_t maximum_number_of_pairs,
-        std::uint64_t random_seed,
-        double maximum_distance
+    std::vector<std::vector<std::vector<std::size_t>>> build_partial_histogram_ordered(
+        std::size_t number_of_distance_bins,
+        double r_max,
+        double dr,
+        std::size_t maximum_pairs,
+        std::size_t& examined_unordered_pairs
     ) const;
 
-    // ---------------- Grid histogram fill --------------------
-
-    void fill_pair_correlation_histogram_grid(
-        std::vector<std::size_t>& histogram,
-        std::size_t bins,
-        double maximum_distance,
-        double radial_bin_width,
-        double grid_cell_size
+    std::vector<std::vector<std::vector<double>>> compute_g_from_histogram_and_expected(
+        const std::vector<std::vector<std::vector<std::size_t>>>& histogram_ordered,
+        const std::vector<std::vector<std::vector<double>>>& expected_ordered_counts,
+        double sampling_scale
     ) const;
 
-    // ---------------- Grid g(r) computation ------------------
-
-    std::vector<double> compute_pair_correlation_values_once_grid(
-        std::size_t bins,
-        double maximum_distance,
-        double grid_cell_size
+    std::tuple<std::vector<double>, std::vector<std::vector<std::vector<double>>>>
+    get_uncorrelated_Cij(
+        std::size_t n_bins
     ) const;
+
 
     // ---------------- Utility methods ------------------------
 
@@ -190,5 +176,6 @@ private:
         std::mt19937_64& rng,
         const Domain& domain
     ) const;
+
 
 };

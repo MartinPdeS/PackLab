@@ -6,7 +6,6 @@ from MPSPlots import helper
 
 from PackLab.monte_carlo.utils import _minimum_image_displacement
 from PackLab.binary.interface_domain import Domain
-from PackLab.binary.interface_result import Result
 
 
 
@@ -29,7 +28,7 @@ class Result():
         np.ndarray
             Array of sphere center positions.
         """
-        return self.sphere_configuration.positions_numpy()
+        return self.sphere_configuration.positions
 
     @property
     def radii(self) -> np.ndarray:
@@ -41,7 +40,7 @@ class Result():
         np.ndarray
             Array of sphere radii.
         """
-        return self.sphere_configuration.radii_numpy()
+        return self.sphere_configuration.radii
 
     @property
     def domain(self) -> Domain:
@@ -66,6 +65,17 @@ class Result():
             The simulation statistics.
         """
         return self.binding.statistics
+
+    def compute_partial_pair_correlation_function(self, **kwargs) -> None:
+        return self.binding.compute_partial_pair_correlation_function(**kwargs)
+
+    @property
+    def partial_volume_fractions(self) -> np.ndarray:
+        return np.asarray(self.binding.partial_volume_fractions)
+
+    @property
+    def partial_volumes(self) -> np.ndarray:
+        return np.asarray(self.binding.partial_volumes)
 
     def compute_pair_correlation_function(self, **kwargs) -> None:
         return self.binding.compute_pair_correlation_function(**kwargs)
@@ -235,17 +245,16 @@ class Result():
     @helper.post_mpl_plot
     def plot_pair_correlation(
         self,
-        bins: int = 80,
+        n_bins: int = 80,
         maximum_pairs: int = 300_000,
     ) -> plt.Figure:
         """
         Plot the partial pair correlation functions g_ij(r) obtained from the RSA
-        configuration. Produces a K by K panel grid, where K is the number of size
-        classes defined by the radius sampler.
+        configuration, overlaying all (i, j) curves on a single axis.
 
         Parameters
         ----------
-        number_of_distance_bins : int
+        n_bins : int
             Number of radial distance bins.
         maximum_pairs : int
             Number of Monte Carlo sampled pairs used for estimation.
@@ -253,12 +262,12 @@ class Result():
         Returns
         -------
         matplotlib.figure.Figure
-            Figure containing the grid plot of g_ij(r).
+            Figure containing the overlaid plot of all g_ij(r) curves.
         """
 
         # Call C++ to compute (centers, g_ij)
         centers, g_matrix = self.binding.compute_partial_pair_correlation_function(
-            number_of_distance_bins=bins,
+            n_bins=n_bins,
             maximum_pairs=maximum_pairs,
         )
 
@@ -266,40 +275,35 @@ class Result():
         g_matrix = np.asarray(g_matrix)  # shape (K, K, bins)
         K = g_matrix.shape[0]
 
-        # Create the panel grid
-        figure, axes = plt.subplots(
-            nrows=K,
-            ncols=K,
-            sharex=True,
-            sharey=True,
-        )
-
-        # If K == 1, axes is not a 2D array
-        if K == 1:
-            axes = np.array([[axes]])
+        figure, ax = plt.subplots(1, 1)
 
         for i in range(K):
             for j in range(K):
-                ax = axes[i, j]
                 gij = g_matrix[i, j]
+                ax.plot(
+                    centers,
+                    gij,
+                    linewidth=1.3,
+                    alpha=0.9,
+                    label=f"g[{i},{j}](r)",
+                )
 
-                ax.plot(centers, gij, color='black', linewidth=1.3)
+        ax.set_xlabel("r")
+        ax.set_ylabel("g_ij(r)")
+        ax.grid(alpha=0.2)
 
-                # Axis labels on left column and bottom row
-                if j == 0:
-                    ax.set_ylabel(f"g[{i},{j}](r)")
-                if i == K - 1:
-                    ax.set_xlabel("r")
-
-                # Light grid
-                ax.grid(alpha=0.2)
-
-        figure.suptitle(
-            f"Partial pair correlation functions g_ij(r)\n"
-            f"K={K} size classes, periodic={self.domain.use_periodic_boundaries}",
-            fontsize=14,
+        ax.set_title(
+            f"Partial pair correlation functions g_ij(r), "
+            f"K={K}, periodic={self.domain.use_periodic_boundaries}",
+            fontsize=12,
             weight="bold",
         )
-        figure.tight_layout(rect=[0, 0, 1, 0.96])
+
+        # Legend can get large when K grows, so keep it compact
+        ax.legend(
+            fontsize=8,
+            ncol=min(K * K, 4),
+            frameon=False,
+        )
 
         return figure

@@ -1,7 +1,7 @@
 #include "domain.h"
 
 Vector3d Domain::wrap_position_if_periodic(const Vector3d& position) const {
-    if (!use_periodic_boundaries_value_)
+    if (!use_periodic_boundaries)
         return position;
 
 
@@ -12,24 +12,24 @@ Vector3d Domain::wrap_position_if_periodic(const Vector3d& position) const {
     };
 
     return Vector3d{
-        wrap_01(position.x, length_x_value_),
-        wrap_01(position.y, length_y_value_),
-        wrap_01(position.z, length_z_value_)
+        wrap_01(position.x, length_x),
+        wrap_01(position.y, length_y),
+        wrap_01(position.z, length_z)
     };
 }
 
 Vector3d Domain::sample_uniform_position(std::mt19937_64& random_generator, double margin) const {
     const double effective_margin = std::max(0.0, margin);
 
-    const double minimum_x = use_periodic_boundaries_value_ ? 0.0 : effective_margin;
-    const double minimum_y = use_periodic_boundaries_value_ ? 0.0 : effective_margin;
-    const double minimum_z = use_periodic_boundaries_value_ ? 0.0 : effective_margin;
+    const double minimum_x = use_periodic_boundaries ? 0.0 : effective_margin;
+    const double minimum_y = use_periodic_boundaries ? 0.0 : effective_margin;
+    const double minimum_z = use_periodic_boundaries ? 0.0 : effective_margin;
 
-    const double maximum_x = use_periodic_boundaries_value_ ? length_x_value_ : (length_x_value_ - effective_margin);
-    const double maximum_y = use_periodic_boundaries_value_ ? length_y_value_ : (length_y_value_ - effective_margin);
-    const double maximum_z = use_periodic_boundaries_value_ ? length_z_value_ : (length_z_value_ - effective_margin);
+    const double maximum_x = use_periodic_boundaries ? length_x : (length_x - effective_margin);
+    const double maximum_y = use_periodic_boundaries ? length_y : (length_y - effective_margin);
+    const double maximum_z = use_periodic_boundaries ? length_z : (length_z - effective_margin);
 
-    if (!use_periodic_boundaries_value_) {
+    if (!use_periodic_boundaries) {
         if (maximum_x <= minimum_x || maximum_y <= minimum_y || maximum_z <= minimum_z) {
             throw std::invalid_argument("Margin is too large for the domain size.");
         }
@@ -43,7 +43,7 @@ Vector3d Domain::sample_uniform_position(std::mt19937_64& random_generator, doub
 }
 
 double Domain::minimum_image_displacement(double delta, double box_length) const {
-    if (!use_periodic_boundaries_value_)
+    if (!use_periodic_boundaries)
         return delta;
 
     const double half_length = 0.5 * box_length;
