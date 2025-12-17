@@ -5,12 +5,13 @@
 | Name                                |    Stmts |     Miss |   Branch |   BrPart |     Cover |   Missing |
 |------------------------------------ | -------: | -------: | -------: | -------: | --------: | --------: |
 | PackLab/analytical.py               |      212 |      212 |       18 |        0 |     0.00% |     1-443 |
-| PackLab/analytical/distributions.py |      130 |      130 |       32 |        0 |     0.00% |     1-319 |
-| PackLab/analytical/domain.py        |      218 |      218 |       92 |        0 |     0.00% |     1-549 |
-| PackLab/analytical/solver.py        |      168 |      168 |       18 |        0 |     0.00% |     1-342 |
-| PackLab/monte\_carlo/results.py     |      124 |       58 |       26 |        5 |    48.67% |71, 75, 79, 97-123, 139-148, 172, 174, 184, 193-200, 204-206, 260-305 |
+| PackLab/analytical/distributions.py |      144 |      144 |       38 |        0 |     0.00% |     1-369 |
+| PackLab/analytical/domain.py        |      170 |      170 |       54 |        0 |     0.00% |     1-443 |
+| PackLab/analytical/solver.py        |      139 |      139 |       14 |        0 |     0.00% |     1-309 |
+| PackLab/monte\_carlo/estimator.py   |       36 |       36 |        8 |        0 |     0.00% |      1-70 |
+| PackLab/monte\_carlo/results.py     |      126 |       56 |       20 |        5 |    52.74% |70, 74, 78, 81, 85, 89, 107-133, 149-158, 182, 184, 194, 203-210, 214-216, 269-309 |
 | PackLab/monte\_carlo/utils.py       |       30 |       23 |        6 |        0 |    19.44% |     26-55 |
-| **TOTAL**                           |  **896** |  **809** |  **192** |    **5** | **8.64%** |           |
+| **TOTAL**                           |  **871** |  **780** |  **158** |    **5** | **9.52%** |           |
 
 1 file skipped due to complete coverage.
 
