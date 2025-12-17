@@ -64,18 +64,16 @@ private:
 // -----------------------------------------------------------
 class UniformRadiusSampler final : public RadiusSampler {
 public:
-    UniformRadiusSampler(double minimum_radius,
-                         double maximum_radius,
-                         int bins = 0);
+    UniformRadiusSampler(double minimum_radius, double maximum_radius, int bins = 0);
 
     double sample_radius(std::mt19937_64& random_generator) override;
-    double maximum_possible_radius() const override { return maximum_radius_value_; }
+    double maximum_possible_radius() const override { return maximum_radius; }
 
     int bin_index(double r) const override;
 
 private:
-    double minimum_radius_value_ = 1.0;
-    double maximum_radius_value_ = 1.0;
+    double minimum_radius;
+    double maximum_radius;
 };
 
 
@@ -84,10 +82,7 @@ private:
 // -----------------------------------------------------------
 class LogNormalRadiusSampler final : public RadiusSampler {
 public:
-    LogNormalRadiusSampler(double mu,
-                           double sigma,
-                           double maximum_radius_clip,
-                           int bins = 0);
+    LogNormalRadiusSampler(double mu, double sigma, double maximum_radius_clip, int bins = 0);
 
     double sample_radius(std::mt19937_64& random_generator) override;
     double maximum_possible_radius() const override { return maximum_radius_clip_value_; }
@@ -106,17 +101,15 @@ private:
 // -----------------------------------------------------------
 class DiscreteRadiusSampler final : public RadiusSampler {
 public:
-    DiscreteRadiusSampler(std::vector<double> radii,
-                          std::vector<double> weights,
-                          int bins = 0);
+    DiscreteRadiusSampler(std::vector<double> radii, std::vector<double> weights);
 
     double sample_radius(std::mt19937_64& random_generator) override;
-    double maximum_possible_radius() const override { return maximum_radius_value_; }
+    double maximum_possible_radius() const override { return maximum_radius; }
 
     int bin_index(double r) const override;
 
 private:
-    std::vector<double> radii_values_;
-    std::vector<double> cumulative_probability_;
-    double maximum_radius_value_ = 0.0;
+    std::vector<double> radii;
+    std::vector<double> cumulative_probability;
+    double maximum_radius = 0.0;
 };

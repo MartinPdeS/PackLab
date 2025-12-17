@@ -43,26 +43,12 @@ public:
     bool attempt_single_insertion();
 
     /*
-    Get the current sphere configuration.
-    @return A reference to the sphere configuration.
+    Attempt to insert a single sphere with a specified radius into the simulation.
+    @param radius The radius of the sphere to insert.
+    @return True if the insertion was successful, false otherwise.
     */
-    const SphereConfiguration& sphere_configuration() const { return sphere_configuration_value_; }
+    bool attempt_single_insertion_with_radius(double radius);
 
-    /*
-    Collect the attempted insertion positions.
-    @return A reference to the vector of attempted positions.
-    */
-    const std::vector<Vector3d>& attempted_positions() const { return attempted_positions_values_; }
-
-    /*
-    Compute the pair correlation function (g(r)) of the current sphere configuration.
-    @param bins Number of bins to use for the histogram.
-    @param maximum_pairs Maximum number of random pairs to sample for the calculation.
-    @param random_seed Seed for the random number generator used to sample pairs.
-    @return A pair of vectors: the first contains the bin centers (r values), and
-            the second contains the corresponding g(r) values.
-    */
-    std::pair<std::vector<double>, std::vector<double>> compute_pair_correlation_function(std::size_t bins, std::size_t maximum_pairs, std::uint64_t random_seed) const;
 
 private:
     /*
@@ -105,17 +91,16 @@ private:
 
 private:
 
-    std::shared_ptr<RadiusSampler> radius_sampler_;
-    Options options_;
+    std::shared_ptr<RadiusSampler> radius_sampler;
+    Options options;
 
-    std::mt19937_64 random_generator_;
+    std::mt19937_64 random_generator;
 
-    SphereConfiguration sphere_configuration_value_;
+    double maximum_radius_observed = 0.0;
+    bool spatial_grid_initialized = false;
 
-    double maximum_radius_observed_ = 0.0;
-    bool spatial_grid_initialized_ = false;
+    std::unique_ptr<SpatialGridIndex> spatial_grid_index;
 
-    std::unique_ptr<SpatialGridIndex> spatial_grid_index_;
-
-    std::vector<Vector3d> attempted_positions_values_;
+public:
+    SphereConfiguration sphere_configuration;
 };

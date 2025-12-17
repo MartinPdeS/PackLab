@@ -67,5 +67,5 @@ struct Options {
 
     double spatial_grid_cell_size = 0.0; // 0 means auto based on radii seen so far
 
-    bool store_attempt_positions = false;
+    bool enforce_radii_distribution = true;
 };

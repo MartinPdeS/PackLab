@@ -2,6 +2,7 @@
 
 #include <pybind11/functional.h>
 #include <pybind11/numpy.h>
+#include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
 
 PYBIND11_MODULE(interface_radius_sampler, module) {
@@ -66,10 +67,9 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
         "DiscreteRadiusSampler"
     )
         .def(
-            pybind11::init<std::vector<double>, std::vector<double>, int>(),
+            pybind11::init<std::vector<double>, std::vector<double>>(),
             pybind11::arg("radii"),
             pybind11::arg("weights"),
-            pybind11::arg("bins") = 0,
             "Discrete radius sampler with user-provided radii and weights plus optional binning."
         );
 }

@@ -1,67 +1,30 @@
-"""
-Polydisperse RSA simulation
-===========================
+import numpy
+import numpy as np
 
-This example demonstrates a Random Sequential Addition (RSA) simulation
-with polydisperse spheres. In a polydisperse system, each sphere radius
-is sampled from a continuous distribution rather than using a fixed value.
+from PackLab.monte_carlo import Domain, Options, Simulator, UniformRadiusSampler, DiscreteRadiusSampler
 
-The workflow illustrates:
-
-1. Creating a simulation domain
-2. Sampling radii from a uniform distribution
-3. Running the simulator with polydispersity
-4. Inspecting statistics
-5. Plotting a slice of the configuration
-6. Computing and displaying the pair correlation function
-
-Polydisperse systems are useful when modelling realistic physical packings,
-microstructures, or biological particle systems with non uniform sizes.
-"""
-
-# %%
-# Simulation domain
-# -----------------
-# We create a cube with periodic boundaries.
-
-from PackLab import Domain, Options, Simulator, UniformRadiusSampler
 
 domain = Domain(
-    length_x=72.0 * 1,
-    length_y=72.0 * 1,
-    length_z=72.0 * 1,
+    length_x=6.0,
+    length_y=6.0,
+    length_z=6.0,
     use_periodic_boundaries=True
 )
 
-# %%
-# Polydisperse radius sampler
-# ---------------------------
-# Radii are drawn from a uniform distribution between 0.1 and 0.4.
-# This gives a wide range of sphere sizes.
+domain.scale(10)
 
-radius_sampler = UniformRadiusSampler(
-    minimum_radius=1,
-    maximum_radius=3
+radius_sampler = DiscreteRadiusSampler(
+    radii=[1, 2],
+    weights=[0.5, 0.5],
 )
 
-radius_sampler.set_number_of_bins(0)
-
-# %%
-# Simulation options
-# ------------------
-# We increase the number of attempts since small spheres will continue
-# to find space even when the large ones are already rejected.
-
 options = Options()
-options.random_seed = 42
-options.maximum_attempts = 4_000_000
-options.maximum_consecutive_rejections = 80_000
-options.target_packing_fraction = 0.227
+options.random_seed = 123
+options.maximum_attempts = 2_500_000
+options.maximum_consecutive_rejections = 500_000
+options.target_packing_fraction = 0.2
 options.minimum_center_separation_addition = 0.0
-
-# %%
-# Run the polydisperse RSA simulation
-# -----------------------------------
+options.enforce_radii_distribution = True
 
 rsa_simulator = Simulator(
     domain=domain,
@@ -71,30 +34,12 @@ rsa_simulator = Simulator(
 
 result = rsa_simulator.run()
 
-
-# %%
-# Inspect simulation statistics
-# -----------------------------
-
 result.statistics.print()
 
-# %%
-# Plot a slice of the configuration
-# ---------------------------------
-# This gives a quick visual impression of the spatial structure,
-# which is more complex than in the monodisperse case.
-result.plot_radius_distribution()
 
-# %%
-# Pair correlation function
-# -------------------------
-# Compute and plot the pair correlation function g(r)
-# for the polydisperse configuration.
-
-result.plot_pair_correlation(
-    bins=100,
-    maximum_distance=15,
-    method='grid',
-    maximum_number_of_pairs=10_000_000,
-    grid_cell_size=15.0
+centers, g_matrix = result.binding.compute_partial_pair_correlation_function(
+    number_of_distance_bins=300,
+    maximum_pairs=200_000,
 )
+
+print("Centers shape:", centers.shape)

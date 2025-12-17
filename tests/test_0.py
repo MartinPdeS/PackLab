@@ -55,6 +55,7 @@ def test_basic_rsa_run():
     radius_sampler = UniformRadiusSampler(
         minimum_radius=0.2,
         maximum_radius=0.2,
+        bins=10
     )
 
     options = Options()
@@ -63,7 +64,11 @@ def test_basic_rsa_run():
     options.maximum_consecutive_rejections = 50_000
     options.target_packing_fraction = 0.10
 
-    simulator = Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = Simulator(
+        domain=domain,
+        radius_sampler=radius_sampler,
+        options=options
+    )
     result = simulator.run()
 
     positions = result.positions
@@ -87,7 +92,7 @@ def test_basic_rsa_run():
 def test_no_overlap_periodic():
     domain = Domain(6.0, 6.0, 6.0, use_periodic_boundaries=True)
 
-    radius_sampler = UniformRadiusSampler(0.15, 0.15)
+    radius_sampler = UniformRadiusSampler(0.15, 0.15, bins=10)
 
     options = Options()
     options.random_seed = 99
@@ -118,7 +123,7 @@ def test_no_overlap_periodic():
 def test_packing_fraction_consistency():
     domain = Domain(6.0, 6.0, 6.0, use_periodic_boundaries=False)
 
-    radius_sampler = UniformRadiusSampler(0.2, 0.2)
+    radius_sampler = UniformRadiusSampler(0.2, 0.2, bins=10)
 
     options = Options()
     options.random_seed = 42
@@ -151,7 +156,7 @@ def test_packing_fraction_consistency():
 def test_stop_by_maximum_spheres():
     domain = Domain(10.0, 10.0, 10.0, use_periodic_boundaries=True)
 
-    radius_sampler = UniformRadiusSampler(0.1, 0.1)
+    radius_sampler = UniformRadiusSampler(0.1, 0.1, bins=10)
 
     options = Options()
     options.random_seed = 11
@@ -171,7 +176,7 @@ def test_stop_by_maximum_spheres():
 @patch('matplotlib.pyplot.show')
 def test_plot_slice_runs(patch):
     domain = Domain(4.0, 4.0, 4.0, use_periodic_boundaries=True)
-    radius_sampler = UniformRadiusSampler(0.15, 0.15)
+    radius_sampler = UniformRadiusSampler(0.15, 0.15, bins=10)
 
     options = Options()
     options.random_seed = 2
@@ -185,7 +190,7 @@ def test_plot_slice_runs(patch):
 @patch('matplotlib.pyplot.show')
 def test_plot_pair_correlation_runs(patch):
     domain = Domain(4.0, 4.0, 4.0, use_periodic_boundaries=True)
-    radius_sampler = UniformRadiusSampler(0.15, 0.15)
+    radius_sampler = UniformRadiusSampler(0.15, 0.15, bins=10)
 
     options = Options()
     options.random_seed = 3

@@ -7,6 +7,15 @@ import numpy as np
 
 BinSpacing = Literal["linear", "log"]
 
+__all__ = [
+    "DeltaRadiusDistribution",
+    "UniformRadiusDistribution",
+    "GaussianRadiusDistribution",
+    "LogNormalRadiusDistribution",
+    "CustomRadiusDistribution",
+    "DiscreteRadiusDistribution"
+]
+
 
 def _as_quantity_1d(value):
     """Best effort conversion to a 1D Pint quantity array (no unit changes)."""
@@ -323,3 +332,38 @@ def make_polydisperse_domain_from_distribution(
         number_fractions=number_fractions,
         rounding_mode=rounding_mode,
     )
+
+
+@dataclass(slots=True)
+class DiscreteRadiusDistribution(RadiusDistribution):
+    """Explicit discrete radius distribution.
+
+    This distribution is already discretized: the user provides bin centers and
+    associated probability masses. The class validates and normalizes the masses.
+
+    Attributes:
+        particle_radii: Pint quantity array of radii, shape (number_of_bins,).
+        number_fractions: Array of non negative weights, shape (number_of_bins,).
+            Will be normalized to sum to 1.
+    """
+
+    particle_radii: object
+    number_fractions: np.ndarray
+
+    def to_bins(self) -> Tuple[object, np.ndarray]:
+        particle_radii = _as_quantity_1d(self.particle_radii)
+
+        number_fractions = np.asarray(self.number_fractions, dtype=float)
+        if number_fractions.ndim != 1:
+            raise ValueError("number_fractions must be a one dimensional array.")
+
+        if particle_radii.magnitude.shape[0] != number_fractions.shape[0]:
+            raise ValueError(
+                "particle_radii and number_fractions must have the same length."
+            )
+
+        if number_fractions.size < 1:
+            raise ValueError("Discrete distribution must contain at least one radius value.")
+
+        number_fractions = _normalize_weights(number_fractions)
+        return particle_radii, number_fractions

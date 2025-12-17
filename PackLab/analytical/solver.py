@@ -143,8 +143,7 @@ class PercusYevickSolver:
         self,
         index_i: int,
         index_j: int,
-        epsilons: List[Any],
-        debug_units: bool = False,
+        epsilons: List[Any]
     ) -> Any:
         """Compute one curve Cpy[i, j, :] using your implementation."""
         densities = self.densities
@@ -182,37 +181,6 @@ class PercusYevickSolver:
 
         M_i = M[index_i]
         M_j = M[index_j]
-
-        if debug_units:
-            def _u(name, value):
-                units = getattr(value, "units", "no units")
-                print(f"{name}: {units}")
-
-            print("---- get_Cpy_ units ----")
-            _u("radii", radii)
-            _u("p", p)
-            _u("densities", densities)
-            _u("R", R)
-            _u("p_grid", p_grid)
-            _u("X", X)
-            print("safe kernels: sin_over_X, sin_over_X3_minus_cos_over_X2 are dimensionless float arrays")
-            _u("N", N)
-            _u("M", M)
-            _u("X_i", X_i)
-            _u("X_j", X_j)
-            _u("n_i", n_i)
-            _u("n_j", n_j)
-            _u("R_i", R_i)
-            _u("R_j", R_j)
-            print("epsilons:")
-            for k, e in enumerate(epsilons):
-                _u(f"e_{k}", e)
-            print(f"denominator: {getattr(denominator, 'units', 'no units')}")
-            _u("N_i", N_i)
-            _u("N_j", N_j)
-            _u("M_i", M_i)
-            _u("M_j", M_j)
-            print("------------------------")
 
         term0 = -(pi / 6) * np.sqrt(n_i * n_j) / denominator
 
@@ -261,7 +229,6 @@ class PercusYevickSolver:
                     index_i=index_i,
                     index_j=index_j,
                     epsilons=epsilons,
-                    debug_units=False,
                 ).magnitude
 
         return Cpy * ureg.dimensionless
@@ -306,7 +273,7 @@ class PercusYevickSolver:
         densities_factor = np.sqrt(np.outer(densities.magnitude, densities.magnitude)) * densities.units
         densities_factor = np.broadcast_to(densities_factor[:, :, np.newaxis], output.shape)
 
-        return (output / densities_factor).to("dimensionless")
+        return (output / densities_factor).to("dimensionless") / (np.pi / 2)
 
     def compute(self, distances: Any) -> PercusYevickResult:
         """Compute epsilons, parameters, Cpy, H, h, g and return a result object."""

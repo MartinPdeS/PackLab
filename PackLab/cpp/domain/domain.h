@@ -12,21 +12,19 @@ class Domain {
 public:
     Domain() = default;
 
-    Domain(double length_x, double length_y, double length_z, bool use_periodic_boundaries)
-    :   length_x_value_(length_x),
-        length_y_value_(length_y),
-        length_z_value_(length_z),
-        use_periodic_boundaries_value_(use_periodic_boundaries)
+    Domain(double _length_x, double _length_y, double _length_z, bool _use_periodic_boundaries)
+    :   length_x(_length_x),
+        length_y(_length_y),
+        length_z(_length_z),
+        use_periodic_boundaries(_use_periodic_boundaries)
     {
-        if (length_x_value_ <= 0.0 || length_y_value_ <= 0.0 || length_z_value_ <= 0.0)
+        if (length_x <= 0.0 || length_y <= 0.0 || length_z <= 0.0)
             throw std::invalid_argument("Box lengths must be positive.");
+
+        this->volume = this->get_volume();
     }
 
-    double length_x() const { return length_x_value_; }
-    double length_y() const { return length_y_value_; }
-    double length_z() const { return length_z_value_; }
-    bool use_periodic_boundaries() const { return use_periodic_boundaries_value_; }
-    double volume() const {return length_x_value_ * length_y_value_ * length_z_value_;}
+    double get_volume() const {return length_x * length_y * length_z;}
 
     Vector3d wrap_position_if_periodic(const Vector3d& position) const;
 
@@ -34,9 +32,19 @@ public:
 
     double minimum_image_displacement(double delta, double box_length) const;
 
-private:
-    double length_x_value_ = 1.0;
-    double length_y_value_ = 1.0;
-    double length_z_value_ = 1.0;
-    bool use_periodic_boundaries_value_ = true;
+    void scale( double scale_factor ) {
+        if (scale_factor <= 0.0)
+            throw std::invalid_argument("scale_factor must be positive.");
+
+        length_x *= scale_factor;
+        length_y *= scale_factor;
+        length_z *= scale_factor;
+        volume = this->get_volume();
+    }
+
+    double length_x = 1.0;
+    double length_y = 1.0;
+    double length_z = 1.0;
+    double volume = 1.0;
+    bool use_periodic_boundaries = true;
 };

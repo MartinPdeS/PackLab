@@ -28,6 +28,50 @@ static pybind11::array_t<double> double_list_to_numpy(const std::vector<double>&
 PYBIND11_MODULE(interface_rsa, module) {
     module.doc() = "Random sequential addition of non overlapping spheres in a 3D box";
 
+    pybind11::class_<SphereConfiguration>(module, "SphereConfiguration")
+        .def_property_readonly(
+            "count",
+            [](const SphereConfiguration& configuration) { return configuration.radii().size(); },
+            "Number of spheres in the configuration."
+        )
+        .def(
+            "total_sphere_volume",
+            &SphereConfiguration::total_sphere_volume,
+            "Compute the total volume occupied by the spheres."
+        )
+        .def_readonly(
+            "classes_index",
+            &SphereConfiguration::class_index_values,
+            "Integer class index for each sphere"
+        )
+        .def_property_readonly(
+            "positions",
+            [](const SphereConfiguration& sphere_configuration) {
+                return vector3d_list_to_numpy(sphere_configuration.center_positions);
+            },
+            "List of sphere center positions"
+        )
+        .def_property_readonly(
+            "radii",
+            [](const SphereConfiguration& sphere_configuration) {
+                return double_list_to_numpy(sphere_configuration.radii_values);
+            },
+            "List of sphere radii"
+        )
+        .def_property_readonly(
+            "number_of_classes",
+            [](const SphereConfiguration& config) {
+                if (config.class_index_values.empty()) return 0;
+
+                int max_class = -1;
+                for (int c : config.class_index_values)
+                    if (c > max_class) max_class = c;
+                return max_class + 1;
+            },
+            "Number of distinct particle radius classes"
+        )
+    ;
+
     pybind11::class_<Options>(module, "Options")
         .def(pybind11::init<>())
         .def_readwrite("random_seed", &Options::random_seed)
@@ -38,18 +82,7 @@ PYBIND11_MODULE(interface_rsa, module) {
         .def_readwrite("minimum_center_separation_addition", &Options::minimum_center_separation_addition)
         .def_readwrite("containment_padding", &Options::containment_padding)
         .def_readwrite("spatial_grid_cell_size", &Options::spatial_grid_cell_size)
-        .def_readwrite("store_attempt_positions", &Options::store_attempt_positions)
-    ;
-
-    pybind11::class_<SphereConfiguration>(module, "SphereConfiguration")
-        .def_property_readonly("count", [](const SphereConfiguration& configuration) { return configuration.radii().size(); })
-        .def("total_sphere_volume", &SphereConfiguration::total_sphere_volume)
-        .def("positions_numpy", [](const SphereConfiguration& configuration) {
-            return vector3d_list_to_numpy(configuration.center_positions());
-        })
-        .def("radii_numpy", [](const SphereConfiguration& configuration) {
-            return double_list_to_numpy(configuration.radii());
-        })
+        .def_readwrite("enforce_radii_distribution", &Options::enforce_radii_distribution)
     ;
 
     pybind11::class_<Simulator>(module, "Simulator")
@@ -59,34 +92,37 @@ PYBIND11_MODULE(interface_rsa, module) {
             pybind11::arg("radius_sampler"),
             pybind11::arg("options")
         )
-        .def("_cpp_reset", &Simulator::reset)
-        .def("_cpp_run", &Simulator::run)
-        .def("_cpp_attempt_single_insertion", &Simulator::attempt_single_insertion)
-        .def_property_readonly("sphere_configuration", &Simulator::sphere_configuration, pybind11::return_value_policy::reference_internal)
-        .def_readonly("_cpp_statistics", &Simulator::statistics, pybind11::return_value_policy::reference_internal)
-        .def_readonly("domain", &Simulator::domain, pybind11::return_value_policy::reference_internal)
-        .def("_cpp_attempted_positions_numpy", [](const Simulator& simulator) {return vector3d_list_to_numpy(simulator.attempted_positions());})
-        .def_property_readonly(
-            "particle_classes",
-            [](const Simulator& sim) {
-                const auto& cls = sim.sphere_configuration().class_index_values_;
-                return pybind11::array_t<int>(cls.size(), cls.data());
-            },
-            "Integer class index for each sphere"
+        .def(
+            "_cpp_reset",
+            &Simulator::reset,
+            "Reset the simulation to its initial state."
         )
-        .def_property_readonly(
-            "number_of_classes",
-            [](const Simulator& sim) {
-                const auto& cls = sim.sphere_configuration().class_index_values_;
-                if (cls.empty()) return 0;
-
-                int max_class = -1;
-                for (int c : cls) {
-                    if (c > max_class) max_class = c;
-                }
-                return max_class + 1;
-            },
-            "Number of distinct particle radius classes"
+        .def(
+            "_cpp_run",
+            &Simulator::run
+        )
+        .def(
+            "_cpp_attempt_single_insertion",
+            &Simulator::attempt_single_insertion,
+            "Attempt to insert a single sphere into the simulation."
+        )
+        .def_readonly(
+            "_cpp_statistics",
+            &Simulator::statistics,
+            pybind11::return_value_policy::reference_internal,
+            "Simulation statistics"
+        )
+        .def_readonly(
+            "domain",
+            &Simulator::domain,
+            pybind11::return_value_policy::reference_internal,
+            "Simulation domain"
+        )
+        .def_readonly(
+            "sphere_configuration",
+            &Simulator::sphere_configuration,
+            pybind11::return_value_policy::reference_internal,
+            "Current sphere configuration"
         )
         ;
 
