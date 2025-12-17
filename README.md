@@ -2,16 +2,16 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                |    Stmts |     Miss |   Branch |   BrPart |     Cover |   Missing |
-|------------------------------------ | -------: | -------: | -------: | -------: | --------: | --------: |
-| PackLab/analytical.py               |      212 |      212 |       18 |        0 |     0.00% |     1-443 |
-| PackLab/analytical/distributions.py |      144 |      144 |       38 |        0 |     0.00% |     1-369 |
-| PackLab/analytical/domain.py        |      170 |      170 |       54 |        0 |     0.00% |     1-443 |
-| PackLab/analytical/solver.py        |      139 |      139 |       14 |        0 |     0.00% |     1-309 |
-| PackLab/monte\_carlo/estimator.py   |       36 |       36 |        8 |        0 |     0.00% |      1-70 |
-| PackLab/monte\_carlo/results.py     |      126 |       56 |       20 |        5 |    52.74% |70, 74, 78, 81, 85, 89, 107-133, 149-158, 182, 184, 194, 203-210, 214-216, 269-309 |
-| PackLab/monte\_carlo/utils.py       |       30 |       23 |        6 |        0 |    19.44% |     26-55 |
-| **TOTAL**                           |  **871** |  **780** |  **158** |    **5** | **9.52%** |           |
+| Name                                |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
+|------------------------------------ | -------: | -------: | -------: | -------: | ---------: | --------: |
+| PackLab/analytical.py               |      212 |      212 |       18 |        0 |      0.00% |     1-443 |
+| PackLab/analytical/distributions.py |      144 |      144 |       38 |        0 |      0.00% |     1-402 |
+| PackLab/analytical/domain.py        |      170 |      170 |       54 |        0 |      0.00% |     1-483 |
+| PackLab/analytical/solver.py        |      140 |      140 |       14 |        0 |      0.00% |     1-335 |
+| PackLab/monte\_carlo/estimator.py   |       36 |       30 |        8 |        0 |     13.64% |14-17, 28-70 |
+| PackLab/monte\_carlo/results.py     |      126 |       56 |       20 |        5 |     52.74% |70, 74, 78, 81, 85, 89, 107-133, 149-158, 182, 184, 194, 203-210, 214-216, 264-304 |
+| PackLab/monte\_carlo/utils.py       |       30 |       23 |        6 |        0 |     19.44% |     26-55 |
+| **TOTAL**                           |  **872** |  **775** |  **158** |    **5** | **10.10%** |           |
 
 1 file skipped due to complete coverage.
 
