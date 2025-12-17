@@ -9,7 +9,7 @@ from tabulate import tabulate
 
 
 @dataclass
-class PolydisperseDomain:
+class Domain:
     """
     Cubic simulation domain containing a polydisperse population of spherical particles.
 
@@ -33,17 +33,19 @@ class PolydisperseDomain:
         2. Integer particle counts are inherently a discretization. This class provides deterministic
            rounding and a small correction to preserve the total count when ``number_fractions`` is used.
 
-    Attributes:
-        size: Edge length of the cubic domain (Pint quantity expected).
-        particle_radii: One dimensional array of particle radii (Pint quantity expected).
-        volume_fraction: Total occupied volume fraction (dimensionless Pint quantity expected).
-
-        number_fractions: Optional per bin number fractions (dimensionless floats), normalized to sum to 1.
-        volume_fractions: Optional per bin volume fractions (dimensionless Pint quantity expected).
-        particle_densities: Optional per bin number densities (for example 1 / liter).
-
-        rounding_mode: Rounding strategy used when converting inferred particle counts to integers.
-            Allowed values are "floor" and "round".
+    Parameters
+    ----------
+    size : object
+        Domain size (length of one cubic side).
+    particle_radii : object
+        Array of particle radii defining the polydisperse bins.
+    volume_fraction : Optional[object]
+        Total occupied volume fraction (between 0 and 1). Required if ``number_fractions`` or ``volume_fractions`` are used.
+    number_fractions : Optional[Sequence[float]]
+        Number fractions per radius bin that sum to 1 (dimensionless). Mutually exclusive with ``volume_fractions`` and ``particle_densities``.
+    rounding_mode : Literal["floor", "round"]
+        Rounding mode used when converting non integer particle counts to integers.
+        "floor" always rounds down, "round" uses standard rounding rules.
     """
     size: object
     particle_radii: object
@@ -55,14 +57,10 @@ class PolydisperseDomain:
     def __post_init__(self) -> None:
         """Validate inputs and normalize or reshape fields.
 
-        Raises:
-            ValueError: If radii are not one dimensional.
-            ValueError: If not exactly one of number_fractions, volume_fractions, particle_densities is specified.
-            ValueError: If volume_fraction is missing while required for inference.
-            ValueError: If number_fractions are invalid or do not match radii length.
-            ValueError: If volume_fractions are invalid or inconsistent with volume_fraction.
-            ValueError: If particle_densities are invalid or do not match radii length.
-            ValueError: If rounding_mode is not supported.
+        Raises
+        ------
+        ValueError
+            If input validation fails.
         """
 
         # self.size = 1 * ureg.micrometer
@@ -96,8 +94,10 @@ class PolydisperseDomain:
     def volume(self):
         """Total domain volume.
 
-        Returns:
-            Cubic volume of the domain, computed as ``size**3``.
+        Returns
+        -------
+        float
+            Domain volume.
         """
         return self.size ** 3
 
@@ -105,8 +105,10 @@ class PolydisperseDomain:
     def particle_volumes(self):
         """Per bin particle volumes.
 
-        Returns:
-            Array of volumes for each radius bin, computed as ``4/3*pi*r^3``.
+        Returns
+        -------
+        np.ndarray
+            Array of per bin particle volumes.
         """
         return (4.0 / 3.0) * pi * (self.particle_radii ** 3)
 
@@ -117,8 +119,10 @@ class PolydisperseDomain:
         If ``volume_fraction`` is provided, the total occupied volume is ``volume_fraction * volume``.
         If ``particle_densities`` are used, the occupied volume is inferred from the particle counts.
 
-        Returns:
-            Total volume occupied by all particles.
+        Returns
+        -------
+        float
+            Total occupied particle volume.
         """
         return self.volume_fraction * self.volume
 
@@ -126,11 +130,15 @@ class PolydisperseDomain:
     def mean_particle_volume_number_weighted(self):
         """Number weighted mean particle volume.
 
-        Returns:
-            Mean particle volume weighted by ``number_fractions``.
+        Returns
+        -------
+        float
+            Mean particle volume weighted by number fractions.
 
-        Raises:
-            AttributeError: If called when ``number_fractions`` is not used.
+        Raises
+        ------
+        AttributeError
+            If number_fractions is not defined.
         """
         if self.number_fractions is None:
             raise AttributeError(
@@ -142,12 +150,15 @@ class PolydisperseDomain:
     def number_of_particles_total(self) -> int:
         """Total number of particles in the domain, inferred from the chosen specification.
 
-        Returns:
-            Total number of particles (integer).
+        Returns
+        -------
+        int
+            Total integer particle count.
 
-        Raises:
-            RuntimeError: If volume_fraction is required but missing.
-            RuntimeError: If the internal specification state is invalid.
+        Raises
+        ------
+        RuntimeError
+            If the internal specification state is invalid.
         """
         if self.particle_densities is not None:
             counts = self.particle_densities * self.volume
@@ -173,12 +184,15 @@ class PolydisperseDomain:
         For ``number_fractions``, a deterministic correction is applied so the per bin counts
         sum exactly to ``number_of_particles_total``.
 
-        Returns:
-            Integer array of particle counts per bin.
+        Returns
+        -------
+        np.ndarray
+            Array of integer particle counts per radius bin.
 
-        Raises:
-            RuntimeError: If volume_fraction is required but missing.
-            RuntimeError: If the internal specification state is invalid.
+        Raises
+        ------
+        RuntimeError
+            If the internal specification state is invalid.
         """
         if self.particle_densities is not None:
             counts = self.particle_densities * self.volume
@@ -214,8 +228,11 @@ class PolydisperseDomain:
     def particle_densities_per_radius(self):
         """Number density per radius bin.
 
-        Returns:
-            Per bin number densities computed as ``number_of_particles_per_radius / volume``.
+
+        Returns
+        -------
+        np.ndarray
+            Array of per bin number densities.
         """
         return self.number_of_particles_per_radius / self.volume
 
@@ -223,8 +240,10 @@ class PolydisperseDomain:
     def particle_density_total(self):
         """Total number density over all bins.
 
-        Returns:
-            Total number density computed as ``number_of_particles_total / volume``.
+        Returns
+        -------
+        float
+            Total number density.
         """
         return self.number_of_particles_total / self.volume
 
@@ -232,20 +251,27 @@ class PolydisperseDomain:
     def volume_fraction_per_radius(self):
         """Per bin occupied volume fraction.
 
-        Returns:
-            Per bin volume fractions computed from per bin counts and particle volumes.
+        Returns
+        -------
+        np.ndarray
+            Array of per bin volume fractions.
         """
         occupied_volume_per_radius = self.number_of_particles_per_radius * self.particle_volumes
         return occupied_volume_per_radius / self.volume
 
     def _apply_rounding(self, values):
-        """Apply configured rounding mode.
+        """
+        Apply configured rounding mode.
 
-        Args:
-            values: Numeric values or Pint quantities representing expected counts.
+        Parameters
+        ----------
+        values : np.ndarray
+            Array of values to round.
 
-        Returns:
-            Rounded array.
+        Returns
+        -------
+        np.ndarray
+            Rounded values.
         """
         if self.rounding_mode == "floor":
             return np.floor(values)
@@ -254,15 +280,17 @@ class PolydisperseDomain:
     def sample_particle_radii(self, number_of_samples: int, random_generator: Optional[np.random.Generator] = None):
         """Draw radii samples according to number fractions.
 
-        Args:
-            number_of_samples: Number of samples to draw.
-            random_generator: Optional NumPy random Generator to use.
+        Parameters
+        ----------
+        number_of_samples : int
+            Number of radii samples to draw.
+        random_generator : Optional[np.random.Generator]
+            Optional random generator to use for sampling. If None, a new default generator is created.
 
-        Returns:
-            Array of sampled radii with length ``number_of_samples``.
-
-        Raises:
-            ValueError: If number_fractions are not defined.
+        Returns
+        -------
+        np.ndarray
+            Array of sampled particle radii.
         """
         if self.number_fractions is None:
             raise ValueError("Sampling radii requires number_fractions.")
@@ -284,12 +312,17 @@ class PolydisperseDomain:
         This is a best effort formatter that works for Pint quantities, numpy scalars,
         and plain python scalars.
 
-        Args:
-            value: Value to format.
-            precision: Significant digits.
+        Parameters
+        ----------
+        value : object
+            The value to format.
+        precision : int
+            Number of significant digits to use.
 
-        Returns:
-            A string representation suitable for console tables.
+        Returns
+        -------
+        str
+            The formatted string.
         """
         if value is None:
             return "None"
@@ -318,11 +351,15 @@ class PolydisperseDomain:
         (if defined), per bin volume fractions, inferred integer particle counts,
         and inferred number densities.
 
-        Args:
-            precision: Significant digits used when rendering numeric values.
+        Parameters
+        ----------
+        precision : int
+            Number of significant digits to use when printing values.
 
-        Returns:
-            None. Prints directly to stdout.
+        Returns
+        -------
+        None
+            Prints the bin table to standard output.
         """
         n_bins = int(self.particle_radii.size)
 
@@ -369,30 +406,33 @@ class PolydisperseDomain:
         )
 
     @helper.post_mpl_plot
-    def plot_radius_distribution(self,normalize: bool = True, show_volume_weighted: bool = False) -> None:
+    def plot_radius_distribution(self, normalize: bool = True, show_volume_weighted: bool = False) -> None:
         """
-        Plot the discretized radius distribution used by this domain.
-
         This is a diagnostic plot intended to quickly verify that the binning and
         mixture specification match your expectations.
 
         The plot uses the current domain specification:
+
         - If ``number_fractions`` is defined, it is plotted directly.
-        - Otherwise the plotted distribution is inferred from the current per bin
-          particle counts (``number_of_particles_per_radius``) and normalized.
+        - Otherwise the plotted distribution is inferred from the current per bin particle counts (``number_of_particles_per_radius``) and normalized.
+
 
         Optionally, you can overlay a volume weighted view (each bin weighted by
         particle volume), which is often useful when comparing number weighted and
         volume weighted interpretations of the same mixture.
 
-        Args:
-            normalize: If True, normalize the y values to sum to 1.
-            show_volume_weighted: If True, overlay a volume weighted curve.
-            use_bar: If True, plot bars. If False, plot a line with markers.
-            show: If True, calls ``plt.show()``.
+        Parameters
+        ----------
+        normalize : bool
+            Whether to normalize the plotted distribution to sum to 1.
+        show_volume_weighted : bool
+            Whether to overlay a volume weighted version of the distribution.
 
-        Returns:
-            None. Displays a matplotlib figure.
+        Returns
+        -------
+        plt.Figure
+            Displays a matplotlib figure.
+
         """
         import matplotlib.pyplot as plt
 

@@ -16,8 +16,7 @@ It demonstrates the following steps:
 
 This is the recommended starting point when learning how to use PackLab.
 """
-
-from PackLab.monte_carlo import Domain, Options, Simulator, DiscreteRadiusSampler
+from PackLab import monte_carlo
 
 # %%
 # Simulation domain
@@ -25,26 +24,26 @@ from PackLab.monte_carlo import Domain, Options, Simulator, DiscreteRadiusSample
 # The domain defines the physical volume of the simulation.
 # Here we use periodic boundary conditions on a cubic box.
 
-domain = Domain(
+domain = monte_carlo.Domain(
     length_x=6.0,
     length_y=6.0,
     length_z=6.0,
     use_periodic_boundaries=True
 )
 
-radius_sampler = DiscreteRadiusSampler(
+radius_sampler = monte_carlo.DiscreteRadiusSampler(
     radii=[0.1, 0.2],
     weights=[0.5, 0.5],
 )
 
-options = Options()
+options = monte_carlo.Options()
 options.random_seed = 123
 options.maximum_attempts = 2_500_000
 options.maximum_consecutive_rejections = 50_000
 options.target_packing_fraction = 0.50
 options.minimum_center_separation_addition = 0.0
 
-rsa_simulator = Simulator(
+rsa_simulator = monte_carlo.Simulator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options

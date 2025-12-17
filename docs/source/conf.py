@@ -160,7 +160,7 @@ latex_documents = [
     ),
 ]
 
-man_pages = [(master_doc, "supymode", f"{package_name} Documentation", [author], 1)]
+man_pages = [(master_doc, package_name.lower(), f"{package_name} Documentation", [author], 1)]
 
 texinfo_documents = [
     (

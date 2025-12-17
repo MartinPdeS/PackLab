@@ -21,10 +21,9 @@ each species pair :math:`(i, j)`.
 
 import numpy as np
 from TypedUnit import ureg
-from PackLab.analytical import PercusYevickSolver, PolydisperseDomain, GaussianRadiusDistribution
+from PackLab import analytical
 
-
-distribution = GaussianRadiusDistribution(
+distribution = analytical.GaussianRadiusDistribution(
     mean_radius=1.5 * ureg.micrometer,
     standard_deviation=0.2 * ureg.micrometer,
     radius_min=0.7 * ureg.micrometer,
@@ -35,7 +34,7 @@ distribution = GaussianRadiusDistribution(
 
 particle_radii, number_fractions = distribution.to_bins()
 
-domain = PolydisperseDomain(
+domain = analytical.Domain(
     size=100 * ureg.micrometer,
     particle_radii=particle_radii,
     volume_fraction=0.2,
@@ -51,7 +50,7 @@ p_max = 1e3 / domain.particle_radii.min()
 p = np.linspace(0, p_max, 5_000)
 
 
-solver = PercusYevickSolver(
+solver = analytical.Solver(
     densities=domain.particle_densities_per_radius,
     radii=domain.particle_radii,
     p=p,

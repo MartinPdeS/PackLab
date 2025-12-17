@@ -110,9 +110,12 @@ class RadiusDistribution(ABC):
     def to_bins(self) -> Tuple[object, np.ndarray]:
         """Discretize the distribution into bin centers and number fractions.
 
-        Returns:
-            particle_radii: Pint quantity array, shape (number_of_bins,)
-            number_fractions: float array, shape (number_of_bins,), sums to 1
+        Returns
+        -------
+        particle_radii : object
+            Pint quantity array of bin centers, shape (number_of_bins,).
+        number_fractions : np.ndarray
+            Array of number fractions, shape (number_of_bins,).
         """
         raise NotImplementedError
 
@@ -121,8 +124,10 @@ class RadiusDistribution(ABC):
 class DeltaRadiusDistribution(RadiusDistribution):
     """Delta distribution (monodisperse).
 
-    Attributes:
-        radius: Particle radius.
+    Parameters
+    ----------
+    radius : object
+        The single radius value.
     """
 
     radius: object
@@ -140,11 +145,16 @@ class UniformRadiusDistribution(RadiusDistribution):
     The probability mass is approximated by integrating a constant pdf over each bin,
     which reduces to weights proportional to bin widths.
 
-    Attributes:
-        radius_min: Lower bound of the support.
-        radius_max: Upper bound of the support.
-        number_of_bins: Number of bins.
-        bin_spacing: "linear" or "log".
+    Parameters
+    ----------
+    radius_min : object
+        Lower bound of the support.
+    radius_max : object
+        Upper bound of the support.
+    number_of_bins : int
+        Number of bins.
+    bin_spacing : BinSpacing
+        "linear" or "log".
     """
 
     radius_min: object
@@ -163,19 +173,26 @@ class UniformRadiusDistribution(RadiusDistribution):
 
 @dataclass(slots=True)
 class GaussianRadiusDistribution(RadiusDistribution):
-    """Gaussian distribution truncated to a finite interval.
+    """
+    Gaussian distribution truncated to a finite interval.
 
-    The number fractions are obtained by approximating probability mass in each bin as:
-        weight_k = pdf(center_k) * width_k
-    followed by normalization.
+    The number fractions are obtained by approximating probability mass in each bin as: weight_k = pdf(center_k) * width_k followed by normalization.
 
-    Attributes:
-        mean_radius: Gaussian mean radius.
-        standard_deviation: Gaussian standard deviation.
-        radius_min: Lower bound of truncation.
-        radius_max: Upper bound of truncation.
-        number_of_bins: Number of bins.
-        bin_spacing: "linear" or "log".
+    Parameters
+    ----------
+    mean_radius : object
+        Mean radius.
+    standard_deviation : object
+        Standard deviation.
+    radius_min : object
+        Lower bound of truncation.
+    radius_max : object
+        Upper bound of truncation.
+    number_of_bins : int
+        Number of bins.
+    bin_spacing : BinSpacing
+        "linear" or "log".
+
     """
 
     mean_radius: object
@@ -217,13 +234,20 @@ class LogNormalRadiusDistribution(RadiusDistribution):
     The pdf is evaluated in a dimensionless log space using magnitudes expressed
     in a consistent unit (the unit of median_radius).
 
-    Attributes:
-        median_radius: Median radius (exp(mu) in log space).
-        geometric_standard_deviation: Geometric standard deviation (exp(sigma) in log space).
-        radius_min: Lower bound of truncation.
-        radius_max: Upper bound of truncation.
-        number_of_bins: Number of bins.
-        bin_spacing: "linear" or "log".
+    Parameters
+    ----------
+    median_radius : object
+        Median radius.
+    geometric_standard_deviation : object
+        Geometric standard deviation (must be > 1).
+    radius_min : object
+        Lower bound of truncation.
+    radius_max : object
+        Upper bound of truncation.
+    number_of_bins : int
+        Number of bins.
+    bin_spacing : BinSpacing
+        "linear" or "log".
     """
 
     median_radius: object
@@ -269,16 +293,20 @@ class CustomRadiusDistribution(RadiusDistribution):
     """User defined pdf over a finite interval.
 
     The callable is evaluated at bin centers in magnitude space, expressed in the
-    unit of radius_min. Probability mass is approximated as:
-        weight_k = pdf(center_k) * width_k
-    then normalized.
+    unit of radius_min. Probability mass is approximated as: weight_k = pdf(center_k) * width_k then normalized.
 
-    Attributes:
-        pdf: Callable that takes a numpy array of radius magnitudes and returns non negative weights.
-        radius_min: Lower bound of the support.
-        radius_max: Upper bound of the support.
-        number_of_bins: Number of bins.
-        bin_spacing: "linear" or "log".
+    Parameters
+    ----------
+    pdf : Callable[[np.ndarray], np.ndarray]
+        User defined probability density function. Accepts and returns arrays of shape (number_of_bins,).
+    radius_min : object
+        Lower bound of the support.
+    radius_max : object
+        Upper bound of the support.
+    number_of_bins : int
+        Number of bins.
+    bin_spacing : BinSpacing
+        "linear" or "log".
     """
 
     pdf: Callable[[np.ndarray], np.ndarray]
@@ -314,15 +342,18 @@ def make_polydisperse_domain_from_distribution(
 ):
     """Convenience helper to create a domain instance from a RadiusDistribution.
 
-    Args:
-        domain_class: Typically PolydisperseDomain.
-        size: Domain size.
-        volume_fraction: Total volume fraction.
-        radius_distribution: A RadiusDistribution instance.
-        rounding_mode: Passed to the domain.
-
-    Returns:
-        A new domain_class instance configured with particle_radii and number_fractions.
+    Parameters
+    ----------
+    domain_class : Callable
+        Domain class constructor.
+    size : object
+        Domain size.
+    volume_fraction : float
+        Target volume fraction.
+    radius_distribution : RadiusDistribution
+        Particle radius distribution.
+    rounding_mode : Literal["floor", "round"]
+        Rounding mode for number of particles calculation.
     """
     particle_radii, number_fractions = radius_distribution.to_bins()
     return domain_class(
@@ -341,10 +372,12 @@ class DiscreteRadiusDistribution(RadiusDistribution):
     This distribution is already discretized: the user provides bin centers and
     associated probability masses. The class validates and normalizes the masses.
 
-    Attributes:
-        particle_radii: Pint quantity array of radii, shape (number_of_bins,).
-        number_fractions: Array of non negative weights, shape (number_of_bins,).
-            Will be normalized to sum to 1.
+    Parameters
+    ----------
+    particle_radii : object
+        Pint quantity array of bin centers.
+    number_fractions : np.ndarray
+        Array of number fractions (not necessarily normalized).
     """
 
     particle_radii: object

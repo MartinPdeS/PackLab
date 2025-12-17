@@ -25,7 +25,8 @@ import matplotlib.pyplot as plt
 
 import PackLab
 from PackLab.monte_carlo import Options, Simulator, DiscreteRadiusSampler
-from PackLab.analytical import PercusYevickSolver, PolydisperseDomain
+# from PackLab.analytical import PercusYevickSolver, PolydisperseDomain
+from PackLab import analytical
 from PackLab.analytical.distributions import DiscreteRadiusDistribution
 from TypedUnit import ureg
 
@@ -83,7 +84,7 @@ distribution = DiscreteRadiusDistribution(
 
 particle_radii, number_fractions = distribution.to_bins()
 
-py_domain = PolydisperseDomain(
+py_domain = analytical.Domain(
     size=100_000 * ureg.micrometer,
     particle_radii=particle_radii,
     volume_fraction=0.24,
@@ -94,7 +95,7 @@ py_domain = PolydisperseDomain(
 p_max = 1e3 / py_domain.particle_radii.min()
 p = np.linspace(0, p_max * 5, 30_000)
 
-solver = PercusYevickSolver(
+solver = analytical.Solver(
     densities=py_domain.particle_densities_per_radius,
     radii=py_domain.particle_radii,
     p=p,
@@ -111,7 +112,7 @@ py_result = solver.compute(distances=distances)
 
 # %%
 # Compare Monte Carlo and analytical g_ij(r)
-# -----------------------------------------
+# ------------------------------------------
 # We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 fig, ax = plt.subplots(1, 1)
 

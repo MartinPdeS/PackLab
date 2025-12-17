@@ -6,54 +6,66 @@ import matplotlib.pyplot as plt
 from numpy import pi, sin, cos
 
 from MPSPlots import helper
-
+from TypedUnit import Dimensionless, Length
 
 
 @dataclass(slots=True)
-class PercusYevickResult:
+class Result:
     """Container for Percus Yevick mixture outputs.
 
     This object is responsible for plotting, since it owns the computed arrays.
 
-    Attributes:
-        epsilons: List [e_0, e_1, e_2, e_3].
-        R_ij: Pairwise sum matrix from radii.
-        S_ij: Pairwise difference matrix from radii.
-        A_i: Species coefficients A_i.
-        B_i: Species coefficients B_i.
-        D_ij: Pairwise coefficients D_ij.
-        Cpy: C(p) tensor, shape (N, N, P).
-        H: H(p) tensor, shape (N, N, P).
-        h: h(r) tensor, shape (N, N, Nr).
-        g: g(r) tensor, shape (N, N, Nr).
-        distances: r grid.
-        p: p grid.
-        densities: densities used.
-        radii: radii used.
+    Parameters
+    ----------
+    epsilons: Dimensionless
+        List of epsilons e_0..e_3.
+    R_ij: Length
+        Array of shape (N, N) containing R_ij = R_i + R_j.
+    S_ij: Length
+        Array of shape (N, N) containing S_ij = R_j - R_i.
+    A_i: Dimensionless
+        Array of shape (N,) containing A_i parameters.
+    B_i: Length
+        Array of shape (N,) containing B_i parameters.
+    D_ij: Length^2
+        Array of shape (N, N) containing D_ij parameters.
+    Cpy: Dimensionless
+        Array of shape (N, N, P) containing C_ij(p) values.
+    H: Dimensionless
+        Array of shape (N, N, P) containing H_ij(p) values.
+    h: Dimensionless
+        Array of shape (N, N, R) containing h_ij(r) values.
+    g: Dimensionless
+        Array of shape (N, N, R) containing g_ij(r) values.
+    distances: Length
+        Array of shape (R,) containing the radial distances.
+    p: 1/Length
+        Array of shape (P,) containing the Fourier grid points.
+    densities: 1/Length^3
+        Array of shape (N,) containing the species number densities.
+    radii: Length
+        Array of shape (N,) containing the species radii.
     """
 
-    epsilons: Any
-    R_ij: Any
-    S_ij: Any
-    A_i: Any
-    B_i: Any
-    D_ij: Any
-    Cpy: Any
-    H: Any
-    h: Any
-    g: Any
-    distances: Any
-    p: Any
-    densities: Any
-    radii: Any
+    epsilons: Dimensionless
+    R_ij: Length
+    S_ij: Length
+    A_i: Dimensionless
+    B_i: Length
+    D_ij: Length
+    Cpy: Dimensionless
+    H: Dimensionless
+    h: Dimensionless
+    g: Dimensionless
+    distances: Length
+    p: object  # 1/Length
+    densities: object  # 1/Length ** 3
+    radii: Length
 
     @helper.post_mpl_plot
     def plot_pair_correlation(self) -> None:
-        """Plot all g[i, j](r) curves on a single axis.
-
-        Args:
-            show_legend: Whether to display the legend.
-            legend_ncol: Number of columns in the legend.
+        """
+        Plot all g[i, j](r) curves on a single axis.
         """
         r = self.distances.magnitude
         n = self.g.shape[0]
@@ -73,7 +85,7 @@ class PercusYevickResult:
         return figure
 
 
-class PercusYevickSolver:
+class Solver:
     """Percus Yevick mixture helper for computing C(p), H(p), h(r), and g(r).
 
     Notes:
@@ -86,12 +98,12 @@ class PercusYevickSolver:
         p: Fourier grid.
     """
 
-    def __init__(self, densities: Any, radii: Any, p: Any):
+    def __init__(self, densities: Any, radii: Length, p: Any):
         self.densities = densities
         self.radii = radii
         self.p = p
 
-    def get_epsilons(self) -> List[Any]:
+    def get_epsilons(self) -> List[Dimensionless]:
         """Compute epsilons e_0..e_3 using self.densities and self.radii."""
         epsilons = []
         for alpha in [0, 1, 2, 3]:
@@ -101,7 +113,7 @@ class PercusYevickSolver:
             epsilons.append(epsilon_i)
         return epsilons
 
-    def get_parameters(self, epsilons: List[Any]) -> Tuple[Any, Any, Any, Any, Any]:
+    def get_parameters(self, epsilons: List[Dimensionless]) -> Tuple[Length, Length, Dimensionless, Length, Length]:
         """Compute (R_ij, S_ij, A_i, B_i, D_ij) from epsilons and self.radii."""
         radii = self.radii
         radii_ = np.broadcast_to(radii.magnitude, (radii.size, radii.size)) * radii.units
@@ -139,13 +151,20 @@ class PercusYevickSolver:
         out[~mask] = 1.0 / 3.0
         return out / x.units ** 2
 
-    def get_Cpy_(
-        self,
-        index_i: int,
-        index_j: int,
-        epsilons: List[Any]
+    def get_Cpy_(self, index_i: int, index_j: int, epsilons: List[Any]
     ) -> Any:
-        """Compute one curve Cpy[i, j, :] using your implementation."""
+        """
+        Compute one curve Cpy[i, j, :] using your implementation.
+
+        Parameters
+        ----------
+        index_i : int
+            Index of species i.
+        index_j : int
+            Index of species j.
+        epsilons : List[Dimensionless]
+            List of epsilons e_0..e_3.
+        """
         densities = self.densities
         radii = self.radii
         p = self.p
@@ -235,7 +254,14 @@ class PercusYevickSolver:
 
     @staticmethod
     def solve_H_from_C_batch(C: Any) -> Any:
-        """Solve H = C + C H for each p slice independently."""
+        """
+        Solve H = C + C H for each p slice independently.
+
+        Parameters
+        ----------
+        C : Any
+            Array of shape (N, N, P) containing C_ij(p) values.
+        """
         I = np.eye(C.shape[0])[:, :, None]
         A = I - C
 
@@ -248,7 +274,7 @@ class PercusYevickSolver:
         return output
 
     @staticmethod
-    def get_radial_fourier_of_H(H: Any, distances: Any, p: Any, densities: Any) -> Any:
+    def get_radial_fourier_of_H(H: Any, distances: Length, p: Any, densities: Any) -> Any:
         """Compute h(r) from H(p) using your radial transform implementation."""
         if H.shape[-1] != p.size:
             raise ValueError(f"H last axis ({H.shape[-1]}) must match p.size ({p.size}).")
@@ -275,7 +301,7 @@ class PercusYevickSolver:
 
         return (output / densities_factor).to("dimensionless") / (np.pi / 2)
 
-    def compute(self, distances: Any) -> PercusYevickResult:
+    def compute(self, distances: Length) -> Result:
         """Compute epsilons, parameters, Cpy, H, h, g and return a result object."""
         epsilons = self.get_epsilons()
         R_ij, S_ij, A_i, B_i, D_ij = self.get_parameters(epsilons=epsilons)
@@ -286,7 +312,7 @@ class PercusYevickSolver:
         h = self.get_radial_fourier_of_H(H=H, distances=distances, p=self.p, densities=self.densities)
         g = 1 + h
 
-        return PercusYevickResult(
+        return Result(
             epsilons=epsilons,
             R_ij=R_ij,
             S_ij=S_ij,

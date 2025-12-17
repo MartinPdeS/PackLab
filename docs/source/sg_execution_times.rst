@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.552** total execution time for 4 files **from all galleries**:
+**00:30.901** total execution time for 4 files **from all galleries**:
 
 .. container::
 
@@ -32,15 +32,15 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_relative_momentum_index.py` (``../examples/relative_momentum_index.py``)
-     - 00:00.552
+   * - :ref:`sphx_glr_gallery_monte_carlo_estimator_vs_analytical.py` (``../examples/monte_carlo_estimator_vs_analytical.py``)
+     - 00:21.715
      - 0.0
-   * - :ref:`sphx_glr_gallery_bollinger_bands.py` (``../examples/bollinger_bands.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_gallery_analytical_poly_disperse.py` (``../examples/analytical_poly_disperse.py``)
+     - 00:06.018
      - 0.0
-   * - :ref:`sphx_glr_gallery_moving_average_crossings.py` (``../examples/moving_average_crossings.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_gallery_monte_carlo_vs_analytical.py` (``../examples/monte_carlo_vs_analytical.py``)
+     - 00:01.796
      - 0.0
-   * - :ref:`sphx_glr_gallery_workflow.py` (``../examples/workflow.py``)
-     - 00:00.000
+   * - :ref:`sphx_glr_gallery_monte_carlo_poly_disperse.py` (``../examples/monte_carlo_poly_disperse.py``)
+     - 00:01.372
      - 0.0

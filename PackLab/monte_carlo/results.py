@@ -243,11 +243,7 @@ class Result():
         return figure
 
     @helper.post_mpl_plot
-    def plot_pair_correlation(
-        self,
-        n_bins: int = 80,
-        maximum_pairs: int = 300_000,
-    ) -> plt.Figure:
+    def plot_pair_correlation(self, n_bins: int = 80, maximum_pairs: int = 300_000) -> plt.Figure:
         """
         Plot the partial pair correlation functions g_ij(r) obtained from the RSA
         configuration, overlaying all (i, j) curves on a single axis.
@@ -264,7 +260,6 @@ class Result():
         matplotlib.figure.Figure
             Figure containing the overlaid plot of all g_ij(r) curves.
         """
-
         # Call C++ to compute (centers, g_ij)
         centers, g_matrix = self.binding.compute_partial_pair_correlation_function(
             n_bins=n_bins,
