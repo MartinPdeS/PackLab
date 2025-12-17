@@ -62,6 +62,6 @@ result.plot_slice_2d(
 )
 
 result.plot_pair_correlation(
-    bins=150,
+    n_bins=150,
     maximum_pairs=20_000_000
 )
