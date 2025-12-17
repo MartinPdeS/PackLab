@@ -462,8 +462,1212 @@
                   
   <section id="source-code">
 <span id="id1"></span><h1>Source code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h1>
-<section id="backtester">
-<h2>BackTester<a class="headerlink" href="#backtester" title="Link to this heading">#</a></h2>
+<section id="module-PackLab.analytical.distributions">
+<span id="analytical"></span><h2>Analytical<a class="headerlink" href="#module-PackLab.analytical.distributions" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DeltaRadiusDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DeltaRadiusDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#DeltaRadiusDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.DeltaRadiusDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusDistribution</span></code></p>
+<p>Delta distribution (monodisperse).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>radius</strong> (<em>object</em>) – The single radius value.</p>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DeltaRadiusDistribution.radius">
+<span class="sig-name descname"><span class="pre">radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.DeltaRadiusDistribution.radius" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DeltaRadiusDistribution.to_bins">
+<span class="sig-name descname"><span class="pre">to_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#DeltaRadiusDistribution.to_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.DeltaRadiusDistribution.to_bins" title="Link to this definition">#</a></dt>
+<dd><p>Discretize the distribution into bin centers and number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers, shape (number_of_bins,).</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions, shape (number_of_bins,).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.UniformRadiusDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">UniformRadiusDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">radius_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#UniformRadiusDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.UniformRadiusDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusDistribution</span></code></p>
+<p>Uniform distribution over a finite interval.</p>
+<p>The probability mass is approximated by integrating a constant pdf over each bin,
+which reduces to weights proportional to bin widths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>radius_min</strong> (<em>object</em>) – Lower bound of the support.</p></li>
+<li><p><strong>radius_max</strong> (<em>object</em>) – Upper bound of the support.</p></li>
+<li><p><strong>number_of_bins</strong> (<em>int</em>) – Number of bins.</p></li>
+<li><p><strong>bin_spacing</strong> (<em>BinSpacing</em>) – “linear” or “log”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.UniformRadiusDistribution.radius_min">
+<span class="sig-name descname"><span class="pre">radius_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.UniformRadiusDistribution.radius_min" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.UniformRadiusDistribution.radius_max">
+<span class="sig-name descname"><span class="pre">radius_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.UniformRadiusDistribution.radius_max" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.UniformRadiusDistribution.number_of_bins">
+<span class="sig-name descname"><span class="pre">number_of_bins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PackLab.analytical.distributions.UniformRadiusDistribution.number_of_bins" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.UniformRadiusDistribution.bin_spacing">
+<span class="sig-name descname"><span class="pre">bin_spacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PackLab.analytical.distributions.UniformRadiusDistribution.bin_spacing" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.UniformRadiusDistribution.to_bins">
+<span class="sig-name descname"><span class="pre">to_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#UniformRadiusDistribution.to_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.UniformRadiusDistribution.to_bins" title="Link to this definition">#</a></dt>
+<dd><p>Discretize the distribution into bin centers and number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers, shape (number_of_bins,).</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions, shape (number_of_bins,).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">GaussianRadiusDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_deviation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#GaussianRadiusDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusDistribution</span></code></p>
+<p>Gaussian distribution truncated to a finite interval.</p>
+<p>The number fractions are obtained by approximating probability mass in each bin as: weight_k = pdf(center_k) * width_k followed by normalization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean_radius</strong> (<em>object</em>) – Mean radius.</p></li>
+<li><p><strong>standard_deviation</strong> (<em>object</em>) – Standard deviation.</p></li>
+<li><p><strong>radius_min</strong> (<em>object</em>) – Lower bound of truncation.</p></li>
+<li><p><strong>radius_max</strong> (<em>object</em>) – Upper bound of truncation.</p></li>
+<li><p><strong>number_of_bins</strong> (<em>int</em>) – Number of bins.</p></li>
+<li><p><strong>bin_spacing</strong> (<em>BinSpacing</em>) – “linear” or “log”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.mean_radius">
+<span class="sig-name descname"><span class="pre">mean_radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.mean_radius" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.standard_deviation">
+<span class="sig-name descname"><span class="pre">standard_deviation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.standard_deviation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.radius_min">
+<span class="sig-name descname"><span class="pre">radius_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.radius_min" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.radius_max">
+<span class="sig-name descname"><span class="pre">radius_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.radius_max" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.number_of_bins">
+<span class="sig-name descname"><span class="pre">number_of_bins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.number_of_bins" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.bin_spacing">
+<span class="sig-name descname"><span class="pre">bin_spacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.bin_spacing" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.GaussianRadiusDistribution.to_bins">
+<span class="sig-name descname"><span class="pre">to_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#GaussianRadiusDistribution.to_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.to_bins" title="Link to this definition">#</a></dt>
+<dd><p>Discretize the distribution into bin centers and number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers, shape (number_of_bins,).</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions, shape (number_of_bins,).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">LogNormalRadiusDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">median_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_standard_deviation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'log'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#LogNormalRadiusDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusDistribution</span></code></p>
+<p>Log normal distribution truncated to a finite interval.</p>
+<p>Parameterization uses median radius and geometric standard deviation.</p>
+<p>The pdf is evaluated in a dimensionless log space using magnitudes expressed
+in a consistent unit (the unit of median_radius).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>median_radius</strong> (<em>object</em>) – Median radius.</p></li>
+<li><p><strong>geometric_standard_deviation</strong> (<em>object</em>) – Geometric standard deviation (must be &gt; 1).</p></li>
+<li><p><strong>radius_min</strong> (<em>object</em>) – Lower bound of truncation.</p></li>
+<li><p><strong>radius_max</strong> (<em>object</em>) – Upper bound of truncation.</p></li>
+<li><p><strong>number_of_bins</strong> (<em>int</em>) – Number of bins.</p></li>
+<li><p><strong>bin_spacing</strong> (<em>BinSpacing</em>) – “linear” or “log”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.median_radius">
+<span class="sig-name descname"><span class="pre">median_radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.median_radius" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.geometric_standard_deviation">
+<span class="sig-name descname"><span class="pre">geometric_standard_deviation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.geometric_standard_deviation" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.radius_min">
+<span class="sig-name descname"><span class="pre">radius_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.radius_min" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.radius_max">
+<span class="sig-name descname"><span class="pre">radius_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.radius_max" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.number_of_bins">
+<span class="sig-name descname"><span class="pre">number_of_bins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.number_of_bins" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.bin_spacing">
+<span class="sig-name descname"><span class="pre">bin_spacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.bin_spacing" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.LogNormalRadiusDistribution.to_bins">
+<span class="sig-name descname"><span class="pre">to_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#LogNormalRadiusDistribution.to_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.to_bins" title="Link to this definition">#</a></dt>
+<dd><p>Discretize the distribution into bin centers and number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers, shape (number_of_bins,).</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions, shape (number_of_bins,).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CustomRadiusDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bin_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#CustomRadiusDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusDistribution</span></code></p>
+<p>User defined pdf over a finite interval.</p>
+<p>The callable is evaluated at bin centers in magnitude space, expressed in the
+unit of radius_min. Probability mass is approximated as: weight_k = pdf(center_k) * width_k then normalized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf</strong> (<em>Callable</em><em>[</em><em>[</em><em>np.ndarray</em><em>]</em><em>, </em><em>np.ndarray</em><em>]</em>) – User defined probability density function. Accepts and returns arrays of shape (number_of_bins,).</p></li>
+<li><p><strong>radius_min</strong> (<em>object</em>) – Lower bound of the support.</p></li>
+<li><p><strong>radius_max</strong> (<em>object</em>) – Upper bound of the support.</p></li>
+<li><p><strong>number_of_bins</strong> (<em>int</em>) – Number of bins.</p></li>
+<li><p><strong>bin_spacing</strong> (<em>BinSpacing</em>) – “linear” or “log”.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution.pdf">
+<span class="sig-name descname"><span class="pre">pdf</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution.pdf" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution.radius_min">
+<span class="sig-name descname"><span class="pre">radius_min</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution.radius_min" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution.radius_max">
+<span class="sig-name descname"><span class="pre">radius_max</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution.radius_max" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution.number_of_bins">
+<span class="sig-name descname"><span class="pre">number_of_bins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution.number_of_bins" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution.bin_spacing">
+<span class="sig-name descname"><span class="pre">bin_spacing</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'linear'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution.bin_spacing" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.CustomRadiusDistribution.to_bins">
+<span class="sig-name descname"><span class="pre">to_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#CustomRadiusDistribution.to_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.CustomRadiusDistribution.to_bins" title="Link to this definition">#</a></dt>
+<dd><p>Discretize the distribution into bin centers and number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers, shape (number_of_bins,).</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions, shape (number_of_bins,).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DiscreteRadiusDistribution">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiscreteRadiusDistribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">particle_radii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_fractions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#DiscreteRadiusDistribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusDistribution</span></code></p>
+<p>Explicit discrete radius distribution.</p>
+<p>This distribution is already discretized: the user provides bin centers and
+associated probability masses. The class validates and normalizes the masses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers.</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions (not necessarily normalized).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DiscreteRadiusDistribution.particle_radii">
+<span class="sig-name descname"><span class="pre">particle_radii</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution.particle_radii" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DiscreteRadiusDistribution.number_fractions">
+<span class="sig-name descname"><span class="pre">number_fractions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution.number_fractions" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.distributions.DiscreteRadiusDistribution.to_bins">
+<span class="sig-name descname"><span class="pre">to_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">object</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/distributions.html#DiscreteRadiusDistribution.to_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution.to_bins" title="Link to this definition">#</a></dt>
+<dd><p>Discretize the distribution into bin centers and number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Pint quantity array of bin centers, shape (number_of_bins,).</p></li>
+<li><p><strong>number_fractions</strong> (<em>np.ndarray</em>) – Array of number fractions, shape (number_of_bins,).</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-PackLab.analytical.domain">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Domain</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">particle_radii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">volume_fraction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_fractions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rounding_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'floor'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'round'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'floor'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/domain.html#Domain"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.domain.Domain" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Cubic simulation domain containing a polydisperse population of spherical particles.</p>
+<p>You must specify the domain <code class="docutils literal notranslate"><span class="pre">size</span></code> and the particle radii array <code class="docutils literal notranslate"><span class="pre">particle_radii</span></code>.
+You can then specify the population using exactly one of the following mechanisms:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">number_fractions</span></code>
+Fractions per radius bin that sum to 1 (dimensionless). Total occupied volume is set
+by <code class="docutils literal notranslate"><span class="pre">volume_fraction</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">volume_fractions</span></code>
+Volume fraction per radius bin. If provided, it must sum to <code class="docutils literal notranslate"><span class="pre">volume_fraction</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">particle_densities</span></code>
+Number density per radius bin (for example in 1 / liter). In this case, <code class="docutils literal notranslate"><span class="pre">volume_fraction</span></code>
+can be provided for consistency checks but is not required.</p></li>
+</ol>
+<dl class="simple">
+<dt>Notes:</dt><dd><ol class="arabic simple">
+<li><p>This class mirrors the monodisperse <code class="docutils literal notranslate"><span class="pre">Domain</span></code> interface, but returns vector valued
+quantities for per bin results and provides totals where applicable.</p></li>
+<li><p>Integer particle counts are inherently a discretization. This class provides deterministic
+rounding and a small correction to preserve the total count when <code class="docutils literal notranslate"><span class="pre">number_fractions</span></code> is used.</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>size</strong> (<em>object</em>) – Domain size (length of one cubic side).</p></li>
+<li><p><strong>particle_radii</strong> (<em>object</em>) – Array of particle radii defining the polydisperse bins.</p></li>
+<li><p><strong>volume_fraction</strong> (<em>Optional</em><em>[</em><em>object</em><em>]</em>) – Total occupied volume fraction (between 0 and 1). Required if <code class="docutils literal notranslate"><span class="pre">number_fractions</span></code> or <code class="docutils literal notranslate"><span class="pre">volume_fractions</span></code> are used.</p></li>
+<li><p><strong>number_fractions</strong> (<em>Optional</em><em>[</em><em>Sequence</em><em>[</em><em>float</em><em>]</em><em>]</em>) – Number fractions per radius bin that sum to 1 (dimensionless). Mutually exclusive with <code class="docutils literal notranslate"><span class="pre">volume_fractions</span></code> and <code class="docutils literal notranslate"><span class="pre">particle_densities</span></code>.</p></li>
+<li><p><strong>rounding_mode</strong> (<em>Literal</em><em>[</em><em>&quot;floor&quot;</em><em>, </em><em>&quot;round&quot;</em><em>]</em>) – Rounding mode used when converting non integer particle counts to integers.
+“floor” always rounds down, “round” uses standard rounding rules.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.size">
+<span class="sig-name descname"><span class="pre">size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.domain.Domain.size" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.particle_radii">
+<span class="sig-name descname"><span class="pre">particle_radii</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.domain.Domain.particle_radii" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.volume_fraction">
+<span class="sig-name descname"><span class="pre">volume_fraction</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PackLab.analytical.domain.Domain.volume_fraction" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.number_fractions">
+<span class="sig-name descname"><span class="pre">number_fractions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#PackLab.analytical.domain.Domain.number_fractions" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.rounding_mode">
+<span class="sig-name descname"><span class="pre">rounding_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'floor'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'round'</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'floor'</span></em><a class="headerlink" href="#PackLab.analytical.domain.Domain.rounding_mode" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.volume">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.volume" title="Link to this definition">#</a></dt>
+<dd><p>Total domain volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Domain volume.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.particle_volumes">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">particle_volumes</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.particle_volumes" title="Link to this definition">#</a></dt>
+<dd><p>Per bin particle volumes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of per bin particle volumes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.total_particle_volume">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">total_particle_volume</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.total_particle_volume" title="Link to this definition">#</a></dt>
+<dd><p>Total occupied particle volume.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">volume_fraction</span></code> is provided, the total occupied volume is <code class="docutils literal notranslate"><span class="pre">volume_fraction</span> <span class="pre">*</span> <span class="pre">volume</span></code>.
+If <code class="docutils literal notranslate"><span class="pre">particle_densities</span></code> are used, the occupied volume is inferred from the particle counts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total occupied particle volume.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.mean_particle_volume_number_weighted">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mean_particle_volume_number_weighted</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.mean_particle_volume_number_weighted" title="Link to this definition">#</a></dt>
+<dd><p>Number weighted mean particle volume.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Mean particle volume weighted by number fractions.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>AttributeError</strong> – If number_fractions is not defined.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.number_of_particles_total">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_particles_total</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#PackLab.analytical.domain.Domain.number_of_particles_total" title="Link to this definition">#</a></dt>
+<dd><p>Total number of particles in the domain, inferred from the chosen specification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total integer particle count.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the internal specification state is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.number_of_particles_per_radius">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_particles_per_radius</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.number_of_particles_per_radius" title="Link to this definition">#</a></dt>
+<dd><p>Integer particle count per radius bin.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">number_fractions</span></code>, a deterministic correction is applied so the per bin counts
+sum exactly to <code class="docutils literal notranslate"><span class="pre">number_of_particles_total</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of integer particle counts per radius bin.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the internal specification state is invalid.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.particle_densities_per_radius">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">particle_densities_per_radius</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.particle_densities_per_radius" title="Link to this definition">#</a></dt>
+<dd><p>Number density per radius bin.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of per bin number densities.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.particle_density_total">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">particle_density_total</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.particle_density_total" title="Link to this definition">#</a></dt>
+<dd><p>Total number density over all bins.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total number density.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.volume_fraction_per_radius">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">volume_fraction_per_radius</span></span><a class="headerlink" href="#PackLab.analytical.domain.Domain.volume_fraction_per_radius" title="Link to this definition">#</a></dt>
+<dd><p>Per bin occupied volume fraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of per bin volume fractions.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.sample_particle_radii">
+<span class="sig-name descname"><span class="pre">sample_particle_radii</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_generator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Generator</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/domain.html#Domain.sample_particle_radii"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.domain.Domain.sample_particle_radii" title="Link to this definition">#</a></dt>
+<dd><p>Draw radii samples according to number fractions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number_of_samples</strong> (<em>int</em>) – Number of radii samples to draw.</p></li>
+<li><p><strong>random_generator</strong> (<em>Optional</em><em>[</em><em>np.random.Generator</em><em>]</em>) – Optional random generator to use for sampling. If None, a new default generator is created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Array of sampled particle radii.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.print_bins">
+<span class="sig-name descname"><span class="pre">print_bins</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/domain.html#Domain.print_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.domain.Domain.print_bins" title="Link to this definition">#</a></dt>
+<dd><p>Print a per bin table describing the polydisperse population.</p>
+<p>The table includes radii, per particle volumes, per bin number fractions
+(if defined), per bin volume fractions, inferred integer particle counts,
+and inferred number densities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>precision</strong> (<em>int</em>) – Number of significant digits to use when printing values.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Prints the bin table to standard output.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.domain.Domain.plot_radius_distribution">
+<span class="sig-name descname"><span class="pre">plot_radius_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_volume_weighted</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/domain.html#Domain.plot_radius_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.domain.Domain.plot_radius_distribution" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>This is a diagnostic plot intended to quickly verify that the binning and
+mixture specification match your expectations.</p>
+<p>The plot uses the current domain specification:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">number_fractions</span></code> is defined, it is plotted directly.</p></li>
+<li><p>Otherwise the plotted distribution is inferred from the current per bin particle counts (<code class="docutils literal notranslate"><span class="pre">number_of_particles_per_radius</span></code>) and normalized.</p></li>
+</ul>
+<p>Optionally, you can overlay a volume weighted view (each bin weighted by
+particle volume), which is often useful when comparing number weighted and
+volume weighted interpretations of the same mixture.</p>
+<dl class="simple">
+<dt>normalize<span class="classifier">bool</span></dt><dd><p>Whether to normalize the plotted distribution to sum to 1.</p>
+</dd>
+<dt>show_volume_weighted<span class="classifier">bool</span></dt><dd><p>Whether to overlay a volume weighted version of the distribution.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>plt.Figure</dt><dd><p>Displays a matplotlib figure.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="extra-parameters">
+<h3>Extra Parameters<a class="headerlink" href="#extra-parameters" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id2"><span class="problematic" id="id3">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-PackLab.analytical.solver">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dimensionless</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R_ij</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S_ij</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dimensionless</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_ij</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cpy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dimensionless</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">H</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dimensionless</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dimensionless</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">g</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dimensionless</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">densities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Result" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Container for Percus Yevick mixture outputs.</p>
+<p>This object is responsible for plotting, since it owns the computed arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilons</strong> (<em>Dimensionless</em>) – List of epsilons e_0..e_3.</p></li>
+<li><p><strong>R_ij</strong> (<em>Length</em>) – Array of shape (N, N) containing R_ij = R_i + R_j.</p></li>
+<li><p><strong>S_ij</strong> (<em>Length</em>) – Array of shape (N, N) containing S_ij = R_j - R_i.</p></li>
+<li><p><strong>A_i</strong> (<em>Dimensionless</em>) – Array of shape (N,) containing A_i parameters.</p></li>
+<li><p><strong>B_i</strong> (<em>Length</em>) – Array of shape (N,) containing B_i parameters.</p></li>
+<li><p><strong>D_ij</strong> (<em>Length^2</em>) – Array of shape (N, N) containing D_ij parameters.</p></li>
+<li><p><strong>Cpy</strong> (<em>Dimensionless</em>) – Array of shape (N, N, P) containing C_ij(p) values.</p></li>
+<li><p><strong>H</strong> (<em>Dimensionless</em>) – Array of shape (N, N, P) containing H_ij(p) values.</p></li>
+<li><p><strong>h</strong> (<em>Dimensionless</em>) – Array of shape (N, N, R) containing h_ij(r) values.</p></li>
+<li><p><strong>g</strong> (<em>Dimensionless</em>) – Array of shape (N, N, R) containing g_ij(r) values.</p></li>
+<li><p><strong>distances</strong> (<em>Length</em>) – Array of shape (R,) containing the radial distances.</p></li>
+<li><p><strong>p</strong> (<em>1/Length</em>) – Array of shape (P,) containing the Fourier grid points.</p></li>
+<li><p><strong>densities</strong> (<em>1/Length^3</em>) – Array of shape (N,) containing the species number densities.</p></li>
+<li><p><strong>radii</strong> (<em>Length</em>) – Array of shape (N,) containing the species radii.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.epsilons">
+<span class="sig-name descname"><span class="pre">epsilons</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.epsilons" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.R_ij">
+<span class="sig-name descname"><span class="pre">R_ij</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.R_ij" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.S_ij">
+<span class="sig-name descname"><span class="pre">S_ij</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.S_ij" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.A_i">
+<span class="sig-name descname"><span class="pre">A_i</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.A_i" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.B_i">
+<span class="sig-name descname"><span class="pre">B_i</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.B_i" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.D_ij">
+<span class="sig-name descname"><span class="pre">D_ij</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.D_ij" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.Cpy">
+<span class="sig-name descname"><span class="pre">Cpy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.Cpy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.H">
+<span class="sig-name descname"><span class="pre">H</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.H" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.h">
+<span class="sig-name descname"><span class="pre">h</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.h" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.g">
+<span class="sig-name descname"><span class="pre">g</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dimensionless</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.g" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.distances">
+<span class="sig-name descname"><span class="pre">distances</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.distances" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.p">
+<span class="sig-name descname"><span class="pre">p</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.p" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.densities">
+<span class="sig-name descname"><span class="pre">densities</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.densities" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.radii">
+<span class="sig-name descname"><span class="pre">radii</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Length</span></em><a class="headerlink" href="#PackLab.analytical.solver.Result.radii" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Result.plot_pair_correlation">
+<span class="sig-name descname"><span class="pre">plot_pair_correlation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Result.plot_pair_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Result.plot_pair_correlation" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Plot all g[i, j](r) curves on a single axis.</p>
+</div></blockquote>
+<section id="id4">
+<h3>Extra Parameters<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Solver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">densities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Percus Yevick mixture helper for computing C(p), H(p), h(r), and g(r).</p>
+<dl class="simple">
+<dt>Notes:</dt><dd><p>The radii provided at construction time are always used.
+Debug printing is only produced if you call debug_Cpy_units.</p>
+</dd>
+<dt>Attributes:</dt><dd><p>densities: Species densities.
+radii: Species radii.
+p: Fourier grid.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.get_epsilons">
+<span class="sig-name descname"><span class="pre">get_epsilons</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dimensionless</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.get_epsilons"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.get_epsilons" title="Link to this definition">#</a></dt>
+<dd><p>Compute epsilons e_0..e_3 using self.densities and self.radii.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.get_parameters">
+<span class="sig-name descname"><span class="pre">get_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dimensionless</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Length</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Length</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dimensionless</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Length</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Length</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.get_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.get_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Compute (R_ij, S_ij, A_i, B_i, D_ij) from epsilons and self.radii.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.get_Cpy_">
+<span class="sig-name descname"><span class="pre">get_Cpy_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.get_Cpy_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.get_Cpy_" title="Link to this definition">#</a></dt>
+<dd><p>Compute one curve Cpy[i, j, :] using your implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index_i</strong> (<em>int</em>) – Index of species i.</p></li>
+<li><p><strong>index_j</strong> (<em>int</em>) – Index of species j.</p></li>
+<li><p><strong>epsilons</strong> (<em>List</em><em>[</em><em>Dimensionless</em><em>]</em>) – List of epsilons e_0..e_3.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.get_Cpy">
+<span class="sig-name descname"><span class="pre">get_Cpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilons</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.get_Cpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.get_Cpy" title="Link to this definition">#</a></dt>
+<dd><p>Compute the full Cpy tensor with shape (N, N, P).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.solve_H_from_C_batch">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">solve_H_from_C_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">C</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.solve_H_from_C_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.solve_H_from_C_batch" title="Link to this definition">#</a></dt>
+<dd><p>Solve H = C + C H for each p slice independently.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>C</strong> (<em>Any</em>) – Array of shape (N, N, P) containing C_ij(p) values.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.get_radial_fourier_of_H">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_radial_fourier_of_H</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">densities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.get_radial_fourier_of_H"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.get_radial_fourier_of_H" title="Link to this definition">#</a></dt>
+<dd><p>Compute h(r) from H(p) using your radial transform implementation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.compute">
+<span class="sig-name descname"><span class="pre">compute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Length</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PackLab.analytical.solver.Result" title="PackLab.analytical.solver.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.compute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.compute" title="Link to this definition">#</a></dt>
+<dd><p>Compute epsilons, parameters, Cpy, H, h, g and return a result object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.analytical.solver.Solver.debug_Cpy_units">
+<span class="sig-name descname"><span class="pre">debug_Cpy_units</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/analytical/solver.html#Solver.debug_Cpy_units"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.analytical.solver.Solver.debug_Cpy_units" title="Link to this definition">#</a></dt>
+<dd><p>Print intermediate Pint units for a selected Cpy[i, j, :] computation.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-PackLab.monte_carlo.simulator">
+<span id="monte-carlo"></span><h2>Monte Carlo<a class="headerlink" href="#module-PackLab.monte_carlo.simulator" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_sampler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">UniformRadiusSampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/simulator.html#Simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulator</span></code></p>
+<p>Python convenience wrapper around the C++ RSA simulator.</p>
+<p>It creates the bound RandomSequentialAdditionSimulator, runs it, then returns an Result
+with computed statistics and plotting helpers.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator.domain">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domain</span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator.domain" title="Link to this definition">#</a></dt>
+<dd><p>Simulation domain</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PackLab.monte_carlo.results.Result" title="PackLab.monte_carlo.results.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/simulator.html#Simulator.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator.run" title="Link to this definition">#</a></dt>
+<dd><p>Run the RSA simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The result of the simulation, including sphere positions, radii, statistics, and plotting helpers</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PackLab.analytical.solver.Result" title="PackLab.analytical.solver.Result">Result</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator.sphere_configuration">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sphere_configuration</span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator.sphere_configuration" title="Link to this definition">#</a></dt>
+<dd><p>Current sphere configuration</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-PackLab.monte_carlo.results">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Output container for an RSA simulation run.</p>
+<p>Holds arrays plus domain metadata, computed statistics, and plotting helpers.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.positions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.positions" title="Link to this definition">#</a></dt>
+<dd><p>Get the sphere center positions as a NumPy array of shape (N, 3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of sphere center positions.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.radii">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">radii</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.radii" title="Link to this definition">#</a></dt>
+<dd><p>Get the sphere radii as a NumPy array of shape (N,).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of sphere radii.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>np.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.domain">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Domain</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.domain" title="Link to this definition">#</a></dt>
+<dd><p>Get the simulation domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The simulation domain.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#PackLab.analytical.domain.Domain" title="PackLab.analytical.domain.Domain">Domain</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.statistics">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">statistics</span></span><a class="headerlink" href="#PackLab.monte_carlo.results.Result.statistics" title="Link to this definition">#</a></dt>
+<dd><p>Get the simulation statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The simulation statistics.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Statistics</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.compute_partial_pair_correlation_function">
+<span class="sig-name descname"><span class="pre">compute_partial_pair_correlation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result.compute_partial_pair_correlation_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result.compute_partial_pair_correlation_function" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.partial_volume_fractions">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partial_volume_fractions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.partial_volume_fractions" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.partial_volumes">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partial_volumes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.partial_volumes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.compute_pair_correlation_function">
+<span class="sig-name descname"><span class="pre">compute_pair_correlation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result.compute_pair_correlation_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result.compute_pair_correlation_function" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.pair_correlation_centers">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pair_correlation_centers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.pair_correlation_centers" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.pair_correlation_values">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pair_correlation_values</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#PackLab.monte_carlo.results.Result.pair_correlation_values" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.plot_centers_3d">
+<span class="sig-name descname"><span class="pre">plot_centers_3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">maximum_points_3d</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result.plot_centers_3d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result.plot_centers_3d" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Plot the sphere centers in a 3D scatter plot.</p>
+<dl class="simple">
+<dt>maximum_points_3d<span class="classifier">int</span></dt><dd><p>Maximum number of points to plot (subsampling if necessary).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>plt.Figure</dt><dd><p>The matplotlib Figure object containing the 3D scatter plot.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id7">
+<h3>Extra Parameters<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id8"><span class="problematic" id="id9">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.plot_radius_distribution">
+<span class="sig-name descname"><span class="pre">plot_radius_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">40</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">density</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.85</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result.plot_radius_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result.plot_radius_distribution" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Plot the distribution of sphere radii.</p>
+<dl class="simple">
+<dt>bins<span class="classifier">int</span></dt><dd><p>Number of histogram bins.</p>
+</dd>
+<dt>density<span class="classifier">bool</span></dt><dd><p>Whether to normalize the histogram to form a probability density.</p>
+</dd>
+<dt>alpha<span class="classifier">float</span></dt><dd><p>Transparency level for the histogram bars.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id10">
+<h3>Extra Parameters<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.plot_slice_2d">
+<span class="sig-name descname"><span class="pre">plot_slice_2d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice_axis</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'x'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'y'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'z'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'z'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_center_fraction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_thickness_fraction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_circles_in_slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2500</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result.plot_slice_2d"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result.plot_slice_2d" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Plot a 2D slice of the sphere configuration.</p>
+<dl class="simple">
+<dt>slice_axis<span class="classifier">Literal[“x”, “y”, “z”]</span></dt><dd><p>Axis along which to take the slice.</p>
+</dd>
+<dt>slice_center_fraction<span class="classifier">float</span></dt><dd><p>Fractional position along the slice axis where the slice is centered (0.0 to 1.0).</p>
+</dd>
+<dt>slice_thickness_fraction<span class="classifier">float</span></dt><dd><p>Fractional thickness of the slice relative to the box length along the slice axis (0.0 to 1.0).</p>
+</dd>
+<dt>maximum_circles_in_slice<span class="classifier">int</span></dt><dd><p>Maximum number of circles to plot in the slice (subsampling if necessary).</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id13">
+<h3>Extra Parameters<a class="headerlink" href="#id13" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id14"><span class="problematic" id="id15">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.plot_pair_correlation">
+<span class="sig-name descname"><span class="pre">plot_pair_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result.plot_pair_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result.plot_pair_correlation" title="Link to this definition">#</a></dt>
+<dd><blockquote>
+<div><p>Plot the partial pair correlation functions g_ij(r) obtained from the RSA
+configuration, overlaying all (i, j) curves on a single axis.</p>
+<dl class="simple">
+<dt>n_bins<span class="classifier">int</span></dt><dd><p>Number of radial distance bins.</p>
+</dd>
+<dt>maximum_pairs<span class="classifier">int</span></dt><dd><p>Number of Monte Carlo sampled pairs used for estimation.</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>matplotlib.figure.Figure</dt><dd><p>Figure containing the overlaid plot of all g_ij(r) curves.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id16">
+<h3>Extra Parameters<a class="headerlink" href="#id16" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>show<span class="classifier">bool</span></dt><dd><p>Whether to display the plot after creation.</p>
+</dd>
+<dt>save_as<span class="classifier">str, optional</span></dt><dd><p>If provided, save the figure to this path.</p>
+</dd>
+<dt>figure_size<span class="classifier">tuple, optional</span></dt><dd><p>Size of the figure in inches.</p>
+</dd>
+<dt>tight_layout<span class="classifier">bool, default=True</span></dt><dd><p>Whether to use tight layout for the figure.</p>
+</dd>
+<dt>axes<span class="classifier">matplotlib.axes.Axes, optional</span></dt><dd><p>Axes to draw on. If None, a new figure+axes are created.</p>
+</dd>
+<dt>xscale<span class="classifier">str, optional</span></dt><dd><p>X-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>yscale<span class="classifier">str, optional</span></dt><dd><p>Y-axis scale type (e.g., ‘linear’, ‘log’).</p>
+</dd>
+<dt>xlim<span class="classifier">tuple, optional</span></dt><dd><p>X-axis limits as (min, max).</p>
+</dd>
+<dt>ylim<span class="classifier">tuple, optional</span></dt><dd><p>Y-axis limits as (min, max).</p>
+</dd>
+<dt>style<span class="classifier">str, default=plot_style</span></dt><dd><p>Matplotlib style to use for the plot.</p>
+</dd>
+<dt><a href="#id17"><span class="problematic" id="id18">**</span></a>kwargs</dt><dd><p>Additional keyword arguments to pass to the plotting function.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Figure</strong> – The figure with the market prices plot.</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p>matplotlib.figure.Figure</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-PackLab.monte_carlo.estimator">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.estimator.PartialGEstimator">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PartialGEstimator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_sampler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/estimator.html#PartialGEstimator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.estimator.PartialGEstimator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Monte Carlo estimator for partial g_ij(r) by repeatedly running RSA and aggregating g_ij.</p>
+<p>This class does not cache RSA simulators or results.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.estimator.PartialGEstimator.estimate">
+<span class="sig-name descname"><span class="pre">estimate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_sample</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/estimator.html#PartialGEstimator.estimate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.estimator.PartialGEstimator.estimate" title="Link to this definition">#</a></dt>
+<dd><p>Run n_sample independent simulations and compute mean and standard deviation of g_ij(r).</p>
+<p>Returns
+- centers: (B,)
+- mean_g: (K, K, B)
+- std_g: (K, K, B)  (sample standard deviation, ddof=1 when n_sample &gt; 1)</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -490,7 +1694,136 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backtester">BackTester</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PackLab.analytical.distributions">Analytical</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DeltaRadiusDistribution"><code class="docutils literal notranslate"><span class="pre">DeltaRadiusDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DeltaRadiusDistribution.radius"><code class="docutils literal notranslate"><span class="pre">DeltaRadiusDistribution.radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DeltaRadiusDistribution.to_bins"><code class="docutils literal notranslate"><span class="pre">DeltaRadiusDistribution.to_bins()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.UniformRadiusDistribution"><code class="docutils literal notranslate"><span class="pre">UniformRadiusDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.UniformRadiusDistribution.radius_min"><code class="docutils literal notranslate"><span class="pre">UniformRadiusDistribution.radius_min</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.UniformRadiusDistribution.radius_max"><code class="docutils literal notranslate"><span class="pre">UniformRadiusDistribution.radius_max</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.UniformRadiusDistribution.number_of_bins"><code class="docutils literal notranslate"><span class="pre">UniformRadiusDistribution.number_of_bins</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.UniformRadiusDistribution.bin_spacing"><code class="docutils literal notranslate"><span class="pre">UniformRadiusDistribution.bin_spacing</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.UniformRadiusDistribution.to_bins"><code class="docutils literal notranslate"><span class="pre">UniformRadiusDistribution.to_bins()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.mean_radius"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.mean_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.standard_deviation"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.standard_deviation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.radius_min"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.radius_min</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.radius_max"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.radius_max</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.number_of_bins"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.number_of_bins</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.bin_spacing"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.bin_spacing</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.GaussianRadiusDistribution.to_bins"><code class="docutils literal notranslate"><span class="pre">GaussianRadiusDistribution.to_bins()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.median_radius"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.median_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.geometric_standard_deviation"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.geometric_standard_deviation</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.radius_min"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.radius_min</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.radius_max"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.radius_max</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.number_of_bins"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.number_of_bins</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.bin_spacing"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.bin_spacing</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.LogNormalRadiusDistribution.to_bins"><code class="docutils literal notranslate"><span class="pre">LogNormalRadiusDistribution.to_bins()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution.pdf"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution.pdf</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution.radius_min"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution.radius_min</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution.radius_max"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution.radius_max</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution.number_of_bins"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution.number_of_bins</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution.bin_spacing"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution.bin_spacing</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.CustomRadiusDistribution.to_bins"><code class="docutils literal notranslate"><span class="pre">CustomRadiusDistribution.to_bins()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution"><code class="docutils literal notranslate"><span class="pre">DiscreteRadiusDistribution</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution.particle_radii"><code class="docutils literal notranslate"><span class="pre">DiscreteRadiusDistribution.particle_radii</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution.number_fractions"><code class="docutils literal notranslate"><span class="pre">DiscreteRadiusDistribution.number_fractions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.distributions.DiscreteRadiusDistribution.to_bins"><code class="docutils literal notranslate"><span class="pre">DiscreteRadiusDistribution.to_bins()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain"><code class="docutils literal notranslate"><span class="pre">Domain</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.size"><code class="docutils literal notranslate"><span class="pre">Domain.size</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.particle_radii"><code class="docutils literal notranslate"><span class="pre">Domain.particle_radii</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.volume_fraction"><code class="docutils literal notranslate"><span class="pre">Domain.volume_fraction</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.number_fractions"><code class="docutils literal notranslate"><span class="pre">Domain.number_fractions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.rounding_mode"><code class="docutils literal notranslate"><span class="pre">Domain.rounding_mode</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.volume"><code class="docutils literal notranslate"><span class="pre">Domain.volume</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.particle_volumes"><code class="docutils literal notranslate"><span class="pre">Domain.particle_volumes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.total_particle_volume"><code class="docutils literal notranslate"><span class="pre">Domain.total_particle_volume</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.mean_particle_volume_number_weighted"><code class="docutils literal notranslate"><span class="pre">Domain.mean_particle_volume_number_weighted</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.number_of_particles_total"><code class="docutils literal notranslate"><span class="pre">Domain.number_of_particles_total</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.number_of_particles_per_radius"><code class="docutils literal notranslate"><span class="pre">Domain.number_of_particles_per_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.particle_densities_per_radius"><code class="docutils literal notranslate"><span class="pre">Domain.particle_densities_per_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.particle_density_total"><code class="docutils literal notranslate"><span class="pre">Domain.particle_density_total</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.volume_fraction_per_radius"><code class="docutils literal notranslate"><span class="pre">Domain.volume_fraction_per_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.sample_particle_radii"><code class="docutils literal notranslate"><span class="pre">Domain.sample_particle_radii()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.print_bins"><code class="docutils literal notranslate"><span class="pre">Domain.print_bins()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.domain.Domain.plot_radius_distribution"><code class="docutils literal notranslate"><span class="pre">Domain.plot_radius_distribution()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.epsilons"><code class="docutils literal notranslate"><span class="pre">Result.epsilons</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.R_ij"><code class="docutils literal notranslate"><span class="pre">Result.R_ij</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.S_ij"><code class="docutils literal notranslate"><span class="pre">Result.S_ij</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.A_i"><code class="docutils literal notranslate"><span class="pre">Result.A_i</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.B_i"><code class="docutils literal notranslate"><span class="pre">Result.B_i</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.D_ij"><code class="docutils literal notranslate"><span class="pre">Result.D_ij</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.Cpy"><code class="docutils literal notranslate"><span class="pre">Result.Cpy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.H"><code class="docutils literal notranslate"><span class="pre">Result.H</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.h"><code class="docutils literal notranslate"><span class="pre">Result.h</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.g"><code class="docutils literal notranslate"><span class="pre">Result.g</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.distances"><code class="docutils literal notranslate"><span class="pre">Result.distances</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.p"><code class="docutils literal notranslate"><span class="pre">Result.p</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.densities"><code class="docutils literal notranslate"><span class="pre">Result.densities</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.radii"><code class="docutils literal notranslate"><span class="pre">Result.radii</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Result.plot_pair_correlation"><code class="docutils literal notranslate"><span class="pre">Result.plot_pair_correlation()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver"><code class="docutils literal notranslate"><span class="pre">Solver</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.get_epsilons"><code class="docutils literal notranslate"><span class="pre">Solver.get_epsilons()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.get_parameters"><code class="docutils literal notranslate"><span class="pre">Solver.get_parameters()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.get_Cpy_"><code class="docutils literal notranslate"><span class="pre">Solver.get_Cpy_()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.get_Cpy"><code class="docutils literal notranslate"><span class="pre">Solver.get_Cpy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.solve_H_from_C_batch"><code class="docutils literal notranslate"><span class="pre">Solver.solve_H_from_C_batch()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.get_radial_fourier_of_H"><code class="docutils literal notranslate"><span class="pre">Solver.get_radial_fourier_of_H()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.compute"><code class="docutils literal notranslate"><span class="pre">Solver.compute()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.analytical.solver.Solver.debug_Cpy_units"><code class="docutils literal notranslate"><span class="pre">Solver.debug_Cpy_units()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PackLab.monte_carlo.simulator">Monte Carlo</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator"><code class="docutils literal notranslate"><span class="pre">Simulator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator.domain"><code class="docutils literal notranslate"><span class="pre">Simulator.domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator.run"><code class="docutils literal notranslate"><span class="pre">Simulator.run()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator.sphere_configuration"><code class="docutils literal notranslate"><span class="pre">Simulator.sphere_configuration</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.positions"><code class="docutils literal notranslate"><span class="pre">Result.positions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.radii"><code class="docutils literal notranslate"><span class="pre">Result.radii</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.domain"><code class="docutils literal notranslate"><span class="pre">Result.domain</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.statistics"><code class="docutils literal notranslate"><span class="pre">Result.statistics</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.compute_partial_pair_correlation_function"><code class="docutils literal notranslate"><span class="pre">Result.compute_partial_pair_correlation_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.partial_volume_fractions"><code class="docutils literal notranslate"><span class="pre">Result.partial_volume_fractions</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.partial_volumes"><code class="docutils literal notranslate"><span class="pre">Result.partial_volumes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.compute_pair_correlation_function"><code class="docutils literal notranslate"><span class="pre">Result.compute_pair_correlation_function()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.pair_correlation_centers"><code class="docutils literal notranslate"><span class="pre">Result.pair_correlation_centers</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.pair_correlation_values"><code class="docutils literal notranslate"><span class="pre">Result.pair_correlation_values</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.plot_centers_3d"><code class="docutils literal notranslate"><span class="pre">Result.plot_centers_3d()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.plot_radius_distribution"><code class="docutils literal notranslate"><span class="pre">Result.plot_radius_distribution()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.plot_slice_2d"><code class="docutils literal notranslate"><span class="pre">Result.plot_slice_2d()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.plot_pair_correlation"><code class="docutils literal notranslate"><span class="pre">Result.plot_pair_correlation()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.estimator.PartialGEstimator"><code class="docutils literal notranslate"><span class="pre">PartialGEstimator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.estimator.PartialGEstimator.estimate"><code class="docutils literal notranslate"><span class="pre">PartialGEstimator.estimate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

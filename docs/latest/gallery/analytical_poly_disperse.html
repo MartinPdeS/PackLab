@@ -509,10 +509,9 @@ each species pair <span class="math notranslate nohighlight">\((i, j)\)</span>.<
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.analytical</span><span class="w"> </span><span class="kn">import</span> <span class="n">PercusYevickSolver</span><span class="p">,</span> <span class="n">PolydisperseDomain</span><span class="p">,</span> <span class="n">GaussianRadiusDistribution</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">analytical</span>
 
-
-<span class="n">distribution</span> <span class="o">=</span> <span class="n">GaussianRadiusDistribution</span><span class="p">(</span>
+<span class="n">distribution</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">GaussianRadiusDistribution</span><span class="p">(</span>
     <span class="n">mean_radius</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
     <span class="n">standard_deviation</span><span class="o">=</span><span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
     <span class="n">radius_min</span><span class="o">=</span><span class="mf">0.7</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
@@ -523,7 +522,7 @@ each species pair <span class="math notranslate nohighlight">\((i, j)\)</span>.<
 
 <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">to_bins</span><span class="p">()</span>
 
-<span class="n">domain</span> <span class="o">=</span> <span class="n">PolydisperseDomain</span><span class="p">(</span>
+<span class="n">domain</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span>
     <span class="n">size</span><span class="o">=</span><span class="mi">100</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
     <span class="n">particle_radii</span><span class="o">=</span><span class="n">particle_radii</span><span class="p">,</span>
     <span class="n">volume_fraction</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
@@ -539,7 +538,7 @@ each species pair <span class="math notranslate nohighlight">\((i, j)\)</span>.<
 <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p_max</span><span class="p">,</span> <span class="mi">5_000</span><span class="p">)</span>
 
 
-<span class="n">solver</span> <span class="o">=</span> <span class="n">PercusYevickSolver</span><span class="p">(</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">Solver</span><span class="p">(</span>
     <span class="n">densities</span><span class="o">=</span><span class="n">domain</span><span class="o">.</span><span class="n">particle_densities_per_radius</span><span class="p">,</span>
     <span class="n">radii</span><span class="o">=</span><span class="n">domain</span><span class="o">.</span><span class="n">particle_radii</span><span class="p">,</span>
     <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
@@ -552,7 +551,7 @@ each species pair <span class="math notranslate nohighlight">\((i, j)\)</span>.<
 <span class="n">result</span><span class="o">.</span><span class="n">plot_pair_correlation</span><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.438 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.180 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-analytical-poly-disperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/27ae0a34423dfb2b75cc2766c013fdf4/analytical_poly_disperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">analytical_poly_disperse.ipynb</span></code></a></p>

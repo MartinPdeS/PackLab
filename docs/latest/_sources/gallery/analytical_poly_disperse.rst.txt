@@ -36,7 +36,7 @@ The example covers the following steps:
 The main output is a figure showing all pair correlations :math:`g_{ij}(r)` for
 each species pair :math:`(i, j)`.
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-64
+.. GENERATED FROM PYTHON SOURCE LINES 21-63
 
 
 
@@ -82,10 +82,9 @@ each species pair :math:`(i, j)`.
 
     import numpy as np
     from TypedUnit import ureg
-    from PackLab.analytical import PercusYevickSolver, PolydisperseDomain, GaussianRadiusDistribution
+    from PackLab import analytical
 
-
-    distribution = GaussianRadiusDistribution(
+    distribution = analytical.GaussianRadiusDistribution(
         mean_radius=1.5 * ureg.micrometer,
         standard_deviation=0.2 * ureg.micrometer,
         radius_min=0.7 * ureg.micrometer,
@@ -96,7 +95,7 @@ each species pair :math:`(i, j)`.
 
     particle_radii, number_fractions = distribution.to_bins()
 
-    domain = PolydisperseDomain(
+    domain = analytical.Domain(
         size=100 * ureg.micrometer,
         particle_radii=particle_radii,
         volume_fraction=0.2,
@@ -112,7 +111,7 @@ each species pair :math:`(i, j)`.
     p = np.linspace(0, p_max, 5_000)
 
 
-    solver = PercusYevickSolver(
+    solver = analytical.Solver(
         densities=domain.particle_densities_per_radius,
         radii=domain.particle_radii,
         p=p,
@@ -126,7 +125,7 @@ each species pair :math:`(i, j)`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.438 seconds)
+   **Total running time of the script:** (0 minutes 2.180 seconds)
 
 
 .. _sphx_glr_download_gallery_analytical_poly_disperse.py:

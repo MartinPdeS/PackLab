@@ -498,7 +498,8 @@ particles are rejected more often.</p>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">PackLab</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.monte_carlo</span><span class="w"> </span><span class="kn">import</span> <span class="n">Options</span><span class="p">,</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">DiscreteRadiusSampler</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.analytical</span><span class="w"> </span><span class="kn">import</span> <span class="n">PercusYevickSolver</span><span class="p">,</span> <span class="n">PolydisperseDomain</span>
+<span class="c1"># from PackLab.analytical import PercusYevickSolver, PolydisperseDomain</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">analytical</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.analytical.distributions</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiscreteRadiusDistribution</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 </pre></div>
@@ -553,7 +554,7 @@ The analytical domain uses Pint quantities.</p>
 
 <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">to_bins</span><span class="p">()</span>
 
-<span class="n">py_domain</span> <span class="o">=</span> <span class="n">PolydisperseDomain</span><span class="p">(</span>
+<span class="n">py_domain</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span>
     <span class="n">size</span><span class="o">=</span><span class="mi">100_000</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
     <span class="n">particle_radii</span><span class="o">=</span><span class="n">particle_radii</span><span class="p">,</span>
     <span class="n">volume_fraction</span><span class="o">=</span><span class="mf">0.24</span><span class="p">,</span>
@@ -564,7 +565,7 @@ The analytical domain uses Pint quantities.</p>
 <span class="n">p_max</span> <span class="o">=</span> <span class="mf">1e3</span> <span class="o">/</span> <span class="n">py_domain</span><span class="o">.</span><span class="n">particle_radii</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">p_max</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">30_000</span><span class="p">)</span>
 
-<span class="n">solver</span> <span class="o">=</span> <span class="n">PercusYevickSolver</span><span class="p">(</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">Solver</span><span class="p">(</span>
     <span class="n">densities</span><span class="o">=</span><span class="n">py_domain</span><span class="o">.</span><span class="n">particle_densities_per_radius</span><span class="p">,</span>
     <span class="n">radii</span><span class="o">=</span><span class="n">py_domain</span><span class="o">.</span><span class="n">particle_radii</span><span class="p">,</span>
     <span class="n">p</span><span class="o">=</span><span class="n">p</span><span class="p">,</span>
@@ -598,7 +599,7 @@ The analytical domain uses Pint quantities.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_monte_carlo_vs_analytical_001.png" srcset="../_images/sphx_glr_monte_carlo_vs_analytical_001.png" alt="Partial pair correlation: RSA vs Percus Yevick" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.072 seconds)</p>
+<img src="../_images/sphx_glr_monte_carlo_vs_analytical_001.png" srcset="../_images/sphx_glr_monte_carlo_vs_analytical_001.png" alt="Partial pair correlation: RSA vs Percus Yevick" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.883 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-monte-carlo-vs-analytical-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/24d8fecbb87a82b71f6161c6cf9527d6/monte_carlo_vs_analytical.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">monte_carlo_vs_analytical.ipynb</span></code></a></p>

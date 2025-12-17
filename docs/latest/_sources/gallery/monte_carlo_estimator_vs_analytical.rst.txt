@@ -38,7 +38,7 @@ The workflow is:
 3. Build the matching analytical polydisperse domain and solve Percus Yevick
 4. Plot Monte Carlo curves and overlay the analytical solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-34
+.. GENERATED FROM PYTHON SOURCE LINES 22-31
 
 .. code-block:: Python
 
@@ -47,11 +47,9 @@ The workflow is:
     import matplotlib.pyplot as plt
 
     import PackLab
-    from PackLab.monte_carlo import Options, Simulator, DiscreteRadiusSampler
-    from PackLab.analytical import PercusYevickSolver, PolydisperseDomain
-    from PackLab.analytical.distributions import DiscreteRadiusDistribution
-    from PackLab.monte_carlo.estimator import PartialGEstimator
     from TypedUnit import ureg
+    from PackLab import analytical
+    from PackLab import monte_carlo
 
 
 
@@ -60,14 +58,13 @@ The workflow is:
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 35-38
+.. GENERATED FROM PYTHON SOURCE LINES 32-35
 
 Monte Carlo RSA setup
 ---------------------
 We use a periodic cubic domain and a two radius discrete sampler.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-76
+.. GENERATED FROM PYTHON SOURCE LINES 35-73
 
 .. code-block:: Python
 
@@ -79,19 +76,19 @@ We use a periodic cubic domain and a two radius discrete sampler.
         use_periodic_boundaries=True,
     )
 
-    radius_sampler = DiscreteRadiusSampler(
+    radius_sampler = monte_carlo.DiscreteRadiusSampler(
         radii=[1.0, 2.0],
         weights=[0.5, 0.5],
     )
 
-    options = Options()
+    options = monte_carlo.Options()
     options.maximum_attempts = 2_500_000
     options.maximum_consecutive_rejections = 500_000
     options.target_packing_fraction = 0.24
     options.minimum_center_separation_addition = 0.0
     options.enforce_radii_distribution = True
 
-    rsa_simulator = Simulator(
+    rsa_simulator = monte_carlo.Simulator(
         domain=domain,
         radius_sampler=radius_sampler,
         options=options,
@@ -100,7 +97,7 @@ We use a periodic cubic domain and a two radius discrete sampler.
     result = rsa_simulator.run()
     result.statistics.print()
 
-    estimator = PartialGEstimator(
+    estimator = monte_carlo.PartialGEstimator(
         domain=domain,
         radius_sampler=radius_sampler,
         options=options,
@@ -116,26 +113,26 @@ We use a periodic cubic domain and a two radius discrete sampler.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-81
+.. GENERATED FROM PYTHON SOURCE LINES 74-78
 
 Analytical Percus Yevick setup
 ------------------------------
 We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 The analytical domain uses Pint quantities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-115
+.. GENERATED FROM PYTHON SOURCE LINES 78-112
 
 .. code-block:: Python
 
 
-    distribution = DiscreteRadiusDistribution(
+    distribution = analytical.distributions.DiscreteRadiusDistribution(
         particle_radii=[1.0, 2.0] * ureg.micrometer,
         number_fractions=[1.0, 1.0],
     )
 
     particle_radii, number_fractions = distribution.to_bins()
 
-    py_domain = PolydisperseDomain(
+    py_domain = analytical.Domain(
         size=100_000 * ureg.micrometer,
         particle_radii=particle_radii,
         volume_fraction=0.24,
@@ -146,7 +143,7 @@ The analytical domain uses Pint quantities.
     p_max = 1e3 / py_domain.particle_radii.min()
     p = np.linspace(0, p_max * 5, 30_000)
 
-    solver = PercusYevickSolver(
+    solver = analytical.Solver(
         densities=py_domain.particle_densities_per_radius,
         radii=py_domain.particle_radii,
         p=p,
@@ -168,13 +165,13 @@ The analytical domain uses Pint quantities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-119
+.. GENERATED FROM PYTHON SOURCE LINES 113-116
 
 Compare Monte Carlo and analytical g_ij(r)
------------------------------------------
+------------------------------------------
 We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-133
+.. GENERATED FROM PYTHON SOURCE LINES 116-130
 
 .. code-block:: Python
 
@@ -207,7 +204,7 @@ We plot all partial curves on the same axes and overlay the Percus Yevick result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 35.120 seconds)
+   **Total running time of the script:** (0 minutes 35.099 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_estimator_vs_analytical.py:

@@ -1,0 +1,958 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PackLab.analytical.distributions &#8212; PackLab  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=4340df76" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PackLab/analytical/distributions';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.0.13';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="../../../_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.0.13" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/thumbnail.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/thumbnail.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PackLab</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../theory.html">
+    Theoretical background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../code.html">
+    Source code
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../gallery/index.html">
+    Examples: Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../theory.html">
+    Theoretical background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../code.html">
+    Source code
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../gallery/index.html">
+    Examples: Tutorials
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">PackLab.analytical.distributions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for PackLab.analytical.distributions</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<span class="n">BinSpacing</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">]</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;DeltaRadiusDistribution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;UniformRadiusDistribution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GaussianRadiusDistribution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;LogNormalRadiusDistribution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CustomRadiusDistribution&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DiscreteRadiusDistribution&quot;</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_quantity_1d</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Best effort conversion to a 1D Pint quantity array (no unit changes).&quot;&quot;&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">value</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Expected a one dimensional quantity array.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_unit_reference</span><span class="p">(</span><span class="o">*</span><span class="n">candidates</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the first Pint unit found among candidates.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">candidate</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">candidate</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">candidate</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Could not infer units. Provide at least one Pint quantity parameter.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_make_bin_edges</span><span class="p">(</span>
+    <span class="n">radius_min</span><span class="p">,</span>
+    <span class="n">radius_max</span><span class="p">,</span>
+    <span class="n">number_of_bins</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">bin_spacing</span><span class="p">:</span> <span class="n">BinSpacing</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="k">if</span> <span class="n">number_of_bins</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_of_bins must be &gt;= 1.&quot;</span><span class="p">)</span>
+
+    <span class="n">unit_reference</span> <span class="o">=</span> <span class="n">_get_unit_reference</span><span class="p">(</span><span class="n">radius_min</span><span class="p">,</span> <span class="n">radius_max</span><span class="p">)</span>
+    <span class="n">radius_min</span> <span class="o">=</span> <span class="n">radius_min</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span>
+    <span class="n">radius_max</span> <span class="o">=</span> <span class="n">radius_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">radius_max</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;=</span> <span class="n">radius_min</span><span class="o">.</span><span class="n">magnitude</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;radius_max must be strictly larger than radius_min.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bin_spacing</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+        <span class="n">edges_magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">radius_min</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">radius_max</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">number_of_bins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">edges_magnitude</span> <span class="o">*</span> <span class="n">unit_reference</span>
+
+    <span class="k">if</span> <span class="n">bin_spacing</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">radius_min</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;radius_min must be &gt; 0 for log spacing.&quot;</span><span class="p">)</span>
+        <span class="n">edges_magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">radius_min</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">radius_max</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span>
+            <span class="n">number_of_bins</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">edges_magnitude</span> <span class="o">*</span> <span class="n">unit_reference</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;bin_spacing must be &#39;linear&#39; or &#39;log&#39;.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_edges_to_centers_and_widths</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">bin_spacing</span><span class="p">:</span> <span class="n">BinSpacing</span><span class="p">):</span>
+    <span class="n">unit_reference</span> <span class="o">=</span> <span class="n">edges</span><span class="o">.</span><span class="n">units</span>
+    <span class="n">edges_magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">edges</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bin_spacing</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
+        <span class="n">centers_magnitude</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">edges_magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">edges_magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">widths_magnitude</span> <span class="o">=</span> <span class="n">edges_magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">edges_magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">centers_magnitude</span> <span class="o">*</span> <span class="n">unit_reference</span><span class="p">,</span> <span class="n">widths_magnitude</span> <span class="o">*</span> <span class="n">unit_reference</span>
+
+    <span class="k">if</span> <span class="n">bin_spacing</span> <span class="o">==</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span>
+        <span class="n">centers_magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">edges_magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">edges_magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="n">widths_magnitude</span> <span class="o">=</span> <span class="n">edges_magnitude</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">edges_magnitude</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">centers_magnitude</span> <span class="o">*</span> <span class="n">unit_reference</span><span class="p">,</span> <span class="n">widths_magnitude</span> <span class="o">*</span> <span class="n">unit_reference</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;bin_spacing must be &#39;linear&#39; or &#39;log&#39;.&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_normalize_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">weights</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">weights</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">weights</span><span class="p">[</span><span class="n">weights</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">total</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Distribution produced zero total weight. Check parameters or range.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">weights</span> <span class="o">/</span> <span class="n">total</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RadiusDistribution</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for parametric particle radius distributions.</span>
+
+<span class="sd">    A distribution converts its parameters into a discrete mixture representation</span>
+<span class="sd">    suitable for solvers that operate on bins.</span>
+
+<span class="sd">    The discrete representation is:</span>
+<span class="sd">    - particle_radii: Pint array of bin centers</span>
+<span class="sd">    - number_fractions: float array that sums to 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Discretize the distribution into bin centers and number fractions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        particle_radii : object</span>
+<span class="sd">            Pint quantity array of bin centers, shape (number_of_bins,).</span>
+<span class="sd">        number_fractions : np.ndarray</span>
+<span class="sd">            Array of number fractions, shape (number_of_bins,).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+
+<div class="viewcode-block" id="DeltaRadiusDistribution">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.DeltaRadiusDistribution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DeltaRadiusDistribution</span><span class="p">(</span><span class="n">RadiusDistribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delta distribution (monodisperse).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    radius : object</span>
+<span class="sd">        The single radius value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">radius</span><span class="p">:</span> <span class="nb">object</span>
+
+<div class="viewcode-block" id="DeltaRadiusDistribution.to_bins">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.DeltaRadiusDistribution.to_bins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">particle_radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">])</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="UniformRadiusDistribution">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.UniformRadiusDistribution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UniformRadiusDistribution</span><span class="p">(</span><span class="n">RadiusDistribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Uniform distribution over a finite interval.</span>
+
+<span class="sd">    The probability mass is approximated by integrating a constant pdf over each bin,</span>
+<span class="sd">    which reduces to weights proportional to bin widths.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    radius_min : object</span>
+<span class="sd">        Lower bound of the support.</span>
+<span class="sd">    radius_max : object</span>
+<span class="sd">        Upper bound of the support.</span>
+<span class="sd">    number_of_bins : int</span>
+<span class="sd">        Number of bins.</span>
+<span class="sd">    bin_spacing : BinSpacing</span>
+<span class="sd">        &quot;linear&quot; or &quot;log&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">radius_min</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">radius_max</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">number_of_bins</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bin_spacing</span><span class="p">:</span> <span class="n">BinSpacing</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+
+<div class="viewcode-block" id="UniformRadiusDistribution.to_bins">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.UniformRadiusDistribution.to_bins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">_make_bin_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_bins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+        <span class="n">particle_radii</span><span class="p">,</span> <span class="n">bin_widths</span> <span class="o">=</span> <span class="n">_edges_to_centers_and_widths</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">bin_widths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">particle_radii</span><span class="o">.</span><span class="n">units</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">_normalize_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="GaussianRadiusDistribution">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.GaussianRadiusDistribution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GaussianRadiusDistribution</span><span class="p">(</span><span class="n">RadiusDistribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gaussian distribution truncated to a finite interval.</span>
+
+<span class="sd">    The number fractions are obtained by approximating probability mass in each bin as: weight_k = pdf(center_k) * width_k followed by normalization.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mean_radius : object</span>
+<span class="sd">        Mean radius.</span>
+<span class="sd">    standard_deviation : object</span>
+<span class="sd">        Standard deviation.</span>
+<span class="sd">    radius_min : object</span>
+<span class="sd">        Lower bound of truncation.</span>
+<span class="sd">    radius_max : object</span>
+<span class="sd">        Upper bound of truncation.</span>
+<span class="sd">    number_of_bins : int</span>
+<span class="sd">        Number of bins.</span>
+<span class="sd">    bin_spacing : BinSpacing</span>
+<span class="sd">        &quot;linear&quot; or &quot;log&quot;.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">mean_radius</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">standard_deviation</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">radius_min</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">radius_max</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">number_of_bins</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bin_spacing</span><span class="p">:</span> <span class="n">BinSpacing</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+
+<div class="viewcode-block" id="GaussianRadiusDistribution.to_bins">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.GaussianRadiusDistribution.to_bins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">unit_reference</span> <span class="o">=</span> <span class="n">_get_unit_reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mean_radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard_deviation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">)</span>
+
+        <span class="n">mean_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_radius</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span>
+        <span class="n">standard_deviation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">standard_deviation</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">standard_deviation</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;standard_deviation must be &gt; 0.&quot;</span><span class="p">)</span>
+
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">_make_bin_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_bins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+        <span class="n">particle_radii</span><span class="p">,</span> <span class="n">bin_widths</span> <span class="o">=</span> <span class="n">_edges_to_centers_and_widths</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">particle_radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">mean_radius</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">standard_deviation</span><span class="o">.</span><span class="n">magnitude</span>
+
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">pdf</span> <span class="o">*</span> <span class="n">bin_widths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">_normalize_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="LogNormalRadiusDistribution">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.LogNormalRadiusDistribution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LogNormalRadiusDistribution</span><span class="p">(</span><span class="n">RadiusDistribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Log normal distribution truncated to a finite interval.</span>
+
+<span class="sd">    Parameterization uses median radius and geometric standard deviation.</span>
+
+<span class="sd">    The pdf is evaluated in a dimensionless log space using magnitudes expressed</span>
+<span class="sd">    in a consistent unit (the unit of median_radius).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    median_radius : object</span>
+<span class="sd">        Median radius.</span>
+<span class="sd">    geometric_standard_deviation : object</span>
+<span class="sd">        Geometric standard deviation (must be &gt; 1).</span>
+<span class="sd">    radius_min : object</span>
+<span class="sd">        Lower bound of truncation.</span>
+<span class="sd">    radius_max : object</span>
+<span class="sd">        Upper bound of truncation.</span>
+<span class="sd">    number_of_bins : int</span>
+<span class="sd">        Number of bins.</span>
+<span class="sd">    bin_spacing : BinSpacing</span>
+<span class="sd">        &quot;linear&quot; or &quot;log&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">median_radius</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">geometric_standard_deviation</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">radius_min</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">radius_max</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">number_of_bins</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bin_spacing</span><span class="p">:</span> <span class="n">BinSpacing</span> <span class="o">=</span> <span class="s2">&quot;log&quot;</span>
+
+<div class="viewcode-block" id="LogNormalRadiusDistribution.to_bins">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.LogNormalRadiusDistribution.to_bins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">unit_reference</span> <span class="o">=</span> <span class="n">_get_unit_reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">median_radius</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">)</span>
+
+        <span class="n">median_radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">median_radius</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span>
+        <span class="n">geometric_standard_deviation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometric_standard_deviation</span>
+
+        <span class="k">if</span> <span class="n">geometric_standard_deviation</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;geometric_standard_deviation must be &gt; 0.&quot;</span><span class="p">)</span>
+
+        <span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">geometric_standard_deviation</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">sigma</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;geometric_standard_deviation must be &gt; 1 to represent a non degenerate distribution.&quot;</span><span class="p">)</span>
+
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">_make_bin_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_bins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+        <span class="n">particle_radii</span><span class="p">,</span> <span class="n">bin_widths</span> <span class="o">=</span> <span class="n">_edges_to_centers_and_widths</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">particle_radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">median_radius</span><span class="o">.</span><span class="n">magnitude</span>
+
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Log normal requires strictly positive radii and median_radius.&quot;</span><span class="p">)</span>
+
+        <span class="n">mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">pdf</span> <span class="o">*</span> <span class="n">bin_widths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">_normalize_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="CustomRadiusDistribution">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.CustomRadiusDistribution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CustomRadiusDistribution</span><span class="p">(</span><span class="n">RadiusDistribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;User defined pdf over a finite interval.</span>
+
+<span class="sd">    The callable is evaluated at bin centers in magnitude space, expressed in the</span>
+<span class="sd">    unit of radius_min. Probability mass is approximated as: weight_k = pdf(center_k) * width_k then normalized.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pdf : Callable[[np.ndarray], np.ndarray]</span>
+<span class="sd">        User defined probability density function. Accepts and returns arrays of shape (number_of_bins,).</span>
+<span class="sd">    radius_min : object</span>
+<span class="sd">        Lower bound of the support.</span>
+<span class="sd">    radius_max : object</span>
+<span class="sd">        Upper bound of the support.</span>
+<span class="sd">    number_of_bins : int</span>
+<span class="sd">        Number of bins.</span>
+<span class="sd">    bin_spacing : BinSpacing</span>
+<span class="sd">        &quot;linear&quot; or &quot;log&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">pdf</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
+    <span class="n">radius_min</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">radius_max</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">number_of_bins</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">bin_spacing</span><span class="p">:</span> <span class="n">BinSpacing</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+
+<div class="viewcode-block" id="CustomRadiusDistribution.to_bins">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.CustomRadiusDistribution.to_bins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">unit_reference</span> <span class="o">=</span> <span class="n">_get_unit_reference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">)</span>
+
+        <span class="n">edges</span> <span class="o">=</span> <span class="n">_make_bin_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">radius_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">radius_max</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_bins</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+        <span class="n">particle_radii</span><span class="p">,</span> <span class="n">bin_widths</span> <span class="o">=</span> <span class="n">_edges_to_centers_and_widths</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_spacing</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">particle_radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">pdf_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pdf_values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Custom pdf must return an array with the same shape as its input.&quot;</span><span class="p">)</span>
+
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">pdf_values</span> <span class="o">*</span> <span class="n">bin_widths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit_reference</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">_normalize_weights</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_polydisperse_domain_from_distribution</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">domain_class</span><span class="p">,</span>
+    <span class="n">size</span><span class="p">,</span>
+    <span class="n">volume_fraction</span><span class="p">,</span>
+    <span class="n">radius_distribution</span><span class="p">:</span> <span class="n">RadiusDistribution</span><span class="p">,</span>
+    <span class="n">rounding_mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;floor&quot;</span><span class="p">,</span> <span class="s2">&quot;round&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;floor&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convenience helper to create a domain instance from a RadiusDistribution.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    domain_class : Callable</span>
+<span class="sd">        Domain class constructor.</span>
+<span class="sd">    size : object</span>
+<span class="sd">        Domain size.</span>
+<span class="sd">    volume_fraction : float</span>
+<span class="sd">        Target volume fraction.</span>
+<span class="sd">    radius_distribution : RadiusDistribution</span>
+<span class="sd">        Particle radius distribution.</span>
+<span class="sd">    rounding_mode : Literal[&quot;floor&quot;, &quot;round&quot;]</span>
+<span class="sd">        Rounding mode for number of particles calculation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">radius_distribution</span><span class="o">.</span><span class="n">to_bins</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">domain_class</span><span class="p">(</span>
+        <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+        <span class="n">particle_radii</span><span class="o">=</span><span class="n">particle_radii</span><span class="p">,</span>
+        <span class="n">volume_fraction</span><span class="o">=</span><span class="n">volume_fraction</span><span class="p">,</span>
+        <span class="n">number_fractions</span><span class="o">=</span><span class="n">number_fractions</span><span class="p">,</span>
+        <span class="n">rounding_mode</span><span class="o">=</span><span class="n">rounding_mode</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="DiscreteRadiusDistribution">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.DiscreteRadiusDistribution">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DiscreteRadiusDistribution</span><span class="p">(</span><span class="n">RadiusDistribution</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Explicit discrete radius distribution.</span>
+
+<span class="sd">    This distribution is already discretized: the user provides bin centers and</span>
+<span class="sd">    associated probability masses. The class validates and normalizes the masses.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    particle_radii : object</span>
+<span class="sd">        Pint quantity array of bin centers.</span>
+<span class="sd">    number_fractions : np.ndarray</span>
+<span class="sd">        Array of number fractions (not necessarily normalized).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">particle_radii</span><span class="p">:</span> <span class="nb">object</span>
+    <span class="n">number_fractions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+
+<div class="viewcode-block" id="DiscreteRadiusDistribution.to_bins">
+<a class="viewcode-back" href="../../../code.html#PackLab.analytical.distributions.DiscreteRadiusDistribution.to_bins">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">particle_radii</span> <span class="o">=</span> <span class="n">_as_quantity_1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">particle_radii</span><span class="p">)</span>
+
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_fractions</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">number_fractions</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;number_fractions must be a one dimensional array.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">particle_radii</span><span class="o">.</span><span class="n">magnitude</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">number_fractions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;particle_radii and number_fractions must have the same length.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">number_fractions</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Discrete distribution must contain at least one radius value.&quot;</span><span class="p">)</span>
+
+        <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">_normalize_weights</span><span class="p">(</span><span class="n">number_fractions</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

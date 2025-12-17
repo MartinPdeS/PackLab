@@ -488,33 +488,33 @@ Random Sequential Addition (RSA) simulation in three dimensions.</p>
 <li><p>Visualize the resulting configuration and pair correlation function</p></li>
 </ol>
 <p>This is the recommended starting point when learning how to use PackLab.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.monte_carlo</span><span class="w"> </span><span class="kn">import</span> <span class="n">Domain</span><span class="p">,</span> <span class="n">Options</span><span class="p">,</span> <span class="n">Simulator</span><span class="p">,</span> <span class="n">DiscreteRadiusSampler</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">monte_carlo</span>
 </pre></div>
 </div>
 <section id="simulation-domain">
 <h2>Simulation domain<a class="headerlink" href="#simulation-domain" title="Link to this heading">#</a></h2>
 <p>The domain defines the physical volume of the simulation.
 Here we use periodic boundary conditions on a cubic box.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span> <span class="o">=</span> <span class="n">Domain</span><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span>
     <span class="n">length_x</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
     <span class="n">length_y</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
     <span class="n">length_z</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
     <span class="n">use_periodic_boundaries</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="n">radius_sampler</span> <span class="o">=</span> <span class="n">DiscreteRadiusSampler</span><span class="p">(</span>
+<span class="n">radius_sampler</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">DiscreteRadiusSampler</span><span class="p">(</span>
     <span class="n">radii</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
     <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span>
 <span class="p">)</span>
 
-<span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+<span class="n">options</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
 <span class="n">options</span><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">123</span>
 <span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span> <span class="o">=</span> <span class="mi">2_500_000</span>
 <span class="n">options</span><span class="o">.</span><span class="n">maximum_consecutive_rejections</span> <span class="o">=</span> <span class="mi">50_000</span>
 <span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span> <span class="o">=</span> <span class="mf">0.50</span>
 <span class="n">options</span><span class="o">.</span><span class="n">minimum_center_separation_addition</span> <span class="o">=</span> <span class="mf">0.0</span>
 
-<span class="n">rsa_simulator</span> <span class="o">=</span> <span class="n">Simulator</span><span class="p">(</span>
+<span class="n">rsa_simulator</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
     <span class="n">radius_sampler</span><span class="o">=</span><span class="n">radius_sampler</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="n">options</span>
@@ -547,7 +547,7 @@ Here we use periodic boundary conditions on a cubic box.</p>
 &lt;Figure size 800x500 with 1 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.216 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.187 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-monte-carlo-poly-disperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/da91044f6184ebc6bb8a280b9a985215/monte_carlo_poly_disperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">monte_carlo_poly_disperse.ipynb</span></code></a></p>

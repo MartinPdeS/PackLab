@@ -24,12 +24,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 import PackLab
-from PackLab.monte_carlo import Options, Simulator, DiscreteRadiusSampler
-from PackLab.analytical import PercusYevickSolver, PolydisperseDomain
-from PackLab.analytical.distributions import DiscreteRadiusDistribution
-from PackLab.monte_carlo.estimator import PartialGEstimator
 from TypedUnit import ureg
-
+from PackLab import analytical
+from PackLab import monte_carlo
 
 # %%
 # Monte Carlo RSA setup
@@ -43,19 +40,19 @@ domain = PackLab.monte_carlo.Domain(
     use_periodic_boundaries=True,
 )
 
-radius_sampler = DiscreteRadiusSampler(
+radius_sampler = monte_carlo.DiscreteRadiusSampler(
     radii=[1.0, 2.0],
     weights=[0.5, 0.5],
 )
 
-options = Options()
+options = monte_carlo.Options()
 options.maximum_attempts = 2_500_000
 options.maximum_consecutive_rejections = 500_000
 options.target_packing_fraction = 0.24
 options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
-rsa_simulator = Simulator(
+rsa_simulator = monte_carlo.Simulator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options,
@@ -64,7 +61,7 @@ rsa_simulator = Simulator(
 result = rsa_simulator.run()
 result.statistics.print()
 
-estimator = PartialGEstimator(
+estimator = monte_carlo.PartialGEstimator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options,
@@ -79,14 +76,14 @@ centers, mean_g, std_g = estimator.estimate(n_sample=200)
 # We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 # The analytical domain uses Pint quantities.
 
-distribution = DiscreteRadiusDistribution(
+distribution = analytical.distributions.DiscreteRadiusDistribution(
     particle_radii=[1.0, 2.0] * ureg.micrometer,
     number_fractions=[1.0, 1.0],
 )
 
 particle_radii, number_fractions = distribution.to_bins()
 
-py_domain = PolydisperseDomain(
+py_domain = analytical.Domain(
     size=100_000 * ureg.micrometer,
     particle_radii=particle_radii,
     volume_fraction=0.24,
@@ -97,7 +94,7 @@ py_domain = PolydisperseDomain(
 p_max = 1e3 / py_domain.particle_radii.min()
 p = np.linspace(0, p_max * 5, 30_000)
 
-solver = PercusYevickSolver(
+solver = analytical.Solver(
     densities=py_domain.particle_densities_per_radius,
     radii=py_domain.particle_radii,
     p=p,
@@ -114,7 +111,7 @@ py_result = solver.compute(distances=distances)
 
 # %%
 # Compare Monte Carlo and analytical g_ij(r)
-# -----------------------------------------
+# ------------------------------------------
 # We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 fig, ax = plt.subplots(1, 1)
 
