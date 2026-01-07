@@ -2,6 +2,7 @@ from typing import Optional, Tuple
 import numpy as np
 
 from PackLab.monte_carlo.simulator import Simulator
+from TypedUnit.units import ureg
 
 class PartialGEstimator:
     """
@@ -67,4 +68,4 @@ class PartialGEstimator:
             variance_g = np.zeros_like(mean_g, dtype=float)
 
         std_g = np.sqrt(variance_g)
-        return centers, mean_g, std_g
+        return centers * ureg.meter, mean_g, std_g
