@@ -6,12 +6,12 @@
 |------------------------------------ | -------: | -------: | -------: | -------: | ---------: | --------: |
 | PackLab/analytical.py               |      212 |      212 |       18 |        0 |      0.00% |     1-443 |
 | PackLab/analytical/distributions.py |      144 |      144 |       38 |        0 |      0.00% |     1-402 |
-| PackLab/analytical/domain.py        |      170 |      170 |       54 |        0 |      0.00% |     1-483 |
+| PackLab/analytical/domain.py        |      169 |      169 |       54 |        0 |      0.00% |     1-482 |
 | PackLab/analytical/solver.py        |      140 |      140 |       14 |        0 |      0.00% |     1-335 |
-| PackLab/monte\_carlo/estimator.py   |       36 |       30 |        8 |        0 |     13.64% |14-17, 28-70 |
-| PackLab/monte\_carlo/results.py     |      125 |       56 |       20 |        5 |     52.41% |58, 62, 66, 69, 73, 77, 95-121, 137-146, 170, 172, 182, 191-198, 204-206, 254-294 |
+| PackLab/monte\_carlo/estimator.py   |       37 |       30 |        8 |        0 |     15.56% |15-18, 29-71 |
+| PackLab/monte\_carlo/results.py     |      126 |       57 |       20 |        5 |     52.05% |58-59, 63, 67, 70, 74, 78, 96-122, 138-147, 171, 173, 183, 192-199, 205-207, 255-295 |
 | PackLab/monte\_carlo/utils.py       |       30 |       23 |        6 |        0 |     19.44% |     26-55 |
-| **TOTAL**                           |  **872** |  **775** |  **158** |    **5** | **10.10%** |           |
+| **TOTAL**                           |  **873** |  **775** |  **158** |    **5** | **10.18%** |           |
 
 1 file skipped due to complete coverage.
 
