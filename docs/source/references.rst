@@ -1,6 +1,0 @@
-:orphan:
-
-.. _references:
-
-References
-===========
