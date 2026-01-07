@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import Any, List, Tuple
-from TypedUnit import ureg
+from TypedUnit.units import ureg
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy import pi, sin, cos
 
 from MPSPlots import helper
-from TypedUnit import Dimensionless, Length
+from TypedUnit.units import Dimensionless, Length
 
 
 @dataclass(slots=True)

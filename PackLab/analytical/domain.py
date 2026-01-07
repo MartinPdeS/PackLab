@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Optional, Sequence, Literal
 import numpy as np
 from numpy import pi
-from TypedUnit import ureg
 
 from MPSPlots import helper
 from tabulate import tabulate

@@ -23,12 +23,10 @@ The workflow is:
 import numpy as np
 import matplotlib.pyplot as plt
 
-import PackLab
-from PackLab.monte_carlo import Options, Simulator, DiscreteRadiusSampler
-# from PackLab.analytical import PercusYevickSolver, PolydisperseDomain
+from PackLab import monte_carlo
 from PackLab import analytical
 from PackLab.analytical.distributions import DiscreteRadiusDistribution
-from TypedUnit import ureg
+from TypedUnit.units import ureg
 
 
 # %%
@@ -36,26 +34,26 @@ from TypedUnit import ureg
 # ---------------------
 # We use a periodic cubic domain and a two radius discrete sampler.
 
-domain = PackLab.monte_carlo.Domain(
-    length_x=40.0,
-    length_y=40.0,
-    length_z=40.0,
+domain = monte_carlo.Domain(
+    length_x=40.0 * ureg.micrometer,
+    length_y=40.0 * ureg.micrometer,
+    length_z=40.0 * ureg.micrometer,
     use_periodic_boundaries=True,
 )
 
-radius_sampler = DiscreteRadiusSampler(
-    radii=[1.0, 2.0],
+radius_sampler = monte_carlo.samplers.Discrete(
+    radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
 
-options = Options()
+options = monte_carlo.Options()
 options.maximum_attempts = 2_500_000
 options.maximum_consecutive_rejections = 500_000
 options.target_packing_fraction = 0.24
 options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
-rsa_simulator = Simulator(
+rsa_simulator = monte_carlo.Simulator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options,

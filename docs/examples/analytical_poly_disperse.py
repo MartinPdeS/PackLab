@@ -20,7 +20,7 @@ each species pair :math:`(i, j)`.
 """
 
 import numpy as np
-from TypedUnit import ureg
+from TypedUnit.units import ureg
 from PackLab import analytical
 
 distribution = analytical.GaussianRadiusDistribution(

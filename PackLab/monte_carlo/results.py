@@ -55,7 +55,8 @@ class Result():
         return self.binding.statistics
 
     def compute_partial_pair_correlation_function(self, **kwargs) -> None:
-        return self.binding.compute_partial_pair_correlation_function(**kwargs)
+        centers, g_ij = self.binding.compute_partial_pair_correlation_function(**kwargs)
+        return centers * ureg.meter, g_ij
 
     @property
     def partial_volume_fractions(self) -> np.ndarray:
