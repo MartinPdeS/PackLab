@@ -3,9 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from MPSPlots import helper
-
-from PackLab.monte_carlo.utils import _minimum_image_displacement
 from TypedUnit.units import ureg
+
+def _minimum_image_displacement(delta: np.ndarray, box_length: float) -> np.ndarray:
+    return delta - box_length * np.round(delta / box_length)
 
 
 class Result():

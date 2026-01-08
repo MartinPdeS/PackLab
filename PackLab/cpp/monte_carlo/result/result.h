@@ -28,10 +28,10 @@ computing total and partial pair correlation functions g(r) and g_ij(r).
 */
 class Result {
 public:
-    std::shared_ptr<SphereConfiguration> sphere_configuration;
     std::shared_ptr<Domain> domain;
-    Statistics statistics;
+    std::shared_ptr<SphereConfiguration> sphere_configuration;
     std::size_t number_of_classes;
+    Statistics statistics;
 
     std::vector<double> partial_volume_fractions;
     std::vector<double> partial_volumes;
@@ -47,10 +47,10 @@ public:
     @param number_of_classes Total number of distinct classes.
     */
     Result(const std::shared_ptr<SphereConfiguration>& sphere_configuration, const std::shared_ptr<Domain>& domain, Statistics statistics, std::size_t _number_of_classes)
-        : domain(domain),
-          number_of_classes(_number_of_classes),
-          sphere_configuration(sphere_configuration),
-          statistics(std::move(statistics))
+        :   domain(domain),
+            sphere_configuration(sphere_configuration),
+            number_of_classes(_number_of_classes),
+            statistics(std::move(statistics))
     {
         if (this->sphere_configuration->center_positions.size() != this->sphere_configuration->radii_values.size())
             throw std::invalid_argument("positions and radii must have same length.");
