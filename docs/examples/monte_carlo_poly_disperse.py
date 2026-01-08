@@ -49,8 +49,6 @@ rsa_simulator = monte_carlo.Simulator(
     options=options
 )
 
-rsa_simulator._cpp_run()
-
 result = rsa_simulator.run()
 
 result.statistics.print()

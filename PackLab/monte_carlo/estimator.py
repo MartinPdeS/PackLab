@@ -1,7 +1,7 @@
 from typing import Optional, Tuple
 import numpy as np
 
-from PackLab.monte_carlo.simulator import Simulator
+from PackLab.monte_carlo import Simulator
 from TypedUnit.units import ureg
 
 class PartialGEstimator:
