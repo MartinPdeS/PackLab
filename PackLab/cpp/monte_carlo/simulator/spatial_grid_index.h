@@ -11,12 +11,12 @@
 
 class SpatialGridIndex {
 public:
-    SpatialGridIndex(double cell_size, Domain domain_box)
+    SpatialGridIndex(double cell_size, std::shared_ptr<Domain> domain)
         : cell_size_value_(cell_size),
-          length_x_value_(domain_box.length_x),
-          length_y_value_(domain_box.length_y),
-          length_z_value_(domain_box.length_z),
-          use_periodic_boundaries(domain_box.use_periodic_boundaries)
+          length_x_value_(domain->length_x),
+          length_y_value_(domain->length_y),
+          length_z_value_(domain->length_z),
+          use_periodic_boundaries(domain->use_periodic_boundaries)
     {
         if (cell_size_value_ <= 0.0) {
             throw std::invalid_argument("cell_size must be positive.");

@@ -7,11 +7,11 @@
 #include <stdexcept>
 #include <string>
 
-#include "../utils/utils.h"
-#include "../statistics/statistics.h"
-#include "../domain/domain.h"
-#include "../rsa/spatial_grid_index.h"
-#include "../rsa/sphere_configuration.h"
+#include "monte_carlo/utils/utils.h"
+#include "monte_carlo/statistics/statistics.h"
+#include "monte_carlo/domain/domain.h"
+#include "monte_carlo/simulator/spatial_grid_index.h"
+#include "monte_carlo/simulator/sphere_configuration.h"
 
 
 struct RadialGrid {
@@ -21,65 +21,48 @@ struct RadialGrid {
     std::vector<double> shell_volumes;
 };
 
+
+#include <iostream>
+
 /*
 Result stores a completed RSA configuration along with utilities for
 computing total and partial pair correlation functions g(r) and g_ij(r).
 */
 class Result {
 public:
-    Domain domain;
-    std::size_t number_of_classes = 0;
+    std::shared_ptr<SphereConfiguration> sphere_configuration;
+    std::shared_ptr<Domain> domain;
+    Statistics statistics;
+    std::size_t number_of_classes;
+
     std::vector<double> partial_volume_fractions;
     std::vector<double> partial_volumes;
 
-    /*
-    Each particle is assigned a discrete class index in [0, number_of_classes-1].
-    This enables partial pair-correlation functions g_ij(r).
-    */
-    SphereConfiguration sphere_configuration;
-
     void compute_partial_sphere_volumes();
-
-
-    Statistics statistics;
-
-    Result() = default;
 
 
     /*
     Overload including class assignments for polydisperse systems.
 
     @param sphere_configuration Sphere configuration containing positions, radii, and classes.
-    @param domain Simulation domain.
+    @param domain Simulation domain
     @param number_of_classes Total number of distinct classes.
     */
-    Result(SphereConfiguration sphere_configuration, Domain domain, Statistics statistics, std::size_t _number_of_classes)
-        : domain(std::move(domain)),
+    Result(const std::shared_ptr<SphereConfiguration>& sphere_configuration, const std::shared_ptr<Domain>& domain, Statistics statistics, std::size_t _number_of_classes)
+        : domain(domain),
           number_of_classes(_number_of_classes),
-          sphere_configuration(std::move(sphere_configuration)),
+          sphere_configuration(sphere_configuration),
           statistics(std::move(statistics))
     {
-        if (this->sphere_configuration.center_positions.size() != this->sphere_configuration.radii_values.size())
+        if (this->sphere_configuration->center_positions.size() != this->sphere_configuration->radii_values.size())
             throw std::invalid_argument("positions and radii must have same length.");
 
-        if (!this->sphere_configuration.class_index_values.empty() && this->sphere_configuration.class_index_values.size() != this->sphere_configuration.center_positions.size())
+        if (!this->sphere_configuration->class_index_values.empty() && this->sphere_configuration->class_index_values.size() != this->sphere_configuration->center_positions.size())
             throw std::invalid_argument("classes must have same length as positions.");
 
         this->compute_partial_sphere_volumes();
 
     }
-
-    // --------------------- Accessors -------------------------
-
-    const std::vector<Vector3d>& particle_positions() const {
-        return this->sphere_configuration.center_positions;
-    }
-
-    const std::vector<double>& particle_radii() const {
-        return this->sphere_configuration.radii_values;
-    }
-
-    // --------------------- Total g(r) -------------------------
 
     /*
     Compute total pair correlation function g(r).
@@ -99,8 +82,6 @@ public:
         std::uint64_t random_seed,
         double grid_cell_size
     );
-
-    // ---------------- Partial g_ij(r) -------------------------
 
     /*
     Compute partial pair correlation g_ij(r) for class-labeled particles.
@@ -168,13 +149,12 @@ private:
 
     // ---------------- Utility methods ------------------------
 
-    Vector3d apply_minimum_image(Vector3d d, const Domain& domain) const;
+    Vector3d apply_minimum_image(Vector3d d) const;
 
     double sample_distance(
         std::size_t number_of_particles,
         const std::vector<Vector3d>& positions,
-        std::mt19937_64& rng,
-        const Domain& domain
+        std::mt19937_64& rng
     ) const;
 
 

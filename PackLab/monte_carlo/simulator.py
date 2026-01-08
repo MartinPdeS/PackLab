@@ -1,4 +1,4 @@
-from PackLab.binary.interface_rsa import Options, Simulator
+from PackLab.binary.interface_simulator import Options, Simulator
 from PackLab.binary.interface_domain import Domain
 from PackLab.binary.interface_radius_sampler import RadiusSampler
 
@@ -36,11 +36,6 @@ class Simulator(Simulator):
 
         result = Result(
             binding=binding,
-            domain=self.domain
-
         )
-
-        result.sphere_configuration = self.sphere_configuration
-
         return result
 

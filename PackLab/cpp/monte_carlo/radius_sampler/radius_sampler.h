@@ -6,7 +6,7 @@
 #include <functional>   // std::function
 #include <stdexcept>
 
-#include "../utils/utils.h"
+#include "monte_carlo/utils/utils.h"
 
 
 // -----------------------------------------------------------

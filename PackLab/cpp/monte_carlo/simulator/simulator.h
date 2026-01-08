@@ -6,23 +6,25 @@
 #include <cmath>      // for std::max
 #include <memory>     // for std::shared_ptr, std::unique_ptr
 
-#include "../radius_sampler/radius_sampler.h"
-#include "../utils/utils.h"
-#include "../statistics/statistics.h"
-#include "sphere_configuration.h"
-#include "spatial_grid_index.h"
-#include "../result/result.h"
-#include "../domain/domain.h"
+#include "monte_carlo/radius_sampler/radius_sampler.h"
+#include "monte_carlo/utils/utils.h"
+#include "monte_carlo/statistics/statistics.h"
+#include "monte_carlo/simulator/sphere_configuration.h"
+#include "monte_carlo/simulator/spatial_grid_index.h"
+#include "monte_carlo/result/result.h"
+#include "monte_carlo/domain/domain.h"
 
 class Simulator {
 public:
-    Domain domain;
+    std::shared_ptr<Domain> domain;
+    std::shared_ptr<SphereConfiguration> sphere_configuration;
+    // SphereConfiguration sphere_configuration;
     mutable Statistics statistics;
 
     Simulator(
-        Domain domain,
+        std::shared_ptr<Domain> domain,
         std::shared_ptr<RadiusSampler> radius_sampler,
-        Options options
+        std::shared_ptr<Options> options
     );
 
     /*
@@ -92,7 +94,7 @@ private:
 private:
 
     std::shared_ptr<RadiusSampler> radius_sampler;
-    Options options;
+    std::shared_ptr<Options> options;
 
     std::mt19937_64 random_generator;
 
@@ -100,7 +102,4 @@ private:
     bool spatial_grid_initialized = false;
 
     std::unique_ptr<SpatialGridIndex> spatial_grid_index;
-
-public:
-    SphereConfiguration sphere_configuration;
 };
