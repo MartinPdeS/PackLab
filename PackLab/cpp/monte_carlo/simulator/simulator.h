@@ -18,7 +18,6 @@ class Simulator {
 public:
     std::shared_ptr<Domain> domain;
     std::shared_ptr<SphereConfiguration> sphere_configuration;
-    // SphereConfiguration sphere_configuration;
     mutable Statistics statistics;
 
     Simulator(
