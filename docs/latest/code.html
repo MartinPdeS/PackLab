@@ -1310,40 +1310,11 @@ p: Fourier grid.</p>
 </dd></dl>
 
 </section>
-<section id="module-PackLab.monte_carlo.simulator">
-<span id="monte-carlo"></span><h2>Monte Carlo<a class="headerlink" href="#module-PackLab.monte_carlo.simulator" title="Link to this heading">#</a></h2>
+<section id="module-PackLab.monte_carlo.results">
+<span id="monte-carlo"></span><h2>Monte Carlo<a class="headerlink" href="#module-PackLab.monte_carlo.results" title="Link to this heading">#</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Simulator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_sampler</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">RadiusSampler</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/simulator.html#Simulator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulator</span></code></p>
-<p>Python convenience wrapper around the C++ RSA simulator.</p>
-<p>It creates the bound RandomSequentialAdditionSimulator, runs it, then returns an Result
-with computed statistics and plotting helpers.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PackLab.monte_carlo.results.Result" title="PackLab.monte_carlo.results.Result"><span class="pre">Result</span></a></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/simulator.html#Simulator.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator.run" title="Link to this definition">#</a></dt>
-<dd><p>Run the RSA simulation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The result of the simulation, including sphere positions, radii, statistics, and plotting helpers</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#PackLab.analytical.solver.Result" title="PackLab.analytical.solver.Result">Result</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.Simulator.sphere_configuration">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sphere_configuration</span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.Simulator.sphere_configuration" title="Link to this definition">#</a></dt>
-<dd><p>Current sphere configuration</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class" id="module-PackLab.monte_carlo.results">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result" title="Link to this definition">#</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#Result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.Result" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Output container for an RSA simulation run.</p>
 <p>Holds arrays plus domain metadata, computed statistics, and plotting helpers.</p>
@@ -1388,6 +1359,16 @@ with computed statistics and plotting helpers.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.sphere_configuration">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sphere_configuration</span></span><a class="headerlink" href="#PackLab.monte_carlo.results.Result.sphere_configuration" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.domain">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">domain</span></span><a class="headerlink" href="#PackLab.monte_carlo.results.Result.domain" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.results.Result.compute_partial_pair_correlation_function">
@@ -1774,16 +1755,13 @@ configuration, overlaying all (i, j) curves on a single axis.</p>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PackLab.monte_carlo.simulator">Monte Carlo</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator"><code class="docutils literal notranslate"><span class="pre">Simulator</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator.run"><code class="docutils literal notranslate"><span class="pre">Simulator.run()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.Simulator.sphere_configuration"><code class="docutils literal notranslate"><span class="pre">Simulator.sphere_configuration</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PackLab.monte_carlo.results">Monte Carlo</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result"><code class="docutils literal notranslate"><span class="pre">Result</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.positions"><code class="docutils literal notranslate"><span class="pre">Result.positions</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.radii"><code class="docutils literal notranslate"><span class="pre">Result.radii</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.statistics"><code class="docutils literal notranslate"><span class="pre">Result.statistics</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.sphere_configuration"><code class="docutils literal notranslate"><span class="pre">Result.sphere_configuration</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.domain"><code class="docutils literal notranslate"><span class="pre">Result.domain</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.compute_partial_pair_correlation_function"><code class="docutils literal notranslate"><span class="pre">Result.compute_partial_pair_correlation_function()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.partial_volume_fractions"><code class="docutils literal notranslate"><span class="pre">Result.partial_volume_fractions</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.Result.partial_volumes"><code class="docutils literal notranslate"><span class="pre">Result.partial_volumes</span></code></a></li>

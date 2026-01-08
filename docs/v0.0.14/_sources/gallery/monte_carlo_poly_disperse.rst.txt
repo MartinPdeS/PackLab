@@ -76,7 +76,7 @@ Here we use periodic boundary conditions on a cubic box.
     options.random_seed = 123
     options.maximum_attempts = 2_500_000
     options.maximum_consecutive_rejections = 50_000
-    options.target_packing_fraction = 0.50
+    options.target_packing_fraction = 0.3
     options.minimum_center_separation_addition = 0.0
 
     rsa_simulator = monte_carlo.Simulator(
@@ -109,7 +109,7 @@ Here we use periodic boundary conditions on a cubic box.
     *
 
       .. image-sg:: /gallery/images/sphx_glr_monte_carlo_poly_disperse_001.png
-         :alt: 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 292 spheres
+         :alt: 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 283 spheres
          :srcset: /gallery/images/sphx_glr_monte_carlo_poly_disperse_001.png
          :class: sphx-glr-multi-img
 
@@ -135,7 +135,7 @@ Here we use periodic boundary conditions on a cubic box.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.239 seconds)
+   **Total running time of the script:** (0 minutes 1.654 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_poly_disperse.py:

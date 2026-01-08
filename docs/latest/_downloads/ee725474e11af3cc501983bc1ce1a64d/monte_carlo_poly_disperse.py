@@ -40,7 +40,7 @@ options = monte_carlo.Options()
 options.random_seed = 123
 options.maximum_attempts = 2_500_000
 options.maximum_consecutive_rejections = 50_000
-options.target_packing_fraction = 0.50
+options.target_packing_fraction = 0.3
 options.minimum_center_separation_addition = 0.0
 
 rsa_simulator = monte_carlo.Simulator(
