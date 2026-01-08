@@ -101,6 +101,7 @@ add_subdirectory(PackLab/cpp/monte_carlo/domain)            # domain
 add_subdirectory(PackLab/cpp/monte_carlo/statistics)        # statistics
 add_subdirectory(PackLab/cpp/monte_carlo/radius_sampler)    # radius_sampler
 add_subdirectory(PackLab/cpp/monte_carlo/simulator)         # simulator
+add_subdirectory(PackLab/cpp/monte_carlo/estimator)         # estimator
 # ----------------- collect subdirectories --------------------
 
 get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)
