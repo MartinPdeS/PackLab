@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <string>
+#include <memory>
 
 #include "monte_carlo/utils/utils.h"
 #include "monte_carlo/statistics/statistics.h"
@@ -20,9 +21,6 @@ struct RadialGrid {
     std::vector<double> centers;
     std::vector<double> shell_volumes;
 };
-
-
-#include <iostream>
 
 /*
 Result stores a completed RSA configuration along with utilities for
