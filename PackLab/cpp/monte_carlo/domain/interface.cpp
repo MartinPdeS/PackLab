@@ -1,13 +1,13 @@
 #include "domain.h"
 
 #include <pybind11/pybind11.h>
-#include "utils/pint.h"
+#include "monte_carlo/utils/pint.h"
 
 namespace py = pybind11;
 
 
 PYBIND11_MODULE(interface_domain, module) {
-    py::class_<Domain> domain_cls(module, "Domain", py::dynamic_attr());
+    py::class_<Domain, std::shared_ptr<Domain>> domain_cls(module, "Domain", py::dynamic_attr());
 
     domain_cls
         .def(

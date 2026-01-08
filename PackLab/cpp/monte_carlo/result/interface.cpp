@@ -9,7 +9,7 @@ namespace py = pybind11;
 PYBIND11_MODULE(interface_result, module) {
     module.doc() = "Result class containing particle configuration and correlation functions";
 
-    py::class_<Result>(module, "Result")
+    py::class_<Result, std::shared_ptr<Result>>(module, "Result")
 
         // -----------------------
         // Property: positions (N,3)
@@ -17,7 +17,7 @@ PYBIND11_MODULE(interface_result, module) {
         .def_property_readonly(
             "positions",
             [](const Result& r) {
-                const auto& positions = r.particle_positions();
+                const auto& positions = r.sphere_configuration->center_positions;
                 py::array_t<double> array({positions.size(), (std::size_t)3});
                 auto buf = array.mutable_unchecked<2>();
                 for (std::size_t i = 0; i < positions.size(); ++i) {
@@ -35,13 +35,18 @@ PYBIND11_MODULE(interface_result, module) {
         // -----------------------
         .def_property_readonly(
             "radii",
-            [](const Result& r) {const auto& radii = r.particle_radii(); return py::array_t<double>(radii.size(), radii.data());},
+            [](const Result& r) {const auto& radii = r.sphere_configuration->radii_values; return py::array_t<double>(radii.size(), radii.data());},
             "Particle radii as a NumPy array of shape (N)."
         )
         .def_readonly(
             "statistics",
             &Result::statistics,
             "Statistics about the simulation."
+        )
+        .def_readonly(
+            "sphere_configuration",
+            &Result::sphere_configuration,
+            "Sphere configuration containing positions, radii, and classes."
         )
         .def_readonly(
             "partial_volume_fractions",
@@ -58,7 +63,7 @@ PYBIND11_MODULE(interface_result, module) {
         // -----------------------
         .def_property_readonly(
             "classes",
-            [](const Result& r) {const auto& classes = r.sphere_configuration.class_index_values; return py::array_t<int>(classes.size(), classes.data());},
+            [](const Result& r) {const auto& classes = r.sphere_configuration->class_index_values; return py::array_t<int>(classes.size(), classes.data());},
             "Particle class index per particle (shape = (N))."
         )
         .def_readonly(

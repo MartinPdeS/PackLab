@@ -5,7 +5,7 @@
 #include <stdexcept> // for std::invalid_argument
 #include <random> // for std::mt19937_64
 
-#include "../utils/utils.h"
+#include "monte_carlo/utils/utils.h"
 
 
 class Domain {

@@ -1,12 +1,12 @@
-// rsa.cpp
-#include "rsa.h"
+// simulator.cpp
+#include "simulator.h"
+#include <iostream>
 
-
-Simulator::Simulator(Domain _domain, std::shared_ptr<RadiusSampler> _radius_sampler, Options _options):
+Simulator::Simulator(std::shared_ptr<Domain> _domain, std::shared_ptr<RadiusSampler> _radius_sampler, std::shared_ptr<Options> _options):
     domain(std::move(_domain)),
     radius_sampler(std::move(_radius_sampler)),
-    options(_options),
-    random_generator(options.random_seed == 0 ? std::random_device{}() : options.random_seed),
+    options(std::move(_options)),
+    random_generator(options->random_seed == 0 ? std::random_device{}() : options->random_seed),
     spatial_grid_index(nullptr)
 {
     if (!radius_sampler) {
@@ -16,7 +16,8 @@ Simulator::Simulator(Domain _domain, std::shared_ptr<RadiusSampler> _radius_samp
 }
 
 void Simulator::reset() {
-    sphere_configuration = SphereConfiguration{};
+    // sphere_configuration = SphereConfiguration{};
+    sphere_configuration = std::make_shared<SphereConfiguration>();
     this->statistics = Statistics{};
 
     maximum_radius_observed = 0.0;
@@ -27,17 +28,17 @@ void Simulator::reset() {
 }
 
 bool Simulator::sphere_fits_inside_domain_if_walls(const Vector3d& center_position, double radius) const {
-    if (domain.use_periodic_boundaries)
+    if (domain->use_periodic_boundaries)
         return true;
 
-    const double padding = std::max(0.0, options.containment_padding);
+    const double padding = std::max(0.0, options->containment_padding);
     const double effective_radius = radius + padding;
     return (center_position.x >= effective_radius) &&
            (center_position.y >= effective_radius) &&
            (center_position.z >= effective_radius) &&
-           (center_position.x <= domain.length_x - effective_radius) &&
-           (center_position.y <= domain.length_y - effective_radius) &&
-           (center_position.z <= domain.length_z - effective_radius);
+           (center_position.x <= domain->length_x - effective_radius) &&
+           (center_position.y <= domain->length_y - effective_radius) &&
+           (center_position.z <= domain->length_z - effective_radius);
 }
 
 double Simulator::periodic_center_distance_squared(const Vector3d& a, const Vector3d& b) const {
@@ -45,9 +46,9 @@ double Simulator::periodic_center_distance_squared(const Vector3d& a, const Vect
     double dy = a.y - b.y;
     double dz = a.z - b.z;
 
-    dx = domain.minimum_image_displacement(dx, domain.length_x);
-    dy = domain.minimum_image_displacement(dy, domain.length_y);
-    dz = domain.minimum_image_displacement(dz, domain.length_z);
+    dx = domain->minimum_image_displacement(dx, domain->length_x);
+    dy = domain->minimum_image_displacement(dy, domain->length_y);
+    dz = domain->minimum_image_displacement(dz, domain->length_z);
 
     return dx * dx + dy * dy + dz * dz;
 }
@@ -60,15 +61,15 @@ double Simulator::nonperiodic_center_distance_squared(const Vector3d& a, const V
 }
 
 void Simulator::rebuild_grid_if_needed(double new_maximum_radius) {
-    if (options.spatial_grid_cell_size > 0.0) {
+    if (options->spatial_grid_cell_size > 0.0) {
         if (!spatial_grid_initialized) {
 
-            spatial_grid_index = std::make_unique<SpatialGridIndex>(options.spatial_grid_cell_size, domain);
+            spatial_grid_index = std::make_unique<SpatialGridIndex>(options->spatial_grid_cell_size, domain);
 
             spatial_grid_initialized = true;
 
-            for (std::size_t sphere_index = 0; sphere_index < sphere_configuration.center_positions.size(); ++sphere_index)
-                spatial_grid_index->insert_sphere(sphere_index, sphere_configuration.center_positions[sphere_index]);
+            for (std::size_t sphere_index = 0; sphere_index < sphere_configuration->center_positions.size(); ++sphere_index)
+                spatial_grid_index->insert_sphere(sphere_index, sphere_configuration->center_positions[sphere_index]);
 
         }
         return;
@@ -85,29 +86,29 @@ void Simulator::rebuild_grid_if_needed(double new_maximum_radius) {
         if (cell_size_candidate > previous_size * 1.25) {
             spatial_grid_index = std::make_unique<SpatialGridIndex>(cell_size_candidate, domain);
             spatial_grid_index->clear();
-            for (std::size_t sphere_index = 0; sphere_index < sphere_configuration.center_positions.size(); ++sphere_index) {
-                spatial_grid_index->insert_sphere(sphere_index, sphere_configuration.center_positions[sphere_index]);
+            for (std::size_t sphere_index = 0; sphere_index < sphere_configuration->center_positions.size(); ++sphere_index) {
+                spatial_grid_index->insert_sphere(sphere_index, sphere_configuration->center_positions[sphere_index]);
             }
         }
     }
 }
 
 bool Simulator::overlaps_any_existing_sphere(const Vector3d& center_position, double radius) const {
-    if (sphere_configuration.center_positions.empty())
+    if (sphere_configuration->center_positions.empty())
         return false;
 
-    const double extra_separation = std::max(0.0, options.minimum_center_separation_addition);
+    const double extra_separation = std::max(0.0, options->minimum_center_separation_addition);
 
     const auto neighbor_indices = spatial_grid_index->query_neighbor_sphere_indices(center_position);
 
     for (std::size_t neighbor_index : neighbor_indices) {
-        const Vector3d& neighbor_position = sphere_configuration.center_positions[neighbor_index];
-        const double neighbor_radius = sphere_configuration.radii_values[neighbor_index];
+        const Vector3d& neighbor_position = sphere_configuration->center_positions[neighbor_index];
+        const double neighbor_radius = sphere_configuration->radii_values[neighbor_index];
 
         const double required_distance = (radius + neighbor_radius + extra_separation);
         const double required_distance_squared = required_distance * required_distance;
 
-        const double actual_distance_squared = domain.use_periodic_boundaries
+        const double actual_distance_squared = domain->use_periodic_boundaries
             ? periodic_center_distance_squared(center_position, neighbor_position)
             : nonperiodic_center_distance_squared(center_position, neighbor_position);
 
@@ -119,6 +120,7 @@ bool Simulator::overlaps_any_existing_sphere(const Vector3d& center_position, do
     return false;
 }
 
+
 bool Simulator::attempt_single_insertion() {
     this->statistics.attempted_insertions += 1;
 
@@ -127,8 +129,8 @@ bool Simulator::attempt_single_insertion() {
     maximum_radius_observed = std::max(maximum_radius_observed, radius);
     rebuild_grid_if_needed(std::max(maximum_radius_observed, radius_sampler->maximum_possible_radius()));
 
-    const double margin = radius + std::max(0.0, options.containment_padding);
-    Vector3d proposed_center = domain.sample_uniform_position(random_generator, margin);
+    const double margin = radius + std::max(0.0, options->containment_padding);
+    Vector3d proposed_center = domain->sample_uniform_position(random_generator, margin);
 
     if (!sphere_fits_inside_domain_if_walls(proposed_center, radius)) {
         this->statistics.rejected_insertions += 1;
@@ -142,13 +144,14 @@ bool Simulator::attempt_single_insertion() {
         return false;
     }
 
-    proposed_center = domain.wrap_position_if_periodic(proposed_center);
+    proposed_center = domain->wrap_position_if_periodic(proposed_center);
 
-    const std::size_t new_index = sphere_configuration.center_positions.size();
-    sphere_configuration.center_positions.push_back(proposed_center);
-    sphere_configuration.radii_values.push_back(radius);
+    const std::size_t new_index = sphere_configuration->center_positions.size();
+    sphere_configuration->center_positions.push_back(proposed_center);
+
+    sphere_configuration->radii_values.push_back(radius);
     const int cls = radius_sampler->bin_index(radius);
-    sphere_configuration.class_index_values.push_back(cls);
+    sphere_configuration->class_index_values.push_back(cls);
 
     spatial_grid_index->insert_sphere(new_index, proposed_center);
 
@@ -156,12 +159,12 @@ bool Simulator::attempt_single_insertion() {
     this->statistics.accepted_insertions += 1;
     this->statistics.consecutive_rejections = 0;
 
-    this->statistics.sphere_count = sphere_configuration.radii_values.size();
+    this->statistics.sphere_count = sphere_configuration->radii_values.size();
 
-    this->statistics.packing_fraction_simulator = sphere_configuration.total_sphere_volume() / domain.volume;
+    this->statistics.packing_fraction_simulator = sphere_configuration->total_sphere_volume() / domain->volume;
 
     // update radius stats incrementally
-    const auto& radii = sphere_configuration.radii_values;
+    const auto& radii = sphere_configuration->radii_values;
     const double new_radius = radii.back();
 
     if (this->statistics.sphere_count == 1) {
@@ -188,8 +191,8 @@ bool Simulator::attempt_single_insertion_with_radius(double radius) {
     maximum_radius_observed = std::max(maximum_radius_observed, radius);
     rebuild_grid_if_needed(std::max(maximum_radius_observed, radius_sampler->maximum_possible_radius()));
 
-    const double margin = radius + std::max(0.0, options.containment_padding);
-    Vector3d proposed_center = domain.sample_uniform_position(random_generator, margin);
+    const double margin = radius + std::max(0.0, options->containment_padding);
+    Vector3d proposed_center = domain->sample_uniform_position(random_generator, margin);
 
     if (!sphere_fits_inside_domain_if_walls(proposed_center, radius)) {
         this->statistics.rejected_insertions += 1;
@@ -203,23 +206,23 @@ bool Simulator::attempt_single_insertion_with_radius(double radius) {
         return false;
     }
 
-    proposed_center = domain.wrap_position_if_periodic(proposed_center);
+    proposed_center = domain->wrap_position_if_periodic(proposed_center);
 
-    const std::size_t new_index = sphere_configuration.center_positions.size();
-    sphere_configuration.center_positions.push_back(proposed_center);
-    sphere_configuration.radii_values.push_back(radius);
+    const std::size_t new_index = sphere_configuration->center_positions.size();
+    sphere_configuration->center_positions.push_back(proposed_center);
+    sphere_configuration->radii_values.push_back(radius);
 
     const int cls = radius_sampler->bin_index(radius);
-    sphere_configuration.class_index_values.push_back(cls);
+    sphere_configuration->class_index_values.push_back(cls);
 
     spatial_grid_index->insert_sphere(new_index, proposed_center);
 
     this->statistics.accepted_insertions += 1;
     this->statistics.consecutive_rejections = 0;
 
-    this->statistics.sphere_count = sphere_configuration.radii_values.size();
+    this->statistics.sphere_count = sphere_configuration->radii_values.size();
     this->statistics.packing_fraction_simulator =
-        sphere_configuration.total_sphere_volume() / domain.volume;
+        sphere_configuration->total_sphere_volume() / domain->volume;
 
     return true;
 }
@@ -227,17 +230,17 @@ bool Simulator::attempt_single_insertion_with_radius(double radius) {
 Result Simulator::run() {
     bool placed_any = false;
 
-    for (std::size_t attempt_index = 0; attempt_index < options.maximum_attempts; ++attempt_index) {
-        if (options.maximum_spheres > 0 && sphere_configuration.radii_values.size() >= options.maximum_spheres)
+    for (std::size_t attempt_index = 0; attempt_index < options->maximum_attempts; ++attempt_index) {
+        if (options->maximum_spheres > 0 && sphere_configuration->radii_values.size() >= options->maximum_spheres)
             break;
 
-        if (options.target_packing_fraction > 0.0 && this->statistics.packing_fraction_simulator >= options.target_packing_fraction)
+        if (options->target_packing_fraction > 0.0 && this->statistics.packing_fraction_simulator >= options->target_packing_fraction)
             break;
 
-        if (options.maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options.maximum_consecutive_rejections)
+        if (options->maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options->maximum_consecutive_rejections)
             break;
 
-        if (!options.enforce_radii_distribution) {
+        if (!options->enforce_radii_distribution) {
             const bool accepted = this->attempt_single_insertion();
             placed_any = placed_any || accepted;
             continue;
@@ -247,13 +250,13 @@ Result Simulator::run() {
 
         bool accepted = false;
         while (!accepted) {
-            if (options.maximum_spheres > 0 && sphere_configuration.radii_values.size() >= options.maximum_spheres)
+            if (options->maximum_spheres > 0 && sphere_configuration->radii_values.size() >= options->maximum_spheres)
                 break;
 
-            if (options.target_packing_fraction > 0.0 && this->statistics.packing_fraction_simulator >= options.target_packing_fraction)
+            if (options->target_packing_fraction > 0.0 && this->statistics.packing_fraction_simulator >= options->target_packing_fraction)
                 break;
 
-            if (options.maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options.maximum_consecutive_rejections)
+            if (options->maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options->maximum_consecutive_rejections)
                 break;
 
             accepted = this->attempt_single_insertion_with_radius(radius);
@@ -261,7 +264,7 @@ Result Simulator::run() {
         }
     }
 
-    const auto& radii = sphere_configuration.radii_values;
+    const auto& radii = sphere_configuration->radii_values;
     if (!radii.empty()) {
         std::vector<double> radii_copy = radii;
         std::sort(radii_copy.begin(), radii_copy.end());
@@ -280,16 +283,16 @@ Result Simulator::run() {
         this->statistics.radius_std = std::sqrt(variance_sum / n);
 
         this->statistics.packing_fraction_geometry =
-            sphere_configuration.total_sphere_volume() / domain.volume;
+            sphere_configuration->total_sphere_volume() / this->domain->volume;
     }
 
     this->statistics.end_benchmark();
 
     Result result{
         this->sphere_configuration,
-        domain,
+        this->domain,
         this->statistics,
-        radius_sampler->number_of_bins()
+        this->radius_sampler->number_of_bins()
     };
 
     return result;

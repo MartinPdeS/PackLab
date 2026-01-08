@@ -14,9 +14,8 @@ class Result():
 
     Holds arrays plus domain metadata, computed statistics, and plotting helpers.
     """
-    def __init__(self, binding, domain):
+    def __init__(self, binding):
         self.binding = binding
-        self.domain = domain
 
     @property
     def positions(self) -> np.ndarray:
@@ -53,6 +52,14 @@ class Result():
             The simulation statistics.
         """
         return self.binding.statistics
+
+    @property
+    def sphere_configuration(self):
+        return self.binding.sphere_configuration
+
+    @property
+    def domain(self):
+        return self.binding.domain
 
     def compute_partial_pair_correlation_function(self, **kwargs) -> None:
         centers, g_ij = self.binding.compute_partial_pair_correlation_function(**kwargs)

@@ -43,6 +43,8 @@ else()
 endif()
 # --------------------- Platform-specific compiler and linker options --------------------
 
+# add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)
+
 # --------------------- Find dependencies and compile options --------------------
 find_package(OpenMP REQUIRED)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
@@ -93,12 +95,12 @@ message(STATUS "")
 # ----------------- logging build configuration --------------------
 
 # ----------------- collect subdirectories --------------------
-add_subdirectory(PackLab/cpp/utils)             # utils
-add_subdirectory(PackLab/cpp/result)            # result
-add_subdirectory(PackLab/cpp/domain)            # domain
-add_subdirectory(PackLab/cpp/statistics)        # statistics
-add_subdirectory(PackLab/cpp/radius_sampler)    # radius_sampler
-add_subdirectory(PackLab/cpp/rsa)               # rsa
+add_subdirectory(PackLab/cpp/monte_carlo/utils)             # utils
+add_subdirectory(PackLab/cpp/monte_carlo/result)            # result
+add_subdirectory(PackLab/cpp/monte_carlo/domain)            # domain
+add_subdirectory(PackLab/cpp/monte_carlo/statistics)        # statistics
+add_subdirectory(PackLab/cpp/monte_carlo/radius_sampler)    # radius_sampler
+add_subdirectory(PackLab/cpp/monte_carlo/simulator)         # simulator
 # ----------------- collect subdirectories --------------------
 
 get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)

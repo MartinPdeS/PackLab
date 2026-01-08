@@ -1,6 +1,6 @@
-# cpp/backtester/CMakeLists.txt
+# cpp/monte_carlo/simulator/CMakeLists.txt
 
-set(NAME "rsa")
+set(NAME "simulator")
 
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")

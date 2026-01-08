@@ -5,7 +5,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
 
-#include "utils/pint.h"
+#include "monte_carlo/utils/pint.h"
 
 namespace py = pybind11;
 
