@@ -4,12 +4,14 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
-static pybind11::array_t<double> vector3d_list_to_numpy(const std::vector<Vector3d>& values) {
-    const pybind11::ssize_t count = static_cast<pybind11::ssize_t>(values.size());
-    auto array = pybind11::array_t<double>({count, pybind11::ssize_t(3)});
+namespace py = pybind11;
+
+static py::array_t<double> vector3d_list_to_numpy(const std::vector<Vector3d>& values) {
+    const py::ssize_t count = static_cast<py::ssize_t>(values.size());
+    auto array = py::array_t<double>({count, py::ssize_t(3)});
     auto buffer = array.mutable_unchecked<2>();
 
-    for (pybind11::ssize_t index = 0; index < count; ++index) {
+    for (py::ssize_t index = 0; index < count; ++index) {
         buffer(index, 0) = values[static_cast<std::size_t>(index)].x;
         buffer(index, 1) = values[static_cast<std::size_t>(index)].y;
         buffer(index, 2) = values[static_cast<std::size_t>(index)].z;
@@ -18,17 +20,25 @@ static pybind11::array_t<double> vector3d_list_to_numpy(const std::vector<Vector
     return array;
 }
 
-static pybind11::array_t<double> double_list_to_numpy(const std::vector<double>& values) {
-    const pybind11::ssize_t count = static_cast<pybind11::ssize_t>(values.size());
-    auto array = pybind11::array_t<double>(count);
+static py::array_t<double> double_list_to_numpy(const std::vector<double>& values) {
+    const py::ssize_t count = static_cast<py::ssize_t>(values.size());
+    auto array = py::array_t<double>(count);
     std::memcpy(array.mutable_data(), values.data(), static_cast<std::size_t>(count) * sizeof(double));
     return array;
+}
+
+py::object run_and_wrap(Simulator& self) {
+    auto cpp_result = self.run();  // whatever your C++ returns
+
+    py::object ResultClass = py::module_::import("PackLab.monte_carlo.results").attr("Result");
+
+    return ResultClass(py::arg("binding") = py::cast(std::move(cpp_result)));
 }
 
 PYBIND11_MODULE(interface_simulator, module) {
     module.doc() = "Random sequential addition of non overlapping spheres in a 3D box";
 
-    pybind11::class_<SphereConfiguration, std::shared_ptr<SphereConfiguration>>(module, "SphereConfiguration")
+    py::class_<SphereConfiguration, std::shared_ptr<SphereConfiguration>>(module, "SphereConfiguration")
         .def_property_readonly(
             "count",
             [](const std::shared_ptr<SphereConfiguration> sphere_configuration) { return sphere_configuration->radii().size(); },
@@ -72,8 +82,8 @@ PYBIND11_MODULE(interface_simulator, module) {
         )
     ;
 
-    pybind11::class_<Options, std::shared_ptr<Options>>(module, "Options")
-        .def(pybind11::init<>())
+    py::class_<Options, std::shared_ptr<Options>>(module, "Options")
+        .def(py::init<>())
         .def_readwrite("random_seed", &Options::random_seed)
         .def_readwrite("maximum_attempts", &Options::maximum_attempts)
         .def_readwrite("maximum_spheres", &Options::maximum_spheres)
@@ -85,12 +95,12 @@ PYBIND11_MODULE(interface_simulator, module) {
         .def_readwrite("enforce_radii_distribution", &Options::enforce_radii_distribution)
     ;
 
-    pybind11::class_<Simulator>(module, "Simulator")
+    py::class_<Simulator>(module, "Simulator")
         .def(
-            pybind11::init<std::shared_ptr<Domain>, std::shared_ptr<RadiusSampler>, std::shared_ptr<Options>>(),
-            pybind11::arg("domain"),
-            pybind11::arg("radius_sampler"),
-            pybind11::arg("options")
+            py::init<std::shared_ptr<Domain>, std::shared_ptr<RadiusSampler>, std::shared_ptr<Options>>(),
+            py::arg("domain"),
+            py::arg("radius_sampler"),
+            py::arg("options")
         )
         .def(
             "_cpp_reset",
@@ -98,8 +108,8 @@ PYBIND11_MODULE(interface_simulator, module) {
             "Reset the simulation to its initial state."
         )
         .def(
-            "_cpp_run",
-            &Simulator::run
+            "run",
+            &run_and_wrap
         )
         .def(
             "_cpp_attempt_single_insertion",
@@ -109,13 +119,13 @@ PYBIND11_MODULE(interface_simulator, module) {
         .def_readonly(
             "_cpp_statistics",
             &Simulator::statistics,
-            pybind11::return_value_policy::reference_internal,
+            py::return_value_policy::reference_internal,
             "Simulation statistics"
         )
         .def_readonly(
             "sphere_configuration",
             &Simulator::sphere_configuration,
-            pybind11::return_value_policy::reference_internal,
+            py::return_value_policy::reference_internal,
             "Current sphere configuration"
         )
         ;
