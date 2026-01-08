@@ -455,9 +455,10 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots</span><span class="w"> </span><span class="kn">import</span> <span class="n">helper</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.monte_carlo.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_minimum_image_displacement</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_minimum_image_displacement</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">box_length</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">delta</span> <span class="o">-</span> <span class="n">box_length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">delta</span> <span class="o">/</span> <span class="n">box_length</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Result">
