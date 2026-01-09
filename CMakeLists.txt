@@ -95,6 +95,7 @@ message(STATUS "")
 # ----------------- logging build configuration --------------------
 
 # ----------------- collect subdirectories --------------------
+add_subdirectory(PackLab/cpp/pint)                          # pint
 add_subdirectory(PackLab/cpp/monte_carlo/utils)             # utils
 add_subdirectory(PackLab/cpp/monte_carlo/result)            # result
 add_subdirectory(PackLab/cpp/monte_carlo/domain)            # domain

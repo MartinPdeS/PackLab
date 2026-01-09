@@ -1,7 +1,7 @@
 #include "domain.h"
 
 #include <pybind11/pybind11.h>
-#include "monte_carlo/utils/pint.h"
+#include "pint/pint.h"
 
 namespace py = pybind11;
 
@@ -19,14 +19,13 @@ PYBIND11_MODULE(interface_domain, module) {
                 py::object length_z,
                 bool use_periodic_boundaries
             ) {
-                py::object ureg = registry_from_quantity(length_x);  // Strictly require pint.Quantity inputs and a single shared registry
+                py::object ureg = get_shared_ureg();
 
                 const double lx = to_meters_strict(length_x);
                 const double ly = to_meters_strict(length_y);
                 const double lz = to_meters_strict(length_z);
 
                 new (self.cast<Domain*>()) Domain(lx, ly, lz, use_periodic_boundaries);
-
 
                 self.attr("_ureg") = ureg;  // Persist registry on the Python instance for later getters
             },
@@ -40,7 +39,7 @@ PYBIND11_MODULE(interface_domain, module) {
             py::cpp_function(
                 [](py::object self) {
                     const Domain& cpp_self = self.cast<const Domain&>();
-                    py::object ureg = self.attr("_ureg");
+                    py::object ureg = get_shared_ureg();
                     return meters_quantity_with_ureg(ureg, cpp_self.length_x);
                 },
                 py::is_method(domain_cls)
@@ -52,7 +51,7 @@ PYBIND11_MODULE(interface_domain, module) {
             py::cpp_function(
                 [](py::object self) {
                     const Domain& cpp_self = self.cast<const Domain&>();
-                    py::object ureg = self.attr("_ureg");
+                    py::object ureg = get_shared_ureg();
                     return meters_quantity_with_ureg(ureg, cpp_self.length_y);
                 },
                 py::is_method(domain_cls)
@@ -64,7 +63,7 @@ PYBIND11_MODULE(interface_domain, module) {
             py::cpp_function(
                 [](py::object self) {
                     const Domain& cpp_self = self.cast<const Domain&>();
-                    py::object ureg = self.attr("_ureg");
+                    py::object ureg = get_shared_ureg();
                     return meters_quantity_with_ureg(ureg, cpp_self.length_z);
                 },
                 py::is_method(domain_cls)

@@ -1,7 +1,7 @@
 #include "estimator.h"
 
 #include <pybind11/pybind11.h>
-#include "monte_carlo/utils/pint.h"
+#include "pint/pint.h"
 
 namespace py = pybind11;
 
@@ -9,17 +9,32 @@ namespace py = pybind11;
 PYBIND11_MODULE(interface_estimator, module) {
 
     py::class_<EstimateResult>(module, "EstimateResult")
-        .def_readonly(
+        .def_property_readonly(
             "centers",
-            &EstimateResult::centers
+            [](const EstimateResult& self){
+                py::object base = py::cast(&self, py::return_value_policy::reference);
+                py::object ureg = get_shared_ureg();
+
+                py::array_t<double> output = vector_double_to_numpy_view(self.centers, base);
+
+                py::object quantity = ureg.attr("Quantity")(output, "meter");
+
+                return quantity;
+            }
         )
-        .def_readonly(
+        .def_property_readonly(
             "mean_g",
-            &EstimateResult::mean_g
+            [](const EstimateResult& self){
+                py::object base = py::cast(&self, py::return_value_policy::reference);
+                return vector_vector_vector_double_to_numpy_plane_row_views(self.mean_g, base);
+            }
         )
-        .def_readonly(
+        .def_property_readonly(
             "std_g",
-            &EstimateResult::std_g
+            [](const EstimateResult& self){
+                py::object base = py::cast(&self, py::return_value_policy::reference);
+                return vector_vector_vector_double_to_numpy_plane_row_views(self.std_g, base);
+            }
         )
         .def_readonly(
             "number_of_species",

@@ -28,7 +28,7 @@ class Result():
         np.ndarray
             Array of sphere center positions.
         """
-        return self.sphere_configuration.positions * ureg.meter
+        return self.sphere_configuration.positions
 
     @property
     def radii(self) -> np.ndarray:
@@ -40,7 +40,7 @@ class Result():
         np.ndarray
             Array of sphere radii.
         """
-        return self.sphere_configuration.radii * ureg.meter
+        return self.sphere_configuration.radii
 
     @property
     def statistics(self):

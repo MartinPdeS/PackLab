@@ -1,11 +1,11 @@
-# cpp/monte_carlo/simulator/CMakeLists.txt
+# cpp/pint/CMakeLists.txt
 
-set(NAME "simulator")
+set(NAME "pint")
 
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")
 
-target_link_libraries("${NAME}" PUBLIC pybind11::module radius_sampler utils result statistics domain pint)
+target_link_libraries("${NAME}" PUBLIC pybind11::module utils domain simulator)
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)

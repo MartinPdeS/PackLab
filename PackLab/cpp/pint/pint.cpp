@@ -1,14 +1,23 @@
-#pragma once
+#include "pint.h"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <vector>
-#include <string>
 
-namespace py = pybind11;
+UnitRegistrySingleton& UnitRegistrySingleton::instance() {
+    static UnitRegistrySingleton singleton_instance;
+    return singleton_instance;
+}
+
+py::object get_shared_ureg() {
+    py::gil_scoped_acquire gil;
+
+    py::module_ interface_module = py::module_::import("PackLab.binary.interface_pint");
+    if (!py::hasattr(interface_module, "get_ureg")) {
+        throw std::runtime_error("PackLab.binary.interface_pint.get_ureg not found.");
+    }
+    return interface_module.attr("get_ureg")();
+}
+
 
 double to_meters_strict(py::handle value) {
-    // No bare floats or ints allowed
     if (py::isinstance<py::float_>(value) || py::isinstance<py::int_>(value)) {
         throw py::type_error("length must be a pint.Quantity (numbers without units are not accepted)");
     }

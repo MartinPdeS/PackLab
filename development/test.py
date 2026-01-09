@@ -28,11 +28,12 @@ options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
 
-estimator = Estimator(domain=domain, radius_sampler=radius_sampler, options=options, number_of_bins=100)
+estimator = Estimator(domain=domain, radius_sampler=radius_sampler, options=options, number_of_bins=200)
 
-estimate_result = estimator.estimate(number_of_samples=40, maximum_pairs=10_000_000)
-mean_g_array = np.asarray(estimate_result.mean_g)
-std_g_array = np.asarray(estimate_result.std_g)
+estimate_result = estimator.estimate(number_of_samples=10, maximum_pairs=10_000_000)
+
+mean_g_array = estimate_result.mean_g
+std_g_array = estimate_result.std_g
 
 plt.figure()
 for i in range(2):

@@ -9,10 +9,10 @@
 #include "monte_carlo/radius_sampler/radius_sampler.h"
 #include "monte_carlo/simulator/simulator.h"
 #include "monte_carlo/utils/utils.h"
-#include <iostream>
-
+#include "monte_carlo/utils/numpy.h"
 
 struct EstimateResult {
+    std::shared_ptr<Domain> domain;
     std::vector<double> centers;   // size B
     std::vector<std::vector<std::vector<double>>> mean_g; // size K x K x B
     std::vector<std::vector<std::vector<double>>> std_g;  // size K x K x B
@@ -136,6 +136,9 @@ public:
 
         EstimateResult out;
         out.centers = std::move(centers);
+
+        out.domain = domain;
+
         out.mean_g = std::move(mean_g);
         out.std_g = std::move(std_g);
         out.number_of_species = inferred_number_of_species;
