@@ -2,16 +2,16 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                |    Stmts |     Miss |   Branch |   BrPart |     Cover |   Missing |
-|------------------------------------ | -------: | -------: | -------: | -------: | --------: | --------: |
-| PackLab/analytical.py               |      212 |      212 |       18 |        0 |     0.00% |     1-443 |
-| PackLab/analytical/distributions.py |      144 |      144 |       38 |        0 |     0.00% |     1-402 |
-| PackLab/analytical/domain.py        |      169 |      169 |       54 |        0 |     0.00% |     1-482 |
-| PackLab/analytical/solver.py        |      140 |      140 |       14 |        0 |     0.00% |     1-335 |
-| PackLab/monte\_carlo/estimator.py   |       37 |       30 |        8 |        0 |    15.56% |15-18, 29-71 |
-| PackLab/monte\_carlo/results.py     |      132 |       57 |       20 |        5 |    53.95% |66-67, 71, 75, 78, 82, 86, 104-130, 146-155, 179, 181, 191, 200-207, 213-215, 263-303 |
-| PackLab/monte\_carlo/utils.py       |        2 |        2 |        0 |        0 |     0.00% |       3-6 |
-| **TOTAL**                           |  **836** |  **754** |  **152** |    **5** | **9.01%** |           |
+| Name                            |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
+|-------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
+| PackLab/analytical/domain.py    |      169 |      169 |       54 |        0 |      0.00% |     1-482 |
+| PackLab/analytical/samplers.py  |      141 |      141 |       38 |        0 |      0.00% |     1-369 |
+| PackLab/analytical/solver.py    |      140 |      140 |       14 |        0 |      0.00% |     1-335 |
+| PackLab/monte\_carlo/results.py |      132 |       57 |       20 |        5 |     53.95% |66-67, 71, 75, 78, 82, 86, 104-130, 146-155, 179, 181, 191, 200-207, 213-215, 263-303 |
+| PackLab/monte\_carlo/utils.py   |        2 |        2 |        0 |        0 |      0.00% |       3-6 |
+| **TOTAL**                       |  **587** |  **509** |  **126** |    **5** | **11.92%** |           |
+
+1 file skipped due to complete coverage.
 
 
 ## Setup coverage badge
