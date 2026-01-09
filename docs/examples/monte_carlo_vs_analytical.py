@@ -75,7 +75,7 @@ mc_centers, mc_g_ij = result.compute_partial_pair_correlation_function(
 
 distribution = analytical.samplers.Discrete(
     particle_radii=[1.0, 2.0] * ureg.micrometer,
-    number_fractions=[1.0, 1.0],
+    weights=[1.0, 1.0],
 )
 
 particle_radii, number_fractions = distribution.to_bins()
