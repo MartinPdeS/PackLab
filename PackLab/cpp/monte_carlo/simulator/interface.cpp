@@ -4,6 +4,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include <pint/pint.h>
+
 namespace py = pybind11;
 
 static py::array_t<double> vector3d_list_to_numpy(const std::vector<Vector3d>& values) {
@@ -46,7 +48,12 @@ PYBIND11_MODULE(interface_simulator, module) {
         )
         .def(
             "total_sphere_volume",
-            &SphereConfiguration::total_sphere_volume,
+            [](const std::shared_ptr<SphereConfiguration> sphere_configuration){
+                double volume = sphere_configuration->total_sphere_volume();
+                py::object ureg = get_shared_ureg();
+                py::object quantity = ureg.attr("Quantity")(volume, "meter ** 3");
+                return quantity;
+            },
             "Compute the total volume occupied by the spheres."
         )
         .def_readonly(
@@ -57,14 +64,20 @@ PYBIND11_MODULE(interface_simulator, module) {
         .def_property_readonly(
             "positions",
             [](const std::shared_ptr<SphereConfiguration> sphere_configuration) {
-                return vector3d_list_to_numpy(sphere_configuration->center_positions);
+                py::array_t<double> output = vector3d_list_to_numpy(sphere_configuration->center_positions);
+                py::object ureg = get_shared_ureg();
+                py::object quantity = ureg.attr("Quantity")(output, "meter");
+                return quantity;
             },
             "List of sphere center positions"
         )
         .def_property_readonly(
             "radii",
             [](const std::shared_ptr<SphereConfiguration> sphere_configuration) {
-                return double_list_to_numpy(sphere_configuration->radii_values);
+                py::array_t<double> output = double_list_to_numpy(sphere_configuration->radii_values);
+                py::object ureg = get_shared_ureg();
+                py::object quantity = ureg.attr("Quantity")(output, "meter");
+                return quantity;
             },
             "List of sphere radii"
         )
@@ -103,7 +116,7 @@ PYBIND11_MODULE(interface_simulator, module) {
             py::arg("options")
         )
         .def(
-            "_cpp_reset",
+            "reset",
             &Simulator::reset,
             "Reset the simulation to its initial state."
         )

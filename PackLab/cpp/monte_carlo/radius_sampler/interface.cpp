@@ -5,7 +5,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
 
-#include "monte_carlo/utils/pint.h"
+#include "pint/pint.h"
 
 namespace py = pybind11;
 
@@ -35,7 +35,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
                 py::object radius_py,
                 int bins
             ) {
-                py::object ureg = registry_from_quantity(radius_py);
+                py::object ureg = get_shared_ureg();
                 const double radius = to_meters_strict(radius_py);
 
                 new (self.cast<ConstantRadiusSampler*>()) ConstantRadiusSampler(radius, bins);
@@ -59,7 +59,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
                 py::object maximum_radius_py,
                 int bins
             ) {
-                py::object ureg = registry_from_quantity(minimum_radius_py);
+                py::object ureg = get_shared_ureg();
 
                 const double minimum_radius = to_meters_strict(minimum_radius_py);
                 const double maximum_radius = to_meters_strict(maximum_radius_py);
@@ -84,7 +84,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
                 py::object maximum_radius_clip_py,
                 int bins
             ) {
-                py::object ureg = registry_from_quantity(mu_py);
+                py::object ureg = get_shared_ureg();
 
                 const double mu = to_meters_strict(mu_py);
                 const double sigma = to_meters_strict(sigma_py);
@@ -117,7 +117,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
                 py::object radii_py,
                 std::vector<double> weights
             ) {
-                py::object ureg = registry_from_quantity(radii_py);
+                py::object ureg = get_shared_ureg();
                 const std::vector<double> radii = to_vector_units(radii_py, "meter");
                 new (self.cast<DiscreteRadiusSampler*>()) DiscreteRadiusSampler(radii, weights);
                 self.attr("_ureg") = ureg;

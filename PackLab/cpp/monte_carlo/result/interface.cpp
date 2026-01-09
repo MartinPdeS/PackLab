@@ -4,31 +4,14 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
+#include "pint/pint.h"
+
 namespace py = pybind11;
 
 PYBIND11_MODULE(interface_result, module) {
     module.doc() = "Result class containing particle configuration and correlation functions";
 
     py::class_<Result, std::shared_ptr<Result>>(module, "Result")
-
-        // -----------------------
-        // Property: positions (N,3)
-        // -----------------------
-        .def_property_readonly(
-            "positions",
-            [](const Result& r) {
-                const auto& positions = r.sphere_configuration->center_positions;
-                py::array_t<double> array({positions.size(), (std::size_t)3});
-                auto buf = array.mutable_unchecked<2>();
-                for (std::size_t i = 0; i < positions.size(); ++i) {
-                    buf(i, 0) = positions[i].x;
-                    buf(i, 1) = positions[i].y;
-                    buf(i, 2) = positions[i].z;
-                }
-                return array;
-            },
-            "Particle positions as a NumPy array of shape (N, 3)."
-        )
 
         // -----------------------
         // Property: radii (N)

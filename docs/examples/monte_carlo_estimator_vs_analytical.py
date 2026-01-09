@@ -23,8 +23,7 @@ The workflow is:
 import numpy as np
 import matplotlib.pyplot as plt
 
-import PackLab
-from TypedUnit.units import ureg
+from PackLab import ureg
 from PackLab import analytical
 from PackLab import monte_carlo
 
@@ -33,7 +32,7 @@ from PackLab import monte_carlo
 # ---------------------
 # We use a periodic cubic domain and a two radius discrete sampler.
 
-domain = PackLab.monte_carlo.Domain(
+domain = monte_carlo.Domain(
     length_x=60.0 * ureg.micrometer,
     length_y=60.0 * ureg.micrometer,
     length_z=60.0 * ureg.micrometer,
@@ -52,23 +51,21 @@ options.target_packing_fraction = 0.24
 options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
-rsa_simulator = monte_carlo.Simulator(
+estimator = monte_carlo.Estimator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options,
+    number_of_bins=6000
 )
 
-result = rsa_simulator.run()
-result.statistics.print()
-
-estimator = monte_carlo.PartialGEstimator(
-    domain=domain,
-    radius_sampler=radius_sampler,
-    options=options,
-    n_bins=6000,
+estimate_result = estimator.estimate(
+    number_of_samples=200,
+    maximum_pairs=30_000_000
 )
-centers, mean_g, std_g = estimator.estimate(n_sample=200)
 
+mean_g = estimate_result.mean_g
+std_g = estimate_result.std_g
+centers = estimate_result.centers
 
 # %%
 # Analytical Percus Yevick setup
@@ -76,9 +73,9 @@ centers, mean_g, std_g = estimator.estimate(n_sample=200)
 # We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 # The analytical domain uses Pint quantities.
 
-distribution = analytical.distributions.DiscreteRadiusDistribution(
+distribution = analytical.samplers.Discrete(
     particle_radii=[1.0, 2.0] * ureg.micrometer,
-    number_fractions=[1.0, 1.0],
+    weights=[1.0, 1.0],
 )
 
 particle_radii, number_fractions = distribution.to_bins()

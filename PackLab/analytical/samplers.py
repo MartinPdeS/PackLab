@@ -8,12 +8,12 @@ import numpy as np
 BinSpacing = Literal["linear", "log"]
 
 __all__ = [
-    "DeltaRadiusDistribution",
-    "UniformRadiusDistribution",
-    "GaussianRadiusDistribution",
-    "LogNormalRadiusDistribution",
-    "CustomRadiusDistribution",
-    "DiscreteRadiusDistribution"
+    "Delta",
+    "Uniform",
+    "Gaussian",
+    "LogNormal",
+    "Custom",
+    "Discrete"
 ]
 
 
@@ -103,7 +103,7 @@ class RadiusDistribution(ABC):
 
     The discrete representation is:
     - particle_radii: Pint array of bin centers
-    - number_fractions: float array that sums to 1
+    - weights: float array that sums to 1
     """
 
     @abstractmethod
@@ -114,14 +114,14 @@ class RadiusDistribution(ABC):
         -------
         particle_radii : object
             Pint quantity array of bin centers, shape (number_of_bins,).
-        number_fractions : np.ndarray
-            Array of number fractions, shape (number_of_bins,).
+        weights : np.ndarray
+            Array of weights, shape (number_of_bins,).
         """
         raise NotImplementedError
 
 
 @dataclass(slots=True)
-class DeltaRadiusDistribution(RadiusDistribution):
+class Delta(RadiusDistribution):
     """Delta distribution (monodisperse).
 
     Parameters
@@ -134,12 +134,12 @@ class DeltaRadiusDistribution(RadiusDistribution):
 
     def to_bins(self) -> Tuple[object, np.ndarray]:
         particle_radii = np.asarray([self.radius.to(self.radius.units).magnitude]) * self.radius.units
-        number_fractions = np.asarray([1.0], dtype=float)
-        return particle_radii, number_fractions
+        weights = np.asarray([1.0], dtype=float)
+        return particle_radii, weights
 
 
 @dataclass(slots=True)
-class UniformRadiusDistribution(RadiusDistribution):
+class Uniform(RadiusDistribution):
     """Uniform distribution over a finite interval.
 
     The probability mass is approximated by integrating a constant pdf over each bin,
@@ -167,12 +167,12 @@ class UniformRadiusDistribution(RadiusDistribution):
         particle_radii, bin_widths = _edges_to_centers_and_widths(edges, self.bin_spacing)
 
         weights = bin_widths.to(particle_radii.units).magnitude
-        number_fractions = _normalize_weights(weights)
-        return particle_radii, number_fractions
+        weights = _normalize_weights(weights)
+        return particle_radii, weights
 
 
 @dataclass(slots=True)
-class GaussianRadiusDistribution(RadiusDistribution):
+class Gaussian(RadiusDistribution):
     """
     Gaussian distribution truncated to a finite interval.
 
@@ -221,12 +221,12 @@ class GaussianRadiusDistribution(RadiusDistribution):
         pdf = np.exp(-0.5 * ((x - mu) / sigma) ** 2) / (sigma * np.sqrt(2.0 * np.pi))
         weights = pdf * bin_widths.to(unit_reference).magnitude
 
-        number_fractions = _normalize_weights(weights)
-        return particle_radii, number_fractions
+        weights = _normalize_weights(weights)
+        return particle_radii, weights
 
 
 @dataclass(slots=True)
-class LogNormalRadiusDistribution(RadiusDistribution):
+class LogNormal(RadiusDistribution):
     """Log normal distribution truncated to a finite interval.
 
     Parameterization uses median radius and geometric standard deviation.
@@ -284,12 +284,12 @@ class LogNormalRadiusDistribution(RadiusDistribution):
         pdf = np.exp(-((np.log(x) - mu) ** 2) / (2.0 * sigma**2)) / (x * sigma * np.sqrt(2.0 * np.pi))
         weights = pdf * bin_widths.to(unit_reference).magnitude
 
-        number_fractions = _normalize_weights(weights)
-        return particle_radii, number_fractions
+        weights = _normalize_weights(weights)
+        return particle_radii, weights
 
 
 @dataclass(slots=True)
-class CustomRadiusDistribution(RadiusDistribution):
+class Custom(RadiusDistribution):
     """User defined pdf over a finite interval.
 
     The callable is evaluated at bin centers in magnitude space, expressed in the
@@ -328,45 +328,12 @@ class CustomRadiusDistribution(RadiusDistribution):
             raise ValueError("Custom pdf must return an array with the same shape as its input.")
 
         weights = pdf_values * bin_widths.to(unit_reference).magnitude
-        number_fractions = _normalize_weights(weights)
-        return particle_radii, number_fractions
-
-
-def make_polydisperse_domain_from_distribution(
-    *,
-    domain_class,
-    size,
-    volume_fraction,
-    radius_distribution: RadiusDistribution,
-    rounding_mode: Literal["floor", "round"] = "floor",
-):
-    """Convenience helper to create a domain instance from a RadiusDistribution.
-
-    Parameters
-    ----------
-    domain_class : Callable
-        Domain class constructor.
-    size : object
-        Domain size.
-    volume_fraction : float
-        Target volume fraction.
-    radius_distribution : RadiusDistribution
-        Particle radius distribution.
-    rounding_mode : Literal["floor", "round"]
-        Rounding mode for number of particles calculation.
-    """
-    particle_radii, number_fractions = radius_distribution.to_bins()
-    return domain_class(
-        size=size,
-        particle_radii=particle_radii,
-        volume_fraction=volume_fraction,
-        number_fractions=number_fractions,
-        rounding_mode=rounding_mode,
-    )
+        weights = _normalize_weights(weights)
+        return particle_radii, weights
 
 
 @dataclass(slots=True)
-class DiscreteRadiusDistribution(RadiusDistribution):
+class Discrete(RadiusDistribution):
     """Explicit discrete radius distribution.
 
     This distribution is already discretized: the user provides bin centers and
@@ -376,27 +343,27 @@ class DiscreteRadiusDistribution(RadiusDistribution):
     ----------
     particle_radii : object
         Pint quantity array of bin centers.
-    number_fractions : np.ndarray
+    weights : np.ndarray
         Array of number fractions (not necessarily normalized).
     """
 
     particle_radii: object
-    number_fractions: np.ndarray
+    weights: np.ndarray
 
     def to_bins(self) -> Tuple[object, np.ndarray]:
         particle_radii = _as_quantity_1d(self.particle_radii)
 
-        number_fractions = np.asarray(self.number_fractions, dtype=float)
-        if number_fractions.ndim != 1:
-            raise ValueError("number_fractions must be a one dimensional array.")
+        weights = np.asarray(self.weights, dtype=float)
+        if weights.ndim != 1:
+            raise ValueError("weights must be a one dimensional array.")
 
-        if particle_radii.magnitude.shape[0] != number_fractions.shape[0]:
+        if particle_radii.magnitude.shape[0] != weights.shape[0]:
             raise ValueError(
-                "particle_radii and number_fractions must have the same length."
+                "particle_radii and weights must have the same length."
             )
 
-        if number_fractions.size < 1:
+        if weights.size < 1:
             raise ValueError("Discrete distribution must contain at least one radius value.")
 
-        number_fractions = _normalize_weights(number_fractions)
-        return particle_radii, number_fractions
+        weights = _normalize_weights(weights)
+        return particle_radii, weights

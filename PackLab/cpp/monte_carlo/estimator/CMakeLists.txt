@@ -5,7 +5,7 @@ set(NAME "estimator")
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")
 
-target_link_libraries("${NAME}" PUBLIC pybind11::module utils domain simulator)
+target_link_libraries("${NAME}" PUBLIC pybind11::module utils domain simulator pint)
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)

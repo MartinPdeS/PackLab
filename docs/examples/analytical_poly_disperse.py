@@ -20,10 +20,10 @@ each species pair :math:`(i, j)`.
 """
 
 import numpy as np
-from TypedUnit.units import ureg
+from PackLab import ureg
 from PackLab import analytical
 
-distribution = analytical.GaussianRadiusDistribution(
+distribution = analytical.samplers.Gaussian(
     mean_radius=1.5 * ureg.micrometer,
     standard_deviation=0.2 * ureg.micrometer,
     radius_min=0.7 * ureg.micrometer,
