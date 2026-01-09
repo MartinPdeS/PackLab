@@ -17,7 +17,7 @@ It demonstrates the following steps:
 This is the recommended starting point when learning how to use PackLab.
 """
 from PackLab import monte_carlo
-from TypedUnit.units import ureg
+from PackLab import ureg
 # %%
 # Simulation domain
 # -----------------

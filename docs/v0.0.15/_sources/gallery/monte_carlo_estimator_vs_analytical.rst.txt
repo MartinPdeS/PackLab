@@ -38,7 +38,7 @@ The workflow is:
 3. Build the matching analytical polydisperse domain and solve Percus Yevick
 4. Plot Monte Carlo curves and overlay the analytical solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-31
+.. GENERATED FROM PYTHON SOURCE LINES 22-30
 
 .. code-block:: Python
 
@@ -46,8 +46,7 @@ The workflow is:
     import numpy as np
     import matplotlib.pyplot as plt
 
-    import PackLab
-    from TypedUnit.units import ureg
+    from PackLab import ureg
     from PackLab import analytical
     from PackLab import monte_carlo
 
@@ -58,18 +57,18 @@ The workflow is:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-35
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
 Monte Carlo RSA setup
 ---------------------
 We use a periodic cubic domain and a two radius discrete sampler.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-73
+.. GENERATED FROM PYTHON SOURCE LINES 34-70
 
 .. code-block:: Python
 
 
-    domain = PackLab.monte_carlo.Domain(
+    domain = monte_carlo.Domain(
         length_x=60.0 * ureg.micrometer,
         length_y=60.0 * ureg.micrometer,
         length_z=60.0 * ureg.micrometer,
@@ -88,22 +87,21 @@ We use a periodic cubic domain and a two radius discrete sampler.
     options.minimum_center_separation_addition = 0.0
     options.enforce_radii_distribution = True
 
-    rsa_simulator = monte_carlo.Simulator(
+    estimator = monte_carlo.Estimator(
         domain=domain,
         radius_sampler=radius_sampler,
         options=options,
+        number_of_bins=6000
     )
 
-    result = rsa_simulator.run()
-    result.statistics.print()
-
-    estimator = monte_carlo.PartialGEstimator(
-        domain=domain,
-        radius_sampler=radius_sampler,
-        options=options,
-        n_bins=6000,
+    estimate_result = estimator.estimate(
+        number_of_samples=200,
+        maximum_pairs=30_000_000
     )
-    centers, mean_g, std_g = estimator.estimate(n_sample=200)
+
+    mean_g = estimate_result.mean_g
+    std_g = estimate_result.std_g
+    centers = estimate_result.centers
 
 
 
@@ -112,22 +110,21 @@ We use a periodic cubic domain and a two radius discrete sampler.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 74-78
+.. GENERATED FROM PYTHON SOURCE LINES 71-75
 
 Analytical Percus Yevick setup
 ------------------------------
 We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 The analytical domain uses Pint quantities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-112
+.. GENERATED FROM PYTHON SOURCE LINES 75-109
 
 .. code-block:: Python
 
 
-    distribution = analytical.distributions.DiscreteRadiusDistribution(
+    distribution = analytical.samplers.Discrete(
         particle_radii=[1.0, 2.0] * ureg.micrometer,
-        number_fractions=[1.0, 1.0],
+        weights=[1.0, 1.0],
     )
 
     particle_radii, number_fractions = distribution.to_bins()
@@ -165,13 +162,13 @@ The analytical domain uses Pint quantities.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-116
+.. GENERATED FROM PYTHON SOURCE LINES 110-113
 
 Compare Monte Carlo and analytical g_ij(r)
 ------------------------------------------
 We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-130
+.. GENERATED FROM PYTHON SOURCE LINES 113-127
 
 .. code-block:: Python
 
@@ -204,7 +201,7 @@ We plot all partial curves on the same axes and overlay the Percus Yevick result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 37.784 seconds)
+   **Total running time of the script:** (0 minutes 38.179 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_estimator_vs_analytical.py:

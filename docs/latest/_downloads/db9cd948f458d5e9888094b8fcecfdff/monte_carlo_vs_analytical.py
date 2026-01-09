@@ -25,8 +25,7 @@ import matplotlib.pyplot as plt
 
 from PackLab import monte_carlo
 from PackLab import analytical
-from PackLab.analytical.distributions import DiscreteRadiusDistribution
-from TypedUnit.units import ureg
+from PackLab import ureg
 
 
 # %%
@@ -68,16 +67,15 @@ mc_centers, mc_g_ij = result.compute_partial_pair_correlation_function(
     maximum_pairs=0,
 )
 
-
 # %%
 # Analytical Percus Yevick setup
 # ------------------------------
 # We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 # The analytical domain uses Pint quantities.
 
-distribution = DiscreteRadiusDistribution(
+distribution = analytical.samplers.Discrete(
     particle_radii=[1.0, 2.0] * ureg.micrometer,
-    number_fractions=[1.0, 1.0],
+    weights=[1.0, 1.0],
 )
 
 particle_radii, number_fractions = distribution.to_bins()
@@ -106,7 +104,6 @@ distances = np.linspace(
 )
 
 py_result = solver.compute(distances=distances)
-
 
 # %%
 # Compare Monte Carlo and analytical g_ij(r)

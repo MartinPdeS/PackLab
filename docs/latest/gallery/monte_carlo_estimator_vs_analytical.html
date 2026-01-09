@@ -496,8 +496,7 @@ particles are rejected more often.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">PackLab</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">analytical</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">monte_carlo</span>
 </pre></div>
@@ -505,7 +504,7 @@ particles are rejected more often.</p>
 <section id="monte-carlo-rsa-setup">
 <h2>Monte Carlo RSA setup<a class="headerlink" href="#monte-carlo-rsa-setup" title="Link to this heading">#</a></h2>
 <p>We use a periodic cubic domain and a two radius discrete sampler.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span> <span class="o">=</span> <span class="n">PackLab</span><span class="o">.</span><span class="n">monte_carlo</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">domain</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">Domain</span><span class="p">(</span>
     <span class="n">length_x</span><span class="o">=</span><span class="mf">60.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
     <span class="n">length_y</span><span class="o">=</span><span class="mf">60.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
     <span class="n">length_z</span><span class="o">=</span><span class="mf">60.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
@@ -524,22 +523,21 @@ particles are rejected more often.</p>
 <span class="n">options</span><span class="o">.</span><span class="n">minimum_center_separation_addition</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">options</span><span class="o">.</span><span class="n">enforce_radii_distribution</span> <span class="o">=</span> <span class="kc">True</span>
 
-<span class="n">rsa_simulator</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">Simulator</span><span class="p">(</span>
+<span class="n">estimator</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">Estimator</span><span class="p">(</span>
     <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
     <span class="n">radius_sampler</span><span class="o">=</span><span class="n">radius_sampler</span><span class="p">,</span>
     <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
+    <span class="n">number_of_bins</span><span class="o">=</span><span class="mi">6000</span>
 <span class="p">)</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">rsa_simulator</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
-<span class="n">result</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">print</span><span class="p">()</span>
-
-<span class="n">estimator</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">PartialGEstimator</span><span class="p">(</span>
-    <span class="n">domain</span><span class="o">=</span><span class="n">domain</span><span class="p">,</span>
-    <span class="n">radius_sampler</span><span class="o">=</span><span class="n">radius_sampler</span><span class="p">,</span>
-    <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
-    <span class="n">n_bins</span><span class="o">=</span><span class="mi">6000</span><span class="p">,</span>
+<span class="n">estimate_result</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span>
+    <span class="n">number_of_samples</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">maximum_pairs</span><span class="o">=</span><span class="mi">30_000_000</span>
 <span class="p">)</span>
-<span class="n">centers</span><span class="p">,</span> <span class="n">mean_g</span><span class="p">,</span> <span class="n">std_g</span> <span class="o">=</span> <span class="n">estimator</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">n_sample</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="n">mean_g</span> <span class="o">=</span> <span class="n">estimate_result</span><span class="o">.</span><span class="n">mean_g</span>
+<span class="n">std_g</span> <span class="o">=</span> <span class="n">estimate_result</span><span class="o">.</span><span class="n">std_g</span>
+<span class="n">centers</span> <span class="o">=</span> <span class="n">estimate_result</span><span class="o">.</span><span class="n">centers</span>
 </pre></div>
 </div>
 </section>
@@ -547,9 +545,9 @@ particles are rejected more often.</p>
 <h2>Analytical Percus Yevick setup<a class="headerlink" href="#analytical-percus-yevick-setup" title="Link to this heading">#</a></h2>
 <p>We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 The analytical domain uses Pint quantities.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">DiscreteRadiusDistribution</span><span class="p">(</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">distribution</span> <span class="o">=</span> <span class="n">analytical</span><span class="o">.</span><span class="n">samplers</span><span class="o">.</span><span class="n">Discrete</span><span class="p">(</span>
     <span class="n">particle_radii</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">micrometer</span><span class="p">,</span>
-    <span class="n">number_fractions</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+    <span class="n">weights</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
 <span class="p">)</span>
 
 <span class="n">particle_radii</span><span class="p">,</span> <span class="n">number_fractions</span> <span class="o">=</span> <span class="n">distribution</span><span class="o">.</span><span class="n">to_bins</span><span class="p">()</span>
@@ -600,7 +598,7 @@ The analytical domain uses Pint quantities.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_monte_carlo_estimator_vs_analytical_001.png" srcset="../_images/sphx_glr_monte_carlo_estimator_vs_analytical_001.png" alt="Partial pair correlation: RSA vs Percus Yevick" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 37.784 seconds)</p>
+<img src="../_images/sphx_glr_monte_carlo_estimator_vs_analytical_001.png" srcset="../_images/sphx_glr_monte_carlo_estimator_vs_analytical_001.png" alt="Partial pair correlation: RSA vs Percus Yevick" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 38.179 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-monte-carlo-estimator-vs-analytical-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/d5bde2193f10b1a720c3892f2d5b7ed6/monte_carlo_estimator_vs_analytical.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">monte_carlo_estimator_vs_analytical.ipynb</span></code></a></p>

@@ -38,7 +38,7 @@ The workflow is:
 3. Build the matching analytical polydisperse domain and solve Percus Yevick
 4. Plot Monte Carlo curves and overlay the analytical solution
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-32
+.. GENERATED FROM PYTHON SOURCE LINES 22-31
 
 .. code-block:: Python
 
@@ -48,8 +48,7 @@ The workflow is:
 
     from PackLab import monte_carlo
     from PackLab import analytical
-    from PackLab.analytical.distributions import DiscreteRadiusDistribution
-    from TypedUnit.units import ureg
+    from PackLab import ureg
 
 
 
@@ -59,13 +58,13 @@ The workflow is:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-36
+.. GENERATED FROM PYTHON SOURCE LINES 32-35
 
 Monte Carlo RSA setup
 ---------------------
 We use a periodic cubic domain and a two radius discrete sampler.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-72
+.. GENERATED FROM PYTHON SOURCE LINES 35-70
 
 .. code-block:: Python
 
@@ -111,22 +110,21 @@ We use a periodic cubic domain and a two radius discrete sampler.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 73-77
+.. GENERATED FROM PYTHON SOURCE LINES 71-75
 
 Analytical Percus Yevick setup
 ------------------------------
 We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 The analytical domain uses Pint quantities.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-111
+.. GENERATED FROM PYTHON SOURCE LINES 75-108
 
 .. code-block:: Python
 
 
-    distribution = DiscreteRadiusDistribution(
+    distribution = analytical.samplers.Discrete(
         particle_radii=[1.0, 2.0] * ureg.micrometer,
-        number_fractions=[1.0, 1.0],
+        weights=[1.0, 1.0],
     )
 
     particle_radii, number_fractions = distribution.to_bins()
@@ -163,14 +161,13 @@ The analytical domain uses Pint quantities.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 112-115
+.. GENERATED FROM PYTHON SOURCE LINES 109-112
 
 Compare Monte Carlo and analytical g_ij(r)
 ------------------------------------------
 We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-128
+.. GENERATED FROM PYTHON SOURCE LINES 112-125
 
 .. code-block:: Python
 
@@ -202,7 +199,7 @@ We plot all partial curves on the same axes and overlay the Percus Yevick result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.011 seconds)
+   **Total running time of the script:** (0 minutes 3.064 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_vs_analytical.py:
