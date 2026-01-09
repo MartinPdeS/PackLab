@@ -8,7 +8,7 @@
 | PackLab/analytical/samplers.py  |      141 |      141 |       38 |        0 |      0.00% |     1-369 |
 | PackLab/analytical/solver.py    |      140 |      140 |       14 |        0 |      0.00% |     1-335 |
 | PackLab/monte\_carlo/results.py |      132 |       57 |       20 |        5 |     53.95% |66-67, 71, 75, 78, 82, 86, 104-130, 146-155, 179, 181, 191, 200-207, 213-215, 263-303 |
-| PackLab/monte\_carlo/utils.py   |        2 |        2 |        0 |        0 |      0.00% |       3-6 |
+| PackLab/utils.py                |        2 |        2 |        0 |        0 |      0.00% |       3-6 |
 | **TOTAL**                       |  **587** |  **509** |  **126** |    **5** | **11.92%** |           |
 
 1 file skipped due to complete coverage.
