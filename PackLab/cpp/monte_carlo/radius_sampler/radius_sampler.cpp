@@ -300,7 +300,7 @@ LogNormalRadiusSampler::to_bins() const
 
     const double mu = mu_value_;
     const double sigma = sigma_value_;
-    const double normalizer = sigma * std::sqrt(2.0 * M_PI);
+    const double normalizer = sigma * std::sqrt(2.0 * 3.14159265358979323846);
 
     for (std::size_t i = 0; i < centers.size(); ++i) {
         const double x = centers[i];
