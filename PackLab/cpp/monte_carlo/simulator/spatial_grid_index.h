@@ -8,7 +8,7 @@
 #include <vector>
 #include <memory>
 
-#include "../domain/domain.h"
+#include "monte_carlo/domain/domain.h"
 
 class SpatialGridIndex {
 public:

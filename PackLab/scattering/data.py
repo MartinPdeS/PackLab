@@ -1,0 +1,325 @@
+from TypedUnit import ureg
+from numpy.typing import NDArray
+import numpy as np
+from scipy.interpolate import interp1d
+
+
+# Convention note:
+# In typical scattering convention, the polar scattering angle is in [0, pi]
+# and the azimuthal rotation around the incident axis is in [0, 2*pi).
+# In this class, `self.phi` is used with sin(self.phi) weights, so it behaves like a polar angle.
+class Datas(list):
+    """
+    Container for multi size scattering data and mixture level post processing.
+
+    This class stores a sequence of per diameter results (each element typically carries
+    arrays `S1(φ)` and `S2(φ)` defined on `self.phi`). It also provides mixture formulas
+    for a number density distribution over diameters and an inter particle correlation
+    term H(p).
+
+    Attributes
+    ----------
+    e_theta, e_phi : NDArray, shape (2,)
+        Unit basis vectors for the polarization basis used in `get_F_matrix`.
+        This code treats the scattering amplitude as a 2 component vector in a
+        (theta, phi) polarization basis.
+
+    k
+        Optical wavenumber in the surrounding medium (1/length).
+    phi
+        Polar scattering angle grid in radians. Expected range is [0, pi].
+    S1, S2
+        Arrays assembled by `process()` from each per diameter element.
+    Csca
+        Per diameter scattering cross section assembled by `process()`.
+
+    Notes
+    -----
+    Several methods assume you called `process()` first so that `self.S1`, `self.S2`,
+    and `self.Csca` exist. If not, you will get an attribute error.
+    """
+
+    e_theta = np.array([1.0, 0.0])
+    e_phi   = np.array([0.0, 1.0])
+
+    def process(self):
+        """
+        Stack per diameter fields into dense arrays.
+
+        After calling this method, the object provides:
+
+        * `self.S1`: ndarray, shape (N, Pphi)
+        * `self.S2`: ndarray, shape (N, Pphi)
+        * `self.Csca`: Pint Quantity, shape (N,), units meter**2
+
+        where N is the number of diameters (len(self)) and Pphi is the number of
+        angular samples in each per diameter result.
+
+        Returns
+        -------
+        None
+        """
+        self.S1 = np.asarray([d.S1 for d in self])
+        self.S2 = np.asarray([d.S2 for d in self])
+
+        self.Csca = np.asarray([d.Csca.to("meter**2").magnitude for d in self]) * ureg.meter ** 2
+
+    def get_alpha_beta_factor(self, densities: NDArray) -> NDArray:
+        """
+        Build number density factors for mixture sums.
+
+        Parameters
+        ----------
+        densities : NDArray, shape (N,)
+            Species number densities n_alpha. Units should be 1/length**3.
+            N must match the number of size classes stored in this object.
+
+        Returns
+        -------
+        n_alpha : NDArray, shape (N,)
+            Same array as input (returned for convenience).
+        sqrt_alpha_beta : NDArray, shape (N, N)
+            Matrix with entries sqrt(n_alpha * n_beta). This is commonly used in
+            symmetric mixture formulations to weight cross correlations.
+
+        Notes
+        -----
+        This uses the outer product and then takes a square root:
+
+        sqrt_alpha_beta[a, b] = sqrt(n_alpha[a] * n_alpha[b])
+        """
+        n_alpha = densities
+        n_alpha_beta = np.einsum("i,j -> ij", n_alpha, n_alpha)
+        sqrt_alpha_beta = np.sqrt(n_alpha_beta)
+
+        return n_alpha, sqrt_alpha_beta
+
+    def get_F_matrix(self, theta_points: int = 100) -> tuple:
+        """
+        Construct the vector scattering amplitude tensor F for each size, angle, and azimuth.
+
+        This builds a 2 component vector amplitude in the (e_theta, e_phi) basis using
+        the convention in your code:
+
+        F(θ_azimuth, φ_polar) = (i / k) * [ e_theta * S2(φ) * cos(θ) - e_phi * S1(φ) * sin(θ) ]
+
+        Parameters
+        ----------
+        theta_points
+            Number of azimuthal sampling points in [0, 2*pi]. This is a rotation
+            around the incident axis.
+
+        Returns
+        -------
+        F : NDArray, complex, shape (2, N, Pphi, Ptheta)
+            Vector amplitude tensor.
+
+            Index meaning:
+            * first axis (size 2): polarization component (theta, phi)
+            * second axis: size class index (N)
+            * third axis: polar scattering angle samples (Pphi), from `self.phi`
+            * fourth axis: azimuthal angle samples (Ptheta), generated internally
+
+        theta : NDArray, shape (Ptheta,)
+            Azimuthal angle grid in radians spanning [0, 2*pi].
+
+        Notes
+        -----
+        The name `theta` here refers to an azimuthal angle. The polar scattering angle
+        is stored in `self.phi`. If you want to align with standard spherical coordinates,
+        consider renaming to avoid confusion.
+        """
+        theta = np.deg2rad(np.linspace(0, 360, theta_points))
+
+        _cos = np.cos(theta)
+        _sin = np.sin(theta)
+
+        prefactor = 1j / self.k
+
+        term_0 = np.einsum("i, jk, l -> ijkl", self.e_theta, self.S2, _cos)
+        term_1 = np.einsum("i, jk, l -> ijkl", self.e_phi,   self.S1, _sin)
+
+        F = prefactor * (term_0 - term_1)
+
+        return F, theta
+
+    def get_mu_independant(self, densities: NDArray):
+        """
+        Compute the independent scattering contribution to the attenuation coefficient.
+
+        Parameters
+        ----------
+        densities : NDArray, shape (N,)
+            Species number densities n_alpha. Units should be 1/length**3.
+
+        Returns
+        -------
+        mu_independant_scattering
+            Scalar attenuation coefficient contribution with units 1/length.
+
+        Notes
+        -----
+        This implements a standard independent scattering approximation term:
+
+        mu_s,ind = sum_alpha n_alpha * Csca_alpha
+
+        Important: your current implementation references `n_alpha` without defining it.
+        This method must take `densities` (or `n_alpha`) as an argument.
+        """
+        n_alpha = densities
+        mu_independant_scattering = np.einsum("i,i -> ", self.Csca, n_alpha).to("1/meter")
+
+        return mu_independant_scattering
+
+    def get_mu_dependant(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150):
+        """
+        Compute the dependent scattering contribution using inter particle correlations H(p).
+
+        Parameters
+        ----------
+        densities : NDArray, shape (N,)
+            Species number densities n_alpha. Units should be 1/length**3.
+        H : NDArray, shape (N, N, Pp)
+            Mixture total correlation function in reciprocal space, evaluated on the
+            `p` grid. This should correspond to the same ordering as size classes.
+        p : NDArray, shape (Pp,)
+            Reciprocal space radial grid (1/length). Must cover the range needed to
+            evaluate H at p = 2k sin(φ/2) for φ in [0, pi].
+        theta_points
+            Number of azimuthal samples for the integral over the rotation angle.
+
+        Returns
+        -------
+        mu_dependant_scattering
+            Scalar attenuation coefficient contribution. Units depend on the exact
+            normalization conventions of F and H used in the integrand, but it is
+            intended to be in 1/length.
+
+        Notes
+        -----
+        The core integrand is:
+
+        term[p_index, theta_index] = sum_{a,b} sqrt(n_a n_b) F_a(p,theta) F*_b(p,theta) H_ab(p)
+
+        then integrated over polar angle (self.phi) and azimuth (theta).
+        """
+        n_alpha, sqrt_alpha_beta = self.get_alpha_beta_factor(densities=densities)
+
+        F, theta = self.get_F_matrix(theta_points=theta_points)
+
+        phi, interpolated_H = self.get_interpolated_H(H=H, p=p)
+
+        term = np.einsum("ab,iapt,ibpt,abp -> pt", sqrt_alpha_beta, F, np.conj(F), interpolated_H)
+
+        val = np.trapezoid(term.T * np.sin(self.phi), x=self.phi, axis=1)
+
+        mu_dependant_scattering = np.trapezoid(val, x=theta)
+
+        return mu_dependant_scattering
+
+    def get_mu(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150) -> NDArray:
+        """
+        Compute total scattering attenuation coefficient mu_s.
+
+        Parameters
+        ----------
+        densities : NDArray, shape (N,)
+            Species number densities.
+        H : NDArray, shape (N, N, Pp)
+            Correlation function in p space.
+        p : NDArray, shape (Pp,)
+            p space grid (1/length).
+        theta_points
+            Azimuthal sampling count.
+
+        Returns
+        -------
+        mu
+            Total scattering attenuation coefficient (intended units 1/length), computed as:
+
+            mu = mu_independant + mu_dependant
+        """
+        mu_independant = self.get_mu_independant(densities=densities)
+
+        mu_dependant = self.get_mu_dependant(densities=densities, H=H, p=p, theta_points=theta_points)
+
+        return mu_independant + mu_dependant
+
+    def get_interpolated_H(self, H, p):
+        """
+        Interpolate H(p) onto the scattering wavevector magnitude p = 2k sin(φ/2).
+
+        Parameters
+        ----------
+        H : array like, shape (N, N, Pp)
+            Correlation tensor sampled on the input p grid.
+        p : array like, shape (Pp,)
+            Radial reciprocal space grid (1/length).
+
+        Returns
+        -------
+        interpolated_H : NDArray, shape (N, N, Pphi)
+            H evaluated at p_evaluate[φ] for φ in [0, pi], where:
+
+            p_evaluate(φ) = 2 k sin(φ/2)
+
+        Notes
+        -----
+        This method assumes:
+        * `self.phi` spans [0, pi] and is the polar scattering angle
+        * `p` is provided in increasing order
+        """
+        phi_evaluate = np.linspace(0, np.pi, self.phi.size)
+
+        p_evaluate = 2 * self.k * np.sin(phi_evaluate / 2)
+
+        interpolation = interp1d(y=H, x=p.to("1/meter").magnitude)
+
+        interpolated_H = interpolation(p_evaluate.to("1/meter").magnitude)
+
+        return phi_evaluate, interpolated_H
+
+    def get_phase_function(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150) -> NDArray:
+        """
+        Compute the mixture phase function including dependent scattering corrections.
+
+        Parameters
+        ----------
+        densities : NDArray, shape (N,)
+            Species number densities n_alpha.
+        H : NDArray, shape (N, N, Pp)
+            Correlation tensor in reciprocal space on the p grid.
+        p : NDArray, shape (Pp,)
+            p space grid (1/length).
+        theta_points
+            Number of azimuthal samples.
+
+        Returns
+        -------
+        phase_function : NDArray, shape (Ptheta, Pphi) or (Pphi, Ptheta)
+            Phase function sampled on the azimuthal grid returned by `get_F_matrix`
+            and the polar grid stored in `self.phi`.
+
+            The exact axis ordering depends on your einsum index choices. With your
+            current expressions, it is intended to be indexed by (theta_index, phi_index)
+            after consistent tensor conventions are applied.
+
+        Notes
+        -----
+        The phase function is assembled as:
+
+        * Independent term: sum_a n_a |F_a|^2
+        * Dependent term:   sum_{a,b} sqrt(n_a n_b) F_a F*_b H_ab
+        """
+        n_alpha, sqrt_alpha_beta = self.get_alpha_beta_factor(densities=densities)
+
+        phi, interpolated_H = self.get_interpolated_H(H=H, p=p)
+
+        F, theta = self.get_F_matrix(theta_points=theta_points)
+
+        phase_function: NDArray = (
+            np.einsum("a, jatp, jatp -> tp", n_alpha, F, np.conj(F))
+            + np.einsum("ab, japt, jbpt, abp -> pt", sqrt_alpha_beta, F, np.conj(F), interpolated_H)
+        )
+
+        return phi, theta, phase_function

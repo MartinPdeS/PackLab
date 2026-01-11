@@ -1,6 +1,5 @@
 // simulator.cpp
 #include "simulator.h"
-#include <iostream>
 
 Simulator::Simulator(std::shared_ptr<Domain> _domain, std::shared_ptr<RadiusSampler> _radius_sampler, std::shared_ptr<Options> _options):
     domain(std::move(_domain)),
