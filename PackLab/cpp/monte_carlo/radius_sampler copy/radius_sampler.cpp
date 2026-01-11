@@ -3,58 +3,6 @@
 #include <random>
 #include <cmath>
 
-
-
-
-static std::vector<double> normalize_weights(std::vector<double> weights) {
-    double sum = 0.0;
-    for (double& w : weights) {
-        if (!std::isfinite(w) || w < 0.0) {
-            w = 0.0;
-        }
-        sum += w;
-    }
-    if (!(sum > 0.0)) {
-        throw std::runtime_error("Distribution produced zero total weight.");
-    }
-    for (double& w : weights) {
-        w /= sum;
-    }
-    return weights;
-}
-
-static std::pair<std::vector<double>, std::vector<double>>
-edges_to_centers_and_widths_linear(const std::vector<double>& edges) {
-    if (edges.size() < 2) {
-        throw std::runtime_error("bin_edges must contain at least two points.");
-    }
-    const std::size_t bins = edges.size() - 1;
-    std::vector<double> centers(bins);
-    std::vector<double> widths(bins);
-
-    for (std::size_t i = 0; i < bins; ++i) {
-        centers[i] = 0.5 * (edges[i] + edges[i + 1]);
-        widths[i]  = edges[i + 1] - edges[i];
-    }
-    return {centers, widths};
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // ================================================================
 // Base class implementation
 // ================================================================
@@ -100,8 +48,6 @@ double RadiusSampler::apply_binning(double value) const
 }
 
 
-
-
 // ================================================================
 // ConstantRadiusSampler
 // ================================================================
@@ -134,13 +80,6 @@ int ConstantRadiusSampler::bin_index(double) const
         return -1;
 
     return 0;
-}
-
-
-std::pair<std::vector<double>, std::vector<double>>
-ConstantRadiusSampler::to_bins() const
-{
-    return {{radius_value_}, {1.0}};
 }
 
 
@@ -200,22 +139,6 @@ int UniformRadiusSampler::bin_index(double r) const
 
     return index;
 }
-
-
-std::pair<std::vector<double>, std::vector<double>>
-UniformRadiusSampler::to_bins() const
-{
-    if (number_of_bins_ == 0) {
-        throw std::runtime_error("UniformRadiusSampler::to_bins requires bins > 0.");
-    }
-
-    validate_bin_edges();
-
-    auto [centers, widths] = edges_to_centers_and_widths_linear(bin_edges_);
-    auto weights = normalize_weights(std::move(widths));
-    return {std::move(centers), std::move(weights)};
-}
-
 
 
 // ================================================================
@@ -281,42 +204,6 @@ int LogNormalRadiusSampler::bin_index(double r) const
     return idx;
 }
 
-std::pair<std::vector<double>, std::vector<double>>
-LogNormalRadiusSampler::to_bins() const
-{
-    if (number_of_bins_ == 0) {
-        throw std::runtime_error("LogNormalRadiusSampler::to_bins requires bins > 0.");
-    }
-
-    if (sigma_value_ <= 0.0) {
-        throw std::runtime_error("LogNormalRadiusSampler::to_bins requires sigma > 0.");
-    }
-
-    validate_bin_edges();
-
-    auto [centers, widths] = edges_to_centers_and_widths_linear(bin_edges_);
-
-    std::vector<double> weights(centers.size(), 0.0);
-
-    const double mu = mu_value_;
-    const double sigma = sigma_value_;
-    const double normalizer = sigma * std::sqrt(2.0 * M_PI);
-
-    for (std::size_t i = 0; i < centers.size(); ++i) {
-        const double x = centers[i];
-        if (x <= 0.0) {
-            weights[i] = 0.0;
-            continue;
-        }
-        const double z = (std::log(x) - mu) / sigma;
-        const double pdf = std::exp(-0.5 * z * z) / (x * normalizer);
-        weights[i] = pdf * widths[i];
-    }
-
-    weights = normalize_weights(std::move(weights));
-    return {std::move(centers), std::move(weights)};
-}
-
 
 // ================================================================
 // DiscreteRadiusSampler
@@ -332,6 +219,8 @@ DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::ve
     if (weights.size() != radii.size())
         throw std::invalid_argument("weights must match radii size.");
 
+    double weight_sum = 0.0;
+
     for (double r : radii) {
         if (r <= 0.0)
             throw std::invalid_argument("radii must be positive.");
@@ -339,7 +228,6 @@ DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::ve
         maximum_radius = std::max(maximum_radius, r);
     }
 
-    double weight_sum = 0.0;
     for (double w : weights) {
         if (w < 0.0)
             throw std::invalid_argument("weights must be >= 0.");
@@ -349,18 +237,11 @@ DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::ve
     if (weight_sum <= 0.0)
         throw std::invalid_argument("weights must sum to a positive value.");
 
-    // NEW: store normalized weights for to_bins()
-    weights_ = std::move(weights);
-    for (double& w : weights_) {
-        w /= weight_sum;
-    }
-
-    // Build CDF from normalized weights_
-    cumulative_probability.resize(weights_.size());
+    cumulative_probability.resize(weights.size());
     double cumulative = 0.0;
 
-    for (std::size_t i = 0; i < weights_.size(); ++i) {
-        cumulative += weights_[i];
+    for (std::size_t i = 0; i < weights.size(); ++i) {
+        cumulative += weights[i] / weight_sum;
         cumulative_probability[i] = cumulative;
     }
 
@@ -381,7 +262,6 @@ DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::ve
     }
     this->validate_bin_edges();
 }
-
 
 double DiscreteRadiusSampler::sample_radius(std::mt19937_64& random_generator)
 {
@@ -411,17 +291,4 @@ int DiscreteRadiusSampler::bin_index(double r) const
         idx = static_cast<int>(number_of_bins_ - 1);
 
     return idx;
-}
-
-
-std::pair<std::vector<double>, std::vector<double>>
-DiscreteRadiusSampler::to_bins() const
-{
-    if (radii.empty()) {
-        throw std::runtime_error("DiscreteRadiusSampler::to_bins: radii is empty.");
-    }
-    if (weights_.size() != radii.size()) {
-        throw std::runtime_error("DiscreteRadiusSampler::to_bins: weights and radii size mismatch.");
-    }
-    return {radii, weights_};
 }

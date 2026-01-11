@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
+# add_compile_options(-g -O0 -fno-omit-frame-pointer)
 # --------------------- CMake configuration --------------------
 
 
@@ -103,6 +104,7 @@ add_subdirectory(PackLab/cpp/monte_carlo/statistics)        # statistics
 add_subdirectory(PackLab/cpp/monte_carlo/radius_sampler)    # radius_sampler
 add_subdirectory(PackLab/cpp/monte_carlo/simulator)         # simulator
 add_subdirectory(PackLab/cpp/monte_carlo/estimator)         # estimator
+# add_subdirectory(PackLab/cpp/analytical/radius_sampler)     # sampler
 # ----------------- collect subdirectories --------------------
 
 get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)
