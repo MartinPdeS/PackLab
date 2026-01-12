@@ -10,10 +10,8 @@ mixture and corresponding phase function calculation.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from PackLab import analytical, samplers
+from PackLab import analytical, samplers, scattering
 from TypedUnit import ureg
-from PackLab.scattering.model import get_s1s2
-from PackLab.scattering.plottings import plot_phase_function_3d
 from PackLab.units import ureg
 
 
@@ -68,7 +66,7 @@ ax.legend()
 plt.show()
 
 
-datas = get_s1s2(
+datas = scattering.get_s1s2(
     wavelength=1_450 * ureg.nanometer,
     diameters=py_result.radii,
     phi=np.linspace(-np.pi / 2, np.pi / 2, 400),
@@ -86,7 +84,7 @@ phi, theta, phase_function = datas.get_phase_function(
 )
 
 
-fig1 = plot_phase_function_3d(
+fig1 = scattering.plottings.plot_phase_function_3d(
     phi=phi,
     theta=theta,
     phase_function=phase_function.to('1 / meter').magnitude,
