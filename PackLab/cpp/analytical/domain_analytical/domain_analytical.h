@@ -10,6 +10,7 @@
 #include <iostream> // for std::cout, std::endl
 #include <sstream>  // for std::ostringstream
 #include <random>  // for std::mt19937_64, std::random_device
+#include <algorithm> // for std::sort, std::max
 
 
 class Domain {
