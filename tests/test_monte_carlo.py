@@ -8,12 +8,8 @@ import pytest
 from unittest.mock import patch
 from TypedUnit.units import ureg
 
-from PackLab.monte_carlo import (
-    Domain,
-    Options,
-    Simulator,
-    samplers,
-)
+
+from PackLab import monte_carlo, samplers
 
 
 # ----------------------------------------------------------
@@ -48,7 +44,7 @@ def _min_distance_periodic(positions, box_lengths):
 #  Basic sanity tests
 # ==========================================================
 def test_basic_rsa_run():
-    domain = Domain(
+    domain = monte_carlo.Domain(
         length_x=5.0 * ureg.meter,
         length_y=5.0 * ureg.meter,
         length_z=5.0 * ureg.meter,
@@ -61,13 +57,13 @@ def test_basic_rsa_run():
         bins=10
     )
 
-    options = Options()
+    options = monte_carlo.Options()
     options.random_seed = 123
     options.maximum_attempts = 200_000
     options.maximum_consecutive_rejections = 50_000
     options.target_packing_fraction = 0.10
 
-    simulator = Simulator(
+    simulator = monte_carlo.Simulator(
         domain=domain,
         radius_sampler=radius_sampler,
         options=options
@@ -93,7 +89,7 @@ def test_basic_rsa_run():
 #  Test NO OVERLAP in periodic mode
 # ==========================================================
 def test_no_overlap_periodic():
-    domain = Domain(
+    domain = monte_carlo.Domain(
         length_x=6.0 * ureg.meter,
         length_y=6.0 * ureg.meter,
         length_z=6.0 * ureg.meter,
@@ -102,13 +98,13 @@ def test_no_overlap_periodic():
 
     radius_sampler = samplers.Uniform(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
-    options = Options()
+    options = monte_carlo.Options()
     options.random_seed = 99
     options.maximum_attempts = 300_000
     options.maximum_consecutive_rejections = 30_000
     options.target_packing_fraction = 0.15
 
-    simulator = Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = monte_carlo.Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
     result = simulator.run()
 
     positions = result.positions
@@ -130,7 +126,7 @@ def test_no_overlap_periodic():
 #  Test that packing fraction matches geometry
 # ==========================================================
 def test_packing_fraction_consistency():
-    domain = Domain(
+    domain = monte_carlo.Domain(
         length_x=6.0 * ureg.meter,
         length_y=6.0 * ureg.meter,
         length_z=6.0 * ureg.meter,
@@ -139,13 +135,13 @@ def test_packing_fraction_consistency():
 
     radius_sampler = samplers.Uniform(0.2 * ureg.meter, 0.2 * ureg.meter, bins=10)
 
-    options = Options()
+    options = monte_carlo.Options()
     options.random_seed = 42
     options.maximum_attempts = 200_000
     options.maximum_consecutive_rejections = 50_000
     options.target_packing_fraction = 0.12
 
-    simulator = Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = monte_carlo.Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
     result = simulator.run()
 
     positions = result.positions
@@ -168,7 +164,7 @@ def test_packing_fraction_consistency():
 #  Test stopping based on maximum spheres
 # ==========================================================
 def test_stop_by_maximum_spheres():
-    domain = Domain(
+    domain = monte_carlo.Domain(
         10.0 * ureg.meter,
         10.0 * ureg.meter,
         10.0 * ureg.meter,
@@ -177,13 +173,13 @@ def test_stop_by_maximum_spheres():
 
     radius_sampler = samplers.Uniform(0.1 * ureg.meter, 0.1 * ureg.meter, bins=10)
 
-    options = Options()
+    options = monte_carlo.Options()
     options.random_seed = 11
     options.maximum_attempts = 1_000_000
     options.maximum_consecutive_rejections = 1_000_000
     options.maximum_spheres = 25
 
-    simulator = Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = monte_carlo.Simulator(domain=domain, radius_sampler=radius_sampler, options=options)
     result = simulator.run()
 
     assert result.positions.shape[0] <= 25
@@ -194,28 +190,28 @@ def test_stop_by_maximum_spheres():
 # ==========================================================
 @patch('matplotlib.pyplot.show')
 def test_plot_slice_runs(patch):
-    domain = Domain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
+    domain = monte_carlo.Domain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
     radius_sampler = samplers.Uniform(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
-    options = Options()
+    options = monte_carlo.Options()
     options.random_seed = 2
     options.maximum_attempts = 80_000
 
-    result = Simulator(domain, radius_sampler, options).run()
+    result = monte_carlo.Simulator(domain, radius_sampler, options).run()
 
     fig = result.plot_slice_2d(show=False)
 
 
 @patch('matplotlib.pyplot.show')
 def test_plot_pair_correlation_runs(patch):
-    domain = Domain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
+    domain = monte_carlo.Domain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
     radius_sampler = samplers.Uniform(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
-    options = Options()
+    options = monte_carlo.Options()
     options.random_seed = 3
     options.maximum_attempts = 80_000
 
-    result = Simulator(domain, radius_sampler, options).run()
+    result = monte_carlo.Simulator(domain, radius_sampler, options).run()
 
 
 if __name__ == "__main__":

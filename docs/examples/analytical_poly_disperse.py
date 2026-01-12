@@ -21,15 +21,13 @@ each species pair :math:`(i, j)`.
 
 import numpy as np
 from PackLab import ureg
-from PackLab import analytical
+from PackLab import analytical, samplers
 
-distribution = analytical.samplers.Gaussian(
-    mean_radius=1.5 * ureg.micrometer,
-    standard_deviation=0.2 * ureg.micrometer,
-    radius_min=0.7 * ureg.micrometer,
-    radius_max=2.5 * ureg.micrometer,
-    number_of_bins=4,
-    bin_spacing="linear",
+distribution = samplers.LogNormal(
+    median_radius=1.5 * ureg.micrometer,
+    geometric_standard_deviation=1.2,
+    maximum_radius_clip=2.5 * ureg.micrometer,
+    bins=4,
 )
 
 particle_radii, number_fractions = distribution.to_bins()
@@ -43,12 +41,9 @@ domain = analytical.Domain(
 
 domain.print_bins()
 
-domain.plot_radius_distribution()
-
 p_max = 1e3 / domain.particle_radii.min()
 
-p = np.linspace(0, p_max, 5_000)
-
+p = np.linspace(p_max / 1e8, p_max / 2, 10_000)
 
 solver = analytical.Solver(
     densities=domain.particle_densities_per_radius,
