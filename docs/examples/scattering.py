@@ -27,24 +27,29 @@ particle_radii, number_fractions = sampler.to_bins()
 
 py_domain = analytical.Domain(
     size=100 * ureg.micrometer,
-    particle_radii=particle_radii,
+    radii=particle_radii,
     volume_fraction=0.24,
     number_fractions=number_fractions,
 )
 
+print(py_domain.__doc__)
+dsa
+
+py_domain.print_bins()
+
 # Percus Yevick solver radial frequency grid
-p_max = 1e3 / py_domain.particle_radii.min()
+p_max = 1e3 / py_domain.radii.min()
 p = np.linspace(0, p_max * 1, 2 * 60_000)
 
 solver = analytical.Solver(
     densities=py_domain.particle_densities_per_radius,
-    radii=py_domain.particle_radii,
+    radii=py_domain.radii,
     p=p,
 )
 
 distances = np.linspace(
-    py_domain.particle_radii.min() * 2,
-    py_domain.particle_radii.max() * 10,
+    py_domain.radii.min() * 2,
+    py_domain.radii.max() * 10,
     400,
 )
 

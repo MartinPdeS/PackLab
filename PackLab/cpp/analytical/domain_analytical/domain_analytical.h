@@ -1,39 +1,39 @@
 #pragma once
 
-#include <cstddef>
-#include <cstdint>
-#include <random>
-#include <string>
-#include <utility>
-#include <vector>
+#include <cstddef>  // for std::size_t
+#include <cstdint>  // for std::int64_t, std::uint64_t
+#include <string>   // for std::string
+#include <vector>   // for std::vector
+#include <cmath>    // for std::round
+#include <stdexcept> // for std::invalid_argument
+#include <iomanip>  // for std::setprecision
+#include <iostream> // for std::cout, std::endl
+#include <sstream>  // for std::ostringstream
+#include <random>  // for std::mt19937_64, std::random_device
 
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <stdexcept>
 
-class PolydisperseDomain {
+class Domain {
 public:
-    enum class RoundingMode {
-        Floor,
-        Round
-    };
+    enum class RoundingMode {Floor, Round};
 
 public:
-    std::vector<double> particle_radii;
-    std::vector<double> number_fractions;
-    double size_meters = 0.0;
+    double size = 0.0;
+    std::vector<double> radii;
     double volume_fraction = 0.0;
+    std::vector<double> number_fractions;
+private:
+    RoundingMode rounding_mode_ = RoundingMode::Floor;
+public:
 
-    PolydisperseDomain(
-        double size_meters,
-        std::vector<double> particle_radii,
+    Domain(
+        double size,
+        std::vector<double> radii,
         double volume_fraction,
         std::vector<double> number_fractions,
         RoundingMode rounding_mode
     );
 
-    double volume() const;
+    double get_volume() const;
 
     std::vector<double> get_particle_volumes() const;
     double get_total_particle_volume() const;
@@ -48,7 +48,7 @@ public:
 
     std::vector<double> get_volume_fraction_per_radius() const;
 
-    std::vector<double> sample_particle_radii(
+    std::vector<double> sample_radii(
         std::int64_t number_of_samples,
         std::uint64_t seed
     ) const;
@@ -61,9 +61,6 @@ private:
 
     std::int64_t apply_rounding_scalar(double value) const;
     std::vector<std::int64_t> apply_rounding_vector(const std::vector<double>& values) const;
-
-private:
-    RoundingMode rounding_mode_ = RoundingMode::Floor;
 
 public:
     void print_bins(int precision) const;

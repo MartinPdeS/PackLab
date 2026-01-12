@@ -1,5 +1,6 @@
 #include "pint.h"
 
+namespace py = pybind11;
 
 UnitRegistrySingleton& UnitRegistrySingleton::instance() {
     static UnitRegistrySingleton singleton_instance;
@@ -80,4 +81,56 @@ std::vector<double> to_vector_units(py::handle values, const std::string& unit) 
     }
 
     return magnitudes;
+}
+
+
+double quantity_scalar_to_meters(py::object quantity) {
+    py::object ureg = get_shared_ureg();
+    py::object meter = ureg.attr("meter");
+    py::object converted = quantity.attr("to")(meter);
+    return py::float_(converted.attr("magnitude"));
+}
+
+std::vector<double> quantity_1d_to_meters_vector(py::object quantity) {
+    py::object ureg = get_shared_ureg();
+    py::object meter = ureg.attr("meter");
+
+    py::object converted = quantity.attr("to")(meter);
+    py::object magnitude = converted.attr("magnitude");
+
+    py::module_ numpy = py::module_::import("numpy");
+    py::object float64 = numpy.attr("float64");
+
+    py::array magnitude_array = py::array::ensure(numpy.attr("asarray")(magnitude, float64));
+    if (!magnitude_array || magnitude_array.ndim() != 1) {
+        throw py::value_error("radii must be a one dimensional quantity array.");
+    }
+
+    py::array_t<double, py::array::c_style | py::array::forcecast> radii_double(magnitude_array);
+    auto buf = radii_double.unchecked<1>();
+
+    std::vector<double> out(static_cast<std::size_t>(buf.shape(0)));
+    for (py::ssize_t i = 0; i < buf.shape(0); ++i) {
+        out[static_cast<std::size_t>(i)] = buf(i);
+    }
+    return out;
+}
+
+std::vector<double> array_like_1d_to_double_vector(py::object values) {
+    py::module_ numpy = py::module_::import("numpy");
+    py::object float64 = numpy.attr("float64");
+
+    py::array array = py::array::ensure(numpy.attr("asarray")(values, float64));
+    if (!array || array.ndim() != 1) {
+        throw py::value_error("number_fractions must be a one dimensional array.");
+    }
+
+    py::array_t<double, py::array::c_style | py::array::forcecast> as_double(array);
+    auto buf = as_double.unchecked<1>();
+
+    std::vector<double> out(static_cast<std::size_t>(buf.shape(0)));
+    for (py::ssize_t i = 0; i < buf.shape(0); ++i) {
+        out[static_cast<std::size_t>(i)] = buf(i);
+    }
+    return out;
 }

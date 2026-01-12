@@ -1,10 +1,5 @@
 #include "analytical/domain_analytical/domain_analytical.h"
-#include <algorithm>
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <vector>
+
 
 static constexpr double PI = 3.141592653589793238462643383279502884;
 
@@ -14,35 +9,35 @@ static void require(bool condition, const char* message) {
     }
 }
 
-PolydisperseDomain::PolydisperseDomain(
-    double size_meters_,
-    std::vector<double> particle_radii_,
+Domain::Domain(
+    double size_,
+    std::vector<double> radii_,
     double volume_fraction_,
     std::vector<double> number_fractions_,
     RoundingMode rounding_mode
 )
-    : size_meters(size_meters_),
-      particle_radii(std::move(particle_radii_)),
+    : size(size_),
+      radii(std::move(radii_)),
       volume_fraction(volume_fraction_),
       number_fractions(std::move(number_fractions_)),
       rounding_mode_(rounding_mode)
 {
-    require(std::isfinite(size_meters) && size_meters > 0.0, "size must be positive.");
+    require(std::isfinite(size) && size > 0.0, "size must be positive.");
     require(std::isfinite(volume_fraction) && volume_fraction > 0.0 && volume_fraction <= 1.0, "volume_fraction must be in (0, 1].");
-    require(!particle_radii.empty(), "particle_radii must not be empty.");
+    require(!radii.empty(), "radii must not be empty.");
 
-    for (double r : particle_radii) {
-        require(std::isfinite(r) && r > 0.0, "particle_radii must be strictly positive and finite.");
+    for (double r : radii) {
+        require(std::isfinite(r) && r > 0.0, "radii must be strictly positive and finite.");
     }
 
-    this->validate_and_normalize_number_fractions(number_fractions, particle_radii.size());
+    this->validate_and_normalize_number_fractions(number_fractions, radii.size());
 }
 
-void PolydisperseDomain::validate_and_normalize_number_fractions(
+void Domain::validate_and_normalize_number_fractions(
     std::vector<double>& number_fractions,
     std::size_t expected_size
 ) {
-    require(number_fractions.size() == expected_size, "number_fractions must have the same length as particle_radii.");
+    require(number_fractions.size() == expected_size, "number_fractions must have the same length as radii.");
 
     double total = 0.0;
     for (double& v : number_fractions) {
@@ -58,26 +53,26 @@ void PolydisperseDomain::validate_and_normalize_number_fractions(
     }
 }
 
-double PolydisperseDomain::volume() const {
-    return size_meters * size_meters * size_meters;
+double Domain::get_volume() const {
+    return size * size * size;
 }
 
-std::vector<double> PolydisperseDomain::get_particle_volumes() const {
-    std::vector<double> volumes(particle_radii.size(), 0.0);
+std::vector<double> Domain::get_particle_volumes() const {
+    std::vector<double> volumes(radii.size(), 0.0);
 
     const double prefactor = (4.0 / 3.0) * PI;
-    for (std::size_t i = 0; i < particle_radii.size(); ++i) {
-        const double r = particle_radii[i];
+    for (std::size_t i = 0; i < radii.size(); ++i) {
+        const double r = radii[i];
         volumes[i] = prefactor * r * r * r;
     }
     return volumes;
 }
 
-double PolydisperseDomain::get_total_particle_volume() const {
-    return volume_fraction * volume();
+double Domain::get_total_particle_volume() const {
+    return volume_fraction * this->get_volume();
 }
 
-double PolydisperseDomain::get_mean_particle_volume_number_weighted() const {
+double Domain::get_mean_particle_volume_number_weighted() const {
     const auto volumes = this->get_particle_volumes();
     double accum = 0.0;
 
@@ -87,14 +82,14 @@ double PolydisperseDomain::get_mean_particle_volume_number_weighted() const {
     return accum;
 }
 
-std::int64_t PolydisperseDomain::apply_rounding_scalar(double value) const {
+std::int64_t Domain::apply_rounding_scalar(double value) const {
     if (rounding_mode_ == RoundingMode::Floor) {
         return static_cast<std::int64_t>(std::floor(value));
     }
     return static_cast<std::int64_t>(std::llround(value));
 }
 
-std::vector<std::int64_t> PolydisperseDomain::apply_rounding_vector(const std::vector<double>& values) const {
+std::vector<std::int64_t> Domain::apply_rounding_vector(const std::vector<double>& values) const {
     std::vector<std::int64_t> out(values.size(), 0);
     for (std::size_t i = 0; i < values.size(); ++i) {
         out[i] = this->apply_rounding_scalar(values[i]);
@@ -105,7 +100,7 @@ std::vector<std::int64_t> PolydisperseDomain::apply_rounding_vector(const std::v
     return out;
 }
 
-std::int64_t PolydisperseDomain::get_number_of_particles_total() const {
+std::int64_t Domain::get_number_of_particles_total() const {
     const double total_occupied_volume = this->get_total_particle_volume();
     const double mean_volume = this->get_mean_particle_volume_number_weighted();
 
@@ -117,7 +112,7 @@ std::int64_t PolydisperseDomain::get_number_of_particles_total() const {
     return (rounded < 0) ? 0 : rounded;
 }
 
-std::vector<std::int64_t> PolydisperseDomain::get_number_of_particles_per_radius() const {
+std::vector<std::int64_t> Domain::get_number_of_particles_per_radius() const {
     const std::int64_t total_count = this->get_number_of_particles_total();
 
     std::vector<double> raw_counts(number_fractions.size(), 0.0);
@@ -178,34 +173,34 @@ std::vector<std::int64_t> PolydisperseDomain::get_number_of_particles_per_radius
     return counts;
 }
 
-std::vector<double> PolydisperseDomain::get_particle_densities_per_radius() const {
-    const double V = volume();
+std::vector<double> Domain::get_particle_densities_per_radius() const {
+    const double volume = this->get_volume();
     const auto counts = this->get_number_of_particles_per_radius();
 
     std::vector<double> densities(counts.size(), 0.0);
     for (std::size_t i = 0; i < counts.size(); ++i) {
-        densities[i] = static_cast<double>(counts[i]) / V;
+        densities[i] = static_cast<double>(counts[i]) / volume;
     }
     return densities;
 }
 
-double PolydisperseDomain::get_particle_density_total() const {
-    return static_cast<double>(this->get_number_of_particles_total()) / volume();
+double Domain::get_particle_density_total() const {
+    return static_cast<double>(this->get_number_of_particles_total()) / this->get_volume();
 }
 
-std::vector<double> PolydisperseDomain::get_volume_fraction_per_radius() const {
-    const double V = volume();
+std::vector<double> Domain::get_volume_fraction_per_radius() const {
+    const double volume = this->get_volume();
     const auto counts = this->get_number_of_particles_per_radius();
     const auto volumes = this->get_particle_volumes();
 
     std::vector<double> vf(counts.size(), 0.0);
     for (std::size_t i = 0; i < counts.size(); ++i) {
-        vf[i] = (static_cast<double>(counts[i]) * volumes[i]) / V;
+        vf[i] = (static_cast<double>(counts[i]) * volumes[i]) / volume;
     }
     return vf;
 }
 
-std::vector<double> PolydisperseDomain::sample_particle_radii(
+std::vector<double> Domain::sample_radii(
     std::int64_t number_of_samples,
     std::uint64_t seed
 ) const {
@@ -218,7 +213,7 @@ std::vector<double> PolydisperseDomain::sample_particle_radii(
     std::vector<double> out(static_cast<std::size_t>(number_of_samples), 0.0);
     for (std::int64_t i = 0; i < number_of_samples; ++i) {
         const std::size_t index = pick(rng);
-        out[static_cast<std::size_t>(i)] = particle_radii[index];
+        out[static_cast<std::size_t>(i)] = radii[index];
     }
     return out;
 }
@@ -245,10 +240,10 @@ static std::string pad_left(const std::string& s, std::size_t width) {
     return std::string(width - s.size(), ' ') + s;
 }
 
-std::string PolydisperseDomain::bins_table(int precision) const {
+std::string Domain::bins_table(int precision) const {
 
 
-    const std::size_t n_bins = this->particle_radii.size();
+    const std::size_t n_bins = this->radii.size();
 
 
     const std::vector<double> volumes_m3 = this->get_particle_volumes();
@@ -275,7 +270,7 @@ std::string PolydisperseDomain::bins_table(int precision) const {
         row.reserve(headers.size());
 
         row.push_back(std::to_string(static_cast<int>(i)));
-        row.push_back(format_g(this->particle_radii[i], precision));
+        row.push_back(format_g(this->radii[i], precision));
         row.push_back(format_g(volumes_m3[i], precision));
         row.push_back(format_g(this->number_fractions[i], precision));
         row.push_back(format_g(vf[i], precision));
@@ -336,6 +331,7 @@ std::string PolydisperseDomain::bins_table(int precision) const {
     return out.str();
 }
 
-void PolydisperseDomain::print_bins(int precision) const {
-    std::cout << bins_table(precision);
+void Domain::print_bins(int precision) const {
+    const std::string table = bins_table(precision);
+    std::printf("%s", table.c_str());
 }
