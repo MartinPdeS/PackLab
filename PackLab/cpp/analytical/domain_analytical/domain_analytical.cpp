@@ -9,7 +9,7 @@ static void require(bool condition, const char* message) {
     }
 }
 
-Domain::Domain(
+PYDomain::PYDomain(
     double size_,
     std::vector<double> radii_,
     double volume_fraction_,
@@ -33,7 +33,7 @@ Domain::Domain(
     this->validate_and_normalize_number_fractions(number_fractions, radii.size());
 }
 
-void Domain::validate_and_normalize_number_fractions(
+void PYDomain::validate_and_normalize_number_fractions(
     std::vector<double>& number_fractions,
     std::size_t expected_size
 ) {
@@ -53,11 +53,11 @@ void Domain::validate_and_normalize_number_fractions(
     }
 }
 
-double Domain::get_volume() const {
+double PYDomain::get_volume() const {
     return size * size * size;
 }
 
-std::vector<double> Domain::get_particle_volumes() const {
+std::vector<double> PYDomain::get_particle_volumes() const {
     std::vector<double> volumes(radii.size(), 0.0);
 
     const double prefactor = (4.0 / 3.0) * PI;
@@ -68,11 +68,11 @@ std::vector<double> Domain::get_particle_volumes() const {
     return volumes;
 }
 
-double Domain::get_total_particle_volume() const {
+double PYDomain::get_total_particle_volume() const {
     return volume_fraction * this->get_volume();
 }
 
-double Domain::get_mean_particle_volume_number_weighted() const {
+double PYDomain::get_mean_particle_volume_number_weighted() const {
     const auto volumes = this->get_particle_volumes();
     double accum = 0.0;
 
@@ -82,14 +82,14 @@ double Domain::get_mean_particle_volume_number_weighted() const {
     return accum;
 }
 
-std::int64_t Domain::apply_rounding_scalar(double value) const {
+std::int64_t PYDomain::apply_rounding_scalar(double value) const {
     if (rounding_mode_ == RoundingMode::Floor) {
         return static_cast<std::int64_t>(std::floor(value));
     }
     return static_cast<std::int64_t>(std::llround(value));
 }
 
-std::vector<std::int64_t> Domain::apply_rounding_vector(const std::vector<double>& values) const {
+std::vector<std::int64_t> PYDomain::apply_rounding_vector(const std::vector<double>& values) const {
     std::vector<std::int64_t> out(values.size(), 0);
     for (std::size_t i = 0; i < values.size(); ++i) {
         out[i] = this->apply_rounding_scalar(values[i]);
@@ -100,7 +100,7 @@ std::vector<std::int64_t> Domain::apply_rounding_vector(const std::vector<double
     return out;
 }
 
-std::int64_t Domain::get_number_of_particles_total() const {
+std::int64_t PYDomain::get_number_of_particles_total() const {
     const double total_occupied_volume = this->get_total_particle_volume();
     const double mean_volume = this->get_mean_particle_volume_number_weighted();
 
@@ -112,7 +112,7 @@ std::int64_t Domain::get_number_of_particles_total() const {
     return (rounded < 0) ? 0 : rounded;
 }
 
-std::vector<std::int64_t> Domain::get_number_of_particles_per_radius() const {
+std::vector<std::int64_t> PYDomain::get_number_of_particles_per_radius() const {
     const std::int64_t total_count = this->get_number_of_particles_total();
 
     std::vector<double> raw_counts(number_fractions.size(), 0.0);
@@ -173,7 +173,7 @@ std::vector<std::int64_t> Domain::get_number_of_particles_per_radius() const {
     return counts;
 }
 
-std::vector<double> Domain::get_particle_densities_per_radius() const {
+std::vector<double> PYDomain::get_particle_densities_per_radius() const {
     const double volume = this->get_volume();
     const auto counts = this->get_number_of_particles_per_radius();
 
@@ -184,11 +184,11 @@ std::vector<double> Domain::get_particle_densities_per_radius() const {
     return densities;
 }
 
-double Domain::get_particle_density_total() const {
+double PYDomain::get_particle_density_total() const {
     return static_cast<double>(this->get_number_of_particles_total()) / this->get_volume();
 }
 
-std::vector<double> Domain::get_volume_fraction_per_radius() const {
+std::vector<double> PYDomain::get_volume_fraction_per_radius() const {
     const double volume = this->get_volume();
     const auto counts = this->get_number_of_particles_per_radius();
     const auto volumes = this->get_particle_volumes();
@@ -200,7 +200,7 @@ std::vector<double> Domain::get_volume_fraction_per_radius() const {
     return vf;
 }
 
-std::vector<double> Domain::sample_radii(
+std::vector<double> PYDomain::sample_radii(
     std::int64_t number_of_samples,
     std::uint64_t seed
 ) const {
@@ -240,7 +240,7 @@ static std::string pad_left(const std::string& s, std::size_t width) {
     return std::string(width - s.size(), ' ') + s;
 }
 
-std::string Domain::bins_table(int precision) const {
+std::string PYDomain::bins_table(int precision) const {
     const std::size_t n_bins = this->radii.size();
 
     const std::vector<double> volumes_m3 = this->get_particle_volumes();
@@ -328,7 +328,7 @@ std::string Domain::bins_table(int precision) const {
     return out.str();
 }
 
-void Domain::print_bins(int precision) const {
+void PYDomain::print_bins(int precision) const {
     const std::string table = bins_table(precision);
     std::printf("%s", table.c_str());
 }

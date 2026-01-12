@@ -25,15 +25,12 @@ sampler = samplers.Discrete(
 
 particle_radii, number_fractions = sampler.to_bins()
 
-py_domain = analytical.Domain(
+py_domain = analytical.PYDomain(
     size=100 * ureg.micrometer,
     radii=particle_radii,
     volume_fraction=0.24,
     number_fractions=number_fractions,
 )
-
-print(py_domain.__doc__)
-dsa
 
 py_domain.print_bins()
 
@@ -54,7 +51,6 @@ distances = np.linspace(
 )
 
 py_result = solver.compute(distances=distances)
-py_result.p = p
 
 fig, ax = plt.subplots(1, 1, figsize=(12, 8))
 

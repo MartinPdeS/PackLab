@@ -12,7 +12,7 @@
 #include "monte_carlo/utils/numpy.h"
 
 struct EstimateResult {
-    std::shared_ptr<Domain> domain;
+    std::shared_ptr<MCDomain> domain;
     std::vector<double> centers;   // size B
     std::vector<std::vector<std::vector<double>>> mean_g; // size K x K x B
     std::vector<std::vector<std::vector<double>>> std_g;  // size K x K x B
@@ -23,7 +23,7 @@ struct EstimateResult {
 class Estimator {
 public:
     Estimator(
-        const std::shared_ptr<Domain>& domain,
+        const std::shared_ptr<MCDomain>& domain,
         const std::shared_ptr<RadiusSampler>& radius_sampler,
         const std::shared_ptr<Options>& options,
         std::size_t number_of_bins
@@ -160,7 +160,7 @@ private:
     }
 
 private:
-    std::shared_ptr<Domain> domain;
+    std::shared_ptr<MCDomain> domain;
     std::shared_ptr<RadiusSampler> radius_sampler;
     std::shared_ptr<Options> options;
     std::size_t number_of_bins = 0;

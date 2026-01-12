@@ -34,7 +34,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )doc"
         ;
 
-        py::enum_<Domain::RoundingMode>(
+        py::enum_<PYDomain::RoundingMode>(
             module,
             "RoundingMode",
             R"doc(
@@ -58,16 +58,16 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .value(
             "floor",
-            Domain::RoundingMode::
+            PYDomain::RoundingMode::
             Floor
         )
         .value(
             "round",
-            Domain::RoundingMode::
+            PYDomain::RoundingMode::
             Round
         );
 
-    py::class_<Domain, std::shared_ptr<Domain>>(
+    py::class_<PYDomain, std::shared_ptr<PYDomain>>(
         module,
         "PYDomain",
         py::dynamic_attr(),
@@ -107,7 +107,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                 py::object radii_py,
                 py::object volume_fraction_py,
                 py::object number_fractions_py,
-                Domain::RoundingMode rounding_mode
+                PYDomain::RoundingMode rounding_mode
             ) {
                 const double size_m = quantity_scalar_to_meters(size_py);
                 const std::vector<double> radii_m = quantity_1d_to_meters_vector(radii_py);
@@ -115,13 +115,13 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                 const double volume_fraction = py::float_(volume_fraction_py);
                 const std::vector<double> number_fraction = array_like_1d_to_double_vector(number_fractions_py);
 
-                return Domain(size_m, radii_m, volume_fraction, number_fraction, rounding_mode);
+                return PYDomain(size_m, radii_m, volume_fraction, number_fraction, rounding_mode);
             }),
             py::arg("size"),
             py::arg("radii"),
             py::arg("volume_fraction"),
             py::arg("number_fractions"),
-            py::arg("rounding_mode") = Domain::RoundingMode::Floor,
+            py::arg("rounding_mode") = PYDomain::RoundingMode::Floor,
             R"doc(
                 Create a polydisperse cubic domain.
 
@@ -131,18 +131,18 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
 
                 Returns
                 -------
-                Domain
+                PYDomain
                     A configured domain instance.
             )doc"
         )
         .def_property_readonly(
             "size",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.size) * ureg.attr("meter");
             },
             R"doc(
-                Domain side length.
+                PYDomain side length.
 
                 Returns
                 -------
@@ -152,7 +152,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "radii",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::array_t<double> arr(static_cast<py::ssize_t>(self.radii.size()));
                 auto buf = arr.mutable_unchecked<1>();
                 for (py::ssize_t i = 0; i < buf.shape(0); ++i) {
@@ -173,7 +173,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_readonly(
             "volume_fraction",
-            &Domain::volume_fraction,
+            &PYDomain::volume_fraction,
             R"doc(
                 Total occupied volume fraction.
 
@@ -185,7 +185,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "number_fractions",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::array_t<double> arr(static_cast<py::ssize_t>(self.number_fractions.size()));
                 auto buf = arr.mutable_unchecked<1>();
                 for (py::ssize_t i = 0; i < buf.shape(0); ++i) {
@@ -204,12 +204,12 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "volume",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_volume()) * ureg.attr("meter**3");
             },
             R"doc(
-                Domain volume.
+                PYDomain volume.
 
                 Returns
                 -------
@@ -219,7 +219,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "particle_volumes",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 const auto values = self.get_particle_volumes();
                 py::array_t<double> arr(static_cast<py::ssize_t>(values.size()));
                 auto buf = arr.mutable_unchecked<1>();
@@ -241,7 +241,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "total_particle_volume",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_total_particle_volume()) * ureg.attr("meter**3");
             },
@@ -256,7 +256,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "mean_particle_volume_number_weighted",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::object ureg = get_shared_ureg();
                 return py::float_(self.get_mean_particle_volume_number_weighted()) * ureg.attr("meter**3");
             },
@@ -271,7 +271,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "number_of_particles_total",
-            &Domain::get_number_of_particles_total,
+            &PYDomain::get_number_of_particles_total,
             R"doc(
                 Total inferred particle count.
 
@@ -288,7 +288,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "number_of_particles_per_radius",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 const auto values = self.get_number_of_particles_per_radius();
                 py::array_t<long long> arr(static_cast<py::ssize_t>(values.size()));
                 auto buf = arr.mutable_unchecked<1>();
@@ -308,7 +308,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "particle_densities_per_radius",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 const auto values = self.get_particle_densities_per_radius();
                 py::array_t<double> arr(static_cast<py::ssize_t>(values.size()));
                 auto buf = arr.mutable_unchecked<1>();
@@ -330,7 +330,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "particle_density_total",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 py::object ureg = get_shared_ureg();
                 py::object inv_m3 = py::float_(1.0) / ureg.attr("meter**3");
                 return py::float_(self.get_particle_density_total()) * inv_m3;
@@ -346,7 +346,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def_property_readonly(
             "volume_fraction_per_radius",
-            [](const Domain& self) {
+            [](const PYDomain& self) {
                 const auto values = self.get_volume_fraction_per_radius();
                 py::array_t<double> arr(static_cast<py::ssize_t>(values.size()));
                 auto buf = arr.mutable_unchecked<1>();
@@ -366,7 +366,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def(
             "sample_radii",
-            [](const Domain& self, long long number_of_samples, py::object seed_py) {
+            [](const PYDomain& self, long long number_of_samples, py::object seed_py) {
                 std::uint64_t seed = 0;
                 if (seed_py.is_none()) {
                     seed = static_cast<std::uint64_t>(std::random_device{}());
@@ -404,7 +404,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def(
             "print_bins",
-            [](const Domain& self, int precision) { self.print_bins(precision); },
+            [](const PYDomain& self, int precision) { self.print_bins(precision); },
             py::arg("precision") = 6,
             R"doc(
                 Print a per bin table describing the polydisperse population.
@@ -429,7 +429,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
         )
         .def(
             "bins_table",
-            &Domain::bins_table,
+            &PYDomain::bins_table,
             py::arg("precision") = 6,
             R"doc(
                 Return the per bin table as a string.

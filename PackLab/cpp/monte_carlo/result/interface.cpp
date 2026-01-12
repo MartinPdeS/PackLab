@@ -55,7 +55,7 @@ PYBIND11_MODULE(interface_result, module) {
             "Number of radius classes used to compute partial correlations."
         )
         // -----------------------
-        // Domain
+        // MCDomain
         // -----------------------
         .def_readonly(
             "domain",

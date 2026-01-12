@@ -13,7 +13,7 @@
 #include <algorithm> // for std::sort, std::max
 
 
-class Domain {
+class PYDomain {
 public:
     enum class RoundingMode {Floor, Round};
 
@@ -26,7 +26,7 @@ private:
     RoundingMode rounding_mode_ = RoundingMode::Floor;
 public:
 
-    Domain(
+    PYDomain(
         double size,
         std::vector<double> radii,
         double volume_fraction,

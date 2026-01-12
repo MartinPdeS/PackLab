@@ -110,7 +110,7 @@ PYBIND11_MODULE(interface_simulator, module) {
 
     py::class_<Simulator>(module, "Simulator")
         .def(
-            py::init<std::shared_ptr<Domain>, std::shared_ptr<RadiusSampler>, std::shared_ptr<Options>>(),
+            py::init<std::shared_ptr<MCDomain>, std::shared_ptr<RadiusSampler>, std::shared_ptr<Options>>(),
             py::arg("domain"),
             py::arg("radius_sampler"),
             py::arg("options")

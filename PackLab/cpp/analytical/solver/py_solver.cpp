@@ -1,8 +1,4 @@
-#include "percus_yevick_solver.h"
-
-#include <algorithm>
-#include <cmath>
-#include <stdexcept>
+#include "py_solver.h"
 
 static constexpr double pi_value = 3.141592653589793238462643383279502884;
 

@@ -44,7 +44,7 @@ def _min_distance_periodic(positions, box_lengths):
 #  Basic sanity tests
 # ==========================================================
 def test_basic_rsa_run():
-    domain = monte_carlo.Domain(
+    domain = monte_carlo.MCDomain(
         length_x=5.0 * ureg.meter,
         length_y=5.0 * ureg.meter,
         length_z=5.0 * ureg.meter,
@@ -89,7 +89,7 @@ def test_basic_rsa_run():
 #  Test NO OVERLAP in periodic mode
 # ==========================================================
 def test_no_overlap_periodic():
-    domain = monte_carlo.Domain(
+    domain = monte_carlo.MCDomain(
         length_x=6.0 * ureg.meter,
         length_y=6.0 * ureg.meter,
         length_z=6.0 * ureg.meter,
@@ -126,7 +126,7 @@ def test_no_overlap_periodic():
 #  Test that packing fraction matches geometry
 # ==========================================================
 def test_packing_fraction_consistency():
-    domain = monte_carlo.Domain(
+    domain = monte_carlo.MCDomain(
         length_x=6.0 * ureg.meter,
         length_y=6.0 * ureg.meter,
         length_z=6.0 * ureg.meter,
@@ -164,7 +164,7 @@ def test_packing_fraction_consistency():
 #  Test stopping based on maximum spheres
 # ==========================================================
 def test_stop_by_maximum_spheres():
-    domain = monte_carlo.Domain(
+    domain = monte_carlo.MCDomain(
         10.0 * ureg.meter,
         10.0 * ureg.meter,
         10.0 * ureg.meter,
@@ -190,7 +190,7 @@ def test_stop_by_maximum_spheres():
 # ==========================================================
 @patch('matplotlib.pyplot.show')
 def test_plot_slice_runs(patch):
-    domain = monte_carlo.Domain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
+    domain = monte_carlo.MCDomain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
     radius_sampler = samplers.Uniform(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
     options = monte_carlo.Options()
@@ -204,7 +204,7 @@ def test_plot_slice_runs(patch):
 
 @patch('matplotlib.pyplot.show')
 def test_plot_pair_correlation_runs(patch):
-    domain = monte_carlo.Domain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
+    domain = monte_carlo.MCDomain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
     radius_sampler = samplers.Uniform(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
     options = monte_carlo.Options()

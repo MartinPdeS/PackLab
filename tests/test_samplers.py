@@ -1,17 +1,4 @@
-# test_radius_samplers.py
-#
-# Pytest unit tests for the pybind11-exposed radius samplers.
-#
-# Assumptions:
-# - Your Python module exposes the samplers under `analytical.samplers`
-#   with class names: Constant, Uniform, LogNormal, Discrete
-# - Each sampler has:
-#     - number_of_bins (property)
-#     - set_number_of_bins(bins)
-#     - to_bins() -> (particle_radii, weights)
-# - `particle_radii` is a Pint Quantity (TypedUnit) and supports `.to("meter")`
-#
-# Adjust the import path if needed.
+# test_samplers.py
 
 import math
 import numpy as np

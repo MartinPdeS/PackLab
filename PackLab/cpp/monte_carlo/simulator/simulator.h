@@ -16,12 +16,12 @@
 
 class Simulator {
 public:
-    std::shared_ptr<Domain> domain;
+    std::shared_ptr<MCDomain> domain;
     std::shared_ptr<SphereConfiguration> sphere_configuration;
     mutable Statistics statistics;
 
     Simulator(
-        std::shared_ptr<Domain> domain,
+        std::shared_ptr<MCDomain> domain,
         std::shared_ptr<RadiusSampler> radius_sampler,
         std::shared_ptr<Options> options
     );

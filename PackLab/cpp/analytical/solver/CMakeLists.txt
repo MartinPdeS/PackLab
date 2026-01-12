@@ -1,6 +1,6 @@
 # cpp/analytical/solver/CMakeLists.txt
 
-set(NAME "solver")
+set(NAME "py_solver")
 
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")

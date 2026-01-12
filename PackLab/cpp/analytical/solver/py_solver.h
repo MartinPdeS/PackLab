@@ -3,6 +3,10 @@
 #include <cstddef>
 #include <utility>
 #include <vector>
+#include <algorithm>
+#include <cmath>
+#include <stdexcept>
+
 
 struct PercusYevickResult {
     std::vector<double> epsilons;               // size 4
