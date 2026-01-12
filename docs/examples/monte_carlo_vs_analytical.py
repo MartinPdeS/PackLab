@@ -39,7 +39,7 @@ domain = monte_carlo.Domain(
     use_periodic_boundaries=True,
 )
 
-radius_sampler = samplers.Discrete(
+sampler = samplers.Discrete(
     radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
@@ -53,7 +53,7 @@ options.enforce_radii_distribution = True
 
 rsa_simulator = monte_carlo.Simulator(
     domain=domain,
-    radius_sampler=radius_sampler,
+    radius_sampler=sampler,
     options=options,
 )
 
@@ -72,12 +72,8 @@ mc_centers, mc_g_ij = result.compute_partial_pair_correlation_function(
 # We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 # The analytical domain uses Pint quantities.
 
-distribution = analytical.samplers.Discrete(
-    particle_radii=[1.0, 2.0] * ureg.micrometer,
-    weights=[1.0, 1.0],
-)
 
-particle_radii, number_fractions = distribution.to_bins()
+particle_radii, number_fractions = sampler.to_bins()
 
 py_domain = analytical.Domain(
     size=100_000 * ureg.micrometer,
