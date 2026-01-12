@@ -52,6 +52,7 @@ dependencies = [
     "TypedUnit",
     "tabulate",
     "scipy",
+    "PyMieSim"
 ]
 
 [project.urls]
