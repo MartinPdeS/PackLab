@@ -90,7 +90,6 @@ class Solver:
 
     Notes:
         The radii provided at construction time are always used.
-        Debug printing is only produced if you call debug_Cpy_units.
 
     Attributes:
         densities: Species densities.
@@ -327,14 +326,4 @@ class Solver:
             p=self.p,
             densities=self.densities,
             radii=self.radii,
-        )
-
-    def debug_Cpy_units(self, index_i: int = 0, index_j: int = 0) -> None:
-        """Print intermediate Pint units for a selected Cpy[i, j, :] computation."""
-        epsilons = self.get_epsilons()
-        _ = self.get_Cpy_(
-            index_i=index_i,
-            index_j=index_j,
-            epsilons=epsilons,
-            debug_units=True,
         )
