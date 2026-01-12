@@ -22,11 +22,12 @@ each species pair :math:`(i, j)`.
 import numpy as np
 from PackLab import ureg
 from PackLab import analytical, samplers
+import matplotlib.pyplot as plt
 
 distribution = samplers.LogNormal(
     median_radius=1.5 * ureg.micrometer,
     geometric_standard_deviation=1.2,
-    maximum_radius_clip=2.5 * ureg.micrometer,
+    maximum_radius_clip=0.5 * ureg.micrometer,
     bins=4,
 )
 
@@ -55,4 +56,25 @@ distances = np.linspace(domain.radii.min() * 2, domain.radii.max() * 10, 1500)
 
 result = solver.compute(distances=distances)
 
-# result.plot_pair_correlation()
+
+figure, ax = plt.subplots(1, 1)
+
+r = result.distances.magnitude
+n = result.g.shape[0]
+
+
+for i in range(n):
+    for j in range(n):
+        ax.plot(
+            result.distances.magnitude,
+            result.g[i, j, :],
+            label=f"g[{i},{j}]"
+        )
+
+ax.set_xlabel("r")
+ax.set_ylabel("g(r)")
+ax.set_title("Radial distribution functions")
+
+ax.legend()
+
+plt.show()
