@@ -4,13 +4,13 @@
 
 | Name                            |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
 |-------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
-| PackLab/analytical/solver.py    |      140 |      140 |       14 |        0 |      0.00% |     1-335 |
+| PackLab/analytical/solver.py    |      137 |      137 |       14 |        0 |      0.00% |     1-314 |
 | PackLab/monte\_carlo/results.py |      132 |       57 |       20 |        5 |     53.95% |66-67, 71, 75, 78, 82, 86, 104-130, 146-155, 179, 181, 191, 200-207, 213-215, 263-303 |
 | PackLab/scattering/data.py      |       65 |       65 |        6 |        0 |      0.00% |     1-358 |
 | PackLab/scattering/model.py     |       22 |       22 |        4 |        0 |      0.00% |      1-80 |
 | PackLab/scattering/plottings.py |       74 |       74 |       24 |        0 |      0.00% |     1-201 |
 | PackLab/utils.py                |        2 |        2 |        0 |        0 |      0.00% |       3-6 |
-| **TOTAL**                       |  **438** |  **360** |   **68** |    **5** | **16.80%** |           |
+| **TOTAL**                       |  **435** |  **357** |   **68** |    **5** | **16.90%** |           |
 
 1 file skipped due to complete coverage.
 
