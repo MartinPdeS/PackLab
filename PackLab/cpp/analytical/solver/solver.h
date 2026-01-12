@@ -1,190 +1,73 @@
 #pragma once
 
-#include <cmath>
-#include <stdexcept>
-#include <string>
+#include <cstddef>
 #include <utility>
 #include <vector>
 
-namespace radius_core {
+struct PercusYevickResult {
+    std::vector<double> epsilons;               // size 4
 
-inline constexpr double pi_value = 3.141592653589793238462643383279502884;
+    std::vector<double> radii_m;                // size N
+    std::vector<double> densities_per_m3;       // size N
 
-inline void require(bool condition, const char* message) {
-    if (!condition) {
-        throw std::invalid_argument(message);
-    }
-}
+    std::vector<double> p_per_m;                // size P
+    std::vector<double> distances_m;            // size R
 
-inline std::vector<double> normalize_weights(std::vector<double> weights) {
-    double total = 0.0;
-    for (double& w : weights) {
-        if (!std::isfinite(w) || w < 0.0) {
-            w = 0.0;
-        }
-        total += w;
-    }
-    require(total > 0.0, "Distribution produced zero total weight. Check parameters or range.");
-    for (double& w : weights) {
-        w /= total;
-    }
-    return weights;
-}
+    std::vector<double> R_ij_m;                 // size N*N
+    std::vector<double> S_ij_m;                 // size N*N
+    std::vector<double> A_i;                    // size N
+    std::vector<double> B_i_m;                  // size N
+    std::vector<double> D_ij_m2;                // size N*N
 
-inline std::vector<double> linspace(double a, double b, int count) {
-    require(count >= 2, "linspace requires count >= 2.");
-    std::vector<double> out(static_cast<std::size_t>(count));
-    const double step = (b - a) / static_cast<double>(count - 1);
-    for (int i = 0; i < count; ++i) {
-        out[static_cast<std::size_t>(i)] = a + step * static_cast<double>(i);
-    }
-    return out;
-}
+    std::vector<double> Cpy;                    // size N*N*P
+    std::vector<double> H;                      // size N*N*P
 
-inline std::vector<double> logspace10(double a, double b, int count) {
-    require(count >= 2, "logspace requires count >= 2.");
-    std::vector<double> out(static_cast<std::size_t>(count));
-    const double step = (b - a) / static_cast<double>(count - 1);
-    for (int i = 0; i < count; ++i) {
-        out[static_cast<std::size_t>(i)] = std::pow(10.0, a + step * static_cast<double>(i));
-    }
-    return out;
-}
+    std::vector<double> h;                      // size N*N*R
+    std::vector<double> g;                      // size N*N*R
 
-inline std::vector<double> make_bin_edges_meters(
-    double radius_min_m,
-    double radius_max_m,
-    int number_of_bins,
-    const std::string& bin_spacing
-) {
-    require(number_of_bins >= 1, "number_of_bins must be >= 1.");
-    require(radius_max_m > radius_min_m, "radius_max must be strictly larger than radius_min.");
-
-    if (bin_spacing == "linear") {
-        return linspace(radius_min_m, radius_max_m, number_of_bins + 1);
-    }
-
-    if (bin_spacing == "log") {
-        require(radius_min_m > 0.0, "radius_min must be > 0 for log spacing.");
-        return logspace10(std::log10(radius_min_m), std::log10(radius_max_m), number_of_bins + 1);
-    }
-
-    throw std::invalid_argument("bin_spacing must be 'linear' or 'log'.");
-}
-
-inline std::pair<std::vector<double>, std::vector<double>> edges_to_centers_and_widths_meters(
-    const std::vector<double>& edges_m,
-    const std::string& bin_spacing
-) {
-    require(edges_m.size() >= 2, "edges must contain at least two points.");
-
-    const std::size_t n = edges_m.size() - 1;
-    std::vector<double> centers(n);
-    std::vector<double> widths(n);
-
-    if (bin_spacing == "linear") {
-        for (std::size_t i = 0; i < n; ++i) {
-            const double left = edges_m[i];
-            const double right = edges_m[i + 1];
-            centers[i] = 0.5 * (left + right);
-            widths[i] = right - left;
-        }
-        return {centers, widths};
-    }
-
-    if (bin_spacing == "log") {
-        for (std::size_t i = 0; i < n; ++i) {
-            const double left = edges_m[i];
-            const double right = edges_m[i + 1];
-            centers[i] = std::sqrt(left * right);
-            widths[i] = right - left;
-        }
-        return {centers, widths};
-    }
-
-    throw std::invalid_argument("bin_spacing must be 'linear' or 'log'.");
-}
-
-struct Bins {
-    std::vector<double> radii_m;   // meters
-    std::vector<double> weights;   // sum to 1
+    std::size_t number_of_species = 0;          // N
+    std::size_t number_of_p_points = 0;         // P
+    std::size_t number_of_r_points = 0;         // R
 };
 
-inline Bins delta(double radius_m) {
-    return Bins{{radius_m}, {1.0}};
-}
+class PercusYevickSolver {
+public:
+    PercusYevickSolver(
+        std::vector<double> densities_per_m3,
+        std::vector<double> radii_m,
+        std::vector<double> p_per_m
+    );
 
-inline Bins uniform(double radius_min_m, double radius_max_m, int number_of_bins, const std::string& bin_spacing) {
-    auto edges = make_bin_edges_meters(radius_min_m, radius_max_m, number_of_bins, bin_spacing);
-    auto [centers, widths] = edges_to_centers_and_widths_meters(edges, bin_spacing);
-    auto weights = normalize_weights(widths);
-    return Bins{centers, weights};
-}
+    PercusYevickResult compute(std::vector<double> distances_m) const;
 
-inline Bins gaussian(
-    double mean_m,
-    double sigma_m,
-    double radius_min_m,
-    double radius_max_m,
-    int number_of_bins,
-    const std::string& bin_spacing
-) {
-    require(sigma_m > 0.0, "standard_deviation must be > 0.");
+private:
+    std::vector<double> compute_epsilons() const;
+    void compute_parameters(
+        const std::vector<double>& epsilons,
+        std::vector<double>& R_ij_m,
+        std::vector<double>& S_ij_m,
+        std::vector<double>& A_i,
+        std::vector<double>& B_i_m,
+        std::vector<double>& D_ij_m2
+    ) const;
 
-    auto edges = make_bin_edges_meters(radius_min_m, radius_max_m, number_of_bins, bin_spacing);
-    auto [centers, widths] = edges_to_centers_and_widths_meters(edges, bin_spacing);
+    std::vector<double> compute_Cpy(const std::vector<double>& epsilons) const;
+    static std::vector<double> solve_H_from_C_batch(
+        const std::vector<double>& C,
+        std::size_t N,
+        std::size_t P
+    );
 
-    std::vector<double> weights(centers.size());
-    const double normalizer = sigma_m * std::sqrt(2.0 * pi_value);
+    static std::vector<double> radial_fourier_h_from_H(
+        const std::vector<double>& H,
+        const std::vector<double>& distances_m,
+        const std::vector<double>& p_per_m,
+        const std::vector<double>& densities_per_m3,
+        std::size_t N
+    );
 
-    for (std::size_t i = 0; i < centers.size(); ++i) {
-        const double x = centers[i];
-        const double z = (x - mean_m) / sigma_m;
-        const double pdf = std::exp(-0.5 * z * z) / normalizer;
-        weights[i] = pdf * widths[i];
-    }
-
-    weights = normalize_weights(std::move(weights));
-    return Bins{centers, weights};
-}
-
-inline Bins lognormal(
-    double median_m,
-    double geometric_standard_deviation,
-    double radius_min_m,
-    double radius_max_m,
-    int number_of_bins,
-    const std::string& bin_spacing
-) {
-    require(geometric_standard_deviation > 0.0, "geometric_standard_deviation must be > 0.");
-    const double sigma = std::log(geometric_standard_deviation);
-    require(sigma > 0.0, "geometric_standard_deviation must be > 1 to represent a non degenerate distribution.");
-    require(median_m > 0.0, "Log normal requires strictly positive radii and median_radius.");
-
-    auto edges = make_bin_edges_meters(radius_min_m, radius_max_m, number_of_bins, bin_spacing);
-    auto [centers, widths] = edges_to_centers_and_widths_meters(edges, bin_spacing);
-
-    const double mu = std::log(median_m);
-    const double normalizer = sigma * std::sqrt(2.0 * pi_value);
-
-    std::vector<double> weights(centers.size());
-    for (std::size_t i = 0; i < centers.size(); ++i) {
-        const double x = centers[i];
-        require(x > 0.0, "Log normal requires strictly positive radii and median_radius.");
-        const double z = (std::log(x) - mu) / sigma;
-        const double pdf = std::exp(-0.5 * z * z) / (x * normalizer);
-        weights[i] = pdf * widths[i];
-    }
-
-    weights = normalize_weights(std::move(weights));
-    return Bins{centers, weights};
-}
-
-inline Bins discrete(std::vector<double> radii_m, std::vector<double> weights) {
-    require(!radii_m.empty(), "Discrete distribution must contain at least one radius value.");
-    require(radii_m.size() == weights.size(), "particle_radii and weights must have the same length.");
-    weights = normalize_weights(std::move(weights));
-    return Bins{std::move(radii_m), std::move(weights)};
-}
-
-}
+private:
+    std::vector<double> densities_per_m3_;
+    std::vector<double> radii_m_;
+    std::vector<double> p_per_m_;
+};
