@@ -1,6 +1,6 @@
 #include "domain.h"
 
-Vector3d Domain::wrap_position_if_periodic(const Vector3d& position) const {
+Vector3d MCDomain::wrap_position_if_periodic(const Vector3d& position) const {
     if (!use_periodic_boundaries)
         return position;
 
@@ -18,7 +18,7 @@ Vector3d Domain::wrap_position_if_periodic(const Vector3d& position) const {
     };
 }
 
-Vector3d Domain::sample_uniform_position(std::mt19937_64& random_generator, double margin) const {
+Vector3d MCDomain::sample_uniform_position(std::mt19937_64& random_generator, double margin) const {
     const double effective_margin = std::max(0.0, margin);
 
     const double minimum_x = use_periodic_boundaries ? 0.0 : effective_margin;
@@ -42,7 +42,7 @@ Vector3d Domain::sample_uniform_position(std::mt19937_64& random_generator, doub
     return wrap_position_if_periodic(Vector3d{uniform_x(random_generator), uniform_y(random_generator), uniform_z(random_generator)});
 }
 
-double Domain::minimum_image_displacement(double delta, double box_length) const {
+double MCDomain::minimum_image_displacement(double delta, double box_length) const {
     if (!use_periodic_boundaries)
         return delta;
 

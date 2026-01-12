@@ -32,7 +32,7 @@ from PackLab import ureg
 # ---------------------
 # We use a periodic cubic domain and a two radius discrete sampler.
 
-domain = monte_carlo.Domain(
+domain = monte_carlo.MCDomain(
     length_x=40.0 * ureg.micrometer,
     length_y=40.0 * ureg.micrometer,
     length_z=40.0 * ureg.micrometer,

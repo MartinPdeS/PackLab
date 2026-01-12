@@ -31,7 +31,7 @@ from PackLab import analytical, monte_carlo, samplers
 # ---------------------
 # We use a periodic cubic domain and a two radius discrete sampler.
 
-domain = monte_carlo.Domain(
+domain = monte_carlo.MCDomain(
     length_x=60.0 * ureg.micrometer,
     length_y=60.0 * ureg.micrometer,
     length_z=60.0 * ureg.micrometer,

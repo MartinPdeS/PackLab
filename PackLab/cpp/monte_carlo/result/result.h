@@ -28,7 +28,7 @@ computing total and partial pair correlation functions g(r) and g_ij(r).
 */
 class Result {
 public:
-    std::shared_ptr<Domain> domain;
+    std::shared_ptr<MCDomain> domain;
     std::shared_ptr<SphereConfiguration> sphere_configuration;
     std::size_t number_of_classes;
     Statistics statistics;
@@ -46,7 +46,7 @@ public:
     @param domain Simulation domain
     @param number_of_classes Total number of distinct classes.
     */
-    Result(const std::shared_ptr<SphereConfiguration>& sphere_configuration, const std::shared_ptr<Domain>& domain, Statistics statistics, std::size_t _number_of_classes)
+    Result(const std::shared_ptr<SphereConfiguration>& sphere_configuration, const std::shared_ptr<MCDomain>& domain, Statistics statistics, std::size_t _number_of_classes)
         :   domain(domain),
             sphere_configuration(sphere_configuration),
             number_of_classes(_number_of_classes),

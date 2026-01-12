@@ -24,7 +24,7 @@ from PackLab import ureg
 # The domain defines the physical volume of the simulation.
 # Here we use periodic boundary conditions on a cubic box.
 
-domain = monte_carlo.Domain(
+domain = monte_carlo.MCDomain(
     length_x=6.0 * ureg.millimeter,
     length_y=6.0 * ureg.millimeter,
     length_z=6.0 * ureg.millimeter,

@@ -48,7 +48,7 @@ PYBIND11_MODULE(interface_estimator, module) {
     py::class_<Estimator, std::shared_ptr<Estimator>> estimator_cls(module, "Estimator");
     estimator_cls
         .def(py::init<
-            const std::shared_ptr<Domain>&,
+            const std::shared_ptr<MCDomain>&,
             const std::shared_ptr<RadiusSampler>&,
             const std::shared_ptr<Options>&,
             std::size_t>(),

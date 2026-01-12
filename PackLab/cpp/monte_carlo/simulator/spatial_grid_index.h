@@ -12,7 +12,7 @@
 
 class SpatialGridIndex {
 public:
-    SpatialGridIndex(double cell_size, std::shared_ptr<Domain> domain)
+    SpatialGridIndex(double cell_size, std::shared_ptr<MCDomain> domain)
         : cell_size_value_(cell_size),
           length_x_value_(domain->length_x),
           length_y_value_(domain->length_y),

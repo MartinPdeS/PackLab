@@ -8,11 +8,11 @@
 #include "monte_carlo/utils/utils.h"
 
 
-class Domain {
+class MCDomain {
 public:
-    Domain() = default;
+    MCDomain() = default;
 
-    Domain(double _length_x, double _length_y, double _length_z, bool _use_periodic_boundaries)
+    MCDomain(double _length_x, double _length_y, double _length_z, bool _use_periodic_boundaries)
     :   length_x(_length_x),
         length_y(_length_y),
         length_z(_length_z),

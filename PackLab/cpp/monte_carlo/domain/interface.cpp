@@ -7,7 +7,7 @@ namespace py = pybind11;
 
 
 PYBIND11_MODULE(interface_domain, module) {
-    py::class_<Domain, std::shared_ptr<Domain>> domain_cls(module, "Domain", py::dynamic_attr());
+    py::class_<MCDomain, std::shared_ptr<MCDomain>> domain_cls(module, "MCDomain", py::dynamic_attr());
 
     domain_cls
         .def(
@@ -25,7 +25,7 @@ PYBIND11_MODULE(interface_domain, module) {
                 const double ly = to_meters_strict(length_y);
                 const double lz = to_meters_strict(length_z);
 
-                new (self.cast<Domain*>()) Domain(lx, ly, lz, use_periodic_boundaries);
+                new (self.cast<MCDomain*>()) MCDomain(lx, ly, lz, use_periodic_boundaries);
 
                 self.attr("_ureg") = ureg;  // Persist registry on the Python instance for later getters
             },
@@ -38,7 +38,7 @@ PYBIND11_MODULE(interface_domain, module) {
             "length_x",
             py::cpp_function(
                 [](py::object self) {
-                    const Domain& cpp_self = self.cast<const Domain&>();
+                    const MCDomain& cpp_self = self.cast<const MCDomain&>();
                     py::object ureg = get_shared_ureg();
                     return meters_quantity_with_ureg(ureg, cpp_self.length_x);
                 },
@@ -50,7 +50,7 @@ PYBIND11_MODULE(interface_domain, module) {
             "length_y",
             py::cpp_function(
                 [](py::object self) {
-                    const Domain& cpp_self = self.cast<const Domain&>();
+                    const MCDomain& cpp_self = self.cast<const MCDomain&>();
                     py::object ureg = get_shared_ureg();
                     return meters_quantity_with_ureg(ureg, cpp_self.length_y);
                 },
@@ -62,7 +62,7 @@ PYBIND11_MODULE(interface_domain, module) {
             "length_z",
             py::cpp_function(
                 [](py::object self) {
-                    const Domain& cpp_self = self.cast<const Domain&>();
+                    const MCDomain& cpp_self = self.cast<const MCDomain&>();
                     py::object ureg = get_shared_ureg();
                     return meters_quantity_with_ureg(ureg, cpp_self.length_z);
                 },
@@ -72,17 +72,17 @@ PYBIND11_MODULE(interface_domain, module) {
         )
         .def_readonly(
             "use_periodic_boundaries",
-            &Domain::use_periodic_boundaries,
+            &MCDomain::use_periodic_boundaries,
             "Whether periodic boundary conditions are used in the domain."
         )
         .def_readonly(
             "volume",
-            &Domain::volume,
+            &MCDomain::volume,
             "The volume of the domain in cubic meters."
         )
         .def(
             "scale",
-            &Domain::scale,
+            &MCDomain::scale,
             py::arg("scale_factor"),
             "Scale the domain dimensions by the given factor."
         );

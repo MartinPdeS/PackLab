@@ -2,12 +2,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 
-#include <cstddef>
-#include <memory>
-#include <string>
-#include <vector>
-
-#include "solver.h"
+#include "py_solver.h"
 #include "pint/pint.h"
 
 namespace py = pybind11;
@@ -72,7 +67,7 @@ static py::array_t<double> vector_to_numpy_3d_row_major(const std::vector<double
     return arr;
 }
 
-PYBIND11_MODULE(interface_percus_yevick, module) {
+PYBIND11_MODULE(interface_py_solver, module) {
     module.doc() = "Percus Yevick mixture solver (C++ core, Pint handled in wrapper).";
 
     py::class_<PercusYevickResult>(module, "Result", py::dynamic_attr())
@@ -129,7 +124,7 @@ PYBIND11_MODULE(interface_percus_yevick, module) {
             return vector_to_numpy_3d_row_major(r.g, r.number_of_species, r.number_of_species, r.number_of_r_points);
         });
 
-    py::class_<PercusYevickSolver>(module, "Solver")
+    py::class_<PercusYevickSolver, std::shared_ptr<PercusYevickSolver>>(module, "Solver")
         .def(
             py::init([](py::object densities_py, py::object radii_py, py::object p_py) {
                 const std::vector<double> densities_per_m3 = quantity_1d_to_double_vector_in_units(densities_py, "1/meter**3");
