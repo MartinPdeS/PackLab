@@ -2,17 +2,15 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                            |    Stmts |     Miss |   Branch |   BrPart |     Cover |   Missing |
-|-------------------------------- | -------: | -------: | -------: | -------: | --------: | --------: |
-| PackLab/analytical/domain.py    |      169 |      169 |       54 |        0 |     0.00% |     1-482 |
-| PackLab/analytical/samplers.py  |      141 |      141 |       38 |        0 |     0.00% |     1-369 |
-| PackLab/analytical/solver.py    |      140 |      140 |       14 |        0 |     0.00% |     1-335 |
-| PackLab/monte\_carlo/results.py |      132 |       57 |       20 |        5 |    53.95% |66-67, 71, 75, 78, 82, 86, 104-130, 146-155, 179, 181, 191, 200-207, 213-215, 263-303 |
-| PackLab/scattering/data.py      |       53 |       53 |        0 |        0 |     0.00% |     1-325 |
-| PackLab/scattering/model.py     |       22 |       22 |        4 |        0 |     0.00% |      1-80 |
-| PackLab/scattering/plottings.py |       74 |       74 |       24 |        0 |     0.00% |     1-201 |
-| PackLab/utils.py                |        2 |        2 |        0 |        0 |     0.00% |       3-6 |
-| **TOTAL**                       |  **736** |  **658** |  **154** |    **5** | **9.55%** |           |
+| Name                            |    Stmts |     Miss |   Branch |   BrPart |      Cover |   Missing |
+|-------------------------------- | -------: | -------: | -------: | -------: | ---------: | --------: |
+| PackLab/analytical/solver.py    |      140 |      140 |       14 |        0 |      0.00% |     1-335 |
+| PackLab/monte\_carlo/results.py |      132 |       57 |       20 |        5 |     53.95% |66-67, 71, 75, 78, 82, 86, 104-130, 146-155, 179, 181, 191, 200-207, 213-215, 263-303 |
+| PackLab/scattering/data.py      |       53 |       53 |        0 |        0 |      0.00% |     1-325 |
+| PackLab/scattering/model.py     |       22 |       22 |        4 |        0 |      0.00% |      1-80 |
+| PackLab/scattering/plottings.py |       74 |       74 |       24 |        0 |      0.00% |     1-201 |
+| PackLab/utils.py                |        2 |        2 |        0 |        0 |      0.00% |       3-6 |
+| **TOTAL**                       |  **426** |  **348** |   **62** |    **5** | **17.42%** |           |
 
 1 file skipped due to complete coverage.
 
