@@ -5,8 +5,8 @@
 #include <tuple>
 #include <vector>
 
+#include "radius_sampler/radius_sampler.h"
 #include "monte_carlo/domain/domain.h"
-#include "monte_carlo/radius_sampler/radius_sampler.h"
 #include "monte_carlo/simulator/simulator.h"
 #include "monte_carlo/utils/utils.h"
 #include "monte_carlo/utils/numpy.h"

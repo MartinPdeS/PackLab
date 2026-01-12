@@ -16,7 +16,7 @@ It demonstrates the following steps:
 
 This is the recommended starting point when learning how to use PackLab.
 """
-from PackLab import monte_carlo
+from PackLab import monte_carlo, samplers
 from PackLab import ureg
 # %%
 # Simulation domain
@@ -31,7 +31,7 @@ domain = monte_carlo.Domain(
     use_periodic_boundaries=True
 )
 
-radius_sampler = monte_carlo.samplers.Discrete(
+radius_sampler = samplers.Discrete(
     radii=[0.1, 0.2] * ureg.millimeter,
     weights=[0.5, 0.5],
 )

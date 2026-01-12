@@ -1,6 +1,6 @@
-# cpp/analytical/radius_sampler/CMakeLists.txt
+# cpp/analytical/domain/CMakeLists.txt
 
-set(NAME "radius_sampler")
+set(NAME "domain_analytical")
 
 # Create a shared library for functionality.
 add_library("${NAME}" STATIC "${NAME}.cpp")

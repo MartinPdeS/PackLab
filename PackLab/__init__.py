@@ -1,5 +1,6 @@
 from PackLab.binary import interface_pint  # noqa: F401
 from PackLab.units import ureg # noqa: F401
+import PackLab.binary.interface_radius_sampler as samplers # noqa: F401
 
 debug_mode = False  # noqa: F401
 

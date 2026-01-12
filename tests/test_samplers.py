@@ -19,7 +19,7 @@ import pytest
 
 from PackLab.units import ureg
 
-from PackLab.monte_carlo import samplers
+from PackLab import samplers
 
 
 def _as_meters_1d(quantity) -> np.ndarray:

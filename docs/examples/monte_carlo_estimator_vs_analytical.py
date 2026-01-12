@@ -24,8 +24,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from PackLab import ureg
-from PackLab import analytical
-from PackLab import monte_carlo
+from PackLab import analytical, monte_carlo, samplers
 
 # %%
 # Monte Carlo RSA setup
@@ -39,7 +38,7 @@ domain = monte_carlo.Domain(
     use_periodic_boundaries=True,
 )
 
-radius_sampler = monte_carlo.samplers.Discrete(
+radius_sampler = samplers.Discrete(
     radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
