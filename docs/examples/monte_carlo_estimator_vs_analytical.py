@@ -38,7 +38,7 @@ domain = monte_carlo.Domain(
     use_periodic_boundaries=True,
 )
 
-radius_sampler = samplers.Discrete(
+sampler = samplers.Discrete(
     radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
@@ -52,7 +52,7 @@ options.enforce_radii_distribution = True
 
 estimator = monte_carlo.Estimator(
     domain=domain,
-    radius_sampler=radius_sampler,
+    radius_sampler=sampler,
     options=options,
     number_of_bins=6000
 )
@@ -71,13 +71,7 @@ centers = estimate_result.centers
 # ------------------------------
 # We construct an analytical polydisperse domain matching the Monte Carlo mixture.
 # The analytical domain uses Pint quantities.
-
-distribution = analytical.samplers.Discrete(
-    particle_radii=[1.0, 2.0] * ureg.micrometer,
-    weights=[1.0, 1.0],
-)
-
-particle_radii, number_fractions = distribution.to_bins()
+particle_radii, number_fractions = sampler.to_bins()
 
 py_domain = analytical.Domain(
     size=100_000 * ureg.micrometer,
