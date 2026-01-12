@@ -32,27 +32,27 @@ distribution = samplers.LogNormal(
 
 particle_radii, number_fractions = distribution.to_bins()
 
-domain = analytical.Domain(
+domain = analytical.PYDomain(
     size=100 * ureg.micrometer,
-    particle_radii=particle_radii,
+    radii=particle_radii,
     volume_fraction=0.2,
     number_fractions=number_fractions,
 )
 
 domain.print_bins()
 
-p_max = 1e3 / domain.particle_radii.min()
+p_max = 1e3 / domain.radii.min()
 
 p = np.linspace(p_max / 1e8, p_max / 2, 10_000)
 
 solver = analytical.Solver(
     densities=domain.particle_densities_per_radius,
-    radii=domain.particle_radii,
+    radii=domain.radii,
     p=p,
 )
 
-distances = np.linspace(domain.particle_radii.min() * 2, domain.particle_radii.max() * 10, 1500)
+distances = np.linspace(domain.radii.min() * 2, domain.radii.max() * 10, 1500)
 
 result = solver.compute(distances=distances)
 
-result.plot_pair_correlation()
+# result.plot_pair_correlation()
