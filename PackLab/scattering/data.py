@@ -1,7 +1,6 @@
 from TypedUnit import ureg
 from numpy.typing import NDArray
 import numpy as np
-from scipy.interpolate import interp1d
 
 
 # Convention note:
@@ -245,6 +244,40 @@ class Datas(list):
 
         return mu_independant + mu_dependant
 
+    def interpolate_last_axis_linear(self, H: np.ndarray, p: np.ndarray, p_evaluate: np.ndarray) -> np.ndarray:
+        """
+        Linear interpolation of H(..., p) onto p_evaluate, along the last axis.
+
+        Parameters
+        ----------
+        H : ndarray, shape (..., Pp)
+            Values sampled on grid p along the last axis.
+        p : ndarray, shape (Pp,)
+            Strictly increasing sample points.
+        p_evaluate : ndarray, shape (Pq,)
+            Query points.
+
+        Returns
+        -------
+        ndarray, shape (..., Pq)
+            Interpolated values.
+        """
+        p = np.asarray(p, dtype=float)
+        p_evaluate = np.asarray(p_evaluate, dtype=float)
+
+        if p.ndim != 1:
+            raise ValueError("p must be 1D.")
+        if H.shape[-1] != p.size:
+            raise ValueError(f"H last axis ({H.shape[-1]}) must match p size ({p.size}).")
+
+        H_2d = H.reshape(-1, p.size)  # (M, Pp)
+        out_2d = np.empty((H_2d.shape[0], p_evaluate.size), dtype=H_2d.dtype)
+
+        for row in range(H_2d.shape[0]):
+            out_2d[row] = np.interp(p_evaluate, p, H_2d[row])
+
+        return out_2d.reshape(H.shape[:-1] + (p_evaluate.size,))
+
     def get_interpolated_H(self, H, p):
         """
         Interpolate H(p) onto the scattering wavevector magnitude p = 2k sin(φ/2).
@@ -273,10 +306,10 @@ class Datas(list):
 
         p_evaluate = 2 * self.k * np.sin(phi_evaluate / 2)
 
-        interpolation = interp1d(y=H, x=p.to("1/meter").magnitude)
+        p_grid = p.to("1/meter").magnitude
+        p_eval = p_evaluate.to("1/meter").magnitude
 
-        interpolated_H = interpolation(p_evaluate.to("1/meter").magnitude)
-
+        interpolated_H = self.interpolate_last_axis_linear(H, p_grid, p_eval)
         return phi_evaluate, interpolated_H
 
     def get_phase_function(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150) -> NDArray:

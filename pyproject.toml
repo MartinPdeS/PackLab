@@ -51,7 +51,6 @@ dependencies = [
     "numpy",
     "TypedUnit",
     "tabulate",
-    "scipy",
     "PyMieSim"
 ]
 
