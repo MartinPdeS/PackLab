@@ -51,6 +51,7 @@ dependencies = [
     "numpy",
     "TypedUnit",
     "tabulate",
+    "scipy",
 ]
 
 [project.urls]
