@@ -241,10 +241,7 @@ static std::string pad_left(const std::string& s, std::size_t width) {
 }
 
 std::string Domain::bins_table(int precision) const {
-
-
     const std::size_t n_bins = this->radii.size();
-
 
     const std::vector<double> volumes_m3 = this->get_particle_volumes();
     const std::vector<std::int64_t> counts_i64 = this->get_number_of_particles_per_radius();

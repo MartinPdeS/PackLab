@@ -69,7 +69,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
 
     py::class_<Domain, std::shared_ptr<Domain>>(
         module,
-        "Domain",
+        "PYDomain",
         py::dynamic_attr(),
         R"doc(
             Cubic simulation domain containing a polydisperse population of spherical particles.
@@ -135,7 +135,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     A configured domain instance.
             )doc"
         )
-
         .def_property_readonly(
             "size",
             [](const Domain& self) {
@@ -151,7 +150,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     The cubic side length as a Pint quantity in meters.
             )doc"
         )
-
         .def_property_readonly(
             "radii",
             [](const Domain& self) {
@@ -173,7 +171,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional Pint quantity array of radii in meters.
             )doc"
         )
-
         .def_readonly(
             "volume_fraction",
             &Domain::volume_fraction,
@@ -186,7 +183,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     Dimensionless occupied volume fraction used to infer total particle volume.
             )doc"
         )
-
         .def_property_readonly(
             "number_fractions",
             [](const Domain& self) {
@@ -206,7 +202,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional array of number fractions (dimensionless). Always normalized to sum to 1.
             )doc"
         )
-
         .def_property_readonly(
             "volume",
             [](const Domain& self) {
@@ -222,7 +217,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     Total cubic volume in meter**3.
             )doc"
         )
-
         .def_property_readonly(
             "particle_volumes",
             [](const Domain& self) {
@@ -245,7 +239,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional array of per particle volumes in meter**3 computed as (4/3)π r^3.
             )doc"
         )
-
         .def_property_readonly(
             "total_particle_volume",
             [](const Domain& self) {
@@ -261,7 +254,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     Total occupied volume in meter**3 computed as volume_fraction * volume.
             )doc"
         )
-
         .def_property_readonly(
             "mean_particle_volume_number_weighted",
             [](const Domain& self) {
@@ -277,7 +269,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     Mean per particle volume in meter**3 computed using number_fractions as weights.
             )doc"
         )
-
         .def_property_readonly(
             "number_of_particles_total",
             &Domain::get_number_of_particles_total,
@@ -295,7 +286,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     Total integer particle count.
             )doc"
         )
-
         .def_property_readonly(
             "number_of_particles_per_radius",
             [](const Domain& self) {
@@ -316,7 +306,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional integer array of particle counts per radius bin.
             )doc"
         )
-
         .def_property_readonly(
             "particle_densities_per_radius",
             [](const Domain& self) {
@@ -339,7 +328,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional array of number densities in 1/meter**3.
             )doc"
         )
-
         .def_property_readonly(
             "particle_density_total",
             [](const Domain& self) {
@@ -356,7 +344,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     Total number density in 1/meter**3.
             )doc"
         )
-
         .def_property_readonly(
             "volume_fraction_per_radius",
             [](const Domain& self) {
@@ -377,7 +364,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional array of per bin volume fractions (dimensionless).
             )doc"
         )
-
         .def(
             "sample_radii",
             [](const Domain& self, long long number_of_samples, py::object seed_py) {
@@ -416,7 +402,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                     One dimensional Pint quantity array of sampled radii in meters.
             )doc"
         )
-
         .def(
             "print_bins",
             [](const Domain& self, int precision) { self.print_bins(precision); },
@@ -442,7 +427,6 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                 None
             )doc"
         )
-
         .def(
             "bins_table",
             &Domain::bins_table,
