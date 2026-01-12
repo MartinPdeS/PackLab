@@ -346,7 +346,19 @@ std::vector<double> PercusYevickSolver::radial_fourier_h_from_H(
 
     for (std::size_t i = 0; i < N; ++i) {
         for (std::size_t j = 0; j < N; ++j) {
-            const double dens_factor = std::sqrt(densities_per_m3[i] * densities_per_m3[j]);
+            const double ni = densities_per_m3[i];
+            const double nj = densities_per_m3[j];
+
+            if (!(ni > 0.0) || !(nj > 0.0)) {
+                for (std::size_t r = 0; r < R; ++r) {
+                    h[index_3d(i, j, r, N, R)] = 0.0;
+                }
+                continue;
+            }
+
+            const double dens_factor = std::sqrt(ni * nj);
+
+
             require(dens_factor > 0.0, "densities must be positive for h(r) conversion.");
 
             for (std::size_t r = 0; r < R; ++r) {
@@ -414,7 +426,7 @@ PercusYevickResult PercusYevickSolver::compute(std::vector<double> distances_m) 
     result.Cpy = compute_Cpy(result.epsilons);
     result.H = solve_H_from_C_batch(result.Cpy, N, P);
 
-    result.h = radial_fourier_h_from_H(result.H, result.distances_m, result.p_per_m, result.densities_per_m3, N);
+    result.h = this->radial_fourier_h_from_H(result.H, result.distances_m, result.p_per_m, result.densities_per_m3, N);
 
     result.g.assign(N * N * R, 0.0);
     for (std::size_t i = 0; i < N * N * R; ++i) {
