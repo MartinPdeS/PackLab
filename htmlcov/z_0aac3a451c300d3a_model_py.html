@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_0aac3a451c300d3a_plottings_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-01-12 16:44 +0000
+            created at 2026-01-13 10:29 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -89,7 +89,7 @@
     <p class="mis show_mis"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t"><span class="key">from</span> <span class="nam">PackLab</span><span class="op">.</span><span class="nam">scattering</span><span class="op">.</span><span class="nam">data</span> <span class="key">import</span> <span class="nam">Datas</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t"><span class="key">from</span> <span class="nam">numpy</span><span class="op">.</span><span class="nam">typing</span> <span class="key">import</span> <span class="nam">NDArray</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">def</span> <span class="nam">get_s1s2</span><span class="op">(</span><span class="nam">wavelength</span><span class="op">,</span> <span class="nam">diameters</span><span class="op">,</span> <span class="nam">phi</span><span class="op">:</span> <span class="nam">NDArray</span><span class="op">,</span> <span class="nam">plot</span><span class="op">:</span> <span class="nam">bool</span> <span class="op">=</span> <span class="key">False</span><span class="op">,</span> <span class="nam">polarization</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0</span> <span class="op">*</span> <span class="nam">ureg</span><span class="op">.</span><span class="nam">degree</span><span class="op">)</span> <span class="op">-></span> <span class="nam">Datas</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">def</span> <span class="nam">get_s1s2</span><span class="op">(</span><span class="nam">wavelength</span><span class="op">,</span> <span class="nam">diameters</span><span class="op">,</span> <span class="nam">refractive_index</span><span class="op">,</span> <span class="nam">phi</span><span class="op">:</span> <span class="nam">NDArray</span><span class="op">,</span> <span class="nam">plot</span><span class="op">:</span> <span class="nam">bool</span> <span class="op">=</span> <span class="key">False</span><span class="op">,</span> <span class="nam">polarization</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0</span> <span class="op">*</span> <span class="nam">ureg</span><span class="op">.</span><span class="nam">degree</span><span class="op">)</span> <span class="op">-></span> <span class="nam">Datas</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="str">    Compute far field amplitude scattering functions S1 and S2 for a set of sphere diameters.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -142,7 +142,7 @@
     <p class="mis mis2 show_mis"><span class="n"><a id="t58" href="#t58">58</a></span><span class="t">            <span class="nam">diameter</span><span class="op">=</span><span class="nam">diameter</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis mis2 show_mis"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t">            <span class="nam">source</span><span class="op">=</span><span class="nam">source</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis mis2 show_mis"><span class="n"><a id="t60" href="#t60">60</a></span><span class="t">            <span class="nam">medium_property</span><span class="op">=</span><span class="num">1.0</span> <span class="op">*</span> <span class="nam">ureg</span><span class="op">.</span><span class="nam">RIU</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis mis2 show_mis"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">            <span class="nam">property</span><span class="op">=</span><span class="num">1.4</span> <span class="op">*</span> <span class="nam">ureg</span><span class="op">.</span><span class="nam">RIU</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis mis2 show_mis"><span class="n"><a id="t61" href="#t61">61</a></span><span class="t">            <span class="nam">property</span><span class="op">=</span><span class="nam">refractive_index</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="mis mis2 show_mis"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">        <span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="mis show_mis"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t">        <span class="nam">data</span> <span class="op">=</span> <span class="nam">Temp</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -171,7 +171,7 @@
             <a class="nav" href="z_0aac3a451c300d3a_plottings_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.13.1">coverage.py v7.13.1</a>,
-            created at 2026-01-12 16:44 +0000
+            created at 2026-01-13 10:29 +0000
         </p>
     </div>
 </footer>
