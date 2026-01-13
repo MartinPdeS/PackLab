@@ -5,7 +5,7 @@ from PyMieSim.single.source import Gaussian
 from PackLab.scattering.data import Datas
 from numpy.typing import NDArray
 
-def get_s1s2(wavelength, diameters, phi: NDArray, plot: bool = False, polarization: float = 0 * ureg.degree) -> Datas:
+def get_s1s2(wavelength, diameters, refractive_index, phi: NDArray, plot: bool = False, polarization: float = 0 * ureg.degree) -> Datas:
     """
     Compute far field amplitude scattering functions S1 and S2 for a set of sphere diameters.
 
@@ -58,7 +58,7 @@ def get_s1s2(wavelength, diameters, phi: NDArray, plot: bool = False, polarizati
             diameter=diameter,
             source=source,
             medium_property=1.0 * ureg.RIU,
-            property=1.4 * ureg.RIU,
+            property=refractive_index,
         )
 
         data = Temp()
