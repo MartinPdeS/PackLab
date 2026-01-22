@@ -24,25 +24,12 @@ from PackLab import ureg
 from PackLab import analytical, samplers
 import matplotlib.pyplot as plt
 
-# distribution = samplers.LogNormal(
-#     median_radius=1.5 * ureg.micrometer,
-#     geometric_standard_deviation=1.2,
-#     maximum_radius_clip=0.5 * ureg.micrometer,
-#     bins=4,
-# )
 
-
-distribution = samplers.Normal(
-    mean=6 * ureg.micrometer,
-    standard_deviation=1 * ureg.micrometer,
-    bins=2,
+distribution = samplers.Discrete(
+    radii=[1.5, 1.6] * ureg.micrometer,
+    weights=[0.5, 0.5],
+    bins=4,
 )
-
-# distribution = samplers.Discrete(
-#     radii=[1.5, 1.6] * ureg.micrometer,
-#     weights=[0.5, 0.5],
-#     bins=4,
-# )
 
 particle_radii, number_fractions = distribution.to_bins()
 

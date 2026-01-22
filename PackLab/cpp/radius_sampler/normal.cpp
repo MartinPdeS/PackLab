@@ -1,7 +1,5 @@
 #include "./normal.h"
-#include <algorithm>
-#include <random>
-#include <cmath>
+
 
 Normal::Normal(double mean, double sigma, double maximum_radius_clip, int bins)
 : mean_value_(mean),
