@@ -103,10 +103,10 @@ double RadiusSampler::apply_binning(double value) const
 
 
 // ================================================================
-// ConstantRadiusSampler
+// Constant
 // ================================================================
 
-ConstantRadiusSampler::ConstantRadiusSampler(double radius, int bins)
+Constant::Constant(double radius, int bins)
 : radius_value_(radius)
 {
     if (radius <= 0.0)
@@ -123,12 +123,12 @@ ConstantRadiusSampler::ConstantRadiusSampler(double radius, int bins)
     this->validate_bin_edges();
 }
 
-double ConstantRadiusSampler::sample_radius(std::mt19937_64&)
+double Constant::sample_radius(std::mt19937_64&)
 {
     return apply_binning(radius_value_);
 }
 
-int ConstantRadiusSampler::bin_index(double) const
+int Constant::bin_index(double) const
 {
     if (number_of_bins_ == 0)
         return -1;
@@ -138,7 +138,7 @@ int ConstantRadiusSampler::bin_index(double) const
 
 
 std::pair<std::vector<double>, std::vector<double>>
-ConstantRadiusSampler::to_bins() const
+Constant::to_bins() const
 {
     return {{radius_value_}, {1.0}};
 }
@@ -146,10 +146,10 @@ ConstantRadiusSampler::to_bins() const
 
 
 // ================================================================
-// UniformRadiusSampler
+// Uniform
 // ================================================================
 
-UniformRadiusSampler::UniformRadiusSampler(double _minimum_radius, double _maximum_radius, int bins)
+Uniform::Uniform(double _minimum_radius, double _maximum_radius, int bins)
 : minimum_radius(_minimum_radius), maximum_radius(_maximum_radius)
 {
     if (minimum_radius <= 0.0 || maximum_radius <= 0.0)
@@ -170,7 +170,7 @@ UniformRadiusSampler::UniformRadiusSampler(double _minimum_radius, double _maxim
     this->validate_bin_edges();
 }
 
-double UniformRadiusSampler::sample_radius(std::mt19937_64& random_generator)
+double Uniform::sample_radius(std::mt19937_64& random_generator)
 {
     std::uniform_real_distribution<double> dist(minimum_radius, maximum_radius);
 
@@ -179,7 +179,7 @@ double UniformRadiusSampler::sample_radius(std::mt19937_64& random_generator)
 }
 
 
-int UniformRadiusSampler::bin_index(double r) const
+int Uniform::bin_index(double r) const
 {
     if (number_of_bins_ == 0)
         return -1;
@@ -203,10 +203,10 @@ int UniformRadiusSampler::bin_index(double r) const
 
 
 std::pair<std::vector<double>, std::vector<double>>
-UniformRadiusSampler::to_bins() const
+Uniform::to_bins() const
 {
     if (number_of_bins_ == 0) {
-        throw std::runtime_error("UniformRadiusSampler::to_bins requires bins > 0.");
+        throw std::runtime_error("Uniform::to_bins requires bins > 0.");
     }
 
     validate_bin_edges();
@@ -219,10 +219,10 @@ UniformRadiusSampler::to_bins() const
 
 
 // ================================================================
-// LogNormalRadiusSampler
+// LogNormal
 // ================================================================
 
-LogNormalRadiusSampler::LogNormalRadiusSampler(
+LogNormal::LogNormal(
     double mu,
     double sigma,
     double maximum_radius_clip,
@@ -253,7 +253,7 @@ LogNormalRadiusSampler::LogNormalRadiusSampler(
     this->validate_bin_edges();
 }
 
-double LogNormalRadiusSampler::sample_radius(std::mt19937_64& random_generator)
+double LogNormal::sample_radius(std::mt19937_64& random_generator)
 {
     std::normal_distribution<double> stdnorm(0.0, 1.0);
 
@@ -266,7 +266,7 @@ double LogNormalRadiusSampler::sample_radius(std::mt19937_64& random_generator)
 }
 
 
-int LogNormalRadiusSampler::bin_index(double r) const
+int LogNormal::bin_index(double r) const
 {
     if (number_of_bins_ == 0)
         return -1;
@@ -282,14 +282,14 @@ int LogNormalRadiusSampler::bin_index(double r) const
 }
 
 std::pair<std::vector<double>, std::vector<double>>
-LogNormalRadiusSampler::to_bins() const
+LogNormal::to_bins() const
 {
     if (number_of_bins_ == 0) {
-        throw std::runtime_error("LogNormalRadiusSampler::to_bins requires bins > 0.");
+        throw std::runtime_error("LogNormal::to_bins requires bins > 0.");
     }
 
     if (sigma_value_ <= 0.0) {
-        throw std::runtime_error("LogNormalRadiusSampler::to_bins requires sigma > 0.");
+        throw std::runtime_error("LogNormal::to_bins requires sigma > 0.");
     }
 
     validate_bin_edges();
@@ -319,10 +319,10 @@ LogNormalRadiusSampler::to_bins() const
 
 
 // ================================================================
-// DiscreteRadiusSampler
+// Discrete
 // ================================================================
 
-DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::vector<double> weights)
+Discrete::Discrete(std::vector<double> _radii, std::vector<double> weights)
 : radii(std::move(_radii))
 {
     number_of_bins_ = radii.size();
@@ -383,7 +383,7 @@ DiscreteRadiusSampler::DiscreteRadiusSampler(std::vector<double> _radii, std::ve
 }
 
 
-double DiscreteRadiusSampler::sample_radius(std::mt19937_64& random_generator)
+double Discrete::sample_radius(std::mt19937_64& random_generator)
 {
     std::uniform_real_distribution<double> uniform_01(0.0, 1.0);
     const double u = uniform_01(random_generator);
@@ -397,7 +397,7 @@ double DiscreteRadiusSampler::sample_radius(std::mt19937_64& random_generator)
     return radii[index];
 }
 
-int DiscreteRadiusSampler::bin_index(double r) const
+int Discrete::bin_index(double r) const
 {
     if (number_of_bins_ == 0)
         return -1;
@@ -415,13 +415,132 @@ int DiscreteRadiusSampler::bin_index(double r) const
 
 
 std::pair<std::vector<double>, std::vector<double>>
-DiscreteRadiusSampler::to_bins() const
+Discrete::to_bins() const
 {
     if (radii.empty()) {
-        throw std::runtime_error("DiscreteRadiusSampler::to_bins: radii is empty.");
+        throw std::runtime_error("Discrete::to_bins: radii is empty.");
     }
     if (weights_.size() != radii.size()) {
-        throw std::runtime_error("DiscreteRadiusSampler::to_bins: weights and radii size mismatch.");
+        throw std::runtime_error("Discrete::to_bins: weights and radii size mismatch.");
     }
     return {radii, weights_};
+}
+
+
+// ================================================================
+// Normal (Gaussian) RadiusSampler
+// ================================================================
+
+Normal::Normal(double mean, double sigma, double maximum_radius_clip, int bins)
+: mean_value_(mean),
+  sigma_value_(sigma),
+  maximum_radius_clip_value_(maximum_radius_clip)
+{
+    if (!std::isfinite(mean_value_) || !std::isfinite(sigma_value_) || !std::isfinite(maximum_radius_clip_value_)) {
+        throw std::invalid_argument("Normal: mean, sigma, and maximum_radius_clip must be finite.");
+    }
+
+    if (sigma_value_ < 0.0) {
+        throw std::invalid_argument("Normal: sigma must be >= 0.");
+    }
+
+    if (maximum_radius_clip_value_ <= 0.0) {
+        throw std::invalid_argument("Normal: maximum_radius_clip must be positive.");
+    }
+
+    set_number_of_bins(bins);
+
+    if (number_of_bins_ > 0) {
+        const double min_r = 0.0;
+        const double max_r = maximum_radius_clip_value_;
+
+        bin_edges_.resize(number_of_bins_ + 1);
+        const double dr = (max_r - min_r) / static_cast<double>(number_of_bins_);
+
+        for (std::size_t i = 0; i <= number_of_bins_; ++i) {
+            bin_edges_[i] = min_r + dr * static_cast<double>(i);
+        }
+    }
+
+    this->validate_bin_edges();
+}
+
+double Normal::sample_radius(std::mt19937_64& random_generator)
+{
+    if (sigma_value_ == 0.0) {
+        double r = mean_value_;
+        if (r < 0.0) r = 0.0;
+        if (r > maximum_radius_clip_value_) r = maximum_radius_clip_value_;
+        return apply_binning(r);
+    }
+
+    std::normal_distribution<double> dist(mean_value_, sigma_value_);
+
+    double r = dist(random_generator);
+
+    if (r < 0.0) {
+        r = 0.0;
+    }
+
+    if (r > maximum_radius_clip_value_) {
+        r = maximum_radius_clip_value_;
+    }
+
+    return apply_binning(r);
+}
+
+int Normal::bin_index(double r) const
+{
+    if (number_of_bins_ == 0) {
+        return -1;
+    }
+
+    auto it = std::upper_bound(bin_edges_.begin(), bin_edges_.end(), r);
+    int idx = static_cast<int>(std::distance(bin_edges_.begin(), it)) - 1;
+
+    if (idx < 0) idx = 0;
+    if (idx >= static_cast<int>(number_of_bins_)) {
+        idx = static_cast<int>(number_of_bins_ - 1);
+    }
+
+    return idx;
+}
+
+std::pair<std::vector<double>, std::vector<double>>
+Normal::to_bins() const
+{
+    if (number_of_bins_ == 0) {
+        throw std::runtime_error("Normal::to_bins requires bins > 0.");
+    }
+
+    if (sigma_value_ <= 0.0) {
+        throw std::runtime_error("Normal::to_bins requires sigma > 0.");
+    }
+
+    validate_bin_edges();
+
+    auto [centers, widths] = edges_to_centers_and_widths_linear(bin_edges_);
+
+    std::vector<double> weights(centers.size(), 0.0);
+
+    const double mu = mean_value_;
+    const double sigma = sigma_value_;
+    const double inv_norm = 1.0 / (sigma * std::sqrt(2.0 * 3.14159265358979323846));
+
+    for (std::size_t i = 0; i < centers.size(); ++i) {
+        const double x = centers[i];
+
+        if (x < 0.0) {
+            weights[i] = 0.0;
+            continue;
+        }
+
+        const double z = (x - mu) / sigma;
+        const double pdf = inv_norm * std::exp(-0.5 * z * z);
+
+        weights[i] = pdf * widths[i];
+    }
+
+    weights = normalize_weights(std::move(weights));
+    return {std::move(centers), std::move(weights)};
 }

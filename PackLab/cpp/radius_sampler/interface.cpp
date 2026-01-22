@@ -1,16 +1,23 @@
-#include "radius_sampler.h"
-
 #include <pybind11/functional.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
 
 #include "pint/pint.h"
+#include "uniform.h"
+#include "normal.h"
+#include "log_normal.h"
+#include "discrete.h"
+#include "constant.h"
 
 namespace py = pybind11;
 
 PYBIND11_MODULE(interface_radius_sampler, module) {
+    py::object ureg = get_shared_ureg();
+
     module.doc() = "Radius sampler classes for RSA simulations with optional radius binning.";
+
+
 
     // Base class -----------------------------------------------------
     py::class_<RadiusSampler, std::shared_ptr<RadiusSampler>>(module, "RadiusSampler")
@@ -27,8 +34,8 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
         )
         .def(
             "to_bins",
-            [](const RadiusSampler& self) {
-                py::object ureg = get_shared_ureg();
+            [ureg](const RadiusSampler& self) {
+
 
                 auto [radii_m, weights] = self.to_bins();
 
@@ -55,96 +62,138 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
         ;
 
     // Constant sampler ------------------------------------------------
-    py::class_<ConstantRadiusSampler, RadiusSampler, std::shared_ptr<ConstantRadiusSampler>>(module, "Constant", py::dynamic_attr())
+    py::class_<Constant, RadiusSampler, std::shared_ptr<Constant>>(module, "Constant", py::dynamic_attr())
         .def(
-            "__init__",
-            [](
-                py::object& self,
-                py::object radius_py,
-                int bins
-            ) {
-                py::object ureg = get_shared_ureg();
-                const double radius = to_meters_strict(radius_py);
-
-                new (self.cast<ConstantRadiusSampler*>()) ConstantRadiusSampler(radius, bins);
-                self.attr("_ureg") = ureg;
-            },
+            py::init(
+                [ureg](
+                    py::object radius_py,
+                    int bins
+                ) {
+                    const double radius = to_meters_strict(radius_py);
+                    auto sampler = std::make_shared<Constant>(radius, bins);
+                    return sampler;
+                }
+            ),
             py::arg("radius"),
-            py::arg("bins") = 0
+            py::arg("bins") = 0,
+            "Constant radius sampler with optional binning."
         )
         ;
 
 
     // Uniform sampler -------------------------------------------------
-    py::class_<UniformRadiusSampler, RadiusSampler, std::shared_ptr<UniformRadiusSampler>>(module, "Uniform", py::dynamic_attr())
+    py::class_<Uniform, RadiusSampler, std::shared_ptr<Uniform>>(module, "Uniform", py::dynamic_attr())
         .def(
-            "__init__",
-            [](
-                py::object& self,
-                py::object minimum_radius_py,
-                py::object maximum_radius_py,
-                int bins
-            ) {
-                py::object ureg = get_shared_ureg();
+            py::init(
+                [ureg](
+                    py::object minimum_radius_py,
+                    py::object maximum_radius_py,
+                    int bins
+                ) {
 
-                const double minimum_radius = to_meters_strict(minimum_radius_py);
-                const double maximum_radius = to_meters_strict(maximum_radius_py);
+                    const double minimum_radius = to_meters_strict(minimum_radius_py);
+                    const double maximum_radius = to_meters_strict(maximum_radius_py);
 
-                new (self.cast<UniformRadiusSampler*>()) UniformRadiusSampler(minimum_radius, maximum_radius, bins);
-                self.attr("_ureg") = ureg;
-            },
+                    return std::make_shared<Uniform>(minimum_radius, maximum_radius, bins);
+                }
+            ),
             py::arg("minimum_radius"),
             py::arg("maximum_radius"),
             py::arg("bins") = 0,
             "Uniform radius sampler with optional binning."
-        );
+        )
+        ;
 
     // Lognormal sampler -----------------------------------------------
-    py::class_<LogNormalRadiusSampler, RadiusSampler, std::shared_ptr<LogNormalRadiusSampler>>(module, "LogNormal", py::dynamic_attr())
+    py::class_<LogNormal, RadiusSampler, std::shared_ptr<LogNormal>>(module, "LogNormal", py::dynamic_attr())
         .def(
-            py::init([](py::object median_radius_py,
-                        double geometric_standard_deviation,
-                        py::object maximum_radius_clip_py,
-                        int bins) {
+            py::init(
+                [ureg](
+                    py::object median_radius_py,
+                    double geometric_standard_deviation,
+                    py::object maximum_radius_clip_py,
+                    int bins
+                ) {
 
-                const double median_radius_m = to_meters_strict(median_radius_py);
+                    const double median_radius_m = to_meters_strict(median_radius_py);
 
-                if (!(geometric_standard_deviation > 1.0)) {
-                    throw py::value_error("geometric_standard_deviation must be > 1.");
+                    if (!(geometric_standard_deviation > 1.0)) {
+                        throw py::value_error("geometric_standard_deviation must be > 1.");
+                    }
+
+                    const double mu = std::log(median_radius_m);
+                    const double sigma = std::log(geometric_standard_deviation);
+
+                    const double maximum_radius_clip_m = to_meters_strict(maximum_radius_clip_py);
+
+                    return std::make_shared<LogNormal>(mu, sigma, maximum_radius_clip_m, bins);
                 }
-
-                const double mu = std::log(median_radius_m);
-                const double sigma = std::log(geometric_standard_deviation);
-
-                const double maximum_radius_clip_m = to_meters_strict(maximum_radius_clip_py);
-
-                return std::make_shared<LogNormalRadiusSampler>(mu, sigma, maximum_radius_clip_m, bins);
-            }),
+            ),
             py::arg("median_radius"),
             py::arg("geometric_standard_deviation"),
             py::arg("maximum_radius_clip"),
             py::arg("bins") = 0
-        );
+        )
+        ;
 
 
 
     // Discrete sampler ------------------------------------------------
-    py::class_<DiscreteRadiusSampler, RadiusSampler, std::shared_ptr<DiscreteRadiusSampler>>(module, "Discrete", py::dynamic_attr())
+    py::class_<Discrete, RadiusSampler, std::shared_ptr<Discrete>>(module, "Discrete")
         .def(
-            "__init__",
-            [](
-                py::object& self,
-                py::object radii_py,
-                std::vector<double> weights
-            ) {
-                py::object ureg = get_shared_ureg();
-                const std::vector<double> radii = to_vector_units(radii_py, "meter");
-                new (self.cast<DiscreteRadiusSampler*>()) DiscreteRadiusSampler(radii, weights);
-                self.attr("_ureg") = ureg;
-            },
+            py::init(
+                [ureg](
+                    py::object radii_py,
+                    std::vector<double> weights,
+                    int bins
+                ) {
+                    const std::vector<double> radii = to_vector_units(radii_py, "meter");
+
+                    if (radii.size() != weights.size()) {
+                        throw py::value_error("radii and weights must have the same length.");
+                    }
+
+                    return std::make_shared<Discrete>(radii, weights);
+                }
+            ),
             py::arg("radii"),
             py::arg("weights"),
+            py::arg("bins") = 0,
             "Discrete radius sampler with user-provided radii and weights plus optional binning."
         )
         ;
+
+    // Normal (Gaussian) sampler ----------------------------------------------
+    py::class_<Normal, RadiusSampler, std::shared_ptr<Normal>>(module, "Normal")
+            .def(
+                py::init(
+                    [ureg](
+                        py::object mean_py,
+                        py::object standard_deviation_py,
+                        py::object maximum_clip_py,
+                        int bins
+                    ) {
+                        const double mean_radius_m = mean_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                        const double sigma_radius_m = standard_deviation_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+
+                        if (!std::isfinite(sigma_radius_m) || sigma_radius_m < 0.0) {
+                            throw py::value_error("standard_deviation must be >= 0 and finite.");
+                        }
+
+                        if (maximum_clip_py.is(py::none()))
+                            maximum_clip_py = mean_py + py::float_(100.0) * standard_deviation_py;
+
+                        const double maximum_clip_m = maximum_clip_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                        return std::make_shared<Normal>(mean_radius_m, sigma_radius_m, maximum_clip_m, bins);
+                        return std::make_shared<Normal>(1, 1, 1, 1);
+                    }
+                ),
+                py::arg("mean"),
+                py::arg("standard_deviation"),
+                py::arg("maximum_clip") = py::none(),
+                py::arg("bins") = 0,
+                "Gaussian (normal) radius sampler. Samples N(mean, standard_deviation) in meters, then clips to [0, maximum_clip], with optional binning."
+            )
+        ;
+
 }
