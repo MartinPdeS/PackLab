@@ -14,14 +14,11 @@ from PackLab import analytical, samplers, scattering
 from TypedUnit import ureg
 from PackLab.units import ureg
 
-
-particle_radii = np.asarray([0.1, 5.0 / 10]) * ureg.micrometer
-
-sampler = samplers.Discrete(
-    radii=particle_radii,
-    weights=[1.0 * 1000, 1.0],
+sampler = samplers.Normal(
+    mean=100 * ureg.nanometer,
+    standard_deviation=10 * ureg.nanometer,
+    bins=10
 )
-
 
 particle_radii, number_fractions = sampler.to_bins()
 
@@ -54,7 +51,7 @@ py_result = solver.compute(distances=distances)
 
 fig, ax = plt.subplots(1, 1, figsize=(12, 8))
 
-K = 2
+K = len(particle_radii)
 for i in range(K):
     for j in range(K):
         ax.plot(py_result.distances.to('micrometer'), py_result.g[i, j], linewidth=1.5, label=f'{i}-{j}')
@@ -68,9 +65,11 @@ plt.show()
 
 
 datas = scattering.get_s1s2(
-    wavelength=1_450 * ureg.nanometer,
+    wavelength=150 * ureg.nanometer,
     diameters=py_result.radii,
-    phi=np.linspace(-np.pi / 2, np.pi / 2, 400),
+    refractive_index=1.45 * ureg.RIU,
+    medium_refractive_index=1.0 * ureg.RIU,
+    phi=np.linspace(-np.pi / 2, np.pi / 2, 400) * ureg.radian,
     polarization=0 * ureg.degree,
 )
 

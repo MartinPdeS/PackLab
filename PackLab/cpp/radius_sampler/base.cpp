@@ -1,7 +1,8 @@
 #include "./base.h"
 
 
-static std::vector<double> normalize_weights(std::vector<double> weights) {
+std::vector<double>
+RadiusSampler::normalize_weights(std::vector<double> weights) const {
     double sum = 0.0;
     for (double& w : weights) {
         if (!std::isfinite(w) || w < 0.0) {
@@ -18,8 +19,8 @@ static std::vector<double> normalize_weights(std::vector<double> weights) {
     return weights;
 }
 
-static std::pair<std::vector<double>, std::vector<double>>
-edges_to_centers_and_widths_linear(const std::vector<double>& edges) {
+std::pair<std::vector<double>, std::vector<double>>
+RadiusSampler::edges_to_centers_and_widths_linear(const std::vector<double>& edges) const {
     if (edges.size() < 2) {
         throw std::runtime_error("bin_edges must contain at least two points.");
     }

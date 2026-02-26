@@ -5,7 +5,11 @@
 #include <tuple>
 #include <vector>
 
-#include "radius_sampler/radius_sampler.h"
+#include "radius_sampler/discrete.h"
+#include "radius_sampler/normal.h"
+#include "radius_sampler/log_normal.h"
+#include "radius_sampler/uniform.h"
+#include "radius_sampler/constant.h"
 #include "monte_carlo/domain/domain.h"
 #include "monte_carlo/simulator/simulator.h"
 #include "monte_carlo/utils/utils.h"

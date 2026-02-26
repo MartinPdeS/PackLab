@@ -3,7 +3,17 @@
 set(NAME "radius_sampler")
 
 # Create a shared library for functionality.
-add_library("${NAME}" STATIC "${NAME}.cpp")
+add_library(
+    "${NAME}"
+    STATIC
+    base.cpp
+    discrete.cpp
+    normal.cpp
+    log_normal.cpp
+    uniform.cpp
+    constant.cpp
+)
+
 
 target_link_libraries("${NAME}" PUBLIC pybind11::module utils pint)
 

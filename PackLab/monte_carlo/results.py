@@ -1,4 +1,5 @@
-from typing import Literal
+from typing import Literal, Tuple, Dict
+from functools import cached_property
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
@@ -16,9 +17,17 @@ class Result():
     Holds arrays plus domain metadata, computed statistics, and plotting helpers.
     """
     def __init__(self, binding):
+        """
+        Initialize the Result object.
+
+        Parameters
+        ----------
+        binding : Binding
+            The binding object containing simulation data.
+        """
         self.binding = binding
 
-    @property
+    @cached_property
     def positions(self) -> np.ndarray:
         """
         Get the sphere center positions as a NumPy array of shape (N, 3).
@@ -30,7 +39,7 @@ class Result():
         """
         return self.sphere_configuration.positions
 
-    @property
+    @cached_property
     def radii(self) -> np.ndarray:
         """
         Get the sphere radii as a NumPy array of shape (N,).
@@ -42,7 +51,7 @@ class Result():
         """
         return self.sphere_configuration.radii
 
-    @property
+    @cached_property
     def statistics(self):
         """
         Get the simulation statistics.
@@ -54,35 +63,106 @@ class Result():
         """
         return self.binding.statistics
 
-    @property
+    @cached_property
     def sphere_configuration(self):
+        """
+        Get the sphere configuration object.
+
+        Returns
+        -------
+        SphereConfiguration
+            The configuration of spheres in the simulation.
+        """
         return self.binding.sphere_configuration
 
-    @property
+    @cached_property
     def domain(self):
+        """
+        Get the simulation domain.
+
+        Returns
+        -------
+        Domain
+            The domain (box) dimensions and boundary conditions.
+        """
         return self.binding.domain
 
-    def compute_partial_pair_correlation_function(self, **kwargs) -> None:
+    def compute_partial_pair_correlation_function(self, **kwargs) -> tuple:
+        """
+        Compute the partial pair correlation function g_ij(r).
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Keyword arguments passed to the binding method.
+
+        Returns
+        -------
+        tuple
+            A tuple containing:
+            - centers (Quantity): The radial distances with units.
+            - g_ij (np.ndarray): The partial pair correlation values.
+        """
         centers, g_ij = self.binding.compute_partial_pair_correlation_function(**kwargs)
         return centers * ureg.meter, g_ij
 
-    @property
+    @cached_property
     def partial_volume_fractions(self) -> np.ndarray:
+        """
+        Get the partial volume fractions of each component.
+
+        Returns
+        -------
+        np.ndarray
+            Array of partial volume fractions.
+        """
         return np.asarray(self.binding.partial_volume_fractions)
 
-    @property
+    @cached_property
     def partial_volumes(self) -> np.ndarray:
+        """
+        Get the partial volumes of each component.
+
+        Returns
+        -------
+        np.ndarray
+            Array of partial volumes.
+        """
         return np.asarray(self.binding.partial_volumes)
 
     def compute_pair_correlation_function(self, **kwargs) -> None:
+        """
+        Compute the total pair correlation function g(r).
+
+        Parameters
+        ----------
+        **kwargs : dict
+            Keyword arguments passed to the binding method.
+        """
         return self.binding.compute_pair_correlation_function(**kwargs)
 
-    @property
+    @cached_property
     def pair_correlation_centers(self) -> np.ndarray:
+        """
+        Get the radial centers for the pair correlation function.
+
+        Returns
+        -------
+        np.ndarray
+            Array of radial centers.
+        """
         return np.asarray(self.binding.pair_correlation_centers)
 
-    @property
+    @cached_property
     def pair_correlation_values(self) -> np.ndarray:
+        """
+        Get the values of the pair correlation function g(r).
+
+        Returns
+        -------
+        np.ndarray
+            Array of pair correlation values.
+        """
         return np.asarray(self.binding.pair_correlation_values)
 
 
@@ -154,6 +234,16 @@ class Result():
 
         return figure
 
+    def _compute_slice_mask(self, coord: np.ndarray, slice_center: float, slice_thickness: float, box_length: float) -> np.ndarray:
+        """
+        Compute the mask for particles within the slice thickness.
+        """
+        if self.domain.use_periodic_boundaries:
+            delta = _minimum_image_displacement(coord - slice_center, box_length)
+            return np.abs(delta) <= 0.5 * slice_thickness
+        else:
+            return np.abs(coord - slice_center) <= 0.5 * slice_thickness
+
     @helper.post_mpl_plot
     def plot_slice_2d(self, slice_axis: Literal["x", "y", "z"] = "z", slice_center_fraction: float = 0.5, slice_thickness_fraction: float = 0.08, maximum_circles_in_slice: int = 2500) -> plt.Figure:
         """
@@ -170,55 +260,66 @@ class Result():
         maximum_circles_in_slice : int
             Maximum number of circles to plot in the slice (subsampling if necessary).
         """
-        box_lengths = [self.domain.length_x, self.domain.length_y, self.domain.length_z]
-
-        axis_to_index = {"x": 0, "y": 1, "z": 2}
-        slice_axis_index = axis_to_index[slice_axis]
-
         if not (0.0 <= slice_center_fraction <= 1.0):
             raise ValueError("slice_center_fraction must be between 0.0 and 1.0")
         if not (0.0 <= slice_thickness_fraction <= 1.0):
             raise ValueError("slice_thickness_fraction must be between 0.0 and 1.0")
 
-        slice_center = slice_center_fraction * box_lengths[slice_axis_index]
-        slice_thickness = slice_thickness_fraction * box_lengths[slice_axis_index]
+        axis_map = {"x": 0, "y": 1, "z": 2}
+        slice_idx = axis_map[slice_axis]
 
-        coord = self.positions[:, slice_axis_index]
-        if self.domain.use_periodic_boundaries:
-            delta = _minimum_image_displacement(coord - slice_center, box_lengths[slice_axis_index])
-            slice_mask = np.abs(delta) <= 0.5 * slice_thickness
-        else:
-            slice_mask = np.abs(coord - slice_center) <= 0.5 * slice_thickness
+        # Determine plot axes indices (a, b) such that slice_idx is excluded
+        # For 'z' (2) -> x(0), y(1)
+        # For 'y' (1) -> x(0), z(2)
+        # For 'x' (0) -> y(1), z(2)
+        remaining_axes = [i for i in range(3) if i != slice_idx]
+        a_idx, b_idx = remaining_axes[0], remaining_axes[1]
+
+        labels = ["x", "y", "z"]
+        a_label, b_label = labels[a_idx], labels[b_idx]
+
+        # box_lengths = np.array([self.domain.length_x, self.domain.length_y, self.domain.length_z])
+        box_lengths = [self.domain.length_x, self.domain.length_y, self.domain.length_z]
+
+        # Dimensions for plot
+        a_max = box_lengths[a_idx]
+        b_max = box_lengths[b_idx]
+
+        # Slice parameters
+        L_slice = box_lengths[slice_idx]
+        slice_center = slice_center_fraction * L_slice
+        slice_thickness = slice_thickness_fraction * L_slice
+
+        # Compute mask
+        coord = self.positions[:, slice_idx]
+        slice_mask = self._compute_slice_mask(coord, slice_center, slice_thickness, L_slice)
 
         slice_positions = self.positions[slice_mask]
         slice_radii = self.radii[slice_mask]
 
-        if slice_axis == "z":
-            a_index, b_index = 0, 1
-            a_label, b_label = "x", "y"
-            a_max, b_max = self.domain.length_x, self.domain.length_y
-        elif slice_axis == "y":
-            a_index, b_index = 0, 2
-            a_label, b_label = "x", "z"
-            a_max, b_max = self.domain.length_x, self.domain.length_z
+        if getattr(a_max, 'to', None):
+             a_max_val = a_max.to('meter').magnitude
+             b_max_val = b_max.to('meter').magnitude
+             slice_pos_val = slice_positions.to('meter').magnitude
+             slice_radii_val = slice_radii.to('meter').magnitude
         else:
-            a_index, b_index = 1, 2
-            a_label, b_label = "y", "z"
-            a_max, b_max = self.domain.length_y, self.domain.length_z
+             a_max_val = a_max
+             b_max_val = b_max
+             slice_pos_val = slice_positions
+             slice_radii_val = slice_radii
 
-        a_max, b_max = a_max.to('meter').magnitude, b_max.to('meter').magnitude
-
-        random_generator = np.random.default_rng()
-        if slice_positions.shape[0] > maximum_circles_in_slice:
-            chosen = random_generator.choice(slice_positions.shape[0], size=maximum_circles_in_slice, replace=False)
-            slice_positions = slice_positions[chosen]
-            slice_radii = slice_radii[chosen]
+        # Subsampling
+        n_spheres = slice_positions.shape[0]
+        if n_spheres > maximum_circles_in_slice:
+            rng = np.random.default_rng()
+            indices = rng.choice(n_spheres, size=maximum_circles_in_slice, replace=False)
+            slice_pos_val = slice_pos_val[indices]
+            slice_radii_val = slice_radii_val[indices]
 
         figure, axes = plt.subplots()
-
         axes.set_aspect("equal", adjustable="box")
-        axes.set_xlim(0, a_max)
-        axes.set_ylim(0, b_max)
+        axes.set_xlim(0, a_max_val)
+        axes.set_ylim(0, b_max_val)
         axes.set_xlabel(a_label)
         axes.set_ylabel(b_label)
         axes.set_title(
@@ -226,10 +327,10 @@ class Result():
             + f" | showing {int(np.sum(slice_mask))} spheres"
         )
 
-        for center, radius in zip(slice_positions.to('meter').magnitude, slice_radii.to('meter').magnitude):
+        for center, radius in zip(slice_pos_val, slice_radii_val):
             axes.add_patch(
                 Circle(
-                    (center[a_index], center[b_index]),
+                    (center[a_idx], center[b_idx]),
                     radius=radius,
                     fill=False,
                     linewidth=0.8,
@@ -237,7 +338,7 @@ class Result():
                 )
             )
 
-        axes.plot([0, a_max, a_max, 0, 0], [0, 0, b_max, b_max, 0], linewidth=1.2)
+        axes.plot([0, a_max_val, a_max_val, 0, 0], [0, 0, b_max_val, b_max_val, 0], linewidth=1.2, color='black')
 
         return figure
 
