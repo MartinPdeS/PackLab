@@ -104,7 +104,6 @@ Normal::to_bins() const
             weights[i] = 0.0;
             continue;
         }
-
         const double z = (x - mu) / sigma;
         const double pdf = inv_norm * std::exp(-0.5 * z * z);
 

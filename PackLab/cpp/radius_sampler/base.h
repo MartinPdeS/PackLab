@@ -21,7 +21,6 @@ public:
     std::size_t number_of_bins() const { return number_of_bins_; }
     void set_number_of_bins(std::size_t bins);
 
-    // New: deterministic discretization in meters
     virtual std::pair<std::vector<double>, std::vector<double>> to_bins() const = 0;
 
 protected:
@@ -31,4 +30,18 @@ protected:
     std::size_t number_of_bins_ = 0;
     mutable std::vector<double> bin_edges_;
     void validate_bin_edges() const;
+
+public:
+    std::vector<double> normalize_weights(std::vector<double> weights) const;
+
+    std::pair<std::vector<double>, std::vector<double>>
+    edges_to_centers_and_widths_linear(const std::vector<double>& edges) const;
+
 };
+
+
+
+
+
+
+

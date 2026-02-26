@@ -6,7 +6,11 @@
 #include <cmath>      // for std::max
 #include <memory>     // for std::shared_ptr, std::unique_ptr
 
-#include "radius_sampler/radius_sampler.h"
+#include "radius_sampler/discrete.h"
+#include "radius_sampler/normal.h"
+#include "radius_sampler/log_normal.h"
+#include "radius_sampler/uniform.h"
+#include "radius_sampler/constant.h"
 #include "monte_carlo/utils/utils.h"
 #include "monte_carlo/statistics/statistics.h"
 #include "monte_carlo/simulator/sphere_configuration.h"

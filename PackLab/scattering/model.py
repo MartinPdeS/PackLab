@@ -1,11 +1,19 @@
-from TypedUnit import ureg
+from TypedUnit.units import ureg, Length, RefractiveIndex, Angle
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
 
 from PackLab.scattering.data import Datas
-from numpy.typing import NDArray
+import numpy as np
 
-def get_s1s2(wavelength, diameters, refractive_index, phi: NDArray, plot: bool = False, polarization: float = 0 * ureg.degree) -> Datas:
+def get_s1s2(
+        wavelength: Length,
+        diameters: Length,
+        refractive_index: RefractiveIndex,
+        medium_refractive_index: RefractiveIndex,
+        phi: Angle,
+        plot: bool = False,
+        polarization: float = 0 * ureg.degree
+    ) -> Datas:
     """
     Compute far field amplitude scattering functions S1 and S2 for a set of sphere diameters.
 
@@ -57,19 +65,19 @@ def get_s1s2(wavelength, diameters, refractive_index, phi: NDArray, plot: bool =
         scatterer = Sphere(
             diameter=diameter,
             source=source,
-            medium_property=1.0 * ureg.RIU,
-            property=refractive_index,
+            medium_refractive_index=medium_refractive_index,
+            refractive_index=refractive_index,
         )
 
         data = Temp()
-        data.S1, data.S2 = scatterer._cpp_get_s1s2(
-            phi=phi
+        data.S1, data.S2 = scatterer.get_s1s2(
+            phi=phi + np.pi / 2 * ureg.radian
         )
 
         if plot:
             data.plot(tight_layout=False)
 
-        data.k = source.wavenumber
+        data.k = source.wavenumber_vacuum * medium_refractive_index
         data.Csca = scatterer.Csca
 
         datas.append(data)

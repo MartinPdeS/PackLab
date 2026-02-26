@@ -62,7 +62,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
         ;
 
     // Constant sampler ------------------------------------------------
-    py::class_<Constant, RadiusSampler, std::shared_ptr<Constant>>(module, "Constant", py::dynamic_attr())
+    py::class_<Constant, RadiusSampler, std::shared_ptr<Constant>>(module, "Constant")
         .def(
             py::init(
                 [ureg](
@@ -82,7 +82,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
 
 
     // Uniform sampler -------------------------------------------------
-    py::class_<Uniform, RadiusSampler, std::shared_ptr<Uniform>>(module, "Uniform", py::dynamic_attr())
+    py::class_<Uniform, RadiusSampler, std::shared_ptr<Uniform>>(module, "Uniform")
         .def(
             py::init(
                 [ureg](
@@ -105,7 +105,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
         ;
 
     // Lognormal sampler -----------------------------------------------
-    py::class_<LogNormal, RadiusSampler, std::shared_ptr<LogNormal>>(module, "LogNormal", py::dynamic_attr())
+    py::class_<LogNormal, RadiusSampler, std::shared_ptr<LogNormal>>(module, "LogNormal")
         .def(
             py::init(
                 [ureg](
@@ -115,7 +115,8 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
                     int bins
                 ) {
 
-                    const double median_radius_m = to_meters_strict(median_radius_py);
+                    // const double mediam_radius_m = to_meters_strict(median_radius_py);
+                    const double median_radius_m = median_radius_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
 
                     if (!(geometric_standard_deviation > 1.0)) {
                         throw py::value_error("geometric_standard_deviation must be > 1.");
@@ -144,8 +145,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
             py::init(
                 [ureg](
                     py::object radii_py,
-                    std::vector<double> weights,
-                    int bins
+                    std::vector<double> weights
                 ) {
                     const std::vector<double> radii = to_vector_units(radii_py, "meter");
 
@@ -158,7 +158,6 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
             ),
             py::arg("radii"),
             py::arg("weights"),
-            py::arg("bins") = 0,
             "Discrete radius sampler with user-provided radii and weights plus optional binning."
         )
         ;
@@ -181,7 +180,7 @@ PYBIND11_MODULE(interface_radius_sampler, module) {
                         }
 
                         if (maximum_clip_py.is(py::none()))
-                            maximum_clip_py = mean_py + py::float_(100.0) * standard_deviation_py;
+                            maximum_clip_py = mean_py + py::float_(5.0) * standard_deviation_py;
 
                         const double maximum_clip_m = maximum_clip_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
                         return std::make_shared<Normal>(mean_radius_m, sigma_radius_m, maximum_clip_m, bins);

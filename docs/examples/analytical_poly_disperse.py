@@ -24,11 +24,10 @@ from PackLab import ureg
 from PackLab import analytical, samplers
 import matplotlib.pyplot as plt
 
-
-distribution = samplers.Discrete(
-    radii=[1.5, 1.6] * ureg.micrometer,
-    weights=[0.5, 0.5],
-    bins=4,
+distribution = samplers.Normal(
+    mean=1.5 * ureg.micrometer,
+    standard_deviation=0.2 * ureg.micrometer,
+    bins=6,
 )
 
 particle_radii, number_fractions = distribution.to_bins()
@@ -42,17 +41,17 @@ domain = analytical.PYDomain(
 
 domain.print_bins()
 
-p_max = 1e3 / domain.radii.min()
+spatial_frequency_max = 1e3 / domain.radii.min()
 
-p = np.linspace(p_max / 1e8, p_max / 2, 20_000)
+spatial_frequency = np.linspace(0, spatial_frequency_max / 2, 30_000)
 
 solver = analytical.Solver(
     densities=domain.particle_densities_per_radius,
     radii=domain.radii,
-    p=p,
+    p=spatial_frequency,
 )
 
-distances = np.linspace(domain.radii.min() * 2, domain.radii.max() * 2, 1500)
+distances = np.linspace(domain.radii.min() * 2, domain.radii.max() * 4, 1500)
 
 result = solver.compute(distances=distances)
 

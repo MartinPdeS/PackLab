@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:30.901** total execution time for 4 files **from all galleries**:
+**00:33.096** total execution time for 5 files **from all galleries**:
 
 .. container::
 
@@ -33,14 +33,17 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_monte_carlo_estimator_vs_analytical.py` (``../examples/monte_carlo_estimator_vs_analytical.py``)
-     - 00:21.715
+     - 00:12.719
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_poly_disperse.py` (``../examples/analytical_poly_disperse.py``)
-     - 00:06.018
+     - 00:09.839
      - 0.0
-   * - :ref:`sphx_glr_gallery_monte_carlo_vs_analytical.py` (``../examples/monte_carlo_vs_analytical.py``)
-     - 00:01.796
+   * - :ref:`sphx_glr_gallery_scattering.py` (``../examples/scattering.py``)
+     - 00:09.425
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_poly_disperse.py` (``../examples/monte_carlo_poly_disperse.py``)
-     - 00:01.372
+     - 00:00.574
+     - 0.0
+   * - :ref:`sphx_glr_gallery_monte_carlo_vs_analytical.py` (``../examples/monte_carlo_vs_analytical.py``)
+     - 00:00.540
      - 0.0
