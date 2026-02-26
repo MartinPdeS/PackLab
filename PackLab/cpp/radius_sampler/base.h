@@ -6,6 +6,7 @@
 #include <functional>   // std::function
 #include <stdexcept>
 #include <utility>
+#include <algorithm>    // std::upper_bound
 
 #include "monte_carlo/utils/utils.h"
 
