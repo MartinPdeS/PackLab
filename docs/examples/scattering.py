@@ -69,8 +69,8 @@ plt.show()
 datas = scattering.get_s1s2(
     wavelength=150 * ureg.nanometer,
     diameters=py_result.radii,
-    refractive_index=1.45 * ureg.RIU,
-    medium_refractive_index=1.0 * ureg.RIU,
+    material=1.45,
+    medium=1.0,
     phi=np.linspace(-np.pi / 2, np.pi / 2, 400) * ureg.radian,
     polarization=0 * ureg.degree,
 )
