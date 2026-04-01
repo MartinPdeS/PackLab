@@ -14,7 +14,8 @@ def get_s1s2(
         medium: RefractiveIndex,
         phi: Angle,
         plot: bool = False,
-        polarization: float = 0 * ureg.degree
+        polarization: float = 0 * ureg.degree,
+        debug_mode: bool = False
     ) -> Datas:
     """
     Compute far field amplitude scattering functions S1 and S2 for a set of sphere diameters.
@@ -61,7 +62,7 @@ def get_s1s2(
             wavelength=wavelength,
             polarization=PolarizationState(angle=polarization),
             optical_power=1 * ureg.watt,
-            numerical_aperture=0.3 * ureg.AU,
+            numerical_aperture=0.3,
         )
 
         scatterer = Sphere(
@@ -83,6 +84,9 @@ def get_s1s2(
         data.k = source.wavenumber_vacuum * medium
         data.Csca = setup.get("Csca")
         datas.append(data)
+
+        if debug_mode:
+            print(f"[get_s1s2] Diameter: {diameter}, material: {material}, medium: {medium}, Csca: {data.Csca}")
 
     datas.k = data.k
     datas.phi = phi
