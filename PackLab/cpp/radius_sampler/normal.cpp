@@ -83,32 +83,58 @@ Normal::to_bins() const
         throw std::runtime_error("Normal::to_bins requires bins > 0.");
     }
 
-    if (sigma_value_ <= 0.0) {
-        throw std::runtime_error("Normal::to_bins requires sigma > 0.");
-    }
-
     validate_bin_edges();
 
     auto [centers, widths] = edges_to_centers_and_widths_linear(bin_edges_);
-
     std::vector<double> weights(centers.size(), 0.0);
 
     const double mu = mean_value_;
     const double sigma = sigma_value_;
-    const double inv_norm = 1.0 / (sigma * std::sqrt(2.0 * 3.14159265358979323846));
+    const double maximum_radius = maximum_radius_clip_value_;
 
-    for (std::size_t i = 0; i < centers.size(); ++i) {
-        const double x = centers[i];
-
-        if (x < 0.0) {
-            weights[i] = 0.0;
-            continue;
+    if (sigma == 0.0) {
+        double radius = mu;
+        if (radius < 0.0) {
+            radius = 0.0;
         }
-        const double z = (x - mu) / sigma;
-        const double pdf = inv_norm * std::exp(-0.5 * z * z);
+        if (radius > maximum_radius) {
+            radius = maximum_radius;
+        }
 
-        weights[i] = pdf * widths[i];
+        const int index = bin_index(radius);
+        if (index >= 0) {
+            weights[static_cast<std::size_t>(index)] = 1.0;
+        }
+
+        return {std::move(centers), std::move(weights)};
     }
+
+    const auto normal_cdf = [mu, sigma](double x) -> double {
+        return 0.5 * (1.0 + std::erf((x - mu) / (sigma * std::sqrt(2.0))));
+    };
+
+    for (std::size_t i = 0; i < number_of_bins_; ++i) {
+        const double left_edge = bin_edges_[i];
+        const double right_edge = bin_edges_[i + 1];
+
+        const double clipped_left_edge = std::max(0.0, left_edge);
+        const double clipped_right_edge = std::min(maximum_radius, right_edge);
+
+        double probability_mass = 0.0;
+
+        if (clipped_right_edge > clipped_left_edge) {
+            probability_mass =
+                normal_cdf(clipped_right_edge) - normal_cdf(clipped_left_edge);
+        }
+
+        weights[i] = probability_mass;
+    }
+
+    // Add clipped mass from x < 0 to the first bin
+    weights.front() += normal_cdf(0.0);
+
+    // Add clipped mass from x > maximum_radius to the last bin
+    weights.back() += 1.0 - normal_cdf(maximum_radius);
 
     weights = normalize_weights(std::move(weights));
     return {std::move(centers), std::move(weights)};

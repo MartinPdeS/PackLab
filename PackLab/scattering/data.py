@@ -58,8 +58,8 @@ class Datas(list):
         -------
         None
         """
-        self.S1 = np.asarray([d.S1 for d in self])
-        self.S2 = np.asarray([d.S2 for d in self])
+        self.S1 = np.asarray([d.S1.magnitude for d in self])
+        self.S2 = np.asarray([d.S2.magnitude for d in self])
 
         self.Csca = np.asarray([d.Csca.to("meter**2").magnitude for d in self]) * ureg.meter ** 2
 
@@ -128,7 +128,7 @@ class Datas(list):
         is stored in `self.phi`. If you want to align with standard spherical coordinates,
         consider renaming to avoid confusion.
         """
-        theta = np.deg2rad(np.linspace(0, 360, theta_points))
+        theta = np.linspace(0, 2 * np.pi, theta_points)
 
         _cos = np.cos(theta)
         _sin = np.sin(theta)
