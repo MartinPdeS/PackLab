@@ -53,8 +53,6 @@ result = rsa_simulator.run()
 
 result.statistics.print()
 
-# centers, g_matrix = result.binding.compute_partial_pair_correlation_function(n_bins=50, maximum_pairs=1_000_000)
-
 result.plot_slice_2d(
     slice_axis="z",
     slice_center_fraction=0.5,

@@ -1,6 +1,8 @@
 from TypedUnit.units import ureg, Length, RefractiveIndex, Angle
 from PyMieSim.single.scatterer import Sphere
 from PyMieSim.single.source import Gaussian
+from PyMieSim.single import Setup
+from PyMieSim.polarization import PolarizationState
 
 from PackLab.scattering.data import Datas
 import numpy as np
@@ -8,8 +10,8 @@ import numpy as np
 def get_s1s2(
         wavelength: Length,
         diameters: Length,
-        refractive_index: RefractiveIndex,
-        medium_refractive_index: RefractiveIndex,
+        material: RefractiveIndex,
+        medium: RefractiveIndex,
         phi: Angle,
         plot: bool = False,
         polarization: float = 0 * ureg.degree
@@ -57,29 +59,29 @@ def get_s1s2(
     for diameter in diameters:
         source = Gaussian(
             wavelength=wavelength,
-            polarization=polarization,
+            polarization=PolarizationState(angle=polarization),
             optical_power=1 * ureg.watt,
-            NA=0.3 * ureg.AU,
+            numerical_aperture=0.3 * ureg.AU,
         )
 
         scatterer = Sphere(
             diameter=diameter,
-            source=source,
-            medium_refractive_index=medium_refractive_index,
-            refractive_index=refractive_index,
+            medium=medium,
+            material=material,
         )
 
+        setup = Setup(source=source, scatterer=scatterer)
+
         data = Temp()
-        data.S1, data.S2 = scatterer.get_s1s2(
-            phi=phi + np.pi / 2 * ureg.radian
+        data.S1, data.S2 = setup.get_s1s2(
+            angles=phi + np.pi / 2 * ureg.radian
         )
 
         if plot:
             data.plot(tight_layout=False)
 
-        data.k = source.wavenumber_vacuum * medium_refractive_index
-        data.Csca = scatterer.Csca
-
+        data.k = source.wavenumber_vacuum * medium
+        data.Csca = setup.get("Csca")
         datas.append(data)
 
     datas.k = data.k

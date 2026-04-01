@@ -51,7 +51,7 @@ dependencies = [
     "numpy",
     "TypedUnit",
     "tabulate",
-    "PyMieSim"
+    "PyMieSim ==5.0.2"
 ]
 
 [project.urls]

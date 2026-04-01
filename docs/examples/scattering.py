@@ -32,7 +32,9 @@ py_domain = analytical.PYDomain(
 py_domain.print_bins()
 
 # Percus Yevick solver radial frequency grid
+# Because we want to plot g we need to have a large p_max to capture the oscillations at small r. The p_max should be at least 10 times 2*pi/r_min, where r_min is the smallest particle radius.
 p_max = 1e3 / py_domain.radii.min()
+
 p = np.linspace(0, p_max * 1, 2 * 60_000)
 
 solver = analytical.Solver(
