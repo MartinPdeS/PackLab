@@ -21,6 +21,7 @@
 !CMakeLists.txt
 !pytest.ini
 !.coveragerc
+!matlab
 
 # But ignore docs/build inside docs and code
 docs/build/
