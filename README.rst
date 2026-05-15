@@ -143,9 +143,9 @@ Email: `martin.poinsinet.de.sivry@gmail.com <mailto:martin.poinsinet.de.sivry@gm
 .. |python| image:: https://img.shields.io/pypi/pyversions/packlab.svg
     :alt: Python
     :target: https://www.python.org/
-.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.20207810.svg
-   :alt: Zenodo
-   :target: https://doi.org/10.5281/zenodo.20207810
+.. |zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.20207810.svg
+    :alt: Zenodo
+    :target: https://doi.org/10.5281/zenodo.20207810
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
     :alt: Google Colab
     :target: https://colab.research.google.com/github/MartinPdeS/PackLab/blob/master/notebook.ipynb
