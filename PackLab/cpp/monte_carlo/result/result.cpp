@@ -204,6 +204,9 @@ void Result::compute_partial_sphere_volumes()
 
     for (std::size_t n = 0; n < sphere_configuration->radii_values.size(); ++n) {
         const int c = this->sphere_configuration->class_index_values[n];
+        if (c < 0 || static_cast<std::size_t>(c) >= this->number_of_classes) {
+            throw std::runtime_error("Invalid class index in class_index_values.");
+        }
         this->partial_volumes[c] += prefactor * this->sphere_configuration->radii_values[n] * this->sphere_configuration->radii_values[n] * this->sphere_configuration->radii_values[n];
     }
 

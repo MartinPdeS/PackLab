@@ -287,11 +287,26 @@ Result Simulator::run() {
 
     this->statistics.end_benchmark();
 
+    // ``number_of_bins`` can be zero when optional sampler binning is
+    // disabled. Accepted particles nevertheless carry valid class indices
+    // (for example, a constant sampler has one class: 0), so derive the
+    // result shape from the configuration as well.
+    std::size_t number_of_classes = radius_sampler->number_of_bins();
+    for (const int class_index : sphere_configuration->class_index_values) {
+        if (class_index < 0) {
+            throw std::runtime_error("Radius sampler produced a negative class index.");
+        }
+        number_of_classes = std::max(
+            number_of_classes,
+            static_cast<std::size_t>(class_index) + 1
+        );
+    }
+
     Result result{
         this->sphere_configuration,
         this->domain,
         this->statistics,
-        this->radius_sampler->number_of_bins()
+        number_of_classes
     };
 
     return result;

@@ -42,6 +42,32 @@ def test_constant_to_bins_returns_single_center_and_unit_weight():
     assert weights[0] == pytest.approx(1.0)
 
 
+def test_constant_sampler_runs_rsa_with_a_valid_single_class_index():
+    """A default constant sampler must not emit the invalid class index -1."""
+    from PackLab import monte_carlo
+
+    domain = monte_carlo.PackingDomain(
+        3.0 * ureg.micrometer,
+        3.0 * ureg.micrometer,
+        3.0 * ureg.micrometer,
+        use_periodic_boundaries=True,
+    )
+    options = monte_carlo.RSAOptions()
+    options.random_seed = 7
+    options.maximum_attempts = 1_000
+    options.maximum_spheres = 12
+
+    result = monte_carlo.RSASimulator(
+        domain,
+        samplers.ConstantRadiusSampler(150.0 * ureg.nanometer),
+        options,
+    ).run()
+
+    class_index = np.asarray(result.sphere_configuration.classes_index)
+    assert result.sphere_configuration.number_of_classes == 1
+    assert np.all(class_index == 0)
+
+
 def test_uniform_to_bins_requires_bins_positive_if_that_is_your_policy():
     sampler = samplers.UniformRadiusSampler(
         minimum_radius=1.0 * ureg.micrometer,

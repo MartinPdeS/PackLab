@@ -6,13 +6,17 @@ Constant::Constant(double radius, int bins)
     if (radius <= 0.0)
         throw std::invalid_argument("Radius must be positive.");
 
-    set_number_of_bins(bins);
+    if (bins < 0)
+        throw std::invalid_argument("Number of bins must be non-negative.");
 
-    if (number_of_bins_ > 0) {
-        bin_edges_.resize(2);
-        bin_edges_[0] = radius;
-        bin_edges_[1] = radius;
-    }
+    // There is only one distinct radius in a constant distribution. Treat it
+    // as one class even when the Python caller leaves ``bins`` at its default
+    // of zero; the class index is consumed by the simulator and result code.
+    set_number_of_bins(1);
+
+    bin_edges_.resize(2);
+    bin_edges_[0] = radius;
+    bin_edges_[1] = radius;
 
     this->validate_bin_edges();
 }
@@ -24,9 +28,10 @@ double Constant::sample_radius(std::mt19937_64&)
 
 int Constant::bin_index(double) const
 {
-    if (number_of_bins_ == 0)
-        return -1;
-
+    // A constant sampler always represents exactly one radius class. Even
+    // when optional radius binning is disabled, the simulator stores this
+    // value as an array index for class-resolved statistics, so it must be a
+    // valid non-negative class index.
     return 0;
 }
 
