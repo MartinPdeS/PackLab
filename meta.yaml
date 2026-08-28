@@ -54,7 +54,9 @@ about:
 
 files:
   include:
-    - "PackLab/binary/*.so"
+    - "PackLab/*.so"
+    - "PackLab/monte_carlo/*.so"
+    - "PackLab/analytical/*.so"
 
 test:
   imports:

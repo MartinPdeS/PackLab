@@ -1,13 +1,30 @@
 #include "domain.h"
 
 #include <pybind11/pybind11.h>
+#include <sstream>
 #include "pint/pint.h"
 
 namespace py = pybind11;
 
 
-PYBIND11_MODULE(interface_domain, module) {
-    py::class_<MCDomain, std::shared_ptr<MCDomain>> domain_cls(module, "MCDomain", py::dynamic_attr());
+PYBIND11_MODULE(domain, module) {
+    py::class_<MCDomain, std::shared_ptr<MCDomain>> domain_cls(module, "PackingDomain", py::dynamic_attr(), R"doc(
+Three-dimensional rectangular domain for random sequential addition.
+
+Parameters
+----------
+length_x, length_y, length_z : pint.Quantity
+    Positive box lengths, convertible to meters.
+use_periodic_boundaries : bool
+    Whether to apply periodic boundary conditions on all three axes.
+
+Attributes
+----------
+length_x, length_y, length_z : pint.Quantity
+    Box lengths in meters.
+volume : float
+    Box volume in cubic meters.
+)doc");
 
     domain_cls
         .def(
@@ -32,7 +49,8 @@ PYBIND11_MODULE(interface_domain, module) {
             py::arg("length_x"),
             py::arg("length_y"),
             py::arg("length_z"),
-            py::arg("use_periodic_boundaries")
+            py::arg("use_periodic_boundaries"),
+            "Create a packing domain from unit-bearing box lengths."
         )
         .def_property_readonly(
             "length_x",
@@ -44,7 +62,7 @@ PYBIND11_MODULE(interface_domain, module) {
                 },
                 py::is_method(domain_cls)
             ),
-            "The length of the domain in the x dimension in meters."
+            "pint.Quantity: Length of the x axis in meters."
         )
         .def_property_readonly(
             "length_y",
@@ -56,7 +74,7 @@ PYBIND11_MODULE(interface_domain, module) {
                 },
                 py::is_method(domain_cls)
             ),
-            "The length of the domain in the y dimension in meters."
+            "pint.Quantity: Length of the y axis in meters."
         )
         .def_property_readonly(
             "length_z",
@@ -68,22 +86,35 @@ PYBIND11_MODULE(interface_domain, module) {
                 },
                 py::is_method(domain_cls)
             ),
-            "The length of the domain in the z dimension in meters."
+            "pint.Quantity: Length of the z axis in meters."
         )
         .def_readonly(
             "use_periodic_boundaries",
             &MCDomain::use_periodic_boundaries,
-            "Whether periodic boundary conditions are used in the domain."
+            "bool: Whether periodic boundary conditions are enabled."
         )
         .def_readonly(
             "volume",
             &MCDomain::volume,
-            "The volume of the domain in cubic meters."
+            "float: Box volume in cubic meters."
         )
         .def(
             "scale",
             &MCDomain::scale,
             py::arg("scale_factor"),
-            "Scale the domain dimensions by the given factor."
-        );
+            R"doc(
+Scale all box lengths in place.
+
+Parameters
+----------
+scale_factor : float
+    Positive multiplicative scale factor.
+)doc"
+        )
+        .def("__repr__", [](const MCDomain& self) {
+            std::ostringstream stream;
+            stream << "<PackingDomain lengths=(" << self.length_x << ", " << self.length_y << ", "
+                   << self.length_z << ") m, periodic=" << (self.use_periodic_boundaries ? "True" : "False") << ">";
+            return stream.str();
+        });
 }

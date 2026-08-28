@@ -9,7 +9,8 @@ target_link_libraries("${NAME}" PUBLIC pybind11::module utils domain simulator)
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
-set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "interface_${NAME}")
+set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "_unit_registry")
 target_link_libraries("interface_${NAME}" PRIVATE "${NAME}")
 
-set_property(GLOBAL APPEND PROPERTY PACKLAB_TARGETS "${NAME}" "interface_${NAME}")
+set_property(GLOBAL APPEND PROPERTY PACKLAB_TARGETS "interface_${NAME}")
+set_property(TARGET "interface_${NAME}" PROPERTY PACKLAB_INSTALL_DESTINATION "PackLab")

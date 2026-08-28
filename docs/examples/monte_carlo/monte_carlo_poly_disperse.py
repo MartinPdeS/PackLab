@@ -24,26 +24,26 @@ from PackLab import ureg
 # The domain defines the physical volume of the simulation.
 # Here we use periodic boundary conditions on a cubic box.
 
-domain = monte_carlo.MCDomain(
+domain = monte_carlo.PackingDomain(
     length_x=6.0 * ureg.millimeter,
     length_y=6.0 * ureg.millimeter,
     length_z=6.0 * ureg.millimeter,
     use_periodic_boundaries=True
 )
 
-radius_sampler = samplers.Discrete(
+radius_sampler = samplers.DiscreteRadiusSampler(
     radii=[0.1, 0.2] * ureg.millimeter,
     weights=[0.5, 0.5],
 )
 
-options = monte_carlo.Options()
+options = monte_carlo.RSAOptions()
 options.random_seed = 123
-options.maximum_attempts = 2_500_000
-options.maximum_consecutive_rejections = 50_000
-options.target_packing_fraction = 0.3
+options.maximum_attempts = 150_000
+options.maximum_consecutive_rejections = 20_000
+options.target_packing_fraction = 0.15
 options.minimum_center_separation_addition = 0.0
 
-rsa_simulator = monte_carlo.Simulator(
+rsa_simulator = monte_carlo.RSASimulator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options
@@ -62,5 +62,5 @@ result.plot_slice_2d(
 
 result.plot_pair_correlation(
     n_bins=150,
-    maximum_pairs=20_000_000
+    maximum_pairs=200_000
 )

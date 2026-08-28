@@ -24,7 +24,7 @@ from PackLab import ureg
 from PackLab import analytical, samplers
 import matplotlib.pyplot as plt
 
-distribution = samplers.Normal(
+distribution = samplers.NormalRadiusSampler(
     mean=1.5 * ureg.micrometer,
     standard_deviation=0.2 * ureg.micrometer,
     bins=6,
@@ -32,7 +32,7 @@ distribution = samplers.Normal(
 
 particle_radii, number_fractions = distribution.to_bins()
 
-domain = analytical.PYDomain(
+domain = analytical.PercusYevickDomain(
     size=100 * ureg.micrometer,
     radii=particle_radii,
     volume_fraction=0.3,
@@ -43,9 +43,9 @@ domain.print_bins()
 
 spatial_frequency_max = 1e3 / domain.radii.min()
 
-spatial_frequency = np.linspace(0, spatial_frequency_max / 2, 30_000)
+spatial_frequency = np.linspace(0, spatial_frequency_max / 2, 4_000)
 
-solver = analytical.Solver(
+solver = analytical.PercusYevickSolver(
     densities=domain.particle_densities_per_radius,
     radii=domain.radii,
     p=spatial_frequency,

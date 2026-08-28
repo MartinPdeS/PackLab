@@ -3,6 +3,7 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <sstream>
 
 #include <pint/pint.h>
 
@@ -32,15 +33,26 @@ static py::array_t<double> double_list_to_numpy(const std::vector<double>& value
 py::object run_and_wrap(Simulator& self) {
     auto cpp_result = self.run();  // whatever your C++ returns
 
-    py::object ResultClass = py::module_::import("PackLab.monte_carlo.results").attr("Result");
+    py::object ResultClass = py::module_::import("PackLab.monte_carlo.results").attr("PackingResult");
 
     return ResultClass(py::arg("binding") = py::cast(std::move(cpp_result)));
 }
 
-PYBIND11_MODULE(interface_simulator, module) {
+PYBIND11_MODULE(simulator, module) {
     module.doc() = "Random sequential addition of non overlapping spheres in a 3D box";
 
-    py::class_<SphereConfiguration, std::shared_ptr<SphereConfiguration>>(module, "SphereConfiguration")
+    py::class_<SphereConfiguration, std::shared_ptr<SphereConfiguration>>(module, "PackingConfiguration", R"doc(
+Sphere centers, radii, and size-class labels of a packing.
+
+Attributes
+----------
+positions : pint.Quantity, shape (n, 3)
+    Sphere-center coordinates in meters.
+radii : pint.Quantity, shape (n,)
+    Sphere radii in meters.
+classes_index : numpy.ndarray, shape (n,)
+    Radius-class index for each sphere.
+)doc")
         .def_property_readonly(
             "count",
             [](const std::shared_ptr<SphereConfiguration> sphere_configuration) { return sphere_configuration->radii().size(); },
@@ -93,9 +105,22 @@ PYBIND11_MODULE(interface_simulator, module) {
             },
             "Number of distinct particle radius classes"
         )
-    ;
+        .def("__repr__", [](const SphereConfiguration& self) {
+            return "<PackingConfiguration spheres=" + std::to_string(self.radii_values.size()) + ">";
+        });
 
-    py::class_<Options, std::shared_ptr<Options>>(module, "Options")
+    py::class_<Options, std::shared_ptr<Options>>(module, "RSAOptions", R"doc(
+Stopping criteria and numerical settings for an RSA simulation.
+
+Attributes
+----------
+maximum_attempts : int
+    Total trial-insertion limit.
+maximum_spheres : int
+    Sphere-count limit; zero disables this criterion.
+target_packing_fraction : float
+    Target volume fraction; zero disables this criterion.
+)doc")
         .def(py::init<>())
         .def_readwrite("random_seed", &Options::random_seed)
         .def_readwrite("maximum_attempts", &Options::maximum_attempts)
@@ -106,9 +131,30 @@ PYBIND11_MODULE(interface_simulator, module) {
         .def_readwrite("containment_padding", &Options::containment_padding)
         .def_readwrite("spatial_grid_cell_size", &Options::spatial_grid_cell_size)
         .def_readwrite("enforce_radii_distribution", &Options::enforce_radii_distribution)
-    ;
+        .def("__repr__", [](const Options& self) {
+            std::ostringstream stream;
+            stream << "<RSAOptions seed=" << self.random_seed
+                   << ", max_attempts=" << self.maximum_attempts
+                   << ", target_packing_fraction=" << self.target_packing_fraction << ">";
+            return stream.str();
+        });
 
-    py::class_<Simulator>(module, "Simulator")
+    py::class_<Simulator>(module, "RSASimulator", R"doc(
+Random Sequential Addition simulator for non-overlapping spheres.
+
+Parameters
+----------
+domain : PackingDomain
+    Spatial domain and boundary conditions.
+radius_sampler : RadiusSampler
+    Distribution used for candidate sphere radii.
+options : RSAOptions
+    Stopping criteria and numerical settings.
+
+Notes
+-----
+Call :meth:`run` to generate a :class:`PackingResult`.
+)doc")
         .def(
             py::init<std::shared_ptr<MCDomain>, std::shared_ptr<RadiusSampler>, std::shared_ptr<Options>>(),
             py::arg("domain"),
@@ -122,7 +168,8 @@ PYBIND11_MODULE(interface_simulator, module) {
         )
         .def(
             "run",
-            &run_and_wrap
+            &run_and_wrap,
+            "Run the simulation and return a PackingResult."
         )
         .def(
             "_cpp_attempt_single_insertion",
@@ -141,8 +188,9 @@ PYBIND11_MODULE(interface_simulator, module) {
             py::return_value_policy::reference_internal,
             "Current sphere configuration"
         )
-        ;
+        .def("__repr__", [](const Simulator&) {
+            return "<RSASimulator>";
+        });
 
 
 }
-

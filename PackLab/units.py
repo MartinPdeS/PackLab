@@ -1,5 +1,5 @@
-from PackLab import interface_pint
+from PackLab import _unit_registry
 
 from TypedUnit import ureg
 
-interface_pint.set_ureg(ureg)
+_unit_registry.set_ureg(ureg)

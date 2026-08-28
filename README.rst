@@ -46,6 +46,12 @@ From PyPI:
 
    pip install packlab
 
+For optical-scattering utilities, install the optional dependency group:
+
+.. code-block:: bash
+
+   pip install "packlab[scattering]"
+
 From conda:
 
 .. code-block:: bash
@@ -65,28 +71,28 @@ Quick start
 
 .. code-block:: python
 
-    from PackLab import Domain, Options, Simulator, UniformRadiusSampler
+    from PackLab import monte_carlo, samplers
 
-    domain = Domain(
+    domain = monte_carlo.PackingDomain(
         length_x=6.0,
         length_y=6.0,
         length_z=6.0,
         use_periodic_boundaries=True
     )
 
-    radius_sampler = UniformRadiusSampler(
+    radius_sampler = samplers.UniformRadiusSampler(
         minimum_radius=0.1,
         maximum_radius=0.4
     )
 
-    options = Options()
+    options = monte_carlo.RSAOptions()
     options.random_seed = 42
     options.maximum_attempts = 4_000_000
     options.maximum_consecutive_rejections = 80_000
     options.target_packing_fraction = 0.55
     options.minimum_center_separation_addition = 0.0
 
-    rsa_simulator = Simulator(
+    rsa_simulator = monte_carlo.RSASimulator(
         domain=domain,
         radius_sampler=radius_sampler,
         options=options
@@ -98,7 +104,7 @@ Quick start
 
     result.plot_slice_2d()
 
-    result.plot_pair_correlation(maximum_number_of_pairs=3_000_000)
+    result.plot_pair_correlation(maximum_pairs=3_000_000)
 
    import PackLab
 

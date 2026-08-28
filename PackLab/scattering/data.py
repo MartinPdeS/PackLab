@@ -1,18 +1,53 @@
+from dataclasses import dataclass
+from typing import Any
+
 from TypedUnit import ureg
 from numpy.typing import NDArray
 import numpy as np
+
+
+@dataclass(slots=True)
+class ScatteringData:
+    """Far-field scattering data for a single particle diameter.
+
+    The quantity-bearing fields intentionally use ``Any`` because TypedUnit/Pint
+    quantities are generic at runtime and may wrap scalar or array values.
+    """
+
+    S1: Any
+    S2: Any
+    k: Any
+    Csca: Any
+    phi: Any
+
+    def plot(self, *, tight_layout: bool = True):
+        """Plot the magnitudes of the two scattering amplitudes."""
+        import matplotlib.pyplot as plt
+
+        phi = self.phi.to("radian").magnitude if hasattr(self.phi, "to") else self.phi
+        s1 = np.abs(self.S1.magnitude if hasattr(self.S1, "magnitude") else self.S1)
+        s2 = np.abs(self.S2.magnitude if hasattr(self.S2, "magnitude") else self.S2)
+
+        figure, axes = plt.subplots()
+        axes.plot(phi, s1, label="|S1|")
+        axes.plot(phi, s2, label="|S2|")
+        axes.set_xlabel("polar angle (rad)")
+        axes.set_ylabel("amplitude")
+        axes.legend()
+        if tight_layout:
+            figure.tight_layout()
+        return figure
 
 
 # Convention note:
 # In typical scattering convention, the polar scattering angle is in [0, pi]
 # and the azimuthal rotation around the incident axis is in [0, 2*pi).
 # In this class, `self.phi` is used with sin(self.phi) weights, so it behaves like a polar angle.
-class Datas(list):
+class ScatteringDataset(list):
     """
     Container for multi size scattering data and mixture level post processing.
 
-    This class stores a sequence of per diameter results (each element typically carries
-    arrays `S1(φ)` and `S2(φ)` defined on `self.phi`). It also provides mixture formulas
+    This class stores :class:`ScatteringData` instances, one for each diameter. It also provides mixture formulas
     for a number density distribution over diameters and an inter particle correlation
     term H(p).
 

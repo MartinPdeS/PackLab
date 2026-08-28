@@ -4,7 +4,7 @@
 import sys
 import os
 from sphinx_gallery.sorting import FileNameSortKey
-from MPSPlots.styles import use_mpsplots_style
+import matplotlib.pyplot as plt
 from pathlib import Path
 import PackLab
 from PackLab.directories import doc_css_path
@@ -52,7 +52,7 @@ html_favicon = "_static/thumbnail.png"
 
 
 def reset_mpl(gallery_conf, fname):
-    use_mpsplots_style()
+    plt.rcdefaults()
 
 
 sphinx_gallery_conf = {
@@ -180,5 +180,6 @@ html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = ["default.css"]
 epub_exclude_files = ["search.html"]
+suppress_warnings = ["config.cache"]
 
 # -

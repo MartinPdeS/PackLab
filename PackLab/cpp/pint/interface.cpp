@@ -2,7 +2,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(interface_pint, module) {
+PYBIND11_MODULE(_unit_registry, module) {
     module.def(
         "set_ureg",
         [module](py::object ureg_object) mutable {

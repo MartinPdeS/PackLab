@@ -1,13 +1,11 @@
 from TypedUnit.units import ureg, Length, RefractiveIndex, Angle
-from PyMieSim.single.scatterer import Sphere
-from PyMieSim.single.source import Gaussian
-from PyMieSim.single import Setup
-from PyMieSim.polarization import PolarizationState
-
-from PackLab.scattering.data import Datas
+from PackLab.scattering.data import ScatteringDataset, ScatteringData
 import numpy as np
 
-def get_s1s2(
+Gaussian = Sphere = Setup = PolarizationState = None
+
+
+def compute_scattering_amplitudes(
         wavelength: Length,
         diameters: Length,
         material: RefractiveIndex,
@@ -16,12 +14,12 @@ def get_s1s2(
         plot: bool = False,
         polarization: float = 0 * ureg.degree,
         debug_mode: bool = False
-    ) -> Datas:
+    ) -> ScatteringDataset:
     """
     Compute far field amplitude scattering functions S1 and S2 for a set of sphere diameters.
 
     This helper constructs a `Gaussian` source and a `Sphere` scatterer for each diameter,
-    calls `scatterer.get_s1s2(...)`, and stores the resulting objects in a `Datas` container.
+    calls `Setup.get_s1s2(...)`, and stores the resulting objects in a `ScatteringDataset` container.
 
     Parameters
     ----------
@@ -33,9 +31,9 @@ def get_s1s2(
 
     Returns
     -------
-    Datas
+    ScatteringDataset
         A list like container where each element is the return value of
-        `Sphere.get_s1s2(sampling=...)`. Additional attributes are attached:
+        `Setup.get_s1s2(angles=...)`. Additional attributes are attached:
 
         * `datas.k`: optical wavenumber of the source (1/length)
         * `datas.phi`: angular sampling grid taken from the first result (radians)
@@ -48,14 +46,29 @@ def get_s1s2(
     * `data.k` is set to `source.wavenumber`
     * `data.Csca` is set to `scatterer.Csca`
 
-    The `Datas` instance also receives `k` and `phi` from the last and first element
+    The `ScatteringDataset` instance also receives `k` and `phi` from the last and first element
     respectively. If you want stricter correctness, you should assert that all returned
     `data.phi` grids are identical.
     """
-    class Temp():
-        pass
+    diameters = tuple(diameters)
+    if not diameters:
+        raise ValueError("diameters must contain at least one diameter")
 
-    datas = Datas()
+    # Keep importing the data containers lightweight; PyMieSim is only needed when
+    # this numerical helper is actually called.
+    global Gaussian, Sphere, Setup, PolarizationState
+    if Gaussian is None:
+        from PyMieSim.single.scatterer import Sphere as _Sphere
+        from PyMieSim.single.source import Gaussian as _Gaussian
+        from PyMieSim.single import Setup as _Setup
+        from PyMieSim.polarization import PolarizationState as _PolarizationState
+
+        Gaussian = _Gaussian
+        Sphere = _Sphere
+        Setup = _Setup
+        PolarizationState = _PolarizationState
+
+    datas = ScatteringDataset()
 
     for diameter in diameters:
         source = Gaussian(
@@ -73,20 +86,25 @@ def get_s1s2(
 
         setup = Setup(source=source, scatterer=scatterer)
 
-        data = Temp()
-        data.S1, data.S2 = setup.get_s1s2(
+        s1, s2 = setup.get_s1s2(
             angles=phi + np.pi / 2 * ureg.radian
+        )
+
+        data = ScatteringData(
+            S1=s1,
+            S2=s2,
+            k=source.wavenumber_vacuum * medium,
+            Csca=setup.get("Csca"),
+            phi=phi,
         )
 
         if plot:
             data.plot(tight_layout=False)
 
-        data.k = source.wavenumber_vacuum * medium
-        data.Csca = setup.get("Csca")
         datas.append(data)
 
         if debug_mode:
-            print(f"[get_s1s2] Diameter: {diameter}, material: {material}, medium: {medium}, Csca: {data.Csca}")
+            print(f"[compute_scattering_amplitudes] Diameter: {diameter}, material: {material}, medium: {medium}, Csca: {data.Csca}")
 
     datas.k = data.k
     datas.phi = phi

@@ -3,15 +3,32 @@
 #include <pybind11/numpy.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <sstream>
 
 #include "pint/pint.h"
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(interface_result, module) {
+PYBIND11_MODULE(result, module) {
     module.doc() = "Result class containing particle configuration and correlation functions";
 
-    py::class_<Result, std::shared_ptr<Result>>(module, "Result")
+    py::class_<Result, std::shared_ptr<Result>>(module, "PackingResult", R"doc(
+Native result of a completed random sequential addition simulation.
+
+Attributes
+----------
+sphere_configuration : PackingConfiguration
+    Positions, radii, and class indices of all accepted spheres.
+statistics : PackingStatistics
+    Insertion counters, packing fractions, and runtime.
+partial_volume_fractions : numpy.ndarray
+    Volume fraction contributed by each radius class.
+
+Notes
+-----
+The high-level :class:`PackLab.monte_carlo.PackingResult` adds plotting
+and unit-aware convenience methods around this native object.
+)doc")
 
         // -----------------------
         // Property: radii (N)
@@ -123,5 +140,8 @@ PYBIND11_MODULE(interface_result, module) {
             py::arg("maximum_pairs") = 1'000'000,
             "Compute partial pair correlation function g_ij(r) and return (centers, g_ij)."
         )
-    ;
+        .def("__repr__", [](const Result& self) {
+            return "<PackingResult spheres=" + std::to_string(self.sphere_configuration->radii_values.size())
+                + ", classes=" + std::to_string(self.number_of_classes) + ">";
+        });
 }

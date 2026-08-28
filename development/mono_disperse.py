@@ -1,10 +1,10 @@
 import numpy
 import numpy as np
 
-from PackLab.monte_carlo import Domain, Options, Simulator, UniformRadiusSampler, DiscreteRadiusSampler
+from PackLab import monte_carlo, samplers
 
 
-domain = Domain(
+domain = monte_carlo.PackingDomain(
     length_x=6.0,
     length_y=6.0,
     length_z=6.0,
@@ -13,12 +13,12 @@ domain = Domain(
 
 domain.scale(10)
 
-radius_sampler = DiscreteRadiusSampler(
+radius_sampler = samplers.DiscreteRadiusSampler(
     radii=[1, 2],
     weights=[0.5, 0.5],
 )
 
-options = Options()
+options = monte_carlo.RSAOptions()
 options.random_seed = 123
 options.maximum_attempts = 2_500_000
 options.maximum_consecutive_rejections = 500_000
@@ -26,7 +26,7 @@ options.target_packing_fraction = 0.2
 options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
-rsa_simulator = Simulator(
+rsa_simulator = monte_carlo.RSASimulator(
     domain=domain,
     radius_sampler=radius_sampler,
     options=options

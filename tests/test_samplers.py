@@ -29,7 +29,7 @@ def _assert_weights_normalized(weights, tol=1e-12):
 
 def test_constant_to_bins_returns_single_center_and_unit_weight():
     radius = 2.0 * ureg.micrometer
-    sampler = samplers.Constant(radius=2.0 * ureg.micrometer)
+    sampler = samplers.ConstantRadiusSampler(radius=2.0 * ureg.micrometer)
 
     particle_radii, weights = sampler.to_bins()
 
@@ -43,7 +43,7 @@ def test_constant_to_bins_returns_single_center_and_unit_weight():
 
 
 def test_uniform_to_bins_requires_bins_positive_if_that_is_your_policy():
-    sampler = samplers.Uniform(
+    sampler = samplers.UniformRadiusSampler(
         minimum_radius=1.0 * ureg.micrometer,
         maximum_radius=3.0 * ureg.micrometer,
         bins=0,
@@ -60,7 +60,7 @@ def test_uniform_to_bins_linear_edges_gives_uniform_weights():
     rmin = 1.0 * ureg.micrometer
     rmax = 3.0 * ureg.micrometer
 
-    sampler = samplers.Uniform(minimum_radius=rmin, maximum_radius=rmax, bins=bins)
+    sampler = samplers.UniformRadiusSampler(minimum_radius=rmin, maximum_radius=rmax, bins=bins)
     particle_radii, weights = sampler.to_bins()
 
     radii_m = _as_meters_1d(particle_radii)
@@ -86,7 +86,7 @@ def test_lognormal_to_bins_positive_weights_and_normalized():
     bins = 40
 
 
-    sampler = samplers.LogNormal(
+    sampler = samplers.LogNormalRadiusSampler(
         median_radius=1.0 * ureg.micrometer,
         geometric_standard_deviation=1.4,
         maximum_radius_clip=100.0 * ureg.micrometer,
@@ -108,7 +108,7 @@ def test_discrete_to_bins_returns_normalized_weights_and_original_radii():
     particle_radii = np.array([1.0, 2.0]) * ureg.micrometer
     weights_in = np.array([1.0, 1.0], dtype=float)
 
-    sampler = samplers.Discrete(radii=particle_radii, weights=weights_in)
+    sampler = samplers.DiscreteRadiusSampler(radii=particle_radii, weights=weights_in)
 
     particle_radii_out, weights_out = sampler.to_bins()
 
@@ -127,7 +127,7 @@ def test_discrete_rejects_mismatched_lengths():
     weights_in = np.array([1.0], dtype=float)
 
     with pytest.raises(Exception):
-        samplers.Discrete(radii=particle_radii, weights=weights_in)
+        samplers.DiscreteRadiusSampler(radii=particle_radii, weights=weights_in)
 
 
 def test_discrete_rejects_negative_weights():
@@ -135,12 +135,12 @@ def test_discrete_rejects_negative_weights():
     weights_in = np.array([1.0, -1.0], dtype=float)
 
     with pytest.raises(Exception):
-        samplers.Discrete(radii=particle_radii, weights=weights_in)
+        samplers.DiscreteRadiusSampler(radii=particle_radii, weights=weights_in)
 
 
 def test_uniform_rejects_invalid_range():
     with pytest.raises(Exception):
-        samplers.Uniform(
+        samplers.UniformRadiusSampler(
             minimum_radius=2.0 * ureg.micrometer,
             maximum_radius=1.0 * ureg.micrometer,
             bins=10,

@@ -15,7 +15,6 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
 
 # --------------------- Set the output directory for libraries --------------------
 set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
-set(LOCAL_BIN_DIR "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}/binary")
 include_directories(${NAME} ${LOCAL_CXX_DIR})
 # --------------------- Set the output directory for libraries --------------------
 
@@ -89,7 +88,7 @@ message(STATUS "  PackLab include dir : ${LOCAL_CXX_DIR}")
 
 message(STATUS "")
 message(STATUS "Install destination")
-message(STATUS "  Binary output path   : ${LOCAL_BIN_DIR}")
+message(STATUS "  Extension output paths: PackLab, PackLab/monte_carlo, PackLab/analytical")
 
 message(STATUS "==============================================================")
 message(STATUS "")
@@ -110,10 +109,16 @@ add_subdirectory(PackLab/cpp/analytical/solver)             # solver
 
 get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)
 
-install(
-    TARGETS ${PACKLAB_TARGETS}
-    LIBRARY DESTINATION ${LOCAL_BIN_DIR}
-    ARCHIVE DESTINATION ${LOCAL_BIN_DIR}
-    RUNTIME DESTINATION ${LOCAL_BIN_DIR}
-)
-
+foreach(PACKLAB_TARGET IN LISTS PACKLAB_TARGETS)
+    get_property(
+        PACKLAB_INSTALL_DESTINATION
+        TARGET ${PACKLAB_TARGET}
+        PROPERTY PACKLAB_INSTALL_DESTINATION
+    )
+    install(
+        TARGETS ${PACKLAB_TARGET}
+        LIBRARY DESTINATION ${PACKLAB_INSTALL_DESTINATION}
+        ARCHIVE DESTINATION ${PACKLAB_INSTALL_DESTINATION}
+        RUNTIME DESTINATION ${PACKLAB_INSTALL_DESTINATION}
+    )
+endforeach()

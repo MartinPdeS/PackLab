@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy import pi, sin, cos
 
-from MPSPlots import helper
+from PackLab.monte_carlo.results import post_mpl_plot
 from TypedUnit.units import Dimensionless, Length
 
 
@@ -62,7 +62,7 @@ class Result:
     densities: object  # 1/Length ** 3
     radii: Length
 
-    @helper.post_mpl_plot
+    @post_mpl_plot
     def plot_pair_correlation(self) -> None:
         """
         Plot all g[i, j](r) curves on a single axis.

@@ -3,7 +3,7 @@ from typing import Optional, Sequence, Literal
 import numpy as np
 from numpy import pi
 
-from MPSPlots import helper
+from PackLab.monte_carlo.results import post_mpl_plot
 from tabulate import tabulate
 
 
@@ -404,7 +404,7 @@ class Domain:
             )
         )
 
-    @helper.post_mpl_plot
+    @post_mpl_plot
     def plot_radius_distribution(self, normalize: bool = True, show_volume_weighted: bool = False) -> None:
         """
         This is a diagnostic plot intended to quickly verify that the binning and

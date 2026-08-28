@@ -11,10 +11,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from PackLab import analytical, samplers, scattering
-from TypedUnit import ureg
 from PackLab.units import ureg
 
-sampler = samplers.Normal(
+sampler = samplers.NormalRadiusSampler(
     mean=100 * ureg.nanometer,
     standard_deviation=10 * ureg.nanometer,
     bins=10
@@ -22,7 +21,7 @@ sampler = samplers.Normal(
 
 particle_radii, number_fractions = sampler.to_bins()
 
-py_domain = analytical.PYDomain(
+py_domain = analytical.PercusYevickDomain(
     size=100 * ureg.micrometer,
     radii=particle_radii,
     volume_fraction=0.24,
@@ -35,9 +34,9 @@ py_domain.print_bins()
 # Because we want to plot g we need to have a large p_max to capture the oscillations at small r. The p_max should be at least 10 times 2*pi/r_min, where r_min is the smallest particle radius.
 p_max = 1e3 / py_domain.radii.min()
 
-p = np.linspace(0, p_max * 1, 2 * 60_000)
+p = np.linspace(0, p_max, 6_000)
 
-solver = analytical.Solver(
+solver = analytical.PercusYevickSolver(
     densities=py_domain.particle_densities_per_radius,
     radii=py_domain.radii,
     p=p,
@@ -66,7 +65,7 @@ ax.legend()
 plt.show()
 
 
-datas = scattering.get_s1s2(
+datas = scattering.compute_scattering_amplitudes(
     wavelength=150 * ureg.nanometer,
     diameters=py_result.radii,
     material=1.45,

@@ -19,6 +19,8 @@
 !README.rst
 !notebook.ipynb
 !CMakeLists.txt
+!CITATION.cff
+!.zenodo.json
 !pytest.ini
 !.coveragerc
 !matlab

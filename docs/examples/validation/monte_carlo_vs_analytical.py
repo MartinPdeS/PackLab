@@ -1,6 +1,6 @@
 """
-Monte Carlo RSA - Estimator vs Percus Yevick
-=============================================
+Monte Carlo RSA vs Percus Yevick
+================================
 
 This example compares the partial pair correlation functions :math:`g_{ij}(r)` obtained from:
 
@@ -23,48 +23,48 @@ The workflow is:
 import numpy as np
 import matplotlib.pyplot as plt
 
+from PackLab import monte_carlo, analytical, samplers
 from PackLab import ureg
-from PackLab import analytical, monte_carlo, samplers
+
 
 # %%
 # Monte Carlo RSA setup
 # ---------------------
 # We use a periodic cubic domain and a two radius discrete sampler.
 
-domain = monte_carlo.MCDomain(
-    length_x=60.0 * ureg.micrometer,
-    length_y=60.0 * ureg.micrometer,
-    length_z=60.0 * ureg.micrometer,
+domain = monte_carlo.PackingDomain(
+    length_x=40.0 * ureg.micrometer,
+    length_y=40.0 * ureg.micrometer,
+    length_z=40.0 * ureg.micrometer,
     use_periodic_boundaries=True,
 )
 
-sampler = samplers.Discrete(
+sampler = samplers.DiscreteRadiusSampler(
     radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
 
-options = monte_carlo.Options()
-options.maximum_attempts = 2_500_000
-options.maximum_consecutive_rejections = 500_000
-options.target_packing_fraction = 0.24
+options = monte_carlo.RSAOptions()
+options.maximum_attempts = 150_000
+options.maximum_consecutive_rejections = 20_000
+options.target_packing_fraction = 0.15
 options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
-estimator = monte_carlo.Estimator(
+rsa_simulator = monte_carlo.RSASimulator(
     domain=domain,
     radius_sampler=sampler,
     options=options,
-    number_of_bins=6000
 )
 
-estimate_result = estimator.estimate(
-    number_of_samples=200,
-    maximum_pairs=30_000_000
-)
+result = rsa_simulator.run()
+result.statistics.print()
 
-mean_g = estimate_result.mean_g
-std_g = estimate_result.std_g
-centers = estimate_result.centers
+
+mc_centers, mc_g_ij = result.compute_partial_pair_correlation_function(
+    n_bins=1_000,
+    maximum_pairs=0,
+)
 
 # %%
 # Analytical Percus Yevick setup
@@ -73,7 +73,7 @@ centers = estimate_result.centers
 # The analytical domain uses Pint quantities.
 particle_radii, number_fractions = sampler.to_bins()
 
-py_domain = analytical.PYDomain(
+py_domain = analytical.PercusYevickDomain(
     size=100_000 * ureg.micrometer,
     radii=particle_radii,
     volume_fraction=0.24,
@@ -84,9 +84,9 @@ py_domain = analytical.PYDomain(
 # Because we want to plot g we need to have a large p_max to capture the oscillations at small r.
 # The p_max should be at least 10 times 2 * pi/r_min, where r_min is the smallest particle radius.
 p_max = 1e3 / py_domain.radii.min()
-p = np.linspace(0, p_max * 5, 30_000)
+p = np.linspace(0, p_max * 5, 4_000)
 
-solver = analytical.Solver(
+solver = analytical.PercusYevickSolver(
     densities=py_domain.particle_densities_per_radius,
     radii=py_domain.radii,
     p=p,
@@ -100,7 +100,6 @@ distances = np.linspace(
 
 py_result = solver.compute(distances=distances)
 
-
 # %%
 # Compare Monte Carlo and analytical g_ij(r)
 # ------------------------------------------
@@ -110,8 +109,7 @@ fig, ax = plt.subplots(1, 1)
 K = 2
 for i in range(K):
     for j in range(K):
-        ax.plot(centers, mean_g[i, j], label=f"g$_{{{i}{j}}}$")
-        ax.fill_between(centers, y1=mean_g[i, j] - std_g[i, j], y2=mean_g[i, j] + std_g[i, j], alpha=0.3)
+        ax.plot(mc_centers, mc_g_ij[i, j], label=rf"RSA $g_{{{i}{j}}}(r)$")
         ax.plot(py_result.distances, py_result.g[i, j], color="black", linewidth=1.5)
 
 ax.set_xlabel("r")

@@ -1,2 +1,2 @@
-from PackLab.binary.interface_domain_analytical import PYDomain  # noqa: F401
-from PackLab.binary.interface_py_solver import Solver # noqa: F401
+from PackLab.analytical.domain import PercusYevickDomain  # noqa: F401
+from PackLab.analytical.solver import PercusYevickResult, PercusYevickSolver  # noqa: F401

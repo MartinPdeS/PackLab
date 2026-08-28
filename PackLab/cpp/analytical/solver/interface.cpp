@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
+#include <sstream>
 
 #include "py_solver.h"
 #include "pint/pint.h"
@@ -67,10 +68,23 @@ static py::array_t<double> vector_to_numpy_3d_row_major(const std::vector<double
     return arr;
 }
 
-PYBIND11_MODULE(interface_py_solver, module) {
+PYBIND11_MODULE(solver, module) {
     module.doc() = "Percus Yevick mixture solver (C++ core, Pint handled in wrapper).";
 
-    py::class_<PercusYevickResult>(module, "Result", py::dynamic_attr())
+    py::class_<PercusYevickResult>(module, "PercusYevickResult", py::dynamic_attr(), R"doc(
+Result of a multicomponent Percus-Yevick calculation.
+
+Attributes
+----------
+radii : pint.Quantity, shape (n_species,)
+    Particle radii in meters.
+densities : pint.Quantity, shape (n_species,)
+    Number densities in inverse cubic meters.
+p : pint.Quantity, shape (n_p,)
+    Reciprocal-space grid in inverse meters.
+g, h, H : numpy.ndarray
+    Real-space and reciprocal-space correlation functions.
+)doc")
         .def_property_readonly("epsilons", [](const PercusYevickResult& r) {
             return vector_to_numpy_1d(r.epsilons);
         })
@@ -122,9 +136,24 @@ PYBIND11_MODULE(interface_py_solver, module) {
         })
         .def_property_readonly("g", [](const PercusYevickResult& r) {
             return vector_to_numpy_3d_row_major(r.g, r.number_of_species, r.number_of_species, r.number_of_r_points);
+        })
+        .def("__repr__", [](const PercusYevickResult& self) {
+            return "<PercusYevickResult species=" + std::to_string(self.number_of_species)
+                + ", p_points=" + std::to_string(self.number_of_p_points) + ">";
         });
 
-    py::class_<PercusYevickSolver, std::shared_ptr<PercusYevickSolver>>(module, "Solver")
+    py::class_<PercusYevickSolver, std::shared_ptr<PercusYevickSolver>>(module, "PercusYevickSolver", R"doc(
+Solve the multicomponent Percus-Yevick hard-sphere model.
+
+Parameters
+----------
+densities : pint.Quantity, shape (n_species,)
+    Species number densities, convertible to inverse cubic meters.
+radii : pint.Quantity, shape (n_species,)
+    Species radii, convertible to meters.
+p : pint.Quantity, shape (n_p,)
+    Reciprocal-space grid, convertible to inverse meters.
+)doc")
         .def(
             py::init([](py::object densities_py, py::object radii_py, py::object p_py) {
                 const std::vector<double> densities_per_m3 = quantity_1d_to_double_vector_in_units(densities_py, "1/meter**3");
@@ -134,7 +163,8 @@ PYBIND11_MODULE(interface_py_solver, module) {
             }),
             py::arg("densities"),
             py::arg("radii"),
-            py::arg("p")
+            py::arg("p"),
+            "Create a Percus-Yevick solver."
         )
         .def(
             "compute",
@@ -142,6 +172,20 @@ PYBIND11_MODULE(interface_py_solver, module) {
                 const std::vector<double> distances_m = quantity_1d_to_double_vector_in_units(distances_py, "meter");
                 return self.compute(distances_m);
             },
-            py::arg("distances")
-        );
+            py::arg("distances"),
+            R"doc(
+Compute the correlation functions on a real-space distance grid.
+
+Parameters
+----------
+distances : pint.Quantity, shape (n_r,)
+    Radial positions, convertible to meters.
+
+Returns
+-------
+PercusYevickResult
+    Computed structural and correlation functions.
+)doc"
+        )
+        .def("__repr__", [](const PercusYevickSolver&) { return "<PercusYevickSolver>"; });
 }

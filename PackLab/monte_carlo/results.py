@@ -1,16 +1,28 @@
 from typing import Literal
 from functools import cached_property
+from functools import wraps
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
-from MPSPlots import helper
 from TypedUnit.units import ureg
 
 def _minimum_image_displacement(delta: np.ndarray, box_length: float) -> np.ndarray:
     return delta - box_length * np.round(delta / box_length)
 
 
-class Result():
+def post_mpl_plot(plot_function):
+    """Return a plotting wrapper with the former ``show`` convenience option."""
+    @wraps(plot_function)
+    def wrapper(*args, show: bool = True, **kwargs):
+        figure = plot_function(*args, **kwargs)
+        if show:
+            plt.show()
+        return figure
+
+    return wrapper
+
+
+class PackingResult:
     """
     Output container for an RSA simulation run.
 
@@ -18,7 +30,7 @@ class Result():
     """
     def __init__(self, binding):
         """
-        Initialize the Result object.
+        Initialize the packing result.
 
         Parameters
         ----------
@@ -166,7 +178,7 @@ class Result():
         return np.asarray(self.binding.pair_correlation_values)
 
 
-    @helper.post_mpl_plot
+    @post_mpl_plot
     def plot_centers_3d(self, maximum_points_3d: int = 10_000) -> plt.Figure:
         """
         Plot the sphere centers in a 3D scatter plot.
@@ -191,25 +203,35 @@ class Result():
 
         figure, axes = plt.subplots(subplot_kw={"projection": "3d"}, figsize=(8, 6))
 
+        positions = self.positions
+        if hasattr(positions, "to"):
+            positions = positions.to("meter").magnitude
+
+        lengths = (self.domain.length_x, self.domain.length_y, self.domain.length_z)
+        lengths = [
+            length.to("meter").magnitude if hasattr(length, "to") else length
+            for length in lengths
+        ]
+
         axes.scatter(
-            self.positions[selected, 0],
-            self.positions[selected, 1],
-            self.positions[selected, 2],
+            positions[selected, 0],
+            positions[selected, 1],
+            positions[selected, 2],
             s=6,
             alpha=0.6,
         )
-        axes.set_xlim(0, self.domain.length_x)
-        axes.set_ylim(0, self.domain.length_y)
-        axes.set_zlim(0, self.domain.length_z)
-        axes.set_xlabel("x")
-        axes.set_ylabel("y")
-        axes.set_zlabel("z")
+        axes.set_xlim(0, lengths[0])
+        axes.set_ylim(0, lengths[1])
+        axes.set_zlim(0, lengths[2])
+        axes.set_xlabel("x (m)")
+        axes.set_ylabel("y (m)")
+        axes.set_zlabel("z (m)")
         axes.set_title("RSA centers (subsampled)")
 
 
         return figure
 
-    @helper.post_mpl_plot
+    @post_mpl_plot
     def plot_radius_distribution(self, bins: int = 40, density: bool = True, alpha: float = 0.85) -> plt.Figure:
         """
         Plot the distribution of sphere radii.
@@ -244,7 +266,7 @@ class Result():
         else:
             return np.abs(coord - slice_center) <= 0.5 * slice_thickness
 
-    @helper.post_mpl_plot
+    @post_mpl_plot
     def plot_slice_2d(self, slice_axis: Literal["x", "y", "z"] = "z", slice_center_fraction: float = 0.5, slice_thickness_fraction: float = 0.08, maximum_circles_in_slice: int = 2500) -> plt.Figure:
         """
         Plot a 2D slice of the sphere configuration.
@@ -342,7 +364,7 @@ class Result():
 
         return figure
 
-    @helper.post_mpl_plot
+    @post_mpl_plot
     def plot_pair_correlation(self, n_bins: int = 80, maximum_pairs: int = 300_000) -> plt.Figure:
         """
         Plot the partial pair correlation functions g_ij(r) obtained from the RSA

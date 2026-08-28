@@ -1,13 +1,14 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/stl.h>
+#include <sstream>
 
 #include "analytical/domain_analytical/domain_analytical.h"
 #include "pint/pint.h"
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(interface_domain_analytical, module) {
+PYBIND11_MODULE(domain, module) {
     module.doc() = R"doc(
             Polydisperse cubic domain (analytical) with unit handling performed in the pybind11 wrapper.
 
@@ -69,7 +70,7 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
 
     py::class_<PYDomain, std::shared_ptr<PYDomain>>(
         module,
-        "PYDomain",
+        "PercusYevickDomain",
         py::dynamic_attr(),
         R"doc(
             Cubic simulation domain containing a polydisperse population of spherical particles.
@@ -444,5 +445,10 @@ PYBIND11_MODULE(interface_domain_analytical, module) {
                 str
                     Formatted table in base units.
             )doc"
-        );
+        )
+        .def("__repr__", [](const PYDomain& self) {
+            std::ostringstream stream;
+            stream << "<PercusYevickDomain size=" << self.size << " m, species=" << self.radii.size() << ">";
+            return stream.str();
+        });
 }

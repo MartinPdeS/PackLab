@@ -1,56 +1,71 @@
 :orphan:
 
-.. _source_code:
+API reference
+=============
 
-Source code
-===========
+PackLab keeps its compiled extensions alongside their public Python APIs. Most
+workflows start from one of the three namespaces below:
 
+* :mod:`PackLab.samplers` for radius distributions;
+* :mod:`PackLab.monte_carlo` for random sequential adsorption (RSA);
+* :mod:`PackLab.analytical` for Percus--Yevick structure-factor calculations.
 
-Analytical
-~~~~~~~~~~
+Radius samplers
+---------------
 
-.. py:currentmodule:: PackLab.analytical.distributions
-
-.. automodule:: PackLab.analytical.distributions
+.. automodule:: PackLab.samplers
    :members:
-   :inherited-members:
-   :member-order: bysource
+   :undoc-members:
 
-.. py:currentmodule:: PackLab.analytical.domain
+Monte-Carlo RSA
+---------------
 
-.. automodule:: PackLab.analytical.domain
+.. automodule:: PackLab.monte_carlo
    :members:
-   :inherited-members:
-   :member-order: bysource
+   :undoc-members:
 
-.. py:currentmodule:: PackLab.analytical.solver
-
-.. automodule:: PackLab.analytical.solver
+.. automodule:: PackLab.monte_carlo.domain
    :members:
-   :inherited-members:
-   :member-order: bysource
-
-
-Monte Carlo
-~~~~~~~~~~~
-
-.. py:currentmodule:: PackLab.monte_carlo.simulator
+   :undoc-members:
 
 .. automodule:: PackLab.monte_carlo.simulator
    :members:
-   :inherited-members:
-   :member-order: bysource
+   :undoc-members:
 
-.. py:currentmodule:: PackLab.monte_carlo.results
-
-.. automodule:: PackLab.monte_carlo.results
+.. automodule:: PackLab.monte_carlo.result
    :members:
-   :inherited-members:
-   :member-order: bysource
+   :undoc-members:
 
-.. py:currentmodule:: PackLab.monte_carlo.estimator
+.. automodule:: PackLab.monte_carlo.statistics
+   :members:
+   :undoc-members:
 
 .. automodule:: PackLab.monte_carlo.estimator
    :members:
-   :inherited-members:
-   :member-order: bysource
+   :undoc-members:
+
+Analytical model
+----------------
+
+.. automodule:: PackLab.analytical
+   :members:
+   :undoc-members:
+
+.. automodule:: PackLab.analytical.domain
+   :members:
+   :undoc-members:
+
+.. automodule:: PackLab.analytical.solver
+   :members:
+   :undoc-members:
+
+Scattering tools
+----------------
+
+.. automodule:: PackLab.scattering.data
+   :members:
+   :undoc-members:
+
+.. automodule:: PackLab.scattering.model
+   :members:
+   :undoc-members:
