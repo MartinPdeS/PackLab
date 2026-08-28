@@ -9,7 +9,10 @@ target_link_libraries("${NAME}" PUBLIC pybind11::module radius_sampler utils res
 
 # Create a Python module, if needed.
 pybind11_add_module("interface_${NAME}" MODULE interface.cpp)
-set_target_properties("interface_${NAME}" PROPERTIES OUTPUT_NAME "${NAME}")
+set_target_properties("interface_${NAME}" PROPERTIES
+    OUTPUT_NAME "${NAME}"
+    ARCHIVE_OUTPUT_NAME "${NAME}_module"
+)
 target_link_libraries("interface_${NAME}" PRIVATE "${NAME}")
 
 set_property(GLOBAL APPEND PROPERTY PACKLAB_TARGETS "interface_${NAME}")
