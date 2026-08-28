@@ -49,7 +49,7 @@ class ScatteringDataset(list):
 
     This class stores :class:`ScatteringData` instances, one for each diameter. It also provides mixture formulas
     for a number density distribution over diameters and an inter particle correlation
-    term H(p).
+    term H(wavenumber).
 
     Attributes
     ----------
@@ -205,9 +205,9 @@ class ScatteringDataset(list):
 
         return mu_independant_scattering
 
-    def get_mu_dependant(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150):
+    def get_mu_dependant(self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150):
         """
-        Compute the dependent scattering contribution using inter particle correlations H(p).
+        Compute the dependent scattering contribution using inter particle correlations H(wavenumber).
 
         Parameters
         ----------
@@ -215,10 +215,10 @@ class ScatteringDataset(list):
             Species number densities n_alpha. Units should be 1/length**3.
         H : NDArray, shape (N, N, Pp)
             Mixture total correlation function in reciprocal space, evaluated on the
-            `p` grid. This should correspond to the same ordering as size classes.
-        p : NDArray, shape (Pp,)
+            `wavenumber` grid. This should correspond to the same ordering as size classes.
+        wavenumber : NDArray, shape (Pp,)
             Reciprocal space radial grid (1/length). Must cover the range needed to
-            evaluate H at p = 2k sin(φ/2) for φ in [0, pi].
+            evaluate H at wavenumber = 2k sin(φ/2) for φ in [0, pi].
         theta_points
             Number of azimuthal samples for the integral over the rotation angle.
 
@@ -233,7 +233,7 @@ class ScatteringDataset(list):
         -----
         The core integrand is:
 
-        term[p_index, theta_index] = sum_{a,b} sqrt(n_a n_b) F_a(p,theta) F*_b(p,theta) H_ab(p)
+        term[p_index, theta_index] = sum_{a,b} sqrt(n_a n_b) F_a(wavenumber,theta) F*_b(wavenumber,theta) H_ab(wavenumber)
 
         then integrated over polar angle (self.phi) and azimuth (theta).
         """
@@ -241,7 +241,7 @@ class ScatteringDataset(list):
 
         F, theta = self.get_F_matrix(theta_points=theta_points)
 
-        phi, interpolated_H = self.get_interpolated_H(H=H, p=p)
+        phi, interpolated_H = self.get_interpolated_H(H=H, wavenumber=wavenumber)
 
         term = np.einsum("ab,iapt,ibpt,abp -> pt", sqrt_alpha_beta, F, np.conj(F), interpolated_H)
 
@@ -251,7 +251,7 @@ class ScatteringDataset(list):
 
         return mu_dependant_scattering
 
-    def get_mu(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150) -> NDArray:
+    def get_mu(self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150) -> NDArray:
         """
         Compute total scattering attenuation coefficient mu_s.
 
@@ -260,9 +260,9 @@ class ScatteringDataset(list):
         densities : NDArray, shape (N,)
             Species number densities.
         H : NDArray, shape (N, N, Pp)
-            Correlation function in p space.
-        p : NDArray, shape (Pp,)
-            p space grid (1/length).
+            Correlation function in wavenumber space.
+        wavenumber : NDArray, shape (Pp,)
+            wavenumber space grid (1/length).
         theta_points
             Azimuthal sampling count.
 
@@ -275,21 +275,26 @@ class ScatteringDataset(list):
         """
         mu_independant = self.get_mu_independant(densities=densities)
 
-        mu_dependant = self.get_mu_dependant(densities=densities, H=H, p=p, theta_points=theta_points)
+        mu_dependant = self.get_mu_dependant(densities=densities, H=H, wavenumber=wavenumber, theta_points=theta_points)
 
         return mu_independant + mu_dependant
 
-    def interpolate_last_axis_linear(self, H: np.ndarray, p: np.ndarray, p_evaluate: np.ndarray) -> np.ndarray:
+    def interpolate_last_axis_linear(
+        self,
+        H: np.ndarray,
+        wavenumber: np.ndarray,
+        evaluation_wavenumber: np.ndarray,
+    ) -> np.ndarray:
         """
-        Linear interpolation of H(..., p) onto p_evaluate, along the last axis.
+        Linear interpolation of H(..., wavenumber) onto evaluation_wavenumber, along the last axis.
 
         Parameters
         ----------
         H : ndarray, shape (..., Pp)
-            Values sampled on grid p along the last axis.
-        p : ndarray, shape (Pp,)
+            Values sampled on grid wavenumber along the last axis.
+        wavenumber : ndarray, shape (Pp,)
             Strictly increasing sample points.
-        p_evaluate : ndarray, shape (Pq,)
+        evaluation_wavenumber : ndarray, shape (Pq,)
             Query points.
 
         Returns
@@ -297,57 +302,61 @@ class ScatteringDataset(list):
         ndarray, shape (..., Pq)
             Interpolated values.
         """
-        p = np.asarray(p, dtype=float)
-        p_evaluate = np.asarray(p_evaluate, dtype=float)
+        wavenumber = np.asarray(wavenumber, dtype=float)
+        evaluation_wavenumber = np.asarray(evaluation_wavenumber, dtype=float)
 
-        if p.ndim != 1:
-            raise ValueError("p must be 1D.")
-        if H.shape[-1] != p.size:
-            raise ValueError(f"H last axis ({H.shape[-1]}) must match p size ({p.size}).")
+        if wavenumber.ndim != 1:
+            raise ValueError("wavenumber must be 1D.")
+        if H.shape[-1] != wavenumber.size:
+            raise ValueError(f"H last axis ({H.shape[-1]}) must match wavenumber size ({wavenumber.size}).")
 
-        H_2d = H.reshape(-1, p.size)  # (M, Pp)
-        out_2d = np.empty((H_2d.shape[0], p_evaluate.size), dtype=H_2d.dtype)
+        H_2d = H.reshape(-1, wavenumber.size)  # (M, Pp)
+        out_2d = np.empty((H_2d.shape[0], evaluation_wavenumber.size), dtype=H_2d.dtype)
 
         for row in range(H_2d.shape[0]):
-            out_2d[row] = np.interp(p_evaluate, p, H_2d[row])
+            out_2d[row] = np.interp(evaluation_wavenumber, wavenumber, H_2d[row])
 
-        return out_2d.reshape(H.shape[:-1] + (p_evaluate.size,))
+        return out_2d.reshape(H.shape[:-1] + (evaluation_wavenumber.size,))
 
-    def get_interpolated_H(self, H, p):
+    def get_interpolated_H(self, H, wavenumber):
         """
-        Interpolate H(p) onto the scattering wavevector magnitude p = 2k sin(φ/2).
+        Interpolate H(wavenumber) onto the scattering wavevector magnitude wavenumber = 2k sin(φ/2).
 
         Parameters
         ----------
         H : array like, shape (N, N, Pp)
-            Correlation tensor sampled on the input p grid.
-        p : array like, shape (Pp,)
+            Correlation tensor sampled on the input wavenumber grid.
+        wavenumber : array like, shape (Pp,)
             Radial reciprocal space grid (1/length).
 
         Returns
         -------
         interpolated_H : NDArray, shape (N, N, Pphi)
-            H evaluated at p_evaluate[φ] for φ in [0, pi], where:
+            H evaluated at the scattering wavenumber for φ in [0, pi], where:
 
-            p_evaluate(φ) = 2 k sin(φ/2)
+            wavenumber(φ) = 2 k sin(φ/2)
 
         Notes
         -----
         This method assumes:
         * `self.phi` spans [0, pi] and is the polar scattering angle
-        * `p` is provided in increasing order
+        * `wavenumber` is provided in increasing order
         """
         phi_evaluate = np.linspace(0, np.pi, self.phi.size)
 
-        p_evaluate = 2 * self.k * np.sin(phi_evaluate / 2)
+        evaluation_wavenumber = 2 * self.k * np.sin(phi_evaluate / 2)
 
-        p_grid = p.to("1/meter").magnitude
-        p_eval = p_evaluate.to("1/meter").magnitude
+        wavenumber_grid = wavenumber.to("1/meter").magnitude
+        evaluation_wavenumber_magnitude = evaluation_wavenumber.to("1/meter").magnitude
 
-        interpolated_H = self.interpolate_last_axis_linear(H, p_grid, p_eval)
+        interpolated_H = self.interpolate_last_axis_linear(
+            H,
+            wavenumber_grid,
+            evaluation_wavenumber_magnitude,
+        )
         return phi_evaluate, interpolated_H
 
-    def get_phase_function(self, densities: NDArray, H: NDArray, p: NDArray, theta_points: int = 150) -> NDArray:
+    def get_phase_function(self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150) -> NDArray:
         """
         Compute the mixture phase function including dependent scattering corrections.
 
@@ -356,9 +365,9 @@ class ScatteringDataset(list):
         densities : NDArray, shape (N,)
             Species number densities n_alpha.
         H : NDArray, shape (N, N, Pp)
-            Correlation tensor in reciprocal space on the p grid.
-        p : NDArray, shape (Pp,)
-            p space grid (1/length).
+            Correlation tensor in reciprocal space on the wavenumber grid.
+        wavenumber : NDArray, shape (Pp,)
+            wavenumber space grid (1/length).
         theta_points
             Number of azimuthal samples.
 
@@ -381,7 +390,7 @@ class ScatteringDataset(list):
         """
         n_alpha, sqrt_alpha_beta = self.get_alpha_beta_factor(densities=densities)
 
-        phi, interpolated_H = self.get_interpolated_H(H=H, p=p)
+        phi, interpolated_H = self.get_interpolated_H(H=H, wavenumber=wavenumber)
 
         F, theta = self.get_F_matrix(theta_points=theta_points)
 

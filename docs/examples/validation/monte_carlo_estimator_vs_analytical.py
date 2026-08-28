@@ -42,11 +42,12 @@ sampler = samplers.DiscreteRadiusSampler(
     radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
+volume_fraction = 0.24
 
 options = monte_carlo.RSAOptions()
-options.maximum_attempts = 120_000
-options.maximum_consecutive_rejections = 20_000
-options.target_packing_fraction = 0.12
+options.maximum_attempts = 2_500_000
+options.maximum_consecutive_rejections = 500_000
+options.target_packing_fraction = volume_fraction
 options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
@@ -54,12 +55,12 @@ estimator = monte_carlo.PackingEstimator(
     domain=domain,
     radius_sampler=sampler,
     options=options,
-    number_of_bins=160
+    number_of_bins=6000
 )
 
 estimate_result = estimator.estimate(
-    number_of_samples=8,
-    maximum_pairs=50_000
+    number_of_samples=200,
+    maximum_pairs=5_000_000
 )
 
 mean_g = estimate_result.mean_g
@@ -76,26 +77,19 @@ particle_radii, number_fractions = sampler.to_bins()
 py_domain = analytical.PercusYevickDomain(
     size=100_000 * ureg.micrometer,
     radii=particle_radii,
-    volume_fraction=0.12,
+    volume_fraction=volume_fraction,
     number_fractions=number_fractions,
-)
-
-# Percus Yevick solver radial frequency grid
-# Because we want to plot g we need to have a large p_max to capture the oscillations at small r.
-# The p_max should be at least 10 times 2 * pi/r_min, where r_min is the smallest particle radius.
-p_max = 1e3 / py_domain.radii.min()
-p = np.linspace(0, p_max * 5, 4_000)
-
-solver = analytical.PercusYevickSolver(
-    densities=py_domain.particle_densities_per_radius,
-    radii=py_domain.radii,
-    p=p,
 )
 
 distances = np.linspace(
     py_domain.radii.min() * 2,
     py_domain.radii.max() * 10,
     400,
+)
+solver = analytical.PercusYevickSolver(
+    densities=py_domain.particle_densities_per_radius,
+    radii=py_domain.radii,
+    wavenumber="auto",
 )
 
 py_result = solver.compute(distances=distances)

@@ -1,177 +1,221 @@
 |logo|
 
 .. list-table::
-   :widths: 10 25 25 25
-   :header-rows: 0
+   :widths: 35 65
+   :header-rows: 1
 
-   * - Meta
+   * - Badge
+     - Status
+   * - Python versions
      - |python|
+   * - Documentation
      - |docs|
-     -
-   * - Testing
+   * - Continuous integration
      - |ci/cd|
+   * - Test coverage
      - |coverage|
-     - |colab|
-   * - PyPI
+   * - PyPI package
      - |PyPI|
+   * - PyPI downloads
      - |PyPI_download|
-     -
-   * - Anaconda
+   * - Anaconda package
      - |anaconda|
+   * - Anaconda downloads
      - |anaconda_download|
+   * - Latest Anaconda release
      - |anaconda_date|
 
 PackLab
 =======
 
-PackLab is a fast Random Sequential Addition (RSA) particle packing library with a C plus plus core and Python bindings.
-It helps you generate non overlapping sphere configurations inside a 3D box with optional periodic boundaries.
-It supports mono disperse and poly disperse radius sampling through a flexible sampling interface.
+**PackLab** is an open-source Python package for generating and analysing
+three-dimensional hard-sphere packings. Its C++ core provides fast random
+sequential adsorption (RSA), while its analytical tools implement a
+Percus--Yevick model for mixture correlations and structure factors.
+
+Use PackLab when you need an explicit non-overlapping configuration, a
+reproducible packing statistic, or a fast analytical reference for validating
+an RSA result.
 
 Features
-********
+--------
 
-* Fast C++ implementation with Python bindings
-* 3D box domain with optional periodic boundaries
-* Configurable stopping criteria: maximum attempts, maximum consecutive rejections, target packing fraction, maximum spheres
-* Radius samplers designed for future extension to poly disperse systems
-* Python level convenience API with plotting utilities and summary statistics
+* Random sequential adsorption of mono- and polydisperse spheres.
+* Periodic or finite box domains with configurable stopping criteria.
+* Radius samplers for constant, uniform, normal, log-normal, and discrete
+  distributions.
+* Pair-correlation estimates, packing statistics, and Matplotlib plots.
+* Percus--Yevick mixture solver with automatic, resolution-aware wavenumber
+  grids.
+* Optional PyMieSim integration for scattering and phase-function workflows.
+* Unit-aware quantities throughout, via ``TypedUnit``.
 
 Installation
-************
+------------
 
-From PyPI:
+Install the core package from PyPI:
 
 .. code-block:: bash
 
    pip install packlab
 
-For optical-scattering utilities, install the optional dependency group:
+Install optional scattering support:
 
 .. code-block:: bash
 
    pip install "packlab[scattering]"
 
-From conda:
+The conda package is also available:
 
 .. code-block:: bash
 
    conda install -c martinpdes packlab
 
-From source:
+Verify that the compiled extensions are available with the interpreter you
+will use for simulations:
 
 .. code-block:: bash
 
-   git clone https://github.com/MartinPdeS/PackLab.git
-   cd PackLab
-   pip install -e .[testing]
+   python -c "import PackLab; print(PackLab.__version__)"
 
-Quick start
-***********
+First RSA packing
+-----------------
+
+Create a periodic domain, choose a radius distribution, configure the RSA
+stopping conditions, and run the simulation. Dimensional inputs carry units.
 
 .. code-block:: python
 
-    from PackLab import monte_carlo, samplers
+   from PackLab import monte_carlo, samplers, ureg
 
-    domain = monte_carlo.PackingDomain(
-        length_x=6.0,
-        length_y=6.0,
-        length_z=6.0,
-        use_periodic_boundaries=True
-    )
+   domain = monte_carlo.PackingDomain(
+       length_x=6 * ureg.micrometer,
+       length_y=6 * ureg.micrometer,
+       length_z=6 * ureg.micrometer,
+       use_periodic_boundaries=True,
+   )
+   radii = samplers.UniformRadiusSampler(
+       minimum_radius=100 * ureg.nanometer,
+       maximum_radius=200 * ureg.nanometer,
+       bins=12,
+   )
+   options = monte_carlo.RSAOptions()
+   options.random_seed = 42
+   options.maximum_attempts = 100_000
+   options.target_packing_fraction = 0.15
 
-    radius_sampler = samplers.UniformRadiusSampler(
-        minimum_radius=0.1,
-        maximum_radius=0.4
-    )
+   result = monte_carlo.RSASimulator(domain, radii, options).run()
+   print(result.statistics.packing_fraction_geometry)
+   result.plot_slice_2d()
 
-    options = monte_carlo.RSAOptions()
-    options.random_seed = 42
-    options.maximum_attempts = 4_000_000
-    options.maximum_consecutive_rejections = 80_000
-    options.target_packing_fraction = 0.55
-    options.minimum_center_separation_addition = 0.0
+Analytical reference
+--------------------
 
-    rsa_simulator = monte_carlo.RSASimulator(
-        domain=domain,
-        radius_sampler=radius_sampler,
-        options=options
-    )
+Use the analytical solver for a fast Percus--Yevick reference. With
+``wavenumber="auto"``, PackLab chooses a zero-inclusive wavenumber grid from
+the particle radii and requested distance range.
 
-    result = rsa_simulator.run()
+.. code-block:: python
 
-    result.statistics.print()
+   import numpy as np
 
-    result.plot_slice_2d()
+   from PackLab import analytical, ureg
 
-    result.plot_pair_correlation(maximum_pairs=3_000_000)
+   domain = analytical.PercusYevickDomain(
+       size=10 * ureg.micrometer,
+       radii=[100, 150] * ureg.nanometer,
+       volume_fraction=0.15,
+       number_fractions=[0.7, 0.3],
+   )
+   distances = np.linspace(0.2, 1.5, 300) * ureg.micrometer
+   solver = analytical.PercusYevickSolver(
+       densities=domain.particle_densities_per_radius,
+       radii=domain.radii,
+       wavenumber="auto",
+   )
+   result = solver.compute(distances)
+   print(result.wavenumber)
 
-   import PackLab
+For an explicit grid, use ``analytical.make_wavenumber_grid(...)``. PackLab
+warns when a manually supplied grid is too coarse for the requested distances.
 
+Choosing a workflow
+-------------------
 
-Testing
-*******
+* Use :mod:`PackLab.monte_carlo` when individual centres, sampled radii, box
+  boundaries, or finite-size effects are important.
+* Use :mod:`PackLab.analytical` for fast parameter sweeps and an analytical
+  correlation reference.
+* Use the validation gallery examples to compare a matching RSA configuration
+  against the analytical model.
 
-To test locally, clone the repository, install dependencies, and run pytest.
+Documentation and examples
+--------------------------
+
+The `online documentation <https://martinpdes.github.io/PackLab/docs/latest/index.html>`_
+contains theory, API reference, and executable examples organised into
+Monte-Carlo, analytical, and validation workflows.
+
+Building from source
+--------------------
+
+For development, clone the repository and install it in editable mode. A C++20
+compiler and CMake are required to build the native extensions.
 
 .. code-block:: bash
 
    git clone https://github.com/MartinPdeS/PackLab.git
    cd PackLab
-   pip install -e .[testing]
+   pip install -e ".[testing,documentation]"
+
+Testing
+-------
+
+Run the test suite with:
+
+.. code-block:: bash
+
    pytest
 
-Documentation
-*************
+Citing PackLab
+--------------
 
-The documentation includes tutorials, API reference, and gallery examples.
+If PackLab contributes to academic work, cite the release you used. Citation
+metadata is included in ``CITATION.cff`` and ``.zenodo.json``.
 
-See |docs|.
+Contributing and contact
+------------------------
 
-Contributing
-************
-
-Issues and pull requests are welcome.
-If you are using PackLab in research, citations and links to your work are appreciated.
-
-Contact Information
-*******************
-
-As of 2025, the project is still under development.
-If you want to collaborate, it would be a pleasure. Feel free to contact me.
-
-PackLab was written by `Martin Poinsinet de Sivry Houle <https://github.com/MartinPdS>`_.
-
-Email: `martin.poinsinet.de.sivry@gmail.com <mailto:martin.poinsinet.de.sivry@gmail.com?subject=PackLab>`_.
+Issues and pull requests are welcome. For questions or collaborations, contact
+`Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com>`_.
 
 .. |logo| image:: https://github.com/MartinPdeS/PackLab/raw/master/docs/images/logo.png
-    :alt: PackLab logo
+   :alt: PackLab logo: sphere packing and correlation curve.
+   :width: 700
+   :align: center
 .. |python| image:: https://img.shields.io/pypi/pyversions/packlab.svg
-    :alt: Python
-    :target: https://www.python.org/
-.. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-    :alt: Google Colab
-    :target: https://colab.research.google.com/github/MartinPdeS/PackLab/blob/master/notebook.ipynb
+   :alt: Supported Python versions
+   :target: https://www.python.org/
 .. |docs| image:: https://github.com/martinpdes/packlab/actions/workflows/deploy_documentation.yml/badge.svg
-    :target: https://martinpdes.github.io/PackLab/
-    :alt: Documentation Status
+   :alt: Documentation status
+   :target: https://martinpdes.github.io/PackLab/
 .. |PyPI| image:: https://badge.fury.io/py/packlab.svg
-    :alt: PyPI version
-    :target: https://badge.fury.io/py/PackLab
-.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PackLab?style=plastic&label=PyPI%20downloads&labelColor=hex&color=hex
-    :alt: PyPI downloads
-    :target: https://pypistats.org/packages/packlab
+   :alt: PyPI version
+   :target: https://badge.fury.io/py/PackLab
+.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PackLab?label=PyPI%20downloads
+   :alt: PyPI downloads
+   :target: https://pypistats.org/packages/packlab
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/python-coverage-comment-action-data/badge.svg
-    :alt: Unittest coverage
-    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html
+   :alt: Test coverage
+   :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html
 .. |ci/cd| image:: https://github.com/martinpdes/packlab/actions/workflows/deploy_coverage.yml/badge.svg
-    :alt: Unittest Status
+   :alt: Continuous integration status
 .. |anaconda| image:: https://anaconda.org/martinpdes/packlab/badges/version.svg
-    :alt: Anaconda version
-    :target: https://anaconda.org/martinpdes/packlab
+   :alt: Anaconda version
+   :target: https://anaconda.org/martinpdes/packlab
 .. |anaconda_download| image:: https://anaconda.org/martinpdes/packlab/badges/downloads.svg
-    :alt: Anaconda downloads
-    :target: https://anaconda.org/martinpdes/packlab
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/packlab
 .. |anaconda_date| image:: https://anaconda.org/martinpdes/packlab/badges/latest_release_relative_date.svg
-    :alt: Latest release date
-    :target: https://anaconda.org/martinpdes/packlab
+   :alt: Latest Anaconda release date
+   :target: https://anaconda.org/martinpdes/packlab

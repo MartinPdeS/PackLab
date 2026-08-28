@@ -1,5 +1,7 @@
 #include "py_solver.h"
 
+#include <sstream>
+
 static constexpr double pi_value = 3.141592653589793238462643383279502884;
 
 static void require(bool condition, const char* message) {
@@ -102,15 +104,15 @@ static void lu_solve_in_place_multiple_rhs(
 PercusYevickSolver::PercusYevickSolver(
     std::vector<double> densities_per_m3,
     std::vector<double> radii_m,
-    std::vector<double> p_per_m
+    std::vector<double> wavenumber_per_m
 )
     : densities_per_m3_(std::move(densities_per_m3)),
       radii_m_(std::move(radii_m)),
-      p_per_m_(std::move(p_per_m))
+      wavenumber_per_m_(std::move(wavenumber_per_m))
 {
     require(!densities_per_m3_.empty(), "densities must not be empty.");
     require(densities_per_m3_.size() == radii_m_.size(), "densities and radii must have the same length.");
-    require(!p_per_m_.empty(), "p must not be empty.");
+    require(!wavenumber_per_m_.empty(), "wavenumber must not be empty.");
 
     for (double r : radii_m_) {
         require(std::isfinite(r) && r > 0.0, "radii must be positive and finite.");
@@ -118,9 +120,76 @@ PercusYevickSolver::PercusYevickSolver(
     for (double n : densities_per_m3_) {
         require(std::isfinite(n) && n >= 0.0, "densities must be non negative and finite.");
     }
-    for (double p : p_per_m_) {
-        require(std::isfinite(p) && p >= 0.0, "p must be non negative and finite.");
+    for (double wavenumber : wavenumber_per_m_) {
+        require(std::isfinite(wavenumber) && wavenumber >= 0.0, "wavenumber must be non-negative and finite.");
     }
+    for (std::size_t index = 1; index < wavenumber_per_m_.size(); ++index) {
+        require(wavenumber_per_m_[index] > wavenumber_per_m_[index - 1], "wavenumber must be strictly increasing.");
+    }
+}
+
+PercusYevickSolver::PercusYevickSolver(
+    std::vector<double> densities_per_m3,
+    std::vector<double> radii_m,
+    double automatic_radial_resolution_m,
+    int automatic_samples_per_oscillation
+)
+    : densities_per_m3_(std::move(densities_per_m3)),
+      radii_m_(std::move(radii_m)),
+      uses_automatic_wavenumber_(true),
+      automatic_radial_resolution_m_(automatic_radial_resolution_m),
+      automatic_samples_per_oscillation_(automatic_samples_per_oscillation)
+{
+    require(!densities_per_m3_.empty(), "densities must not be empty.");
+    require(densities_per_m3_.size() == radii_m_.size(), "densities and radii must have the same length.");
+    require(automatic_radial_resolution_m_ >= 0.0, "radial_resolution must be positive.");
+    require(automatic_samples_per_oscillation_ >= 8, "samples_per_oscillation must be at least 8.");
+
+    for (double r : radii_m_) {
+        require(std::isfinite(r) && r > 0.0, "radii must be positive and finite.");
+    }
+    for (double n : densities_per_m3_) {
+        require(std::isfinite(n) && n >= 0.0, "densities must be non-negative and finite.");
+    }
+}
+
+bool PercusYevickSolver::uses_automatic_wavenumber() const {
+    return uses_automatic_wavenumber_;
+}
+
+std::optional<std::string> PercusYevickSolver::radial_grid_warning(
+    const std::vector<double>& distances_m
+) const {
+    if (wavenumber_per_m_.size() < 2 || distances_m.empty()) {
+        return std::nullopt;
+    }
+
+    const double maximum_distance = *std::max_element(distances_m.begin(), distances_m.end());
+    if (maximum_distance <= 0.0) {
+        return std::nullopt;
+    }
+
+    double maximum_step = 0.0;
+    for (std::size_t index = 1; index < wavenumber_per_m_.size(); ++index) {
+        maximum_step = std::max(maximum_step, wavenumber_per_m_[index] - wavenumber_per_m_[index - 1]);
+    }
+
+    // The sinc kernel oscillates with period 2*pi/r in reciprocal space.
+    // Eight samples per period is a conservative minimum for the trapezoidal
+    // inverse transform used by radial_fourier_h_from_H.
+    const double samples_per_oscillation = (2.0 * pi_value) / (maximum_step * maximum_distance);
+    constexpr double minimum_samples_per_oscillation = 8.0;
+    if (samples_per_oscillation >= minimum_samples_per_oscillation) {
+        return std::nullopt;
+    }
+
+    std::ostringstream message;
+    message << "The wavenumber grid is likely too coarse for distances up to "
+            << maximum_distance << " m: it provides " << samples_per_oscillation
+            << " samples per sinc-kernel oscillation (recommended: at least "
+            << minimum_samples_per_oscillation << "). Increase the number of wavenumber "
+            << "points or reduce the maximum wavenumber.";
+    return message.str();
 }
 
 std::vector<double> PercusYevickSolver::compute_epsilons() const {
@@ -187,7 +256,7 @@ void PercusYevickSolver::compute_parameters(
 
 std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& epsilons) const {
     const std::size_t N = radii_m_.size();
-    const std::size_t P = p_per_m_.size();
+    const std::size_t P = wavenumber_per_m_.size();
 
     const double e0 = epsilons[0];
     const double e1 = epsilons[1];
@@ -210,7 +279,7 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
         const double r = radii_m_[k];
         const double Rk = 2.0 * r;
         for (std::size_t p = 0; p < P; ++p) {
-            const double pp = p_per_m_[p];
+            const double pp = wavenumber_per_m_[p];
             const double x = r * pp;
             X[index_2d(k, p, P)] = x;
 
@@ -235,7 +304,7 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
             const double term0 = -(pi_value / 6.0) * std::sqrt(ni * nj) / denom;
 
             for (std::size_t p = 0; p < P; ++p) {
-                const double pp = p_per_m_[p];
+                const double pp = wavenumber_per_m_[p];
 
                 const double Xi = X[index_2d(i, p, P)];
                 const double Xj = X[index_2d(j, p, P)];
@@ -329,19 +398,20 @@ std::vector<double> PercusYevickSolver::solve_H_from_C_batch(
 std::vector<double> PercusYevickSolver::radial_fourier_h_from_H(
     const std::vector<double>& H,
     const std::vector<double>& distances_m,
-    const std::vector<double>& p_per_m,
+    const std::vector<double>& wavenumber_per_m,
     const std::vector<double>& densities_per_m3,
     std::size_t N
 ) {
-    const std::size_t P = p_per_m.size();
+    const std::size_t P = wavenumber_per_m.size();
     const std::size_t R = distances_m.size();
 
     require(H.size() == N * N * P, "H has an invalid size.");
-    require(P >= 2, "p must have at least two points for trapezoid integration.");
+    require(P >= 2, "wavenumber must have at least two points for trapezoid integration.");
 
     std::vector<double> h(N * N * R, 0.0);
 
-    // h_ij(r) = (1 / (2 pi^2)) * (1 / sqrt(n_i n_j)) * ∫ H_ij(p) p^2 sin(pr)/(pr) dp
+    // h_ij(r) = (1 / (2 pi^2)) * (1 / sqrt(n_i n_j))
+    //           * ∫ H_ij(k) k^2 sin(kr)/(kr) dk
     const double prefactor = 1.0 / (2.0 * pi_value * pi_value);
 
     for (std::size_t i = 0; i < N; ++i) {
@@ -367,8 +437,8 @@ std::vector<double> PercusYevickSolver::radial_fourier_h_from_H(
                 double integral = 0.0;
 
                 for (std::size_t k = 0; k + 1 < P; ++k) {
-                    const double p0 = p_per_m[k];
-                    const double p1 = p_per_m[k + 1];
+                    const double p0 = wavenumber_per_m[k];
+                    const double p1 = wavenumber_per_m[k + 1];
                     const double dp = p1 - p0;
 
                     const double x0 = rr * p0;
@@ -398,18 +468,44 @@ PercusYevickResult PercusYevickSolver::compute(std::vector<double> distances_m) 
         require(std::isfinite(r) && r >= 0.0, "distances must be non negative and finite.");
     }
 
+    if (uses_automatic_wavenumber_) {
+        const double maximum_distance = *std::max_element(distances_m.begin(), distances_m.end());
+        require(maximum_distance > 0.0, "automatic wavenumber selection requires at least one positive distance.");
+
+        const double minimum_radius = *std::min_element(radii_m_.begin(), radii_m_.end());
+        const double radial_resolution = automatic_radial_resolution_m_ > 0.0
+            ? automatic_radial_resolution_m_
+            : minimum_radius / 20.0;
+        const double maximum_wavenumber = pi_value / radial_resolution;
+        const double wavenumber_step = (2.0 * pi_value) /
+            (static_cast<double>(automatic_samples_per_oscillation_) * maximum_distance);
+        const std::size_t number_of_points = static_cast<std::size_t>(
+            std::ceil(maximum_wavenumber / wavenumber_step)
+        ) + 1;
+
+        std::vector<double> automatic_wavenumber(number_of_points, 0.0);
+        for (std::size_t index = 0; index < number_of_points; ++index) {
+            automatic_wavenumber[index] = maximum_wavenumber *
+                static_cast<double>(index) / static_cast<double>(number_of_points - 1);
+        }
+
+        return PercusYevickSolver(
+            densities_per_m3_, radii_m_, std::move(automatic_wavenumber)
+        ).compute(std::move(distances_m));
+    }
+
     const std::size_t N = radii_m_.size();
-    const std::size_t P = p_per_m_.size();
+    const std::size_t P = wavenumber_per_m_.size();
     const std::size_t R = distances_m.size();
 
     PercusYevickResult result;
     result.number_of_species = N;
-    result.number_of_p_points = P;
+    result.number_of_wavenumber_points = P;
     result.number_of_r_points = R;
 
     result.radii_m = radii_m_;
     result.densities_per_m3 = densities_per_m3_;
-    result.p_per_m = p_per_m_;
+    result.wavenumber_per_m = wavenumber_per_m_;
     result.distances_m = std::move(distances_m);
 
     result.epsilons = compute_epsilons();
@@ -426,7 +522,7 @@ PercusYevickResult PercusYevickSolver::compute(std::vector<double> distances_m) 
     result.Cpy = compute_Cpy(result.epsilons);
     result.H = solve_H_from_C_batch(result.Cpy, N, P);
 
-    result.h = this->radial_fourier_h_from_H(result.H, result.distances_m, result.p_per_m, result.densities_per_m3, N);
+    result.h = this->radial_fourier_h_from_H(result.H, result.distances_m, result.wavenumber_per_m, result.densities_per_m3, N);
 
     result.g.assign(N * N * R, 0.0);
     for (std::size_t i = 0; i < N * N * R; ++i) {

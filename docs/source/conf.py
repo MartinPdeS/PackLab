@@ -47,8 +47,8 @@ extensions = [
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
-html_logo = "_static/thumbnail.png"
-html_favicon = "_static/thumbnail.png"
+html_logo = "_static/packlab-mark.png"
+html_favicon = "_static/packlab-favicon.png"
 
 
 def reset_mpl(gallery_conf, fname):
@@ -103,7 +103,7 @@ binder_branch = f"v{major}.{minor}.x"
 
 html_theme_options = dict()
 
-html_theme_options["logo"] = dict(text=package_name, image="_static/thumbnail.png")
+html_theme_options["logo"] = dict(text=package_name, image="_static/packlab-mark.png")
 html_theme_options["show_nav_level"] = 0
 
 html_theme_options.update(

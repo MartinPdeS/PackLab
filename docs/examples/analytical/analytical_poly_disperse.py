@@ -9,9 +9,9 @@ using a Percus Yevick style solver.
 The example covers the following steps:
 
 1. Define a polydisperse domain (radii, volume fraction, number fractions)
-2. Build the Fourier grid :math:`p`
+2. Build the Fourier wavenumber grid
 3. Construct the Percus Yevick solver
-4. Compute :math:`C_{ij}(p)`, :math:`H_{ij}(p)`, :math:`h_{ij}(r)`, and :math:`g_{ij}(r)`
+4. Compute reciprocal-space correlations and :math:`g_{ij}(r)`
 5. Plot all :math:`g_{ij}(r)` curves on a single figure
 
 The main output is a figure showing all pair correlations :math:`g_{ij}(r)` for
@@ -41,17 +41,12 @@ domain = analytical.PercusYevickDomain(
 
 domain.print_bins()
 
-spatial_frequency_max = 1e3 / domain.radii.min()
-
-spatial_frequency = np.linspace(0, spatial_frequency_max / 2, 4_000)
-
+distances = np.linspace(domain.radii.min() * 2, domain.radii.max() * 4, 1500)
 solver = analytical.PercusYevickSolver(
     densities=domain.particle_densities_per_radius,
     radii=domain.radii,
-    p=spatial_frequency,
+    wavenumber="auto",
 )
-
-distances = np.linspace(domain.radii.min() * 2, domain.radii.max() * 4, 1500)
 
 result = solver.compute(distances=distances)
 

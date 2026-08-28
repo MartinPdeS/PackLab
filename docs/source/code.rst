@@ -55,6 +55,10 @@ Analytical model
    :members:
    :undoc-members:
 
+.. automodule:: PackLab.analytical.grid
+   :members:
+   :undoc-members:
+
 .. automodule:: PackLab.analytical.solver
    :members:
    :undoc-members:

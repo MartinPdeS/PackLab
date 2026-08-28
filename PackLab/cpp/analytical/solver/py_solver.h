@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cstddef>
+#include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 #include <algorithm>
@@ -14,7 +16,7 @@ struct PercusYevickResult {
     std::vector<double> radii_m;                // size N
     std::vector<double> densities_per_m3;       // size N
 
-    std::vector<double> p_per_m;                // size P
+    std::vector<double> wavenumber_per_m;                // size P
     std::vector<double> distances_m;            // size R
 
     std::vector<double> R_ij_m;                 // size N*N
@@ -30,7 +32,7 @@ struct PercusYevickResult {
     std::vector<double> g;                      // size N*N*R
 
     std::size_t number_of_species = 0;          // N
-    std::size_t number_of_p_points = 0;         // P
+    std::size_t number_of_wavenumber_points = 0;         // P
     std::size_t number_of_r_points = 0;         // R
 };
 
@@ -39,10 +41,18 @@ public:
     PercusYevickSolver(
         std::vector<double> densities_per_m3,
         std::vector<double> radii_m,
-        std::vector<double> p_per_m
+        std::vector<double> wavenumber_per_m
+    );
+    PercusYevickSolver(
+        std::vector<double> densities_per_m3,
+        std::vector<double> radii_m,
+        double automatic_radial_resolution_m,
+        int automatic_samples_per_oscillation
     );
 
     PercusYevickResult compute(std::vector<double> distances_m) const;
+    std::optional<std::string> radial_grid_warning(const std::vector<double>& distances_m) const;
+    bool uses_automatic_wavenumber() const;
 
 private:
     std::vector<double> compute_epsilons() const;
@@ -65,7 +75,7 @@ private:
     static std::vector<double> radial_fourier_h_from_H(
         const std::vector<double>& H,
         const std::vector<double>& distances_m,
-        const std::vector<double>& p_per_m,
+        const std::vector<double>& wavenumber_per_m,
         const std::vector<double>& densities_per_m3,
         std::size_t N
     );
@@ -73,5 +83,8 @@ private:
 private:
     std::vector<double> densities_per_m3_;
     std::vector<double> radii_m_;
-    std::vector<double> p_per_m_;
+    std::vector<double> wavenumber_per_m_;
+    bool uses_automatic_wavenumber_ = false;
+    double automatic_radial_resolution_m_ = 0.0;
+    int automatic_samples_per_oscillation_ = 12;
 };

@@ -30,22 +30,15 @@ py_domain = analytical.PercusYevickDomain(
 
 py_domain.print_bins()
 
-# Percus Yevick solver radial frequency grid
-# Because we want to plot g we need to have a large p_max to capture the oscillations at small r. The p_max should be at least 10 times 2*pi/r_min, where r_min is the smallest particle radius.
-p_max = 1e3 / py_domain.radii.min()
-
-p = np.linspace(0, p_max, 6_000)
-
-solver = analytical.PercusYevickSolver(
-    densities=py_domain.particle_densities_per_radius,
-    radii=py_domain.radii,
-    p=p,
-)
-
 distances = np.linspace(
     py_domain.radii.min() * 2,
     py_domain.radii.max() * 10,
     400,
+)
+solver = analytical.PercusYevickSolver(
+    densities=py_domain.particle_densities_per_radius,
+    radii=py_domain.radii,
+    wavenumber="auto",
 )
 
 py_result = solver.compute(distances=distances)
@@ -80,7 +73,7 @@ datas.process()
 phi, theta, phase_function = datas.get_phase_function(
     densities=py_result.densities,
     H=py_result.H,
-    p=py_result.p,
+    wavenumber=py_result.wavenumber,
     theta_points=150
 )
 

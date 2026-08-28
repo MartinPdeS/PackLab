@@ -24,6 +24,8 @@
 !pytest.ini
 !.coveragerc
 !matlab
+!.zenodo.json
+!CITATION.cff
 
 # But ignore docs/build inside docs and code
 docs/build/

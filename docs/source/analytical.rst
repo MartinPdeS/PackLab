@@ -20,17 +20,22 @@ explicit packing configuration.
        volume_fraction=0.15,
        number_fractions=number_fractions,
    )
-   wave_vector = np.linspace(0.0, 80.0, 500) / ureg.micrometer
+   distances = np.linspace(0.2, 1.5, 300) * ureg.micrometer
    solver = analytical.PercusYevickSolver(
        densities=domain.particle_densities_per_radius,
        radii=domain.radii,
-       p=wave_vector,
+       wavenumber="auto",
    )
-   result = solver.compute(distances=np.linspace(0.2, 1.5, 300) * ureg.micrometer)
+   result = solver.compute(distances=distances)
 
-The solver result contains the evaluated wave-vector grid and the associated
-structure factor. Keep the grid compact while exploring parameters, then use
-a denser grid where a plotted feature needs resolution.
+The solver result contains the evaluated wavenumber grid and the associated
+structure factor. With ``wavenumber="auto"``, PackLab uses zero as the minimum,
+one twentieth of the smallest particle radius as the real-space resolution, and
+12 samples per sinc-kernel oscillation at the largest requested distance. Pass
+``radial_resolution=...`` or ``samples_per_oscillation=...`` to tune that
+selection. ``make_wavenumber_grid`` remains available when you need to provide
+the grid explicitly. The solver emits a ``RuntimeWarning`` when an explicit
+grid has fewer than eight samples per sinc-kernel oscillation.
 
 The model assumes an idealised hard-sphere fluid. It is therefore a useful
 reference for Monte-Carlo results, rather than a replacement for an RSA
