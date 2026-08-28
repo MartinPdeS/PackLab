@@ -74,3 +74,33 @@ def test_automatic_wavenumber_grid_accepts_resolution_controls():
         result.wavenumber.max().to("1 / meter").magnitude,
         np.pi / 0.025,
     )
+
+
+def test_automatic_wavenumber_grid_converges_against_refined_grid():
+    """The default automatic grid should agree with a twice-refined integral."""
+    radius = 0.1 * ureg.meter
+    volume_fraction = 0.20
+    density = volume_fraction / ((4.0 / 3.0) * np.pi * radius**3)
+    radii = np.array([radius.magnitude]) * radius.units
+    densities = np.array([density.magnitude]) * density.units
+    distances = np.linspace(0.2, 0.8, 120) * ureg.meter
+
+    automatic = analytical.PercusYevickSolver(
+        densities=densities,
+        radii=radii,
+        wavenumber="auto",
+    ).compute(distances)
+
+    refined_wavenumber = analytical.make_wavenumber_grid(
+        radial_resolution=radius / 20,
+        maximum_distance=distances.max(),
+        samples_per_oscillation=24,
+    )
+    refined = analytical.PercusYevickSolver(
+        densities=densities,
+        radii=radii,
+        wavenumber=refined_wavenumber,
+    ).compute(distances)
+
+    assert len(refined.wavenumber) > len(automatic.wavenumber)
+    np.testing.assert_allclose(automatic.g, refined.g, rtol=5e-3, atol=5e-4)
