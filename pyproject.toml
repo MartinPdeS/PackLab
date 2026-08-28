@@ -81,11 +81,11 @@ documentation = [
     "sphinx-gallery==0.20.0",
     "pydata-sphinx-theme==0.16.1",
     "sphinx-rtd-theme==3.1.0",
-    "PyMieSim ==5.0.2",
+    "PyMieSim ==5.2.0",
 ]
 
 scattering = [
-    "PyMieSim ==5.0.2",
+    "PyMieSim ==5.2.0",
 ]
 
 dev = [
