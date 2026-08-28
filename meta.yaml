@@ -10,6 +10,9 @@ build:
   number: 0
   script:
     - export CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"  # [osx]
+    # The reusable conda workflow activates MSVC 14.16 (VS 2017) on Windows.
+    # Force CMake to use that installed generator rather than probing for VS 2022.
+    - set "CMAKE_GENERATOR=Visual Studio 15 2017 Win64"  # [win]
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 channels:
@@ -30,10 +33,7 @@ requirements:
     - setuptools_scm[toml] ~=8.0
     - numpy >=2.0,<3
   run:
-    - pandas ==2.3
-    - martinpdes::mpsplots
     - martinpdes::typedunit
-    - martinpdes::pymiesim
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3
     - pydantic >=2.8,<3

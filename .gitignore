@@ -17,6 +17,7 @@
 !meta.yaml
 !pyproject.toml
 !README.rst
+!AGENTS.md
 !notebook.ipynb
 !CMakeLists.txt
 !CITATION.cff
