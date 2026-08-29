@@ -189,10 +189,8 @@ Contributing and contact
 Issues and pull requests are welcome. For questions or collaborations, contact
 `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com>`_.
 
-.. |logo| image:: https://github.com/MartinPdeS/PackLab/raw/master/docs/images/logo.png
-   :alt: PackLab logo: sphere packing and correlation curve.
-   :width: 700
-   :align: center
+.. |logo| image:: https://github.com/MartinPdeS/PyMieSim/raw/master/docs/images/logo.png
+
 .. |python| image:: https://img.shields.io/pypi/pyversions/packlab.svg
    :alt: Supported Python versions
    :target: https://www.python.org/
