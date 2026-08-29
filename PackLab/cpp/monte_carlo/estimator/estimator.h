@@ -1,7 +1,11 @@
 #include <cstddef>
 #include <cmath>
+#include <algorithm>
+#include <iomanip>
+#include <iostream>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <tuple>
 #include <vector>
 
@@ -24,6 +28,53 @@ struct EstimateResult {
     std::size_t number_of_bins = 0;    // B
 };
 
+struct EstimatorStatistics {
+    std::size_t requested_samples = 0;
+    std::size_t completed_samples = 0;
+    std::size_t attempted_insertions = 0;
+    std::size_t accepted_insertions = 0;
+    std::size_t rejected_insertions = 0;
+    std::size_t total_spheres = 0;
+    double total_runtime_seconds = 0.0;
+    double mean_packing_fraction = 0.0;
+
+    double acceptance_rate() const {
+        if (attempted_insertions == 0) return 0.0;
+        return static_cast<double>(accepted_insertions) /
+            static_cast<double>(attempted_insertions);
+    }
+
+    double mean_sphere_count() const {
+        if (completed_samples == 0) return 0.0;
+        return static_cast<double>(total_spheres) /
+            static_cast<double>(completed_samples);
+    }
+
+    double mean_runtime_seconds() const {
+        if (completed_samples == 0) return 0.0;
+        return total_runtime_seconds / static_cast<double>(completed_samples);
+    }
+
+    void print() const {
+        const auto print_row = [](const std::string& key, const std::string& value) {
+            std::cout << "| " << std::left << std::setw(31) << key
+                      << " | " << std::right << std::setw(16) << value << " |\n";
+        };
+
+        std::cout << "+---------------------------------+------------------+\n";
+        print_row("completed samples", std::to_string(completed_samples) + "/" + std::to_string(requested_samples));
+        print_row("attempted insertions", std::to_string(attempted_insertions));
+        print_row("accepted insertions", std::to_string(accepted_insertions));
+        print_row("rejected insertions", std::to_string(rejected_insertions));
+        print_row("acceptance rate", std::to_string(acceptance_rate()));
+        print_row("mean sphere count", std::to_string(mean_sphere_count()));
+        print_row("mean packing fraction", std::to_string(mean_packing_fraction));
+        print_row("total runtime [seconds]", std::to_string(total_runtime_seconds));
+        print_row("mean runtime [seconds]", std::to_string(mean_runtime_seconds()));
+        std::cout << "+---------------------------------+------------------+\n" << std::endl;
+    }
+};
+
 class Estimator {
 public:
     Estimator(
@@ -37,9 +88,30 @@ public:
           options(options),
           number_of_bins(number_of_bins) {}
 
-    EstimateResult estimate(const std::size_t number_of_samples, const std::size_t maximum_pairs = 0) const {
+    EstimateResult estimate(
+        const std::size_t number_of_samples,
+        const std::size_t maximum_pairs = 0,
+        const bool progress = false,
+        const std::size_t progress_interval = 1
+    ) {
         if (number_of_samples == 0) {
             throw std::invalid_argument("number_of_samples must be > 0");
+        }
+        if (progress_interval == 0) {
+            throw std::invalid_argument("progress_interval must be > 0.");
+        }
+
+        statistics = EstimatorStatistics{};
+        statistics.requested_samples = number_of_samples;
+
+        if (progress) {
+            std::cout << "PackingEstimator progress\n"
+                      << "  " << std::right << std::setw(10) << "sample"
+                      << "  " << std::setw(10) << "accepted"
+                      << "  " << std::setw(10) << "attempted"
+                      << "  " << std::setw(15) << "acceptance rate"
+                      << "  " << std::setw(16) << "packing fraction"
+                      << std::endl;
         }
 
         Simulator simulator(domain, radius_sampler, options);
@@ -55,6 +127,37 @@ public:
         for (std::size_t sample_index = 0; sample_index < number_of_samples; ++sample_index) {
             simulator.reset();
             Result result = simulator.run();
+
+            const Statistics& sample_statistics = result.statistics;
+            statistics.completed_samples += 1;
+            statistics.attempted_insertions += sample_statistics.attempted_insertions;
+            statistics.accepted_insertions += sample_statistics.accepted_insertions;
+            statistics.rejected_insertions += sample_statistics.rejected_insertions;
+            statistics.total_spheres += sample_statistics.sphere_count;
+            statistics.total_runtime_seconds += sample_statistics.total_runtime_seconds;
+            statistics.mean_packing_fraction +=
+                (sample_statistics.packing_fraction_geometry - statistics.mean_packing_fraction) /
+                static_cast<double>(statistics.completed_samples);
+            if (progress && (
+                statistics.completed_samples == 1 ||
+                statistics.completed_samples % progress_interval == 0 ||
+                statistics.completed_samples == number_of_samples
+            )) {
+                const double acceptance_rate = sample_statistics.attempted_insertions == 0
+                    ? 0.0
+                    : static_cast<double>(sample_statistics.accepted_insertions) /
+                        static_cast<double>(sample_statistics.attempted_insertions);
+
+                std::cout << "  " << std::right << std::setw(10)
+                          << std::to_string(statistics.completed_samples) + "/" + std::to_string(number_of_samples)
+                          << "  " << std::setw(10) << sample_statistics.accepted_insertions
+                          << "  " << std::setw(10) << sample_statistics.attempted_insertions
+                          << "  " << std::setw(14) << std::fixed << std::setprecision(3)
+                          << 100.0 * acceptance_rate << "%"
+                          << "  " << std::setw(16) << std::setprecision(6)
+                          << sample_statistics.packing_fraction_geometry
+                          << std::endl;
+            }
 
             auto [centers_i, g_matrix_i] =
                 result.compute_partial_pair_correlation_function(number_of_bins, maximum_pairs);
@@ -168,4 +271,7 @@ private:
     std::shared_ptr<RadiusSampler> radius_sampler;
     std::shared_ptr<Options> options;
     std::size_t number_of_bins = 0;
+
+public:
+    EstimatorStatistics statistics;
 };

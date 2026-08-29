@@ -9,6 +9,39 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(estimator, module) {
 
+    py::class_<EstimatorStatistics>(module, "EstimatorStatistics", R"doc(
+Aggregate diagnostics from the most recent ``PackingEstimator.estimate`` call.
+
+Attributes
+----------
+requested_samples, completed_samples : int
+    Requested and successfully completed RSA realisations.
+attempted_insertions, accepted_insertions, rejected_insertions : int
+    Totals over all completed realisations.
+acceptance_rate : float
+    Accepted insertions divided by attempted insertions.
+mean_sphere_count, mean_packing_fraction : float
+    Per-realisation means.
+total_runtime_seconds, mean_runtime_seconds : float
+    Wall-clock simulation times.
+)doc")
+        .def_readonly("requested_samples", &EstimatorStatistics::requested_samples)
+        .def_readonly("completed_samples", &EstimatorStatistics::completed_samples)
+        .def_readonly("attempted_insertions", &EstimatorStatistics::attempted_insertions)
+        .def_readonly("accepted_insertions", &EstimatorStatistics::accepted_insertions)
+        .def_readonly("rejected_insertions", &EstimatorStatistics::rejected_insertions)
+        .def_readonly("total_spheres", &EstimatorStatistics::total_spheres)
+        .def_readonly("total_runtime_seconds", &EstimatorStatistics::total_runtime_seconds)
+        .def_readonly("mean_packing_fraction", &EstimatorStatistics::mean_packing_fraction)
+        .def_property_readonly("acceptance_rate", &EstimatorStatistics::acceptance_rate)
+        .def_property_readonly("mean_sphere_count", &EstimatorStatistics::mean_sphere_count)
+        .def_property_readonly("mean_runtime_seconds", &EstimatorStatistics::mean_runtime_seconds)
+        .def("print", &EstimatorStatistics::print, "Print a tabular summary of the aggregate diagnostics.")
+        .def("__repr__", [](const EstimatorStatistics& self) {
+            return "<EstimatorStatistics completed_samples=" + std::to_string(self.completed_samples)
+                + "/" + std::to_string(self.requested_samples) + ">";
+        });
+
     py::class_<EstimateResult>(module, "PackingEstimate", R"doc(
 Ensemble estimate of partial pair-correlation functions.
 
@@ -72,6 +105,11 @@ options : RSAOptions
     RSA simulation configuration.
 number_of_bins : int
     Number of radial bins used for each estimate.
+
+Attributes
+----------
+statistics : EstimatorStatistics
+    Aggregate diagnostics from the most recent call to ``estimate``.
 )doc");
     estimator_cls
         .def(py::init<
@@ -90,6 +128,8 @@ number_of_bins : int
             &Estimator::estimate,
             py::arg("number_of_samples"),
             py::arg("maximum_pairs") = 0,
+            py::arg("progress") = false,
+            py::arg("progress_interval") = 1,
             R"doc(
 Estimate partial pair correlations from independent RSA realizations.
 
@@ -99,6 +139,10 @@ number_of_samples : int
     Number of independent packing realizations.
 maximum_pairs : int, default=0
     Pair-sampling limit per realization; zero selects the native default.
+progress : bool, default=False
+    Print completed-sample progress and per-sample insertion diagnostics.
+progress_interval : int, default=1
+    Print every this many completed samples when ``progress=True``.
 
 Returns
 -------
@@ -106,6 +150,14 @@ PackingEstimate
     Mean and standard deviation of the partial pair-correlation functions.
 )doc"
         )
+        .def_property_readonly(
+            "statistics",
+            [](Estimator& self) -> EstimatorStatistics& { return self.statistics; },
+            py::return_value_policy::reference_internal,
+            "Aggregate diagnostics from the most recent estimate."
+        )
+        .def("print_statistics", [](const Estimator& self) { self.statistics.print(); },
+            "Print aggregate diagnostics from the most recent estimate.")
         .def("__repr__", [](const Estimator&) { return "<PackingEstimator>"; })
     ;
 

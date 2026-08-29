@@ -42,7 +42,13 @@ sampler = samplers.DiscreteRadiusSampler(
     radii=[1.0, 2.0] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
-volume_fraction = 0.24
+
+sampler = samplers.DiscreteRadiusSampler(
+    radii=[2.0] * ureg.micrometer,
+    weights=[1],
+)
+
+volume_fraction = 0.3 # 0.24
 
 options = monte_carlo.RSAOptions()
 options.maximum_attempts = 2_500_000
@@ -59,7 +65,7 @@ estimator = monte_carlo.PackingEstimator(
 )
 
 estimate_result = estimator.estimate(
-    number_of_samples=200,
+    number_of_samples=50,
     maximum_pairs=5_000_000
 )
 
@@ -75,7 +81,7 @@ centers = estimate_result.centers
 particle_radii, number_fractions = sampler.to_bins()
 
 py_domain = analytical.PercusYevickDomain(
-    size=100_000 * ureg.micrometer,
+    size=100_000 * ureg.micrometer  / 2,
     radii=particle_radii,
     volume_fraction=volume_fraction,
     number_fractions=number_fractions,
@@ -101,7 +107,7 @@ py_result = solver.compute(distances=distances)
 # We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 fig, ax = plt.subplots(1, 1)
 
-K = 2
+K = 1
 for i in range(K):
     for j in range(K):
         ax.plot(centers, mean_g[i, j], label=f"g$_{{{i}{j}}}$")

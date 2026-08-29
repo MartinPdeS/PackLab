@@ -185,6 +185,46 @@ def test_stop_by_maximum_spheres():
     assert result.positions.shape[0] <= 25
 
 
+def test_packing_estimator_progress_and_statistics(capfd):
+    """The estimator reports progress and preserves aggregate diagnostics."""
+    domain = monte_carlo.PackingDomain(
+        3.0 * ureg.meter,
+        3.0 * ureg.meter,
+        3.0 * ureg.meter,
+        use_periodic_boundaries=True,
+    )
+    options = monte_carlo.RSAOptions()
+    options.random_seed = 91
+    options.maximum_spheres = 12
+    estimator = monte_carlo.PackingEstimator(
+        domain,
+        samplers.DiscreteRadiusSampler(radii=[0.1 * ureg.meter], weights=[1.0]),
+        options,
+        number_of_bins=24,
+    )
+
+    estimate = estimator.estimate(3, progress=True, progress_interval=2)
+    captured = capfd.readouterr().out
+    statistics = estimator.statistics
+
+    assert estimate.mean_g.shape == (1, 1, 24)
+    assert "PackingEstimator progress" in captured
+    assert "acceptance rate" in captured
+    assert "1/3" in captured
+    assert "2/3" in captured
+    assert "3/3" in captured
+    assert statistics.requested_samples == 3
+    assert statistics.completed_samples == 3
+    assert statistics.accepted_insertions == 36
+    assert statistics.attempted_insertions >= statistics.accepted_insertions
+    assert statistics.rejected_insertions == statistics.attempted_insertions - statistics.accepted_insertions
+    assert 0.0 < statistics.acceptance_rate <= 1.0
+    assert statistics.mean_sphere_count == pytest.approx(12.0)
+
+    estimator.print_statistics()
+    assert "completed samples" in capfd.readouterr().out
+
+
 # ==========================================================
 #  Test that plotting functions run without errors
 # ==========================================================
