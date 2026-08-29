@@ -189,7 +189,7 @@ Contributing and contact
 Issues and pull requests are welcome. For questions or collaborations, contact
 `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com>`_.
 
-.. |logo| image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/logo.png
+.. |logo| image:: https://github.com/MartinPdeS/PackLab/raw/master/docs/images/logo.png
    :alt: PackLab logo: sphere packing and correlation curve.
    :width: 700
    :align: center
