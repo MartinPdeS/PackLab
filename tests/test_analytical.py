@@ -76,6 +76,21 @@ def test_automatic_wavenumber_grid_accepts_resolution_controls():
     )
 
 
+def test_solver_enforces_hard_core_exclusion():
+    """Fourier ringing must not produce non-zero in-core correlations."""
+    radius = 0.1 * ureg.meter
+    solver = analytical.PercusYevickSolver(
+        densities=np.array([0.1]) / ureg.meter**3,
+        radii=np.array([radius.magnitude]) * radius.units,
+        wavenumber="auto",
+    )
+    distances = np.linspace(0.0, 0.199, 20) * ureg.meter
+
+    result = solver.compute(distances)
+
+    np.testing.assert_array_equal(result.g[0, 0], 0.0)
+
+
 def test_automatic_wavenumber_grid_converges_against_refined_grid():
     """The default automatic grid should agree with a twice-refined integral."""
     radius = 0.1 * ureg.meter

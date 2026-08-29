@@ -525,8 +525,21 @@ PercusYevickResult PercusYevickSolver::compute(std::vector<double> distances_m) 
     result.h = this->radial_fourier_h_from_H(result.H, result.distances_m, result.wavenumber_per_m, result.densities_per_m3, N);
 
     result.g.assign(N * N * R, 0.0);
-    for (std::size_t i = 0; i < N * N * R; ++i) {
-        result.g[i] = 1.0 + result.h[i];
+    for (std::size_t i = 0; i < N; ++i) {
+        for (std::size_t j = 0; j < N; ++j) {
+            const double contact_distance = radii_m_[i] + radii_m_[j];
+            for (std::size_t r = 0; r < R; ++r) {
+                const std::size_t index = index_3d(i, j, r, N, R);
+
+                // The Percus--Yevick hard-sphere model has exact excluded
+                // volume.  Truncated inverse Fourier transforms otherwise
+                // introduce Gibbs oscillations, including non-physical
+                // negative values inside this core.
+                result.g[index] = result.distances_m[r] < contact_distance
+                    ? 0.0
+                    : 1.0 + result.h[index];
+            }
+        }
     }
 
     return result;

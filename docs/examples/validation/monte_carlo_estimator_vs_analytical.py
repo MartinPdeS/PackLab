@@ -19,8 +19,6 @@ The workflow is:
 3. Build the matching analytical polydisperse domain and solve Percus Yevick
 4. Plot Monte Carlo curves and overlay the analytical solution
 """
-
-import numpy as np
 import matplotlib.pyplot as plt
 
 from PackLab import ureg
@@ -39,16 +37,11 @@ domain = monte_carlo.PackingDomain(
 )
 
 sampler = samplers.DiscreteRadiusSampler(
-    radii=[1.0, 2.0] * ureg.micrometer,
+    radii=[1.0 / 1.3, 2.0 / 1.3] * ureg.micrometer,
     weights=[0.5, 0.5],
 )
 
-sampler = samplers.DiscreteRadiusSampler(
-    radii=[2.0] * ureg.micrometer,
-    weights=[1],
-)
-
-volume_fraction = 0.3 # 0.24
+volume_fraction = 0.2 # 0.24
 
 options = monte_carlo.RSAOptions()
 options.maximum_attempts = 2_500_000
@@ -65,8 +58,10 @@ estimator = monte_carlo.PackingEstimator(
 )
 
 estimate_result = estimator.estimate(
-    number_of_samples=50,
-    maximum_pairs=5_000_000
+    number_of_samples=200,
+    maximum_pairs=0,
+    progress=True,
+    progress_interval=5,  # print every 5 simulations
 )
 
 mean_g = estimate_result.mean_g
@@ -81,17 +76,16 @@ centers = estimate_result.centers
 particle_radii, number_fractions = sampler.to_bins()
 
 py_domain = analytical.PercusYevickDomain(
-    size=100_000 * ureg.micrometer  / 2,
+    size=100_000 * ureg.micrometer,
     radii=particle_radii,
     volume_fraction=volume_fraction,
     number_fractions=number_fractions,
 )
 
-distances = np.linspace(
-    py_domain.radii.min() * 2,
-    py_domain.radii.max() * 10,
-    400,
-)
+# Evaluate the analytical curve at the estimator's bin centres.  This keeps
+# both curves on the same radial support (the estimator reaches half the box
+# length) and avoids a truncated analytical line in the comparison plot.
+distances = centers
 solver = analytical.PercusYevickSolver(
     densities=py_domain.particle_densities_per_radius,
     radii=py_domain.radii,
@@ -107,7 +101,7 @@ py_result = solver.compute(distances=distances)
 # We plot all partial curves on the same axes and overlay the Percus Yevick result in black.
 fig, ax = plt.subplots(1, 1)
 
-K = 1
+K = 2
 for i in range(K):
     for j in range(K):
         ax.plot(centers, mean_g[i, j], label=f"g$_{{{i}{j}}}$")
