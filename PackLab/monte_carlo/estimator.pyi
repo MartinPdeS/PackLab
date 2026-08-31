@@ -12,4 +12,10 @@ class PackingEstimate:
 
 class PackingEstimator:
     def __init__(self, domain: PackingDomain, radius_sampler: RadiusSampler, options: RSAOptions, number_of_bins: int) -> None: ...
-    def estimate(self, number_of_samples: int, maximum_pairs: int = 0) -> PackingEstimate: ...
+    def estimate(
+        self,
+        number_of_samples: int,
+        maximum_pairs: int = 0,
+        progress: bool = False,
+        progress_interval: int = 1,
+    ) -> PackingEstimate: ...

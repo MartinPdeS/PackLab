@@ -1,5 +1,6 @@
 #include "estimator.h"
 
+#include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
 #include <sstream>
 #include "pint/pint.h"
@@ -125,7 +126,17 @@ statistics : EstimatorStatistics
         )
 
         .def("estimate",
-            &Estimator::estimate,
+            [](Estimator& self,
+               const std::size_t number_of_samples,
+               const std::size_t maximum_pairs,
+               const bool progress,
+               const std::size_t progress_interval) {
+                // Route native progress output through ``sys.stdout``.  In
+                // particular, this makes pytest's Windows capture mechanism
+                // observe output from C++ ``std::cout``.
+                py::scoped_ostream_redirect redirect(std::cout, py::module_::import("sys").attr("stdout"));
+                return self.estimate(number_of_samples, maximum_pairs, progress, progress_interval);
+            },
             py::arg("number_of_samples"),
             py::arg("maximum_pairs") = 0,
             py::arg("progress") = false,
