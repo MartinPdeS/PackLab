@@ -1,6 +1,13 @@
 Validation and comparison
 =========================
 
-Examples that compare RSA-derived pair correlations with matching
-Percus--Yevick predictions. They are useful for understanding where the
-analytical approximation agrees with an explicit finite packing.
+These examples make two complementary validation checks:
+
+* compare an ensemble of explicit, finite RSA packings with a matching
+  Percus--Yevick reference, including the RSA standard error;
+* verify convergence of the numerical Percus--Yevick inverse transform by
+  refining its wavenumber grid.
+
+RSA is an irreversible, history-dependent packing process. Percus--Yevick is
+an analytical equilibrium reference, so agreement is informative but is not an
+expectation of exact equality.

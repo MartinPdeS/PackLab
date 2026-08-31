@@ -37,7 +37,10 @@ total_runtime_seconds, mean_runtime_seconds : float
         .def_property_readonly("acceptance_rate", &EstimatorStatistics::acceptance_rate)
         .def_property_readonly("mean_sphere_count", &EstimatorStatistics::mean_sphere_count)
         .def_property_readonly("mean_runtime_seconds", &EstimatorStatistics::mean_runtime_seconds)
-        .def("print", &EstimatorStatistics::print, "Print a tabular summary of the aggregate diagnostics.")
+        .def("print", [](const EstimatorStatistics& self) {
+            py::scoped_ostream_redirect redirect(std::cout, py::module_::import("sys").attr("stdout"));
+            self.print();
+        }, "Print a tabular summary of the aggregate diagnostics.")
         .def("__repr__", [](const EstimatorStatistics& self) {
             return "<EstimatorStatistics completed_samples=" + std::to_string(self.completed_samples)
                 + "/" + std::to_string(self.requested_samples) + ">";
@@ -167,7 +170,10 @@ PackingEstimate
             py::return_value_policy::reference_internal,
             "Aggregate diagnostics from the most recent estimate."
         )
-        .def("print_statistics", [](const Estimator& self) { self.statistics.print(); },
+        .def("print_statistics", [](const Estimator& self) {
+            py::scoped_ostream_redirect redirect(std::cout, py::module_::import("sys").attr("stdout"));
+            self.statistics.print();
+        },
             "Print aggregate diagnostics from the most recent estimate.")
         .def("__repr__", [](const Estimator&) { return "<PackingEstimator>"; })
     ;
