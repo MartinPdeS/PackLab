@@ -142,9 +142,9 @@ warns when a manually supplied grid is too coarse for the requested distances.
 Choosing a workflow
 -------------------
 
-* Use :mod:`PackLab.monte_carlo` when individual centres, sampled radii, box
+* Use ``PackLab.monte_carlo`` when individual centres, sampled radii, box
   boundaries, or finite-size effects are important.
-* Use :mod:`PackLab.analytical` for fast parameter sweeps and an analytical
+* Use ``PackLab.analytical`` for fast parameter sweeps and an analytical
   correlation reference.
 * Use the validation gallery examples to compare a matching RSA configuration
   against the analytical model.
