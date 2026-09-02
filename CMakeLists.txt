@@ -102,6 +102,7 @@ add_subdirectory(PackLab/cpp/monte_carlo/domain)            # domain
 add_subdirectory(PackLab/cpp/monte_carlo/statistics)        # statistics
 add_subdirectory(PackLab/cpp/radius_sampler)                # radius_sampler
 add_subdirectory(PackLab/cpp/monte_carlo/simulator)         # simulator
+add_subdirectory(PackLab/cpp/monte_carlo/metropolis)        # equilibrium Metropolis sampler
 add_subdirectory(PackLab/cpp/monte_carlo/estimator)         # estimator
 add_subdirectory(PackLab/cpp/analytical/domain_analytical)  # domain
 add_subdirectory(PackLab/cpp/analytical/solver)             # solver

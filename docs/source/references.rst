@@ -6,8 +6,8 @@ References and citation
 =======================
 
 If PackLab contributes to published work, please cite the release you used.
-The machine-readable citation metadata is distributed with the source and
-release artifacts in ``CITATION.cff`` and ``.zenodo.json``.
+The machine-readable release metadata is distributed with the source and
+release artifacts in ``.zenodo.json``.
 
 The analytical tools are based on the Percus--Yevick treatment of hard-sphere
 fluids. A useful starting reference is:

@@ -58,3 +58,32 @@ For a radial pair-correlation estimate, build a ``PackingStatistics`` instance
 from the result and choose bins appropriate to the box dimensions. Periodic
 domains are generally the right choice for bulk correlation estimates because
 they avoid treating the box faces as physical boundaries.
+
+Equilibrating a configuration with Metropolis moves
+---------------------------------------------------
+
+RSA is an irreversible deposition process. To sample a fixed-volume
+equilibrium hard-sphere system, use its valid configuration only as the
+initial state of ``MetropolisSimulator``. The sampler proposes symmetric,
+single-particle displacements and accepts a proposal when it creates no hard
+sphere overlap. It preserves the number of particles, radii, and class labels.
+
+.. code-block:: python
+
+   metropolis_options = monte_carlo.MetropolisOptions()
+   metropolis_options.random_seed = 42
+   metropolis_options.number_of_sweeps = 1_000
+   metropolis_options.maximum_displacement = 50 * ureg.nanometer
+
+   simulator = monte_carlo.MetropolisSimulator(
+       domain,
+       result.sphere_configuration,
+       metropolis_options,
+   )
+   equilibrated_result = simulator.run()
+   print(simulator.statistics.acceptance_rate)
+
+The displacement controls the acceptance rate and should be tuned for the
+density and particle sizes. A finite number of sweeps alone does not establish
+equilibration: assess stationarity and collect independent samples for the
+observable of interest.

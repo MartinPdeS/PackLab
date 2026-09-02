@@ -2,8 +2,9 @@ PYTHON ?= python3
 BUILD_DIR ?= build
 ROOT_DIR := $(CURDIR)
 MANUSCRIPT_DIR := docs/manuscript
-PYTHON_EXECUTABLE := $(shell $(PYTHON) -c "import sys; print(sys.executable)")
-PYBIND11_DIR := $(shell $(PYTHON) -m pybind11 --cmakedir)
+REGENERATE_FIGURES ?= 0
+PYTHON_EXECUTABLE = $(shell $(PYTHON) -c "import sys; print(sys.executable)")
+PYBIND11_DIR = $(shell $(PYTHON) -m pybind11 --cmakedir)
 
 .PHONY: configure build install uninstall quick rebuild editable test docs manuscript quality clean
 
@@ -41,8 +42,11 @@ docs:
 	$(MAKE) -C docs html SPHINXBUILD="$(PYTHON) -m sphinx"
 
 manuscript:
+
+ifeq ($(REGENERATE_FIGURES),1)
 	MPLBACKEND=Agg $(PYTHON) $(MANUSCRIPT_DIR)/figures/create_figure2.py
 	MPLBACKEND=Agg $(PYTHON) $(MANUSCRIPT_DIR)/figures/create_figure3.py
+endif
 	cd $(MANUSCRIPT_DIR) && latexmk -pdf -interaction=nonstopmode -halt-on-error packlab.tex
 
 quality:

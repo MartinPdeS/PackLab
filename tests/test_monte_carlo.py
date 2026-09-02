@@ -185,6 +185,91 @@ def test_stop_by_maximum_spheres():
     assert result.positions.shape[0] <= 25
 
 
+def test_metropolis_equilibrates_an_rsa_configuration_without_overlap():
+    """Metropolis moves preserve the hard-sphere constraints and particle data."""
+    domain = monte_carlo.PackingDomain(
+        5.0 * ureg.meter,
+        5.0 * ureg.meter,
+        5.0 * ureg.meter,
+        use_periodic_boundaries=True,
+    )
+    rsa_options = monte_carlo.RSAOptions()
+    rsa_options.random_seed = 17
+    rsa_options.maximum_spheres = 12
+    rsa_options.maximum_attempts = 50_000
+    initial_result = monte_carlo.RSASimulator(
+        domain,
+        samplers.UniformRadiusSampler(0.15 * ureg.meter, 0.15 * ureg.meter, bins=1),
+        rsa_options,
+    ).run()
+    assert initial_result.sphere_configuration.count == 12
+
+    options = monte_carlo.MetropolisOptions()
+    options.random_seed = 42
+    options.number_of_sweeps = 20
+    options.maximum_displacement = 0.05 * ureg.meter
+    simulator = monte_carlo.MetropolisSimulator(domain, initial_result.sphere_configuration, options)
+    equilibrated_result = simulator.run()
+
+    statistics = simulator.statistics
+    assert statistics.completed_sweeps == 20
+    assert statistics.attempted_moves == 20 * initial_result.sphere_configuration.count
+    assert statistics.accepted_moves + statistics.rejected_moves == statistics.attempted_moves
+    assert 0.0 <= statistics.acceptance_rate <= 1.0
+    assert np.array_equal(
+        equilibrated_result.radii.to("meter").magnitude,
+        initial_result.radii.to("meter").magnitude,
+    )
+    assert np.array_equal(
+        equilibrated_result.sphere_configuration.classes_index,
+        initial_result.sphere_configuration.classes_index,
+    )
+
+    minimum_distance = _min_distance_periodic(
+        equilibrated_result.positions,
+        (domain.length_x, domain.length_y, domain.length_z),
+    )
+    assert minimum_distance + 1e-12 * minimum_distance.units >= 2.0 * np.max(equilibrated_result.radii)
+
+
+def test_metropolis_reset_reproduces_a_seeded_trajectory():
+    """Reset restores the initial state and seed for reproducible sampling."""
+    domain = monte_carlo.PackingDomain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, True)
+    rsa_options = monte_carlo.RSAOptions()
+    rsa_options.random_seed = 31
+    rsa_options.maximum_spheres = 8
+    initial_result = monte_carlo.RSASimulator(
+        domain,
+        samplers.ConstantRadiusSampler(0.15 * ureg.meter, bins=1),
+        rsa_options,
+    ).run()
+
+    options = monte_carlo.MetropolisOptions()
+    options.random_seed = 73
+    options.number_of_sweeps = 12
+    options.maximum_displacement = 0.04 * ureg.meter
+    simulator = monte_carlo.MetropolisSimulator(domain, initial_result.sphere_configuration, options)
+
+    first_result = simulator.run()
+    first_positions = first_result.positions.to("meter").magnitude.copy()
+    simulator.reset()
+    second_result = simulator.run()
+
+    assert np.array_equal(second_result.positions.to("meter").magnitude, first_positions)
+    assert simulator.statistics.completed_sweeps == options.number_of_sweeps
+
+
+def test_metropolis_requires_a_positive_unit_bearing_displacement():
+    """Proposal lengths are validated at the dimensional Python boundary."""
+    options = monte_carlo.MetropolisOptions()
+
+    with pytest.raises(ValueError, match="finite and positive"):
+        options.maximum_displacement = 0.0 * ureg.meter
+
+    with pytest.raises(TypeError, match="pint.Quantity"):
+        options.maximum_displacement = 0.1
+
+
 def test_packing_estimator_progress_and_statistics(capfd):
     """The estimator reports progress and preserves aggregate diagnostics."""
     domain = monte_carlo.PackingDomain(

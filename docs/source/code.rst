@@ -17,8 +17,8 @@ Radius samplers
    :members:
    :undoc-members:
 
-Monte-Carlo RSA
----------------
+Monte-Carlo hard-sphere workflows
+---------------------------------
 
 .. automodule:: PackLab.monte_carlo
    :members:
@@ -29,6 +29,10 @@ Monte-Carlo RSA
    :undoc-members:
 
 .. automodule:: PackLab.monte_carlo.simulator
+   :members:
+   :undoc-members:
+
+.. automodule:: PackLab.monte_carlo.metropolis
    :members:
    :undoc-members:
 

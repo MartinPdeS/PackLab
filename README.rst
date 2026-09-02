@@ -180,8 +180,8 @@ Run the test suite with:
 Citing PackLab
 --------------
 
-If PackLab contributes to academic work, cite the release you used. Citation
-metadata is included in ``CITATION.cff`` and ``.zenodo.json``.
+If PackLab contributes to academic work, cite the archived Zenodo release you
+used. Release metadata is included in ``.zenodo.json``.
 
 Contributing and contact
 ------------------------
