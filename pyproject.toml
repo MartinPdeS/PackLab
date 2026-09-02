@@ -5,11 +5,13 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 build-dir = ".skbuild/{wheel_tag}"
 logging.level = "INFO"
-wheel.exclude = ["PackLab/cpp"]
+wheel.exclude = ["PackLab/cpp", "matlab", "matlab/**"]
 install.strip = false
 sdist.exclude = [
     "tests",
     "docs",
+    "matlab",
+    "matlab/**",
     ".git*",
     "developments",
 ]

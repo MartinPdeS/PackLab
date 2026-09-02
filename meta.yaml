@@ -3,8 +3,7 @@ package:
   version: 0.6.2
 
 source:
-  path: ../
-  git_url: https://github.com/MartinPdeS/PackLab.git
+  path: .
 
 build:
   number: 0
@@ -38,7 +37,8 @@ requirements:
     - setuptools_scm[toml] ~=8.0
     - numpy >=2.0,<3
   run:
-    - python
+    - python {{ PY_VER }}* *_cpython  # [py<313]
+    - python {{ PY_VER }}* *_cp313    # [py==313]
     - martinpdes::typedunit
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3
@@ -63,6 +63,8 @@ files:
     - "PackLab/*.so"
     - "PackLab/monte_carlo/*.so"
     - "PackLab/analytical/*.so"
+  exclude:
+    - "matlab/**"
 
 test:
   imports:
