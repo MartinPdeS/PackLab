@@ -9,6 +9,8 @@ These examples make three complementary validation checks:
   same Percus--Yevick reference;
 * compare PackLab's binary-mixture Percus--Yevick solution with digitised
   Percus--Yevick curves from Tsang et al. (2001);
+* compare PackLab's monodisperse Percus--Yevick solution at $f=0.2$ and
+  $f=0.3$ with digitised curves from the same reference;
 * verify convergence of the numerical Percus--Yevick inverse transform by
   refining its wavenumber grid.
 

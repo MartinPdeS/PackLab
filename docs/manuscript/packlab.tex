@@ -5,6 +5,7 @@
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{amsmath}
+\usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{placeins}
@@ -38,18 +39,17 @@ Compiled \gls{rsa} and \gls{mc} tools are included as complementary add-ons for 
 
 \section{Statement of need}
 
-Hard-sphere models are useful idealisations for colloids, particulate materials, porous media, and disordered optical systems \cite{HansenMcDonald2013,Torquato2002}. %
-Researchers often need a rapid, reproducible reference for mixture correlation functions or structure factors while exploring radius distributions, compositions, and volume fractions. %
-These calculations are frequently implemented as disconnected scripts, which makes it easy to mix incompatible inputs, units, or Fourier-grid settings. %
+Hard-sphere-mixture correlation functions and structure factors are needed as reproducible structural inputs for colloids, particulate materials, porous media, disordered optical systems, and related scattering models \cite{HansenMcDonald2013,Torquato2002}. %
+Researchers need to vary radius distributions, compositions, and volume fractions without silently mixing incompatible physical inputs, units, or Fourier-grid settings across disconnected scripts. %
 
 Dependent-scattering calculations for dense, polydisperse suspensions provide a concrete example of this need. %
 Attendu et al. combine single-particle Mie theory with a multicomponent \gls{py} hard-sphere model to predict the scattering properties of Intralipid across wavelength and concentration \cite{Attendu2026}. %
 Such applications require the particle-size distribution, mixture correlation model, and numerical settings to remain internally consistent. %
 
-PackLab provides these capabilities in one documented Python interface. %
-Its core \texttt{analytical} namespace evaluates the \gls{py} hard-sphere-mixture reference \cite{Percus1958,Lebowitz1964}, preserving the mixture definition, dimensional inputs, and Fourier-resolution choices alongside the result. %
-The Monte-Carlo namespace is complementary: it supplies reproducible \gls{rsa} configurations for coordinate-based downstream calculations and \gls{mc} relaxation at fixed particle count and radii. %
-The package is intended for analytical parameter sweeps, structure-aware scattering models, and carefully interpreted comparisons between explicit configurations and an equilibrium hard-sphere reference. %
+PackLab provides this analytical reference in one documented Python interface. %
+Its core \texttt{analytical} namespace evaluates the \gls{py} hard-sphere-mixture model \cite{Percus1958,Lebowitz1964}, retaining the mixture definition, dimensional inputs, and Fourier-resolution choices with the result. %
+The package is therefore suited to analytical parameter sweeps and structure-aware scattering models. %
+Complementary \gls{rsa} and \gls{mc} workflows provide explicit configurations for downstream coordinate-based calculations and carefully interpreted comparisons; they are not substitutes for the equilibrium analytical reference. %
 
 \section{Scientific scope}
 
@@ -109,7 +109,7 @@ For \gls{rsa} ensemble calculations, \texttt{PackingEstimator} reports mean and 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=\linewidth]{figures/architecture.png}
-\caption{PackLab centres the \gls{py} equilibrium hard-sphere-mixture workflow and provides explicit-configuration add-ons. %
+\caption{PackLab centres the \gls{py} equilibrium hard-sphere-mixture workflow and provides complementary numerical workflows. %
 The analytical workflow evaluates pair correlations and structure factors for specified mixture inputs. %
 The \gls{rsa} and \gls{mc} workflows create, respectively, irreversible deposition configurations and fixed-volume equilibrium samples. %
 All workflows have unit-aware Python \glspl{api} backed by native C++ kernels, but their results are compared and interpreted rather than treated as interchangeable.}
@@ -121,6 +121,7 @@ All workflows have unit-aware Python \glspl{api} backed by native C++ kernels, b
 Figure~\ref{fig:rsa} shows a fixed-seed periodic \gls{rsa} realisation of a binary mixture. %
 The cross-section provides a direct geometric diagnostic of one generated configuration, while the correlation panel reports ensemble statistics for the same mixture. %
 The example is generated entirely from the public \gls{api} and is included as an executable manuscript-figure script. %
+Table~\ref{tab:reproducibility} collects the physical, stochastic, and numerical controls for all quantitative figures. %
 
 \begin{figure}[t]
 	\centering
@@ -175,18 +176,17 @@ These are numerical defaults, not physical constants, and the grid-construction 
 
 \subsection{External binary-mixture comparison}
 
-Figure~\ref{fig:tsang-comparison} is the manuscript's primary \gls{py} validation result. %
-It compares PackLab's binary-mixture solution with manually digitised \gls{py} curves from Tsang et al. \cite{Tsang2001} at matched radius ratio and partial volume fractions. %
-The expected hard-core contact locations, decay toward the uncorrelated limit, and damped post-contact structure agree visually across all three partial correlations. %
-Because the reference was digitised from a printed plot, this is a reproducible visual validation rather than a high-precision error measurement. %
+Figure~\ref{fig:tsang-comparison} is the manuscript's primary external comparison of the \gls{py} implementation. %
+It compares PackLab's mono- and binary-mixture solutions with manually digitised \gls{py} curves from Tsang et al. \cite{Tsang2001} at matched volume fractions and radius ratio. %
+The expected hard-core contact locations, decay toward the uncorrelated limit, and damped post-contact structure agree visually across both monodisperse curves and all three binary partial correlations. %
+The figure is therefore a reproducible visual implementation comparison, rather than a high-precision error measurement, because the reference was digitised from a printed plot. %
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\linewidth]{figures/figure4_independent_validation.pdf}
-\caption{Book-style \gls{py} pair-correlation comparison based on Figures~8.1.3 and~8.3.4 of Tsang et al. \cite{Tsang2001}. %
-(a) Mono-disperse reduced pair correlations at volume fractions $f=0.2$ and $f=0.4$, plotted against $r/b$. %
-(b) Binary-mixture partial pair correlations against $r/(2a_1)$ for $a_2=2a_1$, partial volume fractions $f_1=0.2$ and $f_2=0.1$; colour-coded curves with distinct line styles are PackLab \gls{py} solutions, and black open triangle, square, and circle markers are manually digitised \gls{py} reference curves from Figure~8.3.4. %
-The digitised markers provide a visual reference only: their precision is limited by extraction from the printed figure, and they do not replace the source numerical dataset.}
+\caption{PackLab \gls{py} pair correlations (coloured lines) and digitised reference curves from Tsang et al. \cite{Tsang2001} (open markers). %
+(a) Monodisperse correlations at volume fractions $f=0.2$ and $f=0.3$, plotted against $r/b$. %
+(b) Binary-mixture partial correlations for $a_2=2a_1$ and partial volume fractions $f_1=0.2$, $f_2=0.1$, plotted against $r/(2a_1)$.}
     \label{fig:tsang-comparison}
 \end{figure}
 
@@ -197,23 +197,33 @@ The digitised markers provide a visual reference only: their precision is limite
 Figure~\ref{fig:validation} distinguishes model comparison from numerical verification. %
 Panel (a) compares all unique partial correlations from a 100-realisation \gls{rsa} ensemble with \gls{py} evaluated for the same binary-mixture inputs and the same radial coordinates. %
 It demonstrates how PackLab makes the common inputs, statistical uncertainty, and model-dependent differences inspectable. %
-Panel (b) is the actual numerical convergence check: it measures the \gls{py} result against a separately specified, much finer wavenumber grid. %
+The differences in panel (a) are expected physical consequences of comparing finite, irreversible \gls{rsa} with an equilibrium \gls{py} reference, rather than a numerical-error measure. %
+Panel (b) instead isolates numerical convergence by measuring the \gls{py} result against a separately specified, much finer wavenumber grid. %
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=\linewidth]{figures/figure3_validation.pdf}
-\caption{Matched \gls{rsa}--\gls{py} comparison and \gls{py} numerical convergence for a binary mixture with radii 0.357 and 0.714~\textmu m, equal number fractions, and total volume fraction 0.25. %
-(a) The coloured solid curves and black dashed curves show, respectively, the \gls{rsa} ensemble mean and the corresponding \gls{py} equilibrium reference for $g_{00}(r)$, $g_{01}(r)$, and $g_{11}(r)$. %
-Same-colour bands show the \gls{rsa} one-standard-error uncertainty; dotted lines mark the corresponding hard-core contact distances, and the grey dashed line marks $g_{ij}(r)=1$. %
-The principal short-range discrepancies are physical rather than numerical: \gls{rsa} is a finite, irreversible insertion protocol, whereas \gls{py} approximates an equilibrium hard-sphere mixture. %
-The uncertainty bands quantify finite-ensemble variation, while panel (b) separately tests the inverse-transform grid error. %
-(b) \gls{rms} difference between \gls{py} calculations and a separately specified 512-samples-per-oscillation reference as the wavenumber grid is refined. %
-The red and blue dashed lines identify PackLab's under-resolution warning threshold (8 samples per oscillation) and automatic default (12), respectively. %
-The decreasing error provides numerical-convergence evidence for the analytical calculation; physical validation of the \gls{py} approximation instead requires an independent equilibrium benchmark such as Frenkel et al. \cite{Frenkel1986}. A comparison with Ding et al. \cite{Ding1992} additionally requires matching its ensemble definition.}
+\caption{Matched \gls{rsa}--\gls{py} comparison and \gls{py} grid convergence for a binary mixture with radii 0.357 and 0.714~\textmu m, equal number fractions, and total volume fraction 0.25. %
+(a) \gls{rsa} ensemble means (coloured solid curves) with one-standard-error bands and \gls{py} references (black dashed curves) for the three unique partial correlations; dotted lines mark hard-core contact distances. %
+(b) \gls{rms} difference from a 512-samples-per-oscillation \gls{py} reference as the wavenumber grid is refined; red and blue dashed lines mark the warning threshold (8) and automatic default (12), respectively.}
 	\label{fig:validation}
 \end{figure}
 
-\FloatBarrier
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Reproducibility controls for the quantitative figures. Figure numbers refer to the rendered manuscript.}
+\label{tab:reproducibility}
+\begin{tabular}{p{0.55in}p{1.65in}p{1.55in}p{2.15in}}
+\toprule
+Figure & Mixture and geometry & Stochastic controls & Numerical and reference controls \\
+\midrule
+2 & Radii 100 and 200~nm; number fractions 0.65 and 0.35; periodic cube of side $10~\mathrm{\mu m}$; target $\phi=0.20$. & Seed 20260828; 64 independent realisations; 500 radial bins. & Pair correlations to $2~\mathrm{\mu m}$; maximum attempts and consecutive rejections of 100000 and 20000. \\
+3 & Monodisperse $f=0.2,0.3$; binary radii $a_1=1$, $a_2=2~\mathrm{\mu m}$ with $f_1=0.2$, $f_2=0.1$. & Deterministic analytical calculations. & \texttt{wavenumber="auto"}; manually digitised Tsang et al. curves are the visual reference. \\
+4 & Radii 0.357 and 0.714~$\mathrm{\mu m}$; equal number fractions; $\phi=0.25$; periodic cube of side $30~\mathrm{\mu m}$. & Seed 2026; 100 realisations; 1500 radial bins. & Grid resolutions 4--96 samples per oscillation; 512-samples-per-oscillation reference; $r_{\max}=10~\mathrm{\mu m}$ and 1000 radial points. \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \section{Quality control, availability, and limitations}
 

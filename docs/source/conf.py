@@ -14,6 +14,7 @@ package_name = "PackLab"
 version = PackLab.__version__
 
 current_dir = Path(".")
+os.environ["PACKLAB_DOCS_ROOT"] = str(Path(__file__).resolve().parents[1])
 
 sys.path.append(str(current_dir.resolve()))
 

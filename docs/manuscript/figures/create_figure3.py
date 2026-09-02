@@ -183,13 +183,13 @@ def plot_convergence(axes: Axes) -> None:
     """Plot PY numerical convergence, independently of the RSA comparison."""
     samples, errors = grid_convergence()
     axes.semilogy(samples, errors, "o-", color="#d97706", linewidth=1.8, markersize=4.5)
-    # axes.axvline(WARNING_THRESHOLD, color="#b91c1c", linestyle="--", linewidth=1.1, label="warning threshold")
-    # axes.axvline(AUTOMATIC_GRID_DEFAULT, color="#1677b8", linestyle="--", linewidth=1.1, label="automatic default")
+    axes.axvline(WARNING_THRESHOLD, color="#b91c1c", linestyle="--", linewidth=1.1, label="warning threshold")
+    axes.axvline(AUTOMATIC_GRID_DEFAULT, color="#1677b8", linestyle="--", linewidth=1.1, label="automatic default")
     axes.set(
         xlabel="samples per sinc-kernel\noscillation",
         ylabel=r"PY RMS difference in $g_{ij}(r)$",
     )
-    # axes.legend(frameon=True, fontsize=LEGEND_FONT_SIZE, loc="upper right")
+    axes.legend(frameon=True, fontsize=LEGEND_FONT_SIZE, loc="upper right")
     axes.grid(alpha=0.18, which="both")
     axes.tick_params(labelsize=TICK_LABEL_SIZE)
     axes.xaxis.label.set_size(AXIS_LABEL_SIZE)

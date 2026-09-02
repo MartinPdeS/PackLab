@@ -13,6 +13,7 @@ numerical data, so this is a visual reference comparison rather than a
 high-precision error benchmark.
 """
 
+import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -26,12 +27,11 @@ from PackLab import analytical, ureg
 # Load the digitised reference data
 # ---------------------------------
 
-data_path = (
-    Path(__file__).resolve().parents[2]
-    / "manuscript"
-    / "data"
-    / "tsang_2001_figure_8_3_4_digitized.csv"
-)
+if "PACKLAB_DOCS_ROOT" in os.environ:
+    docs_root = Path(os.environ["PACKLAB_DOCS_ROOT"])
+else:
+    docs_root = Path(__file__).resolve().parents[2]
+data_path = docs_root / "manuscript" / "data" / "tsang_2001_figure_8_3_4_digitized.csv"
 digitized = np.genfromtxt(data_path, delimiter=",", names=True, dtype=None, encoding="utf-8")
 
 

@@ -34,7 +34,7 @@ TARGET_PACKING_FRACTION = 0.20
 # --- Figure parameters -----------------------------------------------------
 INCLUDE_COMPOSITION_PANEL = False
 SLICE_THICKNESS = 0.55  # micrometres
-PAIR_CORRELATION_BINS = 200
+PAIR_CORRELATION_BINS = 500
 PAIR_CORRELATION_MAXIMUM_RADIUS = 2.0  # micrometres
 ESTIMATOR_SAMPLES = 64
 COLOURS = np.array(["#1677b8", "#d97706"])
