@@ -19,10 +19,11 @@ each species pair :math:`(i, j)`.
 
 """
 
+import matplotlib.pyplot as plt
 import numpy as np
+
 from PackLab import ureg
 from PackLab import analytical, samplers
-import matplotlib.pyplot as plt
 
 distribution = samplers.NormalRadiusSampler(
     mean=1.5 * ureg.micrometer,
@@ -59,7 +60,7 @@ n = result.g.shape[0]
 
 for i in range(n):
     for j in range(n):
-        ax.plot(
+        _ = ax.plot(
             result.distances.magnitude,
             result.g[i, j, :],
             label=f"g[{i},{j}]"
@@ -69,6 +70,6 @@ ax.set_xlabel("r")
 ax.set_ylabel("g(r)")
 ax.set_title("Radial distribution functions")
 
-ax.legend()
+_ = ax.legend()
 
 plt.show()

@@ -58,5 +58,5 @@ print(f"Completed sweeps: {statistics.completed_sweeps}")
 print(f"Packing fraction: {equilibrated_result.statistics.packing_fraction_geometry:.3f}")
 
 figure = equilibrated_result.plot_slice_2d(show=False)
-figure.suptitle("Hard-sphere configuration after Metropolis equilibration")
+_ = figure.suptitle("Hard-sphere configuration after Metropolis equilibration")
 plt.show()

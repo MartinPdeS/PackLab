@@ -65,8 +65,8 @@ for index, box_length in enumerate(box_lengths):
 # ------------------------------------------------------
 
 figure, axis = plt.subplots(figsize=(6, 4))
-axis.plot(sphere_counts, elapsed_seconds, "o-", color="#d97706")
-axis.set(
+_ = axis.plot(sphere_counts, elapsed_seconds, "o-", color="#d97706")
+_ = axis.set(
     xlabel="accepted sphere count",
     ylabel="wall-clock time (s)",
     title="Periodic RSA generation scaling",

@@ -36,4 +36,4 @@ print(result)
 print(f"Packing fraction: {result.statistics.packing_fraction_geometry:.3f}")
 
 figure = result.plot_slice_2d(show=False)
-figure.suptitle("Central slice of a periodic RSA packing")
+_ = figure.suptitle("Central slice of a periodic RSA packing")

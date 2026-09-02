@@ -29,7 +29,7 @@ log_normal = samplers.LogNormalRadiusSampler(
 figure, axes = plt.subplots(1, 2, figsize=(9, 3.5), sharey=True)
 for axis, sampler, label in zip(axes, (uniform, log_normal), ("Uniform", "Log-normal")):
     radii, fractions = sampler.to_bins()
-    axis.bar(radii.to("nanometer").magnitude, fractions, width=7)
+    _ = axis.bar(radii.to("nanometer").magnitude, fractions, width=7)
     axis.set_title(label)
     axis.set_xlabel("radius (nm)")
 

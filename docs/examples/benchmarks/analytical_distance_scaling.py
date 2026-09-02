@@ -60,8 +60,8 @@ for point_count in point_counts:
 # ---------------------------------------
 
 figure, axis = plt.subplots(figsize=(6, 4))
-axis.loglog(point_counts, elapsed_seconds, "o-", color="#1677b8")
-axis.set(
+_ = axis.loglog(point_counts, elapsed_seconds, "o-", color="#1677b8")
+_ = axis.set(
     xlabel="requested real-space distance points",
     ylabel="wall-clock time (s)",
     title="Percus--Yevick evaluation scaling",

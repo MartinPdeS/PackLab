@@ -25,20 +25,14 @@ requirements:
     - llvm-openmp  # [osx]
     - cmake >=3.20
   host:
-    # Pin the CPython build flavour explicitly.  Without this, conda-build
-    # 26 can propagate its debug-Python variant into the test environment,
-    # which is not published on the standard conda-forge channel.
-    - python {{ PY_VER }}* *_cpython  # [py<313]
-    - python {{ PY_VER }}* *_cp313    # [py==313]
-    - python_abi 3.13.* *_cp313   # [py==313]
+    - python {{ PY_VER }}
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
     - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
     - numpy >=2.0,<3
   run:
-    - python {{ PY_VER }}* *_cpython  # [py<313]
-    - python {{ PY_VER }}* *_cp313    # [py==313]
+    - python {{ PY_VER }}
     - martinpdes::typedunit
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3
@@ -70,11 +64,7 @@ test:
   imports:
     - PackLab
   requires:
-    # Conda solves the test environment separately from host and run.  Keep
-    # its interpreter on the normal CPython ABI rather than the unavailable
-    # debug build variant.
-    - python {{ PY_VER }}* *_cpython  # [py<313]
-    - python {{ PY_VER }}* *_cp313    # [py==313]
+    - python {{ PY_VER }}
     - pytest >=0.6
     - pytest-cov >=2.0
     - pytest-json-report ==1.5

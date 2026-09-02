@@ -18,6 +18,8 @@ This is the recommended starting point when learning how to use PackLab.
 """
 from PackLab import monte_carlo, samplers
 from PackLab import ureg
+
+
 # %%
 # Simulation domain
 # -----------------
@@ -53,14 +55,22 @@ result = rsa_simulator.run()
 
 result.statistics.print()
 
-result.plot_slice_2d(
+# %%
+# Visualise a central slice
+# -------------------------
+
+_ = result.plot_slice_2d(
     slice_axis="z",
     slice_center_fraction=0.5,
     slice_thickness_fraction=0.08,
     maximum_circles_in_slice=2500,
 )
 
-result.plot_pair_correlation(
+# %%
+# Plot the pair correlation
+# -------------------------
+
+_ = result.plot_pair_correlation(
     n_bins=150,
     maximum_pairs=200_000
 )

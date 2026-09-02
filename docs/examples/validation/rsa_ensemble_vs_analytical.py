@@ -70,8 +70,8 @@ standard_error = estimate.std_g / estimator.statistics.completed_samples**0.5
 
 for i, j in ((0, 0), (0, 1), (1, 0), (1, 1)):
     axis = axes[i, j]
-    axis.plot(estimate.centers, estimate.mean_g[i, j], color="C0", label="RSA mean")
-    axis.fill_between(
+    _ = axis.plot(estimate.centers, estimate.mean_g[i, j], color="C0", label="RSA mean")
+    _ = axis.fill_between(
         estimate.centers,
         estimate.mean_g[i, j] - standard_error[i, j],
         estimate.mean_g[i, j] + standard_error[i, j],
@@ -79,14 +79,14 @@ for i, j in ((0, 0), (0, 1), (1, 0), (1, 1)):
         alpha=0.25,
         label="RSA standard error",
     )
-    axis.plot(estimate.centers, py_result.g[i, j], "k--", label="Percus--Yevick")
+    _ = axis.plot(estimate.centers, py_result.g[i, j], "k--", label="Percus--Yevick")
     axis.set_title(rf"$g_{{{i}{j}}}(r)$")
     axis.set_xlabel("separation $r$ [$\\mu$m]")
     axis.set_ylabel(r"$g_{ij}(r)$")
     axis.grid(alpha=0.2)
 
 handles, labels = axes[0, 0].get_legend_handles_labels()
-figure.legend(handles, labels, loc="upper center", ncol=3)
+_ = figure.legend(handles, labels, loc="upper center", ncol=3)
 figure.suptitle("RSA ensemble and matching Percus--Yevick reference", y=0.98)
 figure.tight_layout(rect=(0, 0, 1, 0.91))
 plt.show()

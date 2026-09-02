@@ -64,9 +64,9 @@ figure, (curves_axis, error_axis) = plt.subplots(1, 2, figsize=(11, 4))
 
 for i, j in ((0, 0), (0, 1), (1, 1)):
     label = rf"$g_{{{i}{j}}}$"
-    curves_axis.plot(distances, automatic.g[i, j], label=f"auto {label}")
-    curves_axis.plot(distances, refined.g[i, j], "--", color="black", alpha=0.65)
-    error_axis.semilogy(
+    _ = curves_axis.plot(distances, automatic.g[i, j], label=f"auto {label}")
+    _ = curves_axis.plot(distances, refined.g[i, j], "--", color="black", alpha=0.65)
+    _ = error_axis.semilogy(
         distances,
         np.maximum(np.abs(automatic.g[i, j] - refined.g[i, j]), 1e-12),
         label=label,
@@ -75,12 +75,12 @@ for i, j in ((0, 0), (0, 1), (1, 1)):
 curves_axis.set_title("Automatic grid (colour) and refined grid (dashed)")
 curves_axis.set_xlabel("separation $r$ [$\\mu$m]")
 curves_axis.set_ylabel(r"$g_{ij}(r)$")
-curves_axis.legend()
+_ = curves_axis.legend()
 curves_axis.grid(alpha=0.2)
 
 error_axis.set_title("Absolute change after grid refinement")
 error_axis.set_xlabel("separation $r$ [$\\mu$m]")
 error_axis.set_ylabel(r"$|g_{ij}^{auto} - g_{ij}^{refined}|$")
-error_axis.legend()
+_ = error_axis.legend()
 error_axis.grid(alpha=0.2)
 figure.tight_layout()

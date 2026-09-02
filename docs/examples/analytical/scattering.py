@@ -48,15 +48,24 @@ fig, ax = plt.subplots(1, 1, figsize=(12, 8))
 K = len(particle_radii)
 for i in range(K):
     for j in range(K):
-        ax.plot(py_result.distances.to('micrometer'), py_result.g[i, j], linewidth=1.5, label=f'{i}-{j}')
+        _ = ax.plot(
+            py_result.distances.to("micrometer"),
+            py_result.g[i, j],
+            linewidth=1.5,
+            label=f"{i}-{j}",
+        )
 
 
 ax.set_xlabel("r")
 ax.set_ylabel(r"$g_{ij}(r)$")
 ax.set_title("Partial pair correlation: RSA vs Percus Yevick")
-ax.legend()
+_ = ax.legend()
 plt.show()
 
+
+# %%
+# Calculate and plot the scattering phase function
+# -------------------------------------------------
 
 datas = scattering.compute_scattering_amplitudes(
     wavelength=150 * ureg.nanometer,
@@ -78,7 +87,7 @@ phi, theta, phase_function = datas.get_phase_function(
 )
 
 
-fig1 = scattering.plottings.plot_phase_function_3d(
+_ = scattering.plottings.plot_phase_function_3d(
     phi=phi,
     theta=theta,
     phase_function=phase_function.to('1 / meter').magnitude,

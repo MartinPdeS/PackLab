@@ -28,5 +28,6 @@ phase function.
    )
    dataset.process()
 
-The gallery's scattering example demonstrates a complete, unit-aware workflow
-and the available plotting helpers.
+The scattering gallery provides separate examples for single-particle
+amplitudes and cross sections, and for a mixture phase function using a
+Percus--Yevick structure factor.

@@ -7,6 +7,8 @@ The gallery is organised by the question each workflow answers:
   equilibrium hard-sphere configurations with Metropolis moves.
 * **Analytical** evaluates Percus--Yevick mixture models and scattering
   quantities without generating a packing.
+* **Scattering** evaluates optional PyMieSim-backed optical amplitudes and
+  phase functions for individual spheres and analytical mixtures.
 * **Validation** compares RSA and Metropolis estimates with their analytical
   counterparts.
 * **Benchmarks** records reproducible runtime, scaling, and memory measurements

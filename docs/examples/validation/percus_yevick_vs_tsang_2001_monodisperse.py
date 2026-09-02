@@ -54,24 +54,24 @@ for volume_fraction, colour, line_style, marker in cases:
         radii=domain.radii,
         wavenumber="auto",
     ).compute(reduced_separation * 2.0 * radii[0])
-    axis.plot(reduced_separation, result.g[0, 0], color=colour, linestyle=line_style, linewidth=2)
+    _ = axis.plot(reduced_separation, result.g[0, 0], color=colour, linestyle=line_style, linewidth=2)
 
     reference = digitized[np.isclose(digitized["volume_fraction"], volume_fraction)]
-    axis.plot(
+    _ = axis.plot(
         reference["reduced_separation"],
         reference["g_r"],
         linestyle="none", marker=marker, markersize=4.5,
         markerfacecolor="white", markeredgecolor="black", markeredgewidth=0.9,
     )
 
-axis.axhline(1.0, color="0.65", linestyle=":", linewidth=1)
-axis.set(
+_ = axis.axhline(1.0, color="0.65", linestyle=":", linewidth=1)
+_ = axis.set(
     xlim=(0.0, 5.0), ylim=(0.0, 3.5),
     xlabel=r"reduced separation $r/b$", ylabel=r"pair correlation $g(r)$",
     title="PackLab and digitised Tsang et al. PY reference",
 )
 axis.grid(alpha=0.2)
-axis.legend(handles=[
+_ = axis.legend(handles=[
     Line2D([], [], color=colour, linestyle=line_style, marker=marker,
            markerfacecolor="white", markeredgecolor="black", label=rf"$f={fraction:.1f}$")
     for fraction, colour, line_style, marker in cases

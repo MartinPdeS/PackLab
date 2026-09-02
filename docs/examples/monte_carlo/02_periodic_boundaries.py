@@ -33,4 +33,4 @@ print(
 )
 
 figure = result.plot_centers_3d(show=False)
-figure.suptitle("Periodic RSA configuration")
+_ = figure.suptitle("Periodic RSA configuration")

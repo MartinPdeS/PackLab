@@ -96,8 +96,8 @@ print(f"Measured volume fraction: {volume_fraction:.3f}")
 # -------------------
 
 figure, axis = plt.subplots(figsize=(7, 4))
-axis.plot(centers, mean_g, color="C1", label="Metropolis chain mean")
-axis.fill_between(
+_ = axis.plot(centers, mean_g, color="C1", label="Metropolis chain mean")
+_ = axis.fill_between(
     centers,
     mean_g - sample_spread,
     mean_g + sample_spread,
@@ -105,11 +105,11 @@ axis.fill_between(
     alpha=0.25,
     label="variation across chain samples",
 )
-axis.plot(centers, py_result.g[0, 0], "k--", label="Percus--Yevick")
+_ = axis.plot(centers, py_result.g[0, 0], "k--", label="Percus--Yevick")
 axis.set_xlabel("separation $r$ [$\\mu$m]")
 axis.set_ylabel("$g(r)$")
 axis.set_title("Metropolis hard spheres and matching Percus--Yevick reference")
 axis.grid(alpha=0.2)
-axis.legend()
+_ = axis.legend()
 figure.tight_layout()
 plt.show()
