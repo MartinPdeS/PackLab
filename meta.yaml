@@ -26,7 +26,11 @@ requirements:
     - llvm-openmp  # [osx]
     - cmake >=3.20
   host:
-    - python {{ PY_VER }}*
+    # Pin the CPython build flavour explicitly.  Without this, conda-build
+    # 26 can propagate its debug-Python variant into the test environment,
+    # which is not published on the standard conda-forge channel.
+    - python {{ PY_VER }}* *_cpython  # [py<313]
+    - python {{ PY_VER }}* *_cp313    # [py==313]
     - python_abi 3.13.* *_cp313   # [py==313]
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
