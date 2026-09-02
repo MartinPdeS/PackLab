@@ -2,10 +2,7 @@ name: Deploy to PyPi
 
 on:
   push:
-    branches: [ "master" ]
-    tags: '*'
-  pull_request:
-    branches: [ "master" ]
+    tags: [ "v*" ]
 
 permissions:
     contents: write

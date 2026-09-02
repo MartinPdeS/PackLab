@@ -2,10 +2,7 @@ name: Deploy Conda Packages
 
 on:
   push:
-    branches: [ "master" ]
-    tags: '*'
-  pull_request:
-    branches: [ "master" ]
+    tags: [ "v*" ]
 
 permissions:
     contents: write

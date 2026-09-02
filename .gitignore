@@ -10,6 +10,8 @@
 !development
 !docs
 !tests
+!tools
+!tools/release_tag.py
 !.flake8
 !.gitignore
 !.pre-commit-config.yaml
