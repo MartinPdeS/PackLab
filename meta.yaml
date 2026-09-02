@@ -34,6 +34,7 @@ requirements:
     - setuptools_scm[toml] ~=8.0
     - numpy >=2.0,<3
   run:
+    - python
     - martinpdes::typedunit
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3
@@ -63,7 +64,6 @@ test:
   imports:
     - PackLab
   requires:
-    - python {{ PY_VER }}*
     - pytest >=0.6
     - pytest-cov >=2.0
     - pytest-json-report ==1.5
