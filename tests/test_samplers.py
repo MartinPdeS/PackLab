@@ -42,6 +42,25 @@ def test_constant_to_bins_returns_single_center_and_unit_weight():
     assert weights[0] == pytest.approx(1.0)
 
 
+def test_plot_histogram_returns_axes_with_radius_classes():
+    import matplotlib.pyplot as plt
+
+    sampler = samplers.UniformRadiusSampler(
+        minimum_radius=100.0 * ureg.nanometer,
+        maximum_radius=200.0 * ureg.nanometer,
+        bins=4,
+    )
+    figure, axis = plt.subplots()
+
+    returned_axis = sampler.plot_histogram(ax=axis, color="tab:blue")
+
+    assert returned_axis is axis
+    assert len(axis.patches) == 4
+    assert axis.get_xlabel() == "particle radius (nanometer)"
+    assert axis.get_ylabel() == "number fraction"
+    plt.close(figure)
+
+
 def test_constant_sampler_runs_rsa_with_a_valid_single_class_index():
     """A default constant sampler must not emit the invalid class index -1."""
     from PackLab import monte_carlo

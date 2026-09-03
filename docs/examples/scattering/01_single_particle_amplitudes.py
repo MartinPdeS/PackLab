@@ -1,6 +1,6 @@
 """
 Single-particle scattering amplitudes
-====================================
+========================================
 
 Evaluate the far-field amplitudes of a dielectric sphere and inspect its
 scattering cross section. This example uses PackLab's optional PyMieSim

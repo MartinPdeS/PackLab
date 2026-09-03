@@ -81,7 +81,60 @@ Returns
 radii : pint.Quantity, shape (n_bins,)
     Representative radii in meters.
 weights : numpy.ndarray, shape (n_bins,)
-    Normalized probability weights.
+Normalized probability weights.
+)doc"
+        )
+        .def(
+            "plot_histogram",
+            [ureg](const RadiusSampler& self, py::object ax, py::object unit, py::kwargs kwargs) {
+                auto [radii_m, weights] = self.to_bins();
+
+                py::array_t<double> radii_array(static_cast<py::ssize_t>(radii_m.size()));
+                py::array_t<double> weights_array(static_cast<py::ssize_t>(weights.size()));
+                {
+                    auto radii_buffer = radii_array.mutable_unchecked<1>();
+                    auto weights_buffer = weights_array.mutable_unchecked<1>();
+                    for (py::ssize_t i = 0; i < radii_buffer.shape(0); ++i) {
+                        radii_buffer(i) = radii_m[static_cast<std::size_t>(i)];
+                        weights_buffer(i) = weights[static_cast<std::size_t>(i)];
+                    }
+                }
+
+                py::object radii = (radii_array * ureg.attr("meter")).attr("to")(unit).attr("magnitude");
+                if (ax.is_none()) {
+                    ax = py::module_::import("matplotlib.pyplot").attr("gca")();
+                }
+
+                py::tuple arguments(2);
+                arguments[0] = radii;
+                arguments[1] = weights_array;
+                ax.attr("bar")(*arguments, **kwargs);
+                ax.attr("set_xlabel")(py::str("particle radius (") + py::str(unit) + py::str(")"));
+                ax.attr("set_ylabel")("number fraction");
+                return ax;
+            },
+            py::arg("ax") = py::none(),
+            py::arg("unit") = "nanometer",
+            R"doc(
+Plot the binned radius distribution as a probability-mass histogram.
+
+The bars show the representative radius classes and normalized number
+fractions returned by :meth:`to_bins`. Continuous samplers therefore require
+``bins`` to be positive.
+
+Parameters
+----------
+ax : matplotlib.axes.Axes, optional
+    Axes receiving the bars. The current axes are used when omitted.
+unit : str or pint.Unit, default="nanometer"
+    Unit used on the radius axis.
+**kwargs
+    Additional keyword arguments forwarded to :meth:`matplotlib.axes.Axes.bar`.
+
+Returns
+-------
+matplotlib.axes.Axes
+    The axes containing the histogram.
 )doc"
         )
         ;

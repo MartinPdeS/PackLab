@@ -40,3 +40,18 @@ grid has fewer than eight samples per sinc-kernel oscillation.
 The model assumes an idealised hard-sphere fluid. It is therefore a useful
 reference for Monte-Carlo results, rather than a replacement for an RSA
 configuration with finite size, boundaries, and a chosen radius sampler.
+
+Examples
+--------
+
+The analytical gallery starts with the two common equilibrium cases:
+
+* :ref:`sphx_glr_gallery_analytical_01_monodisperse_volume_fraction.py`
+  shows how density changes the monodisperse pair correlation.
+* :ref:`sphx_glr_gallery_analytical_02_binary_mixture_pair_correlations.py`
+  resolves like- and unlike-species correlations in a binary mixture.
+* :ref:`sphx_glr_gallery_analytical_analytical_poly_disperse.py` converts a
+  continuous size distribution to a multi-class mixture.
+
+Use :doc:`scattering` when the Percus--Yevick correlation tensor is to be
+combined with optical single-particle amplitudes.

@@ -28,12 +28,8 @@ log_normal = samplers.LogNormalRadiusSampler(
 
 figure, axes = plt.subplots(1, 2, figsize=(9, 3.5), sharey=True)
 for axis, sampler, label in zip(axes, (uniform, log_normal), ("Uniform", "Log-normal")):
-    radii, fractions = sampler.to_bins()
-    _ = axis.bar(radii.to("nanometer").magnitude, fractions, width=7)
+    _ = sampler.plot_histogram(ax=axis, color="tab:blue", width=7)
     axis.set_title(label)
-    axis.set_xlabel("radius (nm)")
-
-axes[0].set_ylabel("number fraction")
 figure.tight_layout()
 
 assert np.isclose(sum(uniform.to_bins()[1]), 1.0)

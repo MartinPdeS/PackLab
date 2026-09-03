@@ -31,3 +31,12 @@ phase function.
 The scattering gallery provides separate examples for single-particle
 amplitudes and cross sections, and for a mixture phase function using a
 Percus--Yevick structure factor.
+
+Examples
+--------
+
+* :ref:`sphx_glr_gallery_scattering_01_single_particle_amplitudes.py`
+  evaluates amplitudes and cross sections for individual sphere diameters.
+* :ref:`sphx_glr_gallery_scattering_02_structure_factor_phase_function.py`
+  combines a binary Percus--Yevick mixture with optical amplitudes to obtain a
+  structure-corrected phase function.

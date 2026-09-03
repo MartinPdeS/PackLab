@@ -25,6 +25,7 @@ citation information.
 
    analytical
    monte_carlo
+   assumptions
    references
 
 Percus--Yevick hard-sphere mixtures
@@ -42,6 +43,34 @@ and size ratio. Its numerical accuracy also depends on the wavenumber grid
 used to recover real-space correlations. These are separate questions. The
 automatic grid is a useful default, while explicit grids allow a resolution
 study for a particular distance range.
+
+For species number densities :math:`\rho_i`, number fractions :math:`x_i`,
+and total number density :math:`\rho`, the mixture has
+
+.. math::
+
+   \rho_i = x_i\rho, \qquad
+   \phi = \sum_i \rho_i \frac{4\pi a_i^3}{3}.
+
+The partial pair correlation is defined by the expected number of species
+:math:`j` centres in a shell around a species :math:`i` centre,
+
+.. math::
+
+   \mathrm{d}N_j = \rho_j g_{ij}(r)\,4\pi r^2\mathrm{d}r.
+
+For hard spheres, :math:`g_{ij}(r)=0` inside the excluded core
+:math:`r<a_i+a_j`. Defining :math:`h_{ij}(r)=g_{ij}(r)-1`, the reciprocal-space
+structure-factor matrix is
+
+.. math::
+
+   S_{ij}(k) = \delta_{ij} + \sqrt{\rho_i\rho_j}\,\widetilde{h}_{ij}(k).
+
+The Ornstein--Zernike relation couples every species pair through the direct
+correlations :math:`c_{ij}`. Percus--Yevick closes that relation by enforcing
+the hard core and setting the direct correlation to zero outside it. This is
+why PY is a useful, fast reference but still an approximation.
 
 Random sequential adsorption
 ----------------------------
@@ -66,6 +95,18 @@ The radius sampler is consequently part of the physical model: a
 monodisperse simulation and a broad polydisperse simulation at the same
 nominal packing fraction need not have the same structure.
 
+For a candidate centre :math:`\mathbf{x}` and radius :math:`a`, RSA accepts a
+proposal only when it is outside every excluded volume. Symbolically,
+
+.. math::
+
+   A(\mathbf{x}, a) = \prod_{n=1}^{N}
+   \Theta\!\left(\lVert\mathbf{x}-\mathbf{x}_n\rVert-a-a_n\right),
+
+where :math:`\Theta` is one for a non-overlapping proposal and zero otherwise.
+Once a proposal is accepted, it becomes part of the product for every later
+proposal. This simple rule is the source of RSA's history dependence.
+
 Metropolis Monte Carlo
 ----------------------
 
@@ -82,6 +123,28 @@ also be similar; their autocorrelation indicates how many sweeps should
 separate approximately independent samples. Finally, repeat a calculation for
 larger boxes or particle counts when bulk correlations are required, because a
 finite simulation box can alter the measured result.
+
+For a symmetric proposal distribution, the Metropolis acceptance probability
+is
+
+.. math::
+
+   P_{\mathrm{accept}} = \min\!\left[1,
+   \exp\!\left(-\beta\Delta U\right)\right].
+
+The hard-sphere potential is either zero (no overlap) or infinite (overlap),
+so this reduces to probability one for a valid move and zero for an overlapping
+move. For an observable :math:`A`, estimate the autocorrelation
+:math:`\rho_A(t)` across sampling lags. Its integrated value sets the
+approximate number of independent observations,
+
+.. math::
+
+   N_{\mathrm{eff}} \approx
+   \frac{N}{1 + 2\sum_{t=1}^{\infty}\rho_A(t)}.
+
+In practice, truncate the sum once the measured autocorrelation has decayed
+into noise and compare results across larger domains.
 
 Periodic boundaries
 -------------------

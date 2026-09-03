@@ -58,3 +58,16 @@ specific radius distribution. Use :mod:`PackLab.analytical` for fast
 Percus--Yevick predictions over a wave-vector grid. The two workflows can be
 compared through their pair correlations or structure factors, but they are not
 interchangeable models.
+
+Further guides
+--------------
+
+See :doc:`outputs` for a map of result objects, :doc:`assumptions` for the
+physical and numerical limitations of each workflow, and :doc:`installation`
+for Conda installation and reproducibility guidance.
+
+.. toctree::
+   :hidden:
+
+   outputs
+   installation
