@@ -23,6 +23,10 @@ def compute_scattering_amplitudes(
 
     Parameters
     ----------
+    phi
+        Angle grid relative to the transverse plane. The amplitudes are
+        evaluated at ``phi + pi / 2`` and the returned dataset stores this
+        physical polar-angle grid in the interval ``[0, pi]``.
     diameters
         Iterable of particle diameters. Each element is expected to be a Pint Quantity
         with length units (for example `6 * ureg.nanometer`).
@@ -69,6 +73,7 @@ def compute_scattering_amplitudes(
         PolarizationState = _PolarizationState
 
     datas = ScatteringDataset()
+    polar_angle = phi + np.pi / 2 * ureg.radian
 
     for diameter in diameters:
         source = Gaussian(
@@ -87,7 +92,7 @@ def compute_scattering_amplitudes(
         setup = Setup(source=source, scatterer=scatterer)
 
         s1, s2 = setup.get_s1s2(
-            angles=phi + np.pi / 2 * ureg.radian
+            angles=polar_angle
         )
 
         data = ScatteringData(
@@ -95,7 +100,7 @@ def compute_scattering_amplitudes(
             S2=s2,
             k=source.wavenumber_vacuum * medium,
             Csca=setup.get("Csca"),
-            phi=phi,
+            phi=polar_angle,
         )
 
         if plot:
@@ -107,6 +112,6 @@ def compute_scattering_amplitudes(
             print(f"[compute_scattering_amplitudes] Diameter: {diameter}, material: {material}, medium: {medium}, Csca: {data.Csca}")
 
     datas.k = data.k
-    datas.phi = phi
+    datas.phi = polar_angle
 
     return datas

@@ -11,6 +11,8 @@ Scattering support is an optional integration with PyMieSim. Install it with:
 a refractive-index and diameter grid. ``ScatteringDataset`` then stores those
 amplitudes with their coordinates and derives scattering quantities such as a
 phase function.
+Input angles are measured relative to the transverse plane; the returned
+dataset stores the corresponding physical polar angles from 0 to :math:`\pi`.
 
 .. code-block:: python
 

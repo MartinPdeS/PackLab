@@ -95,6 +95,7 @@ def test_get_s1s2_returns_typed_data(monkeypatch):
     assert len(datas) == 2
     assert all(isinstance(data, ScatteringData) for data in datas)
     assert datas.k == 2.0 / ureg.meter
+    np.testing.assert_allclose(datas.phi.to("radian").magnitude, phi.magnitude + np.pi / 2)
     assert np.allclose(datas[0].S1.magnitude, phi.magnitude + np.pi / 2)
 
 
