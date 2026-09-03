@@ -10,15 +10,29 @@ adsorption (RSA) configurations and samples fixed-volume equilibrium
 configurations with Metropolis Monte Carlo (MC).
 
 .. list-table::
-   :widths: 28 72
+   :widths: 35 65
    :header-rows: 1
 
-   * - Project
+   * - Badge
      - Status
-   * - Package
-     - |PyPI| |anaconda| |python|
-   * - Documentation and tests
-     - |docs| |ci/cd| |coverage|
+   * - Python versions
+     - |python|
+   * - Documentation
+     - |docs|
+   * - Continuous integration
+     - |ci/cd|
+   * - Test coverage
+     - |coverage|
+   * - PyPI package
+     - |PyPI|
+   * - PyPI downloads
+     - |PyPI_download|
+   * - Anaconda package
+     - |anaconda|
+   * - Anaconda downloads
+     - |anaconda_download|
+   * - Latest Anaconda release
+     - |anaconda_date|
    * - Citation
      - |doi|
 
@@ -240,8 +254,17 @@ used. Release metadata is included in ``.zenodo.json``.
 .. |PyPI| image:: https://badge.fury.io/py/packlab.svg
    :alt: PyPI version
    :target: https://badge.fury.io/py/PackLab
+.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PackLab?label=PyPI%20downloads
+   :alt: PyPI downloads
+   :target: https://pypistats.org/packages/packlab
 .. |anaconda| image:: https://anaconda.org/martinpdes/packlab/badges/version.svg
    :alt: Anaconda version
+   :target: https://anaconda.org/martinpdes/packlab
+.. |anaconda_download| image:: https://anaconda.org/martinpdes/packlab/badges/downloads.svg
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/packlab
+.. |anaconda_date| image:: https://anaconda.org/martinpdes/packlab/badges/latest_release_relative_date.svg
+   :alt: Latest Anaconda release date
    :target: https://anaconda.org/martinpdes/packlab
 .. |doi| image:: https://zenodo.org/badge/1105416581.svg
    :alt: Cite PackLab on Zenodo
