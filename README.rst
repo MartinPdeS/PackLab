@@ -50,6 +50,21 @@ Features
 * Optional PyMieSim integration for scattering and phase-function workflows.
 * Unit-aware quantities throughout, via ``TypedUnit``.
 
+Two complementary workflows
+----------------------------
+
+.. list-table::
+   :widths: 50 50
+
+   * - .. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_rsa_packing.png
+          :alt: Two-dimensional slice through a periodic random sequential adsorption packing.
+     - .. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_percus_yevick.png
+          :alt: Partial pair correlations of a binary Percus--Yevick hard-sphere mixture.
+   * - **Explicit RSA configuration.** Generate a non-overlapping,
+       history-dependent packing with a chosen radius distribution.
+     - **Analytical reference.** Evaluate equilibrium hard-sphere mixture
+       correlations without generating an explicit configuration.
+
 Installation
 ------------
 
