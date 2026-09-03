@@ -46,11 +46,9 @@ classifiers = [
   "Topic :: Scientific/Engineering",
 ]
 dependencies = [
-    "pydantic>=2.6.3",
     "matplotlib",
     "numpy",
     "TypedUnit",
-    "tabulate"
 ]
 
 [project.urls]
@@ -81,7 +79,6 @@ documentation = [
     "sphinx>=5.1.1",
     "sphinx-gallery==0.20.0",
     "pydata-sphinx-theme==0.16.1",
-    "sphinx-rtd-theme==3.1.0",
     "PyMieSim ==5.0.2",
 ]
 

@@ -28,7 +28,6 @@ requirements:
     - python {{ PY_VER }}
     - scikit-build-core ~=0.3
     - pybind11 ~=2.13
-    - python-build ~=1.2
     - setuptools_scm[toml] ~=8.0
     - numpy >=2.0,<3
   run:
@@ -36,8 +35,6 @@ requirements:
     - martinpdes::typedunit
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3
-    - pydantic >=2.8,<3
-    - tabulate
 
 about:
   home: https://github.com/MartinPdeS/PackLab
