@@ -337,6 +337,9 @@ def test_plot_pair_correlation_runs(patch):
     options.maximum_attempts = 80_000
 
     result = monte_carlo.RSASimulator(domain, radius_sampler, options).run()
+    figure = result.plot_pair_correlation(n_bins=16, maximum_pairs=10_000)
+
+    assert len(figure.axes) == 1
 
 
 if __name__ == "__main__":

@@ -60,7 +60,8 @@ endif
 	cd $(MANUSCRIPT_DIR) && latexmk -pdf -interaction=nonstopmode -halt-on-error packlab.tex
 
 quality:
-	$(PYTHON) -m flake8 PackLab tests
+	$(PYTHON) -m ruff check PackLab tests
+	$(PYTHON) -m ruff format --check PackLab tests
 
 # Create a release commit and annotated tag. Both forms are supported:
 #   make tag v0.5.0

@@ -17,7 +17,8 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@master
+    # Pinned to the reviewed MPSActions master commit; update intentionally.
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@fae8d0cd3aeb1c98f05922a77a55ea277a3a068c
     with:
       python-version: "3.11"
       package-name: "PackLab"

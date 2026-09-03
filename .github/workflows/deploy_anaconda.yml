@@ -9,7 +9,8 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_anaconda.yml@master
+    # Pinned to the reviewed MPSActions master commit; update intentionally.
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_anaconda.yml@fae8d0cd3aeb1c98f05922a77a55ea277a3a068c
     with:
       python_versions: '["3.11", "3.12", "3.13"]'
       apt_package: ""

@@ -33,6 +33,18 @@
 # But ignore docs/build inside docs and code
 docs/build/
 docs/source/gallery/
+docs/manuscript/*.aux
+docs/manuscript/*.bbl
+docs/manuscript/*.blg
+docs/manuscript/*.fdb_latexmk
+docs/manuscript/*.fls
+docs/manuscript/*.glg
+docs/manuscript/*.glo
+docs/manuscript/*.gls
+docs/manuscript/*.ist
+docs/manuscript/*.log
+docs/manuscript/*.out
+docs/manuscript/*.pdf
 
 # Compiled files in the project
 *__pycache__*

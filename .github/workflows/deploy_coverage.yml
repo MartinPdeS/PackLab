@@ -11,13 +11,12 @@ on:
 
 # Sets permissions of the  GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
-  pages: write
-  id-token: write
+  contents: read
 
 jobs:
   ManyLinux_x86_64:
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@master
+    # Pinned to the reviewed MPSActions master commit; update intentionally.
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@fae8d0cd3aeb1c98f05922a77a55ea277a3a068c
     with:
       python-version: "3.11"
       apt-package: xvfb

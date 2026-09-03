@@ -69,8 +69,8 @@ class ScatteringDataset(list):
 
     Notes
     -----
-    Several methods assume you called `process()` first so that `self.S1`, `self.S2`,
-    and `self.Csca` exist. If not, you will get an attribute error.
+    Derived arrays are refreshed automatically by the mixture methods. Calling
+    :meth:`process` explicitly remains useful when inspecting those arrays.
     """
 
     e_theta = np.array([1.0, 0.0])
@@ -93,12 +93,73 @@ class ScatteringDataset(list):
         -------
         None
         """
+        if not self:
+            raise ValueError("ScatteringDataset must contain at least one ScatteringData item.")
+
+        if not hasattr(self, "phi"):
+            raise ValueError("ScatteringDataset.phi must be set before processing.")
+
+        phi = self._validated_phi()
+        expected_shape = phi.shape
+        for index, data in enumerate(self):
+            if not isinstance(data, ScatteringData):
+                raise TypeError("ScatteringDataset items must be ScatteringData instances.")
+            if np.asarray(data.S1.magnitude).shape != expected_shape:
+                raise ValueError(f"S1 for species {index} must match the phi grid shape {expected_shape}.")
+            if np.asarray(data.S2.magnitude).shape != expected_shape:
+                raise ValueError(f"S2 for species {index} must match the phi grid shape {expected_shape}.")
+
         self.S1 = np.asarray([d.S1.magnitude for d in self])
         self.S2 = np.asarray([d.S2.magnitude for d in self])
 
         self.Csca = np.asarray([d.Csca.to("meter**2").magnitude for d in self]) * ureg.meter ** 2
 
-    def get_alpha_beta_factor(self, densities: NDArray) -> NDArray:
+    def _validated_phi(self) -> np.ndarray:
+        """Return the polar-angle grid in radians after validating it."""
+        try:
+            phi = np.asarray(self.phi.to("radian").magnitude, dtype=float)
+        except AttributeError as error:
+            raise TypeError("phi must be a unit-bearing angle quantity.") from error
+        if phi.ndim != 1 or phi.size < 2:
+            raise ValueError("phi must be a one-dimensional angle grid with at least two points.")
+        if not np.all(np.isfinite(phi)) or np.any(np.diff(phi) <= 0):
+            raise ValueError("phi must be finite and strictly increasing.")
+        if phi[0] < 0.0 or phi[-1] > np.pi:
+            raise ValueError("phi must lie within the polar-angle interval [0, pi].")
+        return phi
+
+    def _validate_mixture_inputs(
+        self, densities: Any, H: Any, wavenumber: Any
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Validate and normalize inputs shared by mixture calculations."""
+        self.process()
+        if not hasattr(self, "k"):
+            raise ValueError("ScatteringDataset.k must be set before mixture calculations.")
+        try:
+            k = self.k.to("1 / meter")
+            density_values = np.asarray(densities.to("1 / meter**3").magnitude, dtype=float)
+            wavenumber_values = np.asarray(wavenumber.to("1 / meter").magnitude, dtype=float)
+        except AttributeError as error:
+            raise TypeError("densities and wavenumber must be unit-bearing quantities.") from error
+        if not np.isfinite(k.magnitude) or k.magnitude <= 0:
+            raise ValueError("k must be finite and positive.")
+        if density_values.ndim != 1 or density_values.size != len(self):
+            raise ValueError("densities must be one-dimensional with one value per species.")
+        if not np.all(np.isfinite(density_values)) or np.any(density_values < 0):
+            raise ValueError("densities must be finite and non-negative.")
+        if wavenumber_values.ndim != 1 or wavenumber_values.size < 2:
+            raise ValueError("wavenumber must be a one-dimensional grid with at least two points.")
+        if not np.all(np.isfinite(wavenumber_values)) or np.any(np.diff(wavenumber_values) <= 0):
+            raise ValueError("wavenumber must be finite and strictly increasing.")
+        H_values = np.asarray(H)
+        expected_shape = (len(self), len(self), wavenumber_values.size)
+        if H_values.shape != expected_shape:
+            raise ValueError(f"H must have shape {expected_shape}; got {H_values.shape}.")
+        if not np.all(np.isfinite(H_values)):
+            raise ValueError("H must contain only finite values.")
+        return density_values, H_values, wavenumber_values
+
+    def get_alpha_beta_factor(self, densities: NDArray) -> tuple[NDArray, NDArray]:
         """
         Build number density factors for mixture sums.
 
@@ -160,9 +221,11 @@ class ScatteringDataset(list):
         Notes
         -----
         The name `theta` here refers to an azimuthal angle. The polar scattering angle
-        is stored in `self.phi`. If you want to align with standard spherical coordinates,
-        consider renaming to avoid confusion.
+        is stored in `self.phi`.
         """
+        if theta_points < 2:
+            raise ValueError("theta_points must be at least 2.")
+        self.process()
         theta = np.linspace(0, 2 * np.pi, theta_points)
 
         _cos = np.cos(theta)
@@ -197,10 +260,17 @@ class ScatteringDataset(list):
 
         mu_s,ind = sum_alpha n_alpha * Csca_alpha
 
-        Important: your current implementation references `n_alpha` without defining it.
-        This method must take `densities` (or `n_alpha`) as an argument.
+        The supplied density vector is validated against the number of species.
         """
-        n_alpha = densities
+        self.process()
+        try:
+            n_alpha = densities.to("1 / meter**3")
+        except AttributeError as error:
+            raise TypeError("densities must be a unit-bearing quantity.") from error
+        if np.asarray(n_alpha.magnitude).shape != (len(self),):
+            raise ValueError("densities must contain one value per species.")
+        if not np.all(np.isfinite(n_alpha.magnitude)) or np.any(n_alpha.magnitude < 0):
+            raise ValueError("densities must be finite and non-negative.")
         mu_independant_scattering = np.einsum("i,i -> ", self.Csca, n_alpha).to("1/meter")
 
         return mu_independant_scattering
@@ -237,6 +307,7 @@ class ScatteringDataset(list):
 
         then integrated over polar angle (self.phi) and azimuth (theta).
         """
+        self._validate_mixture_inputs(densities, H, wavenumber)
         n_alpha, sqrt_alpha_beta = self.get_alpha_beta_factor(densities=densities)
 
         F, theta = self.get_F_matrix(theta_points=theta_points)
@@ -245,7 +316,7 @@ class ScatteringDataset(list):
 
         term = np.einsum("ab,iapt,ibpt,abp -> pt", sqrt_alpha_beta, F, np.conj(F), interpolated_H)
 
-        val = np.trapezoid(term.T * np.sin(self.phi), x=self.phi, axis=1)
+        val = np.trapezoid(term.T * np.sin(phi), x=phi, axis=1)
 
         mu_dependant_scattering = np.trapezoid(val, x=theta)
 
@@ -302,11 +373,18 @@ class ScatteringDataset(list):
         ndarray, shape (..., Pq)
             Interpolated values.
         """
+        H = np.asarray(H)
         wavenumber = np.asarray(wavenumber, dtype=float)
         evaluation_wavenumber = np.asarray(evaluation_wavenumber, dtype=float)
 
-        if wavenumber.ndim != 1:
-            raise ValueError("wavenumber must be 1D.")
+        if wavenumber.ndim != 1 or wavenumber.size < 2:
+            raise ValueError("wavenumber must be a 1D grid with at least two points.")
+        if not np.all(np.isfinite(wavenumber)) or np.any(np.diff(wavenumber) <= 0):
+            raise ValueError("wavenumber must be finite and strictly increasing.")
+        if not np.all(np.isfinite(evaluation_wavenumber)):
+            raise ValueError("evaluation_wavenumber must contain only finite values.")
+        if evaluation_wavenumber.min() < wavenumber[0] or evaluation_wavenumber.max() > wavenumber[-1]:
+            raise ValueError("wavenumber does not cover the scattering wavevector range.")
         if H.shape[-1] != wavenumber.size:
             raise ValueError(f"H last axis ({H.shape[-1]}) must match wavenumber size ({wavenumber.size}).")
 
@@ -342,7 +420,12 @@ class ScatteringDataset(list):
         * `self.phi` spans [0, pi] and is the polar scattering angle
         * `wavenumber` is provided in increasing order
         """
-        phi_evaluate = np.linspace(0, np.pi, self.phi.size)
+        self._validate_mixture_inputs(
+            densities=np.ones(len(self)) / ureg.meter**3,
+            H=H,
+            wavenumber=wavenumber,
+        )
+        phi_evaluate = self._validated_phi()
 
         evaluation_wavenumber = 2 * self.k * np.sin(phi_evaluate / 2)
 
@@ -356,7 +439,9 @@ class ScatteringDataset(list):
         )
         return phi_evaluate, interpolated_H
 
-    def get_phase_function(self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150) -> NDArray:
+    def get_phase_function(
+        self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150
+    ) -> tuple[NDArray, NDArray, NDArray]:
         """
         Compute the mixture phase function including dependent scattering corrections.
 
@@ -373,13 +458,12 @@ class ScatteringDataset(list):
 
         Returns
         -------
-        phase_function : NDArray, shape (Ptheta, Pphi) or (Pphi, Ptheta)
-            Phase function sampled on the azimuthal grid returned by `get_F_matrix`
-            and the polar grid stored in `self.phi`.
-
-            The exact axis ordering depends on your einsum index choices. With your
-            current expressions, it is intended to be indexed by (theta_index, phi_index)
-            after consistent tensor conventions are applied.
+        phi : ndarray, shape (Pphi,)
+            Polar angle grid in radians.
+        theta : ndarray, shape (Ptheta,)
+            Azimuthal angle grid in radians.
+        phase_function : NDArray, shape (Pphi, Ptheta)
+            Phase function indexed first by polar angle, then by azimuth.
 
         Notes
         -----
@@ -388,6 +472,7 @@ class ScatteringDataset(list):
         * Independent term: sum_a n_a |F_a|^2
         * Dependent term:   sum_{a,b} sqrt(n_a n_b) F_a F*_b H_ab
         """
+        self._validate_mixture_inputs(densities, H, wavenumber)
         n_alpha, sqrt_alpha_beta = self.get_alpha_beta_factor(densities=densities)
 
         phi, interpolated_H = self.get_interpolated_H(H=H, wavenumber=wavenumber)

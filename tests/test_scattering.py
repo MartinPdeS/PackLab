@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from PackLab.scattering import ScatteringData, compute_scattering_amplitudes
+from PackLab.scattering import ScatteringData, ScatteringDataset, compute_scattering_amplitudes
 from PackLab.scattering import model
 from PackLab.units import ureg
 
@@ -109,3 +109,73 @@ def test_scattering_data_plot_returns_figure():
 
     figure = data.plot()
     assert len(figure.axes) == 1
+
+
+def _dataset(phi):
+    dataset = ScatteringDataset()
+    dataset.k = 1.0 / ureg.meter
+    dataset.phi = phi
+    dataset.append(
+        ScatteringData(
+            S1=np.array([1.0, 2.0, 3.0]) * ureg.dimensionless,
+            S2=np.array([3.0, 2.0, 1.0]) * ureg.dimensionless,
+            k=dataset.k,
+            Csca=2.0 * ureg.meter**2,
+            phi=phi,
+        )
+    )
+    return dataset
+
+
+def test_scattering_dataset_lazily_processes_and_uses_its_angle_grid():
+    phi = np.array([0.0, np.pi / 4, np.pi / 2]) * ureg.radian
+    dataset = _dataset(phi)
+    H = np.array([[[0.0, 0.5, 1.0]]])
+    wavenumber = np.array([0.0, 1.0, 2.0]) / ureg.meter
+
+    returned_phi, interpolated_H = dataset.get_interpolated_H(H, wavenumber)
+
+    np.testing.assert_allclose(returned_phi, phi.magnitude)
+    np.testing.assert_allclose(
+        interpolated_H[0, 0],
+        np.sin(phi.magnitude / 2),
+    )
+    assert dataset.S1.shape == (1, 3)
+
+
+def test_scattering_dataset_rejects_uncovered_wavenumbers_and_bad_shapes():
+    dataset = _dataset(np.array([0.0, np.pi / 2, np.pi]) * ureg.radian)
+
+    with pytest.raises(ValueError, match="does not cover"):
+        dataset.get_interpolated_H(
+            np.zeros((1, 1, 2)),
+            np.array([0.0, 1.0]) / ureg.meter,
+        )
+
+    with pytest.raises(ValueError, match="H must have shape"):
+        dataset.get_phase_function(
+            densities=np.array([1.0]) / ureg.meter**3,
+            H=np.zeros((1, 2, 3)),
+            wavenumber=np.array([0.0, 1.0, 2.0]) / ureg.meter,
+        )
+
+
+def test_phase_function_matches_independent_scattering_when_H_is_zero():
+    phi = np.array([0.0, np.pi /4, np.pi / 2]) * ureg.radian
+    dataset = _dataset(phi)
+    densities = np.array([2.0]) / ureg.meter**3
+    wavenumber = np.array([0.0, 1.0, 2.0]) / ureg.meter
+
+    returned_phi, theta, phase_function = dataset.get_phase_function(
+        densities=densities,
+        H=np.zeros((1, 1, 3)),
+        wavenumber=wavenumber,
+        theta_points=7,
+    )
+    F, _ = dataset.get_F_matrix(theta_points=7)
+    expected = np.einsum("a, iatp, iatp -> tp", densities, F, np.conj(F))
+
+    np.testing.assert_allclose(returned_phi, phi.magnitude)
+    assert phase_function.shape == (phi.size, theta.size)
+    assert phase_function.units == expected.units
+    np.testing.assert_allclose(phase_function.magnitude, expected.magnitude)
