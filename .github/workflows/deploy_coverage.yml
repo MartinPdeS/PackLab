@@ -11,7 +11,8 @@ on:
 
 # Sets permissions of the  GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  # The coverage action persists its report on python-coverage-comment-action-data.
+  contents: write
 
 jobs:
   ManyLinux_x86_64:

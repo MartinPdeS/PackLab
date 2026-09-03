@@ -34,13 +34,13 @@
 PackLab is an open-source Python package centred on the analytical \gls{py} solution for multicomponent hard-sphere mixtures. %
 It evaluates equilibrium-reference partial pair correlations and structure factors with unit-aware inputs and explicit Fourier-resolution diagnostics. %
 A comparison with digitised \gls{py} curves from Tsang et al. demonstrates the matched binary-mixture workflow. %
-Compiled \gls{rsa} and \gls{mc} tools are included as complementary add-ons for constructing non-overlapping configurations and sampling fixed-volume hard-sphere states; neither is treated as interchangeable with the analytical model. %
+Compiled \gls{rsa} and \gls{mc} tools complement the analytical workflow by constructing non-overlapping configurations and sampling fixed-volume hard-sphere states, respectively. %
 \end{abstract}
 
 \section{Statement of need}
 
 Hard-sphere-mixture correlation functions and structure factors are needed as reproducible structural inputs for colloids, particulate materials, porous media, disordered optical systems, and related scattering models \cite{HansenMcDonald2013,Torquato2002}. %
-Researchers need to vary radius distributions, compositions, and volume fractions without silently mixing incompatible physical inputs, units, or Fourier-grid settings across disconnected scripts. %
+Reproducible studies require varying radius distributions, compositions, and volume fractions while maintaining consistent physical units and Fourier-grid resolution. %
 
 Dependent-scattering calculations for dense, polydisperse suspensions provide a concrete example of this need. %
 Attendu et al. combine single-particle Mie theory with a multicomponent \gls{py} hard-sphere model to predict the scattering properties of Intralipid across wavelength and concentration \cite{Attendu2026}. %
