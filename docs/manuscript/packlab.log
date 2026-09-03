@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.22)  2 SEP 2026 15:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.12.22)  3 SEP 2026 17:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -707,14 +707,14 @@ Package pdftex.def Info: figures/architecture.png  used on input line 115.
 File: figures/figure2_rsa_example.pdf Graphic file (type pdf)
 <use figures/figure2_rsa_example.pdf>
 Package pdftex.def Info: figures/figure2_rsa_example.pdf  used on input line 13
-2.
+3.
 (pdftex.def)             Requested size: 469.75502pt x 187.19315pt.
 [3] [4 <./figures/architecture.png>] [5 <./figures/figure2_rsa_example.pdf>]
 <figures/figure4_independent_validation.pdf, id=175, 619.1125pt x 252.70361pt>
 File: figures/figure4_independent_validation.pdf Graphic file (type pdf)
 <use figures/figure4_independent_validation.pdf>
 Package pdftex.def Info: figures/figure4_independent_validation.pdf  used on in
-put line 190.
+put line 192.
 (pdftex.def)             Requested size: 469.75502pt x 191.7444pt.
 
 [6
@@ -723,25 +723,20 @@ put line 190.
 <figures/figure3_validation.pdf, id=187, 619.1125pt x 324.97362pt>
 File: figures/figure3_validation.pdf Graphic file (type pdf)
 <use figures/figure3_validation.pdf>
-Package pdftex.def Info: figures/figure3_validation.pdf  used on input line 209
+Package pdftex.def Info: figures/figure3_validation.pdf  used on input line 211
 .
 (pdftex.def)             Requested size: 469.75502pt x 246.58084pt.
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-12.
+14.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <9> on input line 221.
+(Font)              <9> on input line 223.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 221.
+(Font)              <5> on input line 223.
 
-Underfull \hbox (badness 2980) in paragraph at lines 226--227
-[]\T1/lmtt/m/n/9 wavenumber="auto"\T1/lmr/m/n/9 (+20) ; man-u-ally digi-
- []
-
-
-Overfull \hbox (4.63751pt too wide) in paragraph at lines 221--230
+Overfull \hbox (4.63751pt too wide) in paragraph at lines 223--232
  [][] 
  []
 
@@ -759,10 +754,10 @@ Package rerunfilecheck Info: File `packlab.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  16465 strings out of 474116
- 263047 string characters out of 5743681
+ 263049 string characters out of 5743681
  1938187 words of memory out of 5000000
  38320 multiletter control sequences out of 15000+600000
- 639115 words of font info for 170 fonts, out of 8000000 for 9000
+ 639109 words of font info for 170 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  94i,13n,93p,2370b,463s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/lo
@@ -780,7 +775,7 @@ blic/lm/lmri10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lm
 sy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></
 usr/local/texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/
 texlive/2024/texmf-dist/fonts/type1/public/lm/lmtt9.pfb>
-Output written on packlab.pdf (10 pages, 744112 bytes).
+Output written on packlab.pdf (10 pages, 745690 bytes).
 PDF statistics:
  417 PDF objects out of 1000 (max. 8388607)
  235 compressed objects within 3 object streams

@@ -55,6 +55,7 @@ manuscript:
 ifeq ($(REGENERATE_FIGURES),1)
 	MPLBACKEND=Agg $(PYTHON) $(MANUSCRIPT_DIR)/figures/create_figure2.py
 	MPLBACKEND=Agg $(PYTHON) $(MANUSCRIPT_DIR)/figures/create_figure3.py
+	MPLBACKEND=Agg $(PYTHON) $(MANUSCRIPT_DIR)/figures/create_figure4_independent_validation.py
 endif
 	cd $(MANUSCRIPT_DIR) && latexmk -pdf -interaction=nonstopmode -halt-on-error packlab.tex
 

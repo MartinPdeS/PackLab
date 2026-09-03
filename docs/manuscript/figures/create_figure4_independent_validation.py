@@ -56,6 +56,27 @@ def binary_mixture_py_solution(separation: np.ndarray):
     ).compute(separation * 2.0 * radii[0])
 
 
+def root_mean_square_difference(reference: np.ndarray, calculated: np.ndarray) -> float:
+    """Return the root-mean-square difference between two pair-correlation curves."""
+    return float(np.sqrt(np.mean((reference - calculated) ** 2)))
+
+
+def validation_statistics() -> dict[str, float]:
+    """Return per-curve RMS differences from the digitised Tsang references."""
+    monodisperse_data = np.genfromtxt(MONODISPERSE_DATA_PATH, delimiter=",", names=True, dtype=None, encoding="utf-8")
+    binary_data = np.genfromtxt(DATA_PATH, delimiter=",", names=True, dtype=None, encoding="utf-8")
+    statistics = {}
+    for volume_fraction in (0.2, 0.3):
+        reference = monodisperse_data[np.isclose(monodisperse_data["volume_fraction"], volume_fraction)]
+        calculated = monodisperse_py_solution(reference["reduced_separation"], volume_fraction).g[0, 0]
+        statistics[f"f={volume_fraction:.1f}"] = root_mean_square_difference(reference["g_r"], calculated)
+    for component_pair, indices in (("g11", (0, 0)), ("g12", (0, 1)), ("g22", (1, 1))):
+        reference = binary_data[binary_data["component_pair"] == component_pair]
+        calculated = binary_mixture_py_solution(reference["reduced_separation"]).g[indices]
+        statistics[component_pair] = root_mean_square_difference(reference["g_ij"], calculated)
+    return statistics
+
+
 def plot_monodisperse(axes: plt.Axes) -> None:
     """Plot PackLab PY curves against digitised Figure 8.1.3 curves."""
     separation = np.linspace(0.0, 5.0, 600)
@@ -194,6 +215,8 @@ def main() -> None:
         figure = plot(show=False)
         for suffix in ("png", "svg", "pdf"):
             figure.savefig(OUTPUT_DIRECTORY / f"figure4_independent_validation.{suffix}", bbox_inches="tight")
+    statistics = validation_statistics()
+    print("Digitised Tsang comparison RMS differences: " + ", ".join(f"{label}={value:.3f}" for label, value in statistics.items()))
 
 
 if __name__ == "__main__":
