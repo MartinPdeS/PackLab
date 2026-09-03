@@ -83,6 +83,51 @@ def create_percus_yevick_figure() -> None:
     plt.close(figure)
 
 
+def create_metropolis_figure() -> None:
+    """Save a fixed-volume hard-sphere configuration after MC moves."""
+    domain = monte_carlo.PackingDomain(
+        5 * ureg.micrometer,
+        5 * ureg.micrometer,
+        5 * ureg.micrometer,
+        use_periodic_boundaries=True,
+    )
+    sampler = samplers.ConstantRadiusSampler(150 * ureg.nanometer, bins=1)
+    rsa_options = monte_carlo.RSAOptions()
+    rsa_options.random_seed = 12
+    rsa_options.maximum_attempts = 50_000
+    rsa_options.target_packing_fraction = 0.10
+    initial_result = monte_carlo.RSASimulator(domain, sampler, rsa_options).run()
+
+    options = monte_carlo.MetropolisOptions()
+    options.random_seed = 34
+    options.number_of_sweeps = 500
+    options.maximum_displacement = 50 * ureg.nanometer
+    result = monte_carlo.MetropolisSimulator(
+        domain,
+        initial_result.sphere_configuration,
+        options,
+    ).run()
+
+    figure = result.plot_slice_2d(show=False, slice_thickness_fraction=0.20)
+    axis = figure.axes[0]
+    for circle in axis.patches:
+        circle.set_edgecolor("#087f5b")
+        circle.set_facecolor("#d3f9d8")
+        circle.set_alpha(0.75)
+
+    micrometer_formatter = FuncFormatter(lambda value, _: f"{value / 1e-6:g}")
+    axis.xaxis.set_major_formatter(micrometer_formatter)
+    axis.yaxis.set_major_formatter(micrometer_formatter)
+    axis.set_title("Hard spheres after Metropolis moves")
+    axis.set_xlabel(r"$x$ ($\mu$m)")
+    axis.set_ylabel(r"$y$ ($\mu$m)")
+    figure.set_size_inches(5.2, 4.4)
+    figure.tight_layout()
+    figure.savefig(OUTPUT_DIRECTORY / "readme_metropolis.png", dpi=180, bbox_inches="tight")
+    plt.close(figure)
+
+
 if __name__ == "__main__":
     create_rsa_packing_figure()
     create_percus_yevick_figure()
+    create_metropolis_figure()
