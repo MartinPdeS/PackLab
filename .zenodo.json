@@ -1,9 +1,22 @@
 {
-  "title": "PackLab: Random Sequential Addition particle packing with a fast C++ core",
-  "description": "PackLab is a Python library for generating non-overlapping sphere configurations in three-dimensional boxes using Random Sequential Addition, with a fast C++ core and optional periodic boundaries.",
+  "title": "PackLab: reproducible Percus--Yevick correlations for hard-sphere mixtures",
+  "description": "PackLab is a Python package for unit-aware Percus--Yevick pair correlations and structure factors of multicomponent hard-sphere mixtures, with complementary Random Sequential Addition and Metropolis Monte Carlo workflows backed by native C++ kernels.",
   "creators": [
     {
-      "name": "Poinsinet de Sivry-Houle, Martin"
+      "name": "Poinsinet de Sivry-Houle, Martin",
+      "affiliation": "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+    },
+    {
+      "name": "Attendu, Xavier",
+      "affiliation": "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+    },
+    {
+      "name": "van Leeuwen, Ton G.",
+      "affiliation": "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+    },
+    {
+      "name": "van der Pol, Edwin",
+      "affiliation": "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
     }
   ],
   "license": "MIT",
@@ -12,9 +25,11 @@
   "version": "0.7.0",
   "publication_date": "2026-09-04",
   "keywords": [
+    "Percus-Yevick",
+    "hard-sphere mixtures",
+    "pair correlation",
+    "structure factor",
     "random sequential addition",
-    "particle packing",
-    "spheres",
-    "simulation"
+    "Metropolis Monte Carlo"
   ]
 }

@@ -28,7 +28,6 @@ def _assert_weights_normalized(weights, tol=1e-12):
 
 
 def test_constant_to_bins_returns_single_center_and_unit_weight():
-    radius = 2.0 * ureg.micrometer
     sampler = samplers.ConstantRadiusSampler(radius=2.0 * ureg.micrometer)
 
     particle_radii, weights = sampler.to_bins()

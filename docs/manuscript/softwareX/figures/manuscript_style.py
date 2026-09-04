@@ -22,13 +22,13 @@ def style_axes(axes: Axes, *, grid: bool = True) -> None:
     axes.yaxis.label.set_size(AXIS_LABEL_SIZE)
 
 
-def add_panel_label(axes: Axes, label: str, *, x: float = -0.20) -> None:
+def add_panel_label(axes: Axes, label: str, *, x: float = -0.20, y_offset: float = 6) -> None:
     """Place a bold panel label just outside the upper-left axes corner."""
     axes.annotate(
         label,
         xy=(x, 1.00),
         xycoords="axes fraction",
-        xytext=(0, 6),
+        xytext=(0, y_offset),
         textcoords="offset points",
         fontsize=PANEL_LABEL_SIZE,
         fontweight="bold",

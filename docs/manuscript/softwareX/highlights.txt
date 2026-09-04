@@ -1,0 +1,4 @@
+Unit-aware multicomponent Percus--Yevick correlations in real and reciprocal space
+Automatic Fourier grids expose and diagnose numerical resolution
+RSA generates explicit configurations; optional Metropolis moves evolve them
+Independent structure-factor comparisons agree within 9.6 x 10^-10

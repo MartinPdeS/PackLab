@@ -1,0 +1,404 @@
+% SoftwareX Original Software Publication draft.
+\documentclass[preprint,12pt]{elsarticle}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lineno}
+\usepackage{placeins}
+\usepackage{tabularx}
+\usepackage[acronym,toc]{glossaries}
+\hypersetup{colorlinks=true, allcolors=blue}
+\glsdisablehyper
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlength{\parindent}{0pt}
+
+\newacronym{api}{API}{application programming interface}
+\newacronym{ci}{CI}{continuous integration}
+\newacronym{doi}{DOI}{digital object identifier}
+\newacronym{mc}{MC}{Metropolis Monte Carlo}
+\newacronym{py}{PY}{Percus--Yevick}
+\newacronym{pypi}{PyPI}{Python Package Index}
+\newacronym{rsa}{RSA}{random sequential addition}
+\newacronym{rms}{RMS}{root-mean-square}
+
+\journal{SoftwareX}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{PackLab: reproducible Percus--Yevick correlations for hard-sphere mixtures}
+
+\author[amsterdamumc]{Martin Poinsinet de Sivry-Houle\corref{corresponding}}
+\ead{martin.poinsinet.de.sivry@gmail.com}
+\author[amsterdamumc]{Xavier Attendu}
+\author[amsterdamumc]{Ton G. van Leeuwen}
+\author[amsterdamumc]{Edwin van der Pol}
+\cortext[corresponding]{Corresponding author}
+\affiliation[amsterdamumc]{%
+  organization={Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam},
+  addressline={Meibergdreef 9},
+  city={Amsterdam},
+  postcode={1105 AZ},
+  country={the Netherlands}}
+
+\begin{abstract}
+PackLab is an open-source Python package centred on the analytical \gls{py} solution for multicomponent hard-sphere mixtures. %
+It evaluates equilibrium-reference partial pair correlations and structure factors with unit-aware inputs and explicit Fourier-resolution diagnostics. %
+A qualitative comparison with published real-space curves recovers the expected contact locations, curve ordering, and post-contact structure, while an external reciprocal-space implementation confirms mono-, bi-, and ternary-mixture results to within $9.6\times10^{-10}$. %
+Compiled \gls{rsa} tools complement the analytical workflow by constructing non-overlapping configurations, while an optional \gls{mc} utility evolves valid configurations through fixed-volume trial moves. %
+\end{abstract}
+
+\begin{keyword}
+hard-sphere mixtures \sep Percus--Yevick \sep pair correlation \sep structure factor \sep random sequential addition \sep Monte Carlo
+\end{keyword}
+
+\end{frontmatter}
+
+\modulolinenumbers[1]
+\linenumbers
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Code metadata.}
+\label{tab:code-metadata}
+\begin{tabularx}{\textwidth}{@{}p{0.35in}p{2.25in}X@{}}
+\toprule
+Nr. & Code metadata description & Metadata \\
+\midrule
+C1 & Current code version & 0.7.0 \\
+C2 & Permanent link to code/repository used for this version & \url{https://github.com/MartinPdeS/PackLab/tree/v0.7.0} \\
+C3 & Permanent link to reproducible capsule & Not available; validation inputs and figure-generation scripts are versioned with the source. \\
+C4 & Legal code license & MIT License \\
+C5 & Code versioning system used & Git \\
+C6 & Software code languages, tools, and services used & Python, C++20, CMake, pybind11, NumPy, Matplotlib, and TypedUnit \\
+C7 & Compilation requirements, operating environments, and dependencies & Python 3.10 or later; CMake; a C++20 compiler; pybind11; OpenMP; NumPy, Matplotlib, and TypedUnit \\
+C8 & Link to developer documentation/manual & \url{https://martinpdes.github.io/PackLab/docs/latest/index.html} \\
+C9 & Support email for questions & \href{mailto:martin.poinsinet.de.sivry@gmail.com}{martin.poinsinet.de.sivry@gmail.com} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Executable software metadata.}
+\label{tab:software-metadata}
+\begin{tabularx}{\textwidth}{@{}p{0.35in}p{2.25in}X@{}}
+\toprule
+Nr. & Software metadata description & Metadata \\
+\midrule
+S1 & Current software version & 0.7.0 \\
+S2 & Permanent link to executables of this version & \url{https://pypi.org/project/PackLab/0.7.0/}; \url{https://anaconda.org/martinpdes/packlab} \\
+S3 & Permanent link to reproducible capsule & Not available; the tagged source and versioned validation data reproduce the reported calculations. \\
+S4 & Legal software license & MIT License \\
+S5 & Computing platforms/operating systems & Linux, macOS, and Microsoft Windows \\
+S6 & Installation requirements and dependencies & \texttt{pip install PackLab}; Python 3.10 or later; prebuilt wheels target CPython 3.11--3.13 \\
+S7 & Link to user manual & \url{https://martinpdes.github.io/PackLab/docs/latest/index.html} \\
+S8 & Support email for questions & \href{mailto:martin.poinsinet.de.sivry@gmail.com}{martin.poinsinet.de.sivry@gmail.com} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Motivation and significance}
+
+Hard-sphere-mixture correlation functions and structure factors are needed as reproducible structural inputs for colloids, particulate materials, porous media, disordered optical systems, and related scattering models \cite{HansenMcDonald2013,Torquato2002}. %
+Reproducible studies require varying radius distributions, compositions, and volume fractions while maintaining consistent physical units and Fourier-grid resolution. %
+
+Dependent-scattering calculations for dense, polydisperse suspensions provide a concrete example of this need. %
+Attendu et al. combine single-particle Mie theory with a multicomponent \gls{py} hard-sphere model to predict the scattering properties of Intralipid across wavelength and concentration \cite{Attendu2026}. %
+Such applications require the particle-size distribution, mixture correlation model, and numerical settings to remain internally consistent. %
+
+PackLab provides this analytical reference in one documented Python interface. %
+Its core \texttt{analytical} namespace evaluates the \gls{py} hard-sphere-mixture model \cite{Percus1958,Lebowitz1964}, retaining the mixture definition, dimensional inputs, and Fourier-resolution choices with the result. %
+The package is therefore suited to analytical parameter sweeps and structure-aware scattering models. %
+Complementary \gls{rsa} and \gls{mc} workflows provide explicit configurations for downstream coordinate-based calculations and carefully interpreted comparisons; they are not substitutes for the equilibrium analytical reference. %
+
+\subsection{State of the field}
+
+Existing software overlaps with individual parts of PackLab rather than with its complete workflow. %
+SasView is a broader small-angle-scattering analysis environment that includes
+monodisperse and binary hard-sphere models using the \gls{py} closure
+\cite{SasViewHardSphere,SasViewBinaryHardSphere}. %
+The mode-coupling package \texttt{mctpy} also contains an \texttt{hsmPY} component that evaluates reciprocal-space \gls{py} structure factors for mixtures specified by number densities and diameters \cite{MctpyStructureFactors}. %
+This component overlaps with one PackLab output, but \texttt{mctpy}'s broader purpose and interface are different. %
+
+PackLab also supports scattering workflows through its optional PyMieSim
+integration, but its specific contribution is to keep multicomponent mixture
+construction, real-space partial pair correlations, reciprocal-space partial
+structure factors, physical units, and Fourier-grid diagnostics within one
+Python workflow. %
+Its explicit-configuration tools additionally make it possible to generate \gls{rsa} packings, evolve valid configurations with hard-sphere \gls{mc}, and compare their estimated correlations with the analytical reference while preserving the distinction between the underlying models. %
+PackLab is therefore intended for reproducible programmatic studies in which mixture definitions and numerical resolution must remain traceable across analytical, configuration, and optional scattering calculations; it is not a replacement for a general scattering-fitting or mode-coupling environment. %
+
+\section{Software description}
+
+\subsection{Percus--Yevick hard-sphere mixtures}
+
+The analytical workflow evaluates the multicomponent \gls{py} approximation for hard-sphere mixtures. %
+\texttt{PercusYevickDomain} converts radii, number fractions, and total volume fraction into species densities. %
+\texttt{PercusYevickSolver} then evaluates partial pair correlations $g_{ij}(r)$ and structure factors on a user-supplied or automatically constructed wavenumber grid. %
+
+\gls{py} is an approximate equilibrium reference. Its approximation error depends on mixture density, composition, and size ratio, while its numerical error depends separately on the inverse-transform grid. %
+PackLab exposes both choices: automatic grids provide a documented default and the grid-construction interface permits explicit resolution studies. %
+The digitised binary-mixture \gls{py} curves of Tsang et al. \cite{Tsang2001}, used in Figure~\ref{fig:tsang-comparison}, provide an external visual comparison at matched radii and partial volume fractions. %
+
+\subsection{Complementary simulation workflows}
+
+\subsubsection{Random sequential addition}
+
+\gls{rsa} proposes one sphere at a time. %
+For a candidate centre $\mathbf{x}_i$ and radius $a_i$, PackLab accepts the candidate only if
+\begin{equation}
+	\lVert \mathbf{x}_i - \mathbf{x}_j \rVert \geq a_i + a_j
+\end{equation}
+for every previously accepted sphere $j$. %
+Periodic simulations use the minimum-image convention. %
+For a domain with volume $V$, the realised packing fraction is
+\begin{equation}
+	\phi = \frac{1}{V}\sum_i \frac{4\pi a_i^3}{3}. %
+\end{equation}
+
+\gls{rsa} is irreversible and history dependent: once a sphere is accepted, it remains fixed for the rest of the run, while rejected candidates are discarded and never reconsidered. %
+Consequently, early accepted spheres can block later positions permanently, so the final configuration depends on the order of random proposals rather than being a sample from the equilibrium hard-sphere fluid \cite{Feder1980}. %
+PackLab makes this protocol explicit through independent stopping conditions, a stored random seed, periodic or finite domains, and constant, uniform, normal, log-normal, and discrete radius samplers. %
+A spatial-neighbour grid limits overlap checks to nearby accepted spheres, preserving the \gls{rsa} acceptance rule while avoiding an all-pairs test for every proposal. %
+
+\subsubsection{Metropolis Monte Carlo}
+
+The optional \gls{mc} utility takes a valid non-overlapping configuration, holds its particle count, radii, and class labels fixed, and proposes symmetric single-particle displacements. %
+A proposal is accepted only when it remains within the domain and introduces no overlap, and the result reports displacement-move acceptance statistics. %
+Users remain responsible for assessing burn-in, autocorrelation, and finite-size effects before interpreting saved states as equilibrium samples. %
+Figure~\ref{fig:validation} provides an equilibrium-consistency check against the matched \gls{py} reference using independently initialized chains and an explicit burn-in stability diagnostic. %
+
+\subsection{Software design and functionality}
+
+Performance-critical analytical and configuration kernels are implemented in C++20 and exposed as native Python extensions. %
+The Python layer provides NumPy-compatible results, \texttt{TypedUnit}-based dimensional inputs, plotting helpers, type information, and executable examples. %
+Native extensions are installed beside their public Python APIs, keeping imports such as \texttt{PackLab.monte\_carlo} and \texttt{PackLab.analytical} stable and discoverable. %
+
+An analytical workflow first defines a mixture with \texttt{PercusYevickDomain}. %
+The resulting domain is evaluated by \texttt{PercusYevickSolver}. %
+Beginner-facing examples use \texttt{wavenumber="auto"}, which selects a zero-inclusive grid from the smallest particle radius and requested distance range. %
+Users can instead supply a grid with \texttt{make\_wavenumber\_grid} when they need explicit control over radial resolution and Fourier sampling. %
+
+For explicit configurations, an \gls{rsa} workflow combines a \texttt{PackingDomain}, a radius sampler, and \texttt{RSAOptions}. %
+Calling \texttt{RSASimulator.run()} returns a \texttt{PackingResult}. %
+The result contains centres, radii, class labels, packing statistics, and total or partial pair-correlation estimates. %
+\texttt{MetropolisSimulator} accepts such a configuration with \texttt{MetropolisOptions} and reports displacement-move acceptance statistics. %
+\texttt{PackingEstimator} reports ensemble correlation statistics together with insertion, rejection, runtime, and realised-packing diagnostics. %
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{figures/architecture.png}
+\caption{PackLab centres the \gls{py} equilibrium hard-sphere-mixture workflow and provides complementary numerical workflows. %
+The analytical workflow evaluates pair correlations and structure factors for specified mixture inputs. %
+The \gls{rsa} and \gls{mc} workflows create irreversible deposition configurations and evolve valid configurations through fixed-volume trial moves, respectively. %
+All workflows have unit-aware Python \glspl{api} backed by native C++ kernels, but their results are compared and interpreted rather than treated as interchangeable.}
+	\label{fig:architecture}
+\end{figure}
+
+\section{Illustrative examples}
+
+\subsection{Complementary configuration workflows}
+
+Figure~\ref{fig:rsa} shows a fixed-seed periodic \gls{rsa} realisation of a binary mixture. %
+The cross-section provides a direct geometric diagnostic of one generated configuration, while the correlation panel reports ensemble statistics for the same mixture. %
+All quantitative figures are reproducible from the public \gls{api} using the
+workflows distributed with the repository; the external reference data used
+for validation are versioned alongside the manuscript. %
+Table~\ref{tab:reproducibility} collects the physical, stochastic, and numerical
+controls for all quantitative figures. %
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{figures/figure2_rsa_example.pdf}
+\caption{Reproducible periodic \gls{rsa} demonstration for a two-radius mixture. %
+	The cubic domain has side length $10~\mathrm{\mu m}$; sphere radii are 100 and 200~nm with requested number fractions 0.65 and 0.35; the target packing fraction is 0.20; and the random seed is 20260828. %
+	(a) Central cross-section of the accepted three-dimensional configuration, with colour indicating radius class. %
+(b) The unique partial pair correlations, $g_{00}(r)$, $g_{01}(r)=g_{10}(r)$, and $g_{11}(r)$, estimated from 64 independent \gls{rsa} realisations. %
+The legend identifies each ensemble-mean coloured line; its matching same-colour band shows $\pm1\sigma$, where $\sigma$ is the sample standard deviation across realisations. %
+	The red shaded interval is the exclusion range shared by all pairs, while the red dotted lines mark the three contact separations, $0.20$, $0.30$, and $0.40~\mathrm{\mu m}$. %
+	The dashed horizontal line marks the uncorrelated limit $g_{ij}(r)=1$.}
+	\label{fig:rsa}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Percus--Yevick validation and numerical resolution}
+
+\subsubsection{Analytical correlation and structure-factor conventions}
+
+The \gls{rsa} estimator is used only for the complementary comparison below. %
+It defines $g_{ij}(r_b)$ as the ratio between the observed ordered $i$--$j$ pair count in radial shell $b$ and the ideal-gas expectation for the same configuration. %
+For species counts $N_i$ and $N_j$, domain volume $V$, and shell volume $\Delta V_b$, the latter is
+\begin{equation}
+    E_{ij,b} = N_i\left(N_j-\delta_{ij}\right)\frac{\Delta V_b}{V},
+    \qquad
+    g_{ij}(r_b) = \frac{C_{ij,b}}{E_{ij,b}},
+\end{equation}
+where $\delta_{ij}$ is the Kronecker delta and $C_{ij,b}$ is the observed ordered count. %
+The radial bins are spherical shells with centres $r_b=(b+1/2)\Delta r$ and extend to half the shortest box dimension; periodic estimates use minimum-image separations. %
+When pair sampling is requested, the observed histogram is rescaled by the ratio of all unordered pairs to examined unordered pairs before this normalization. %
+
+For the analytical workflow, $h_{ij}(r)=g_{ij}(r)-1$ and $H_{ij}(k)=\sqrt{\rho_i\rho_j}\,\tilde{h}_{ij}(k)$ is the density-scaled reciprocal-space total correlation. %
+We use the corresponding density-scaled partial structure-factor convention
+\begin{equation}
+    S_{ij}(k)=\delta_{ij}+H_{ij}(k).
+    \label{eq:partial-structure-factor}
+\end{equation}
+This convention makes both the pair-correlation and structure-factor comparisons dimensionless and identifies the density factors required when transforming between them. %
+
+The \gls{py} calculation uses an inverse radial Fourier transform, so its real-space result depends on wavenumber-grid extent and sampling density. %
+For an isotropic mixture, the real-space total correlation is recovered from $H_{ij}(k)$ through
+\begin{equation}
+    h_{ij}(r) = \frac{1}{2\pi^2\sqrt{\rho_i\rho_j}}
+    \int_0^\infty k^2 H_{ij}(k)\operatorname{sinc}(kr)\,\mathrm{d}k.
+\end{equation}
+At the maximum requested distance $r_{\max}$, the $\operatorname{sinc}(kr)$ factor has wavenumber period $2\pi/r_{\max}$, which is the most rapidly varying kernel over the requested distance range. %
+A truncated grid omits high-wavenumber content, whereas a coarse grid under-samples oscillations in the sinc kernel. %
+Either case can produce a visually smooth but numerically misleading correlation function. %
+
+For \texttt{wavenumber="auto"}, PackLab uses a real-space resolution of one twentieth of the smallest radius and twelve samples per sinc-kernel oscillation at the maximum requested distance. %
+When a user-provided grid has fewer than eight samples per oscillation, PackLab raises a runtime warning. %
+These are numerical defaults, not physical constants, and the grid-construction \gls{api} allows stricter choices. %
+
+\subsubsection{Independent analytical comparisons}
+
+Figure~\ref{fig:tsang-comparison} compares PackLab with independent real- and reciprocal-space \gls{py} results. %
+Panels (a) and (b) compare PackLab's mono- and binary-mixture solutions with manually digitised \gls{py} curves from Tsang et al. \cite{Tsang2001} at matched volume fractions and radius ratio. %
+The expected hard-core contact locations, decay toward the uncorrelated limit, and damped post-contact structure agree visually across both monodisperse curves and all three binary partial correlations. %
+Because the reference coordinates were manually recovered from printed plots, their pointwise uncertainty is not sufficiently controlled for a meaningful numerical error metric. %
+The comparison is therefore interpreted qualitatively and is used to check the principal physical features of the published solutions rather than to estimate implementation error. %
+
+Panel (c) provides a higher-precision reciprocal-space check against versioned reference data generated with the independently implemented \texttt{hsmPY} component of \texttt{mctpy} version 0.0.2.post1 \cite{MctpyStructureFactors}. %
+Both calculations use the density-scaled convention of Equation~\ref{eq:partial-structure-factor}, and the checked-in reference contains 601 wavenumbers from 0 to $30~\mathrm{\mu m}^{-1}$. %
+For the displayed binary mixture, the maximum absolute difference across all partial structure factors is $9.58\times10^{-10}$. %
+The same reproducible comparison gives maximum differences of $2.32\times10^{-11}$ and $5.97\times10^{-10}$ for the monodisperse and ternary cases, respectively. %
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/figure4_independent_validation.pdf}
+\caption{Independent validation of PackLab's real- and reciprocal-space \gls{py} outputs. %
+(a) Monodisperse PackLab correlations (coloured solid lines) and digitised Tsang et al. references \cite{Tsang2001} (black dashed lines) at volume fractions $f=0.2$ and $f=0.3$, plotted against $r/b$. %
+(b) Binary-mixture PackLab correlations (coloured solid lines) and digitised references (black dashed lines) for $a_2=2a_1$ and partial volume fractions $f_1=0.2$, $f_2=0.1$, plotted against $r/(2a_1)$. %
+(c) PackLab (coloured solid curves) and \texttt{mctpy} (black dashed curves) partial structure factors for radii 0.35 and 0.70~$\mathrm{\mu m}$, number fractions 0.65 and 0.35, and total volume fraction 0.25.}
+    \label{fig:tsang-comparison}
+\end{figure}
+
+\FloatBarrier
+
+\subsubsection{Complementary RSA comparison and numerical convergence}
+
+Figure~\ref{fig:validation} distinguishes model comparison from numerical verification. %
+Panel (a) compares all unique partial correlations from a 100-realisation \gls{rsa} ensemble with \gls{py} evaluated for the same binary-mixture inputs and the same radial coordinates. %
+The differences are expected physical consequences of comparing finite, irreversible \gls{rsa} with an equilibrium \gls{py} reference, rather than a numerical-error measure. %
+Panel (b) compares \gls{py} with 12 independently initialized \gls{mc} chains after 600 burn-in sweeps. %
+The mean move-acceptance rate is 0.782, and the post-contact \gls{rms} differences are 0.045, 0.027, and 0.032 for $g_{00}$, $g_{01}$, and $g_{11}$, respectively. %
+Between 300 and 600 sweeps, 94.3\% of resolved correlation values agree within the combined 95\% uncertainty of the two ensemble means. %
+Because \gls{py} is approximate, this is an equilibrium-consistency check rather than an exact-error measurement. %
+Panel (c) isolates numerical convergence by measuring the \gls{py} result against a separately specified, much finer wavenumber grid. %
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=\linewidth]{figures/figure3_validation.pdf}
+\caption{Matched configuration--\gls{py} comparisons and \gls{py} grid convergence for a binary mixture with radii 0.357 and 0.714~\textmu m, equal number fractions, and total volume fraction 0.25. %
+(a) \gls{rsa} ensemble means (coloured solid curves) with one-standard-error bands and \gls{py} references (black dashed curves) for the three unique partial correlations; dotted lines mark hard-core contact distances. %
+(b) Means from 12 independently initialized \gls{mc} chains after 600 burn-in sweeps, with one-standard-error bands and matched \gls{py} references. %
+(c) \gls{rms} difference from a 512-samples-per-oscillation \gls{py} reference as the wavenumber grid is refined; red and blue dashed lines mark the warning threshold (8) and automatic default (12), respectively.}
+	\label{fig:validation}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Reproducibility controls for the quantitative figures. Figure numbers refer to the rendered manuscript.}
+\label{tab:reproducibility}
+\begin{tabularx}{\textwidth}{@{}p{0.42in}YYY@{}}
+\toprule
+Figure & Mixture and geometry & Stochastic controls & Numerical and reference controls \\
+\midrule
+2 & Radii 100 and 200~nm; number fractions 0.65 and 0.35; periodic cube of side $10~\mathrm{\mu m}$; target $\phi=0.20$. & Seed 20260828; 64 independent realisations; 500 radial bins. & Pair correlations to $2~\mathrm{\mu m}$; maximum attempts and consecutive rejections of 100000 and 20000. \\
+3 & Tsang mono- and binary-mixture inputs; \texttt{mctpy} mono-, bi-, and ternary-mixture checks. & Deterministic analytical calculations. & Automatic grids for $g(r)$; digitised curves assessed qualitatively; 601 points over $0\!\leq\!k\!\leq\!30~\mathrm{\mu m}^{-1}$ for the quantitative $S_{ij}(k)$ check. \\
+4 & Radii 0.357 and 0.714~$\mathrm{\mu m}$; equal number fractions; $\phi=0.25$; periodic cubes of side 30~$\mathrm{\mu m}$ (RSA) and 15~$\mathrm{\mu m}$ (MC). & RSA seed 2026, 100 realisations, and 1500 bins; 12 MC chains with seeds 4100--4111 and 5100--5111, 600 burn-in sweeps, and 250 bins. & MC displacement 0.12~$\mathrm{\mu m}$; grid resolutions 4--96 samples per oscillation; 512-samples-per-oscillation reference; $r_{\max}=10~\mathrm{\mu m}$ and 1000 radial points. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Impact}
+
+PackLab turns a collection of mixture definitions, analytical expressions, Fourier transforms, configuration generators, and statistical estimators into a reusable and inspectable research workflow. %
+Its principal impact is methodological reproducibility: a study can carry the same radii, composition, volume fraction, units, and reciprocal-space resolution from mixture construction to pair correlations, structure factors, and optional dependent-scattering calculations. %
+The Intralipid model of Attendu et al. \cite{Attendu2026} illustrates the class of research enabled by this workflow, in which measured particle-size information is combined with multicomponent hard-sphere correlations to evaluate concentration-dependent optical scattering. %
+The public Python interface and executable examples also make systematic parameter sweeps and independent numerical checks accessible without requiring users to reimplement the Lebowitz mixture solution or its transforms. %
+
+\subsection{Quality control and availability}
+
+PackLab tests analytical hard-core exclusion, automatic-grid selection, grid warnings, and convergence through its public \gls{api}. %
+Separate tests cover samplers, packing validity, periodic boundaries, and Metropolis move validation. %
+Executable documentation examples are organised around analytical, \gls{rsa}, \gls{mc}, and comparison workflows. %
+\Gls{ci} builds the native extensions and runs the test suite for CPython 3.11--3.13. %
+
+PackLab version 0.7.0 requires Python 3.10 or later, is released under the MIT License, and is available from \gls{pypi} and conda. %
+Source code, documentation, issue tracking, and release history are available at \url{https://github.com/MartinPdeS/PackLab}. %
+Release-specific citation metadata is maintained in \texttt{.zenodo.json}. %
+Archived releases are available from the Zenodo record at \href{https://doi.org/10.5281/zenodo.20207810}{10.5281/zenodo.20207810}. %
+
+\subsection{Limitations}
+
+The current scope is three-dimensional, spherical, hard-core particles in cuboidal domains. %
+\gls{rsa} should not be interpreted as an equilibrium-fluid simulator; \gls{mc} requires explicit equilibration assessment; and \gls{py} should not be interpreted as a measured structure or a general interaction model. %
+
+The practical limits of both workflows depend on the requested mixture and numerical settings. %
+For \gls{rsa}, insertion becomes progressively less efficient as the requested packing fraction increases; finite domains, broad radius distributions, and stringent stopping conditions can prevent the requested target from being reached. %
+Consequently, users should report the realised packing fraction, stopping diagnostics, random seed, ensemble size, and domain size rather than treating a requested target as an achieved state. %
+Pair-correlation estimates from finite configurations additionally depend on binning and are subject to finite-size uncertainty, particularly near the largest separations accessible in a domain. %
+For \gls{mc}, users should assess burn-in, autocorrelation, proposal acceptance, and finite-size effects before treating separated chain states as equilibrium samples. %
+
+For \gls{py}, the approximation error depends on density, composition, and particle-size ratio, and is separate from Fourier-grid discretisation error. %
+The automatic grid and under-resolution warning are useful safeguards, but they do not establish convergence for every mixture, especially when near-contact structure is sharp, size ratios are extreme, or correlations are required over a long distance range. %
+Users should refine the wavenumber grid and compare against an independently chosen equilibrium benchmark when the analytical result informs a quantitative conclusion. %
+PackLab's separate namespaces, explicit input definitions, recorded stochastic settings, and grid diagnostics are designed to make these limitations visible at the point of use. %
+
+\section{Conclusions}
+
+PackLab provides a unit-aware Python interface to multicomponent \gls{py} pair correlations and partial structure factors, supported by native C++20 kernels and explicit Fourier-grid diagnostics. %
+Qualitative real-space comparisons recover the principal features of published hard-sphere-mixture curves, while reciprocal-space results agree with a separately implemented reference to within $9.6\times10^{-10}$ for the tested mono-, bi-, and ternary mixtures. %
+The package's \gls{rsa} generator and \gls{mc} sampler extend the workflow to explicit configurations without treating their outputs and the analytical reference as interchangeable. %
+Together, these facilities support reproducible structural inputs for hard-particle and dependent-scattering studies while retaining the numerical and physical assumptions needed to interpret each result. %
+
+\section*{CRediT authorship contribution statement}
+
+Martin Poinsinet de Sivry-Houle: Conceptualization, Methodology, Software, Validation, Visualization, Writing--original draft, Writing--review and editing. %
+Xavier Attendu: Methodology, Validation, Writing--review and editing. %
+Ton G. van Leeuwen: Supervision, Writing--review and editing. %
+Edwin van der Pol: Supervision, Writing--review and editing. %
+
+\section*{Funding}
+
+This research received no specific grant from funding agencies in the public, commercial, or not-for-profit sectors. %
+
+\section*{Declaration of competing interest}
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this article. %
+
+\section*{Data availability}
+
+All source code, tests, figure-generation scripts, and numerical reference data used in this article are available in the PackLab repository and its versioned release archive. %
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+
+During the preparation of this work, the authors used OpenAI Codex to assist with manuscript organization, language editing, and software-maintenance tasks. %
+The authors reviewed and edited the output and take full responsibility for the content of the publication. %
+
+\section*{Acknowledgements}
+
+The authors thank the open-source scientific Python ecosystem and the users who provide feedback, issues, and reproducible examples. %
+
+\bibliographystyle{elsarticle-num}
+\bibliography{references}
+\end{document}

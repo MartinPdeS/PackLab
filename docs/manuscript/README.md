@@ -1,14 +1,18 @@
-# PackLab manuscript draft
+# PackLab manuscripts
 
-`packlab.tex` is the scientific manuscript draft and `references.bib` contains
-its bibliography. Build it locally with:
+The manuscript sources are separated by target journal:
+
+- `softwareX/` contains the full Original Software Publication prepared with
+  Elsevier's single-column `elsarticle` format and SoftwareX section structure.
+- `joss/` is reserved for the shorter JOSS `paper.md` and `paper.bib`
+  submission, which will be prepared separately if that venue is selected.
+
+Build the SoftwareX draft locally with:
 
 ```bash
-cd docs/manuscript
+cd docs/manuscript/softwareX
 latexmk -pdf packlab.tex
 ```
 
-JOSS submissions are made as `paper.md` and `paper.bib` in the repository
-root, using the [JOSS paper template](https://joss.readthedocs.io/en/latest/submitting.html).
-This LaTeX draft is intentionally separate from the final JOSS submission
-format so the fuller manuscript can evolve without constraining that workflow.
+See `softwareX/SUBMISSION_CHECKLIST.md` for the journal-format checks and the
+author declarations that still require human confirmation.

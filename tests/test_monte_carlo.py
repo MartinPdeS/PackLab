@@ -2,7 +2,6 @@
 PackLab test.
 """
 
-import pytest
 import numpy as np
 import pytest
 from unittest.mock import patch
@@ -144,7 +143,6 @@ def test_packing_fraction_consistency():
     simulator = monte_carlo.RSASimulator(domain=domain, radius_sampler=radius_sampler, options=options)
     result = simulator.run()
 
-    positions = result.positions
     radii = result.radii
     stats = result.statistics
 
@@ -324,7 +322,7 @@ def test_plot_slice_runs(patch):
 
     result = monte_carlo.RSASimulator(domain, radius_sampler, options).run()
 
-    fig = result.plot_slice_2d(show=False)
+    result.plot_slice_2d(show=False)
 
 
 @patch('matplotlib.pyplot.show')

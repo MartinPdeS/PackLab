@@ -41,6 +41,7 @@ COLOURS = np.array(["#1677b8", "#d97706"])
 DEFAULT_TITLE = "Periodic random sequential adsorption of a polydisperse hard-sphere mixture"
 DEFAULT_TITLE = ""
 
+
 def run_simulation():
     """Run the fixed-seed, periodic, two-radius RSA simulation."""
     domain = monte_carlo.PackingDomain(
@@ -134,7 +135,9 @@ def plot_cross_section(
     # )
 
 
-def plot_composition(axes: Axes, class_index: np.ndarray, particle_count: int, packing_fraction: float) -> None:
+def plot_composition(
+    axes: Axes, class_index: np.ndarray, particle_count: int, packing_fraction: float
+) -> None:
     """Compare the requested and accepted number fractions for each radius."""
     locations = np.arange(len(RADII))
     accepted_counts = np.bincount(class_index, minlength=len(RADII))
@@ -184,9 +187,7 @@ def plot_pair_correlation(axes: Axes, estimate, radii_um: np.ndarray) -> None:
     line_styles = ("-", "-", "-")
     contact_distances_um = []
 
-    for (i, j), label, colour, line_style in zip(
-        pairs, labels, colours, line_styles, strict=True
-    ):
+    for (i, j), label, colour, line_style in zip(pairs, labels, colours, line_styles, strict=True):
         axes.plot(
             distances_um,
             mean_g[i, j],

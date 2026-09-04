@@ -45,7 +45,10 @@ def make_mixture_domain() -> analytical.PercusYevickDomain:
 
 def distances():
     """Return the common radial evaluation grid."""
-    return np.linspace(0.0, MAXIMUM_DISTANCE.to("micrometer").magnitude, NUMBER_OF_RADIAL_POINTS) * ureg.micrometer
+    return (
+        np.linspace(0.0, MAXIMUM_DISTANCE.to("micrometer").magnitude, NUMBER_OF_RADIAL_POINTS)
+        * ureg.micrometer
+    )
 
 
 def solve(distances, *, wavenumber="auto"):
@@ -120,9 +123,7 @@ def plot_auto_residual(axes: Axes, radial_distances, automatic, reference) -> No
     binned_distances = distances_um[:usable_size].reshape(-1, bin_size).mean(axis=1)
     for (i, j), label, colour in zip(PAIR_INDICES, PAIR_LABELS, PAIR_COLOURS, strict=True):
         difference = automatic.g[i, j] - reference.g[i, j]
-        local_rms = np.sqrt(
-            np.mean(difference[:usable_size].reshape(-1, bin_size) ** 2, axis=1)
-        )
+        local_rms = np.sqrt(np.mean(difference[:usable_size].reshape(-1, bin_size) ** 2, axis=1))
         # The solver enforces the hard core exactly, so residuals there are
         # identically zero and cannot be represented on a logarithmic axis.
         nonzero = local_rms > 1e-14
@@ -148,8 +149,16 @@ def plot_convergence(axes: Axes, radial_distances, reference) -> None:
     """Show convergence to the independently specified refined grid."""
     samples, errors = grid_convergence(radial_distances, reference)
     axes.semilogy(samples, errors, "o-", color="#d97706", linewidth=1.8, markersize=4.5)
-    axes.axvline(WARNING_THRESHOLD, color="#b91c1c", linestyle="--", linewidth=1.1, label="warning threshold")
-    axes.axvline(AUTOMATIC_GRID_DEFAULT, color="#1677b8", linestyle="--", linewidth=1.1, label="automatic default")
+    axes.axvline(
+        WARNING_THRESHOLD, color="#b91c1c", linestyle="--", linewidth=1.1, label="warning threshold"
+    )
+    axes.axvline(
+        AUTOMATIC_GRID_DEFAULT,
+        color="#1677b8",
+        linestyle="--",
+        linewidth=1.1,
+        label="automatic default",
+    )
     axes.set(
         xlabel="samples per sinc-kernel oscillation",
         ylabel=r"RMS difference in $g_{ij}(r)$",
