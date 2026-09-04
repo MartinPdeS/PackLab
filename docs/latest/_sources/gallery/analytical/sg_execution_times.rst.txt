@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:12.976** total execution time for 4 files **from gallery/analytical**:
+**00:24.819** total execution time for 4 files **from gallery/analytical**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_analytical_scattering.py` (``scattering.py``)
-     - 00:09.655
+     - 00:18.450
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_analytical_poly_disperse.py` (``analytical_poly_disperse.py``)
-     - 00:03.085
-     - 0.0
-   * - :ref:`sphx_glr_gallery_analytical_01_monodisperse_volume_fraction.py` (``01_monodisperse_volume_fraction.py``)
-     - 00:00.119
+     - 00:05.943
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_02_binary_mixture_pair_correlations.py` (``02_binary_mixture_pair_correlations.py``)
-     - 00:00.117
+     - 00:00.215
+     - 0.0
+   * - :ref:`sphx_glr_gallery_analytical_01_monodisperse_volume_fraction.py` (``01_monodisperse_volume_fraction.py``)
+     - 00:00.211
      - 0.0
