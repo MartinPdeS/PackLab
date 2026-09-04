@@ -1,0 +1,174 @@
+:orphan:
+
+.. _theory:
+
+Theoretical background
+======================
+
+PackLab offers three complementary hard-sphere workflows. Percus--Yevick (PY)
+is an analytical equilibrium reference; random sequential adsorption (RSA)
+constructs explicit, irreversible deposition configurations; and Metropolis
+Monte Carlo (MC) samples an equilibrium system through particle moves. They
+can share radii, composition, and volume fraction, but they do not represent
+the same physical process.
+
+Technique guides
+----------------
+
+Use the :doc:`analytical` guide for the PY Python workflow and the
+:doc:`monte_carlo` guide for RSA packing generation and Metropolis MC moves.
+The :doc:`references` page collects the underlying literature and release
+citation information.
+
+.. toctree::
+   :hidden:
+
+   analytical
+   monte_carlo
+   assumptions
+   references
+
+Percus--Yevick hard-sphere mixtures
+-----------------------------------
+
+The analytical namespace evaluates the multicomponent PY approximation for an
+equilibrium hard-sphere mixture. Given particle radii, number fractions, and a
+total volume fraction, it derives species densities and computes partial pair
+correlations :math:`g_{ij}(r)` and structure factors :math:`S_{ij}(k)`.
+
+PY is useful when a rapid equilibrium reference is needed for parameter sweeps
+or a structure-aware scattering calculation without generating sphere centres.
+It is an approximation: its physical accuracy depends on density, composition,
+and size ratio. Its numerical accuracy also depends on the wavenumber grid
+used to recover real-space correlations. These are separate questions. The
+automatic grid is a useful default, while explicit grids allow a resolution
+study for a particular distance range.
+
+For species number densities :math:`\rho_i`, number fractions :math:`x_i`,
+and total number density :math:`\rho`, the mixture has
+
+.. math::
+
+   \rho_i = x_i\rho, \qquad
+   \phi = \sum_i \rho_i \frac{4\pi a_i^3}{3}.
+
+The partial pair correlation is defined by the expected number of species
+:math:`j` centres in a shell around a species :math:`i` centre,
+
+.. math::
+
+   \mathrm{d}N_j = \rho_j g_{ij}(r)\,4\pi r^2\mathrm{d}r.
+
+For hard spheres, :math:`g_{ij}(r)=0` inside the excluded core
+:math:`r<a_i+a_j`. Defining :math:`h_{ij}(r)=g_{ij}(r)-1`, the reciprocal-space
+structure-factor matrix is
+
+.. math::
+
+   S_{ij}(k) = \delta_{ij} + \sqrt{\rho_i\rho_j}\,\widetilde{h}_{ij}(k).
+
+The Ornstein--Zernike relation couples every species pair through the direct
+correlations :math:`c_{ij}`. Percus--Yevick closes that relation by enforcing
+the hard core and setting the direct correlation to zero outside it. This is
+why PY is a useful, fast reference but still an approximation.
+
+Random sequential adsorption
+----------------------------
+
+Random sequential adsorption (RSA) proposes one sphere at a time. A proposal
+is retained only when it does not overlap an accepted sphere. Once accepted,
+the sphere never moves; a rejected proposal is discarded. Early accepted
+spheres can therefore block positions permanently, making the final packing
+depend on the random proposal order. RSA produces a physically valid,
+history-dependent deposition configuration, not an equilibrium hard-sphere
+sample. In PackLab, ``maximum_attempts`` limits rejected proposals and
+``target_packing_fraction`` provides an optional earlier stopping condition.
+
+For spheres with radii :math:`r_i` in a domain of volume :math:`V`, the packing
+fraction is
+
+.. math::
+
+   \phi = \frac{1}{V}\sum_i \frac{4\pi r_i^3}{3}.
+
+The radius sampler is consequently part of the physical model: a
+monodisperse simulation and a broad polydisperse simulation at the same
+nominal packing fraction need not have the same structure.
+
+For a candidate centre :math:`\mathbf{x}` and radius :math:`a`, RSA accepts a
+proposal only when it is outside every excluded volume. Symbolically,
+
+.. math::
+
+   A(\mathbf{x}, a) = \prod_{n=1}^{N}
+   \Theta\!\left(\lVert\mathbf{x}-\mathbf{x}_n\rVert-a-a_n\right),
+
+where :math:`\Theta` is one for a non-overlapping proposal and zero otherwise.
+Once a proposal is accepted, it becomes part of the product for every later
+proposal. This simple rule is the source of RSA's history dependence.
+
+Metropolis Monte Carlo
+----------------------
+
+Metropolis MC starts from any valid non-overlapping configuration, keeps every
+particle radius and class label fixed, and proposes symmetric single-particle
+displacements. A proposed move is accepted when it remains in the domain and
+creates no overlap. Repeated moves target the equilibrium distribution at the
+chosen particle count and volume; unlike RSA, accepted particles can move and
+rearrange.
+
+The initial states retain memory of their starting configuration, so discard a
+``burn-in`` interval before collecting measurements. Successive MC states may
+also be similar; their autocorrelation indicates how many sweeps should
+separate approximately independent samples. Finally, repeat a calculation for
+larger boxes or particle counts when bulk correlations are required, because a
+finite simulation box can alter the measured result.
+
+For a symmetric proposal distribution, the Metropolis acceptance probability
+is
+
+.. math::
+
+   P_{\mathrm{accept}} = \min\!\left[1,
+   \exp\!\left(-\beta\Delta U\right)\right].
+
+The hard-sphere potential is either zero (no overlap) or infinite (overlap),
+so this reduces to probability one for a valid move and zero for an overlapping
+move. For an observable :math:`A`, estimate the autocorrelation
+:math:`\rho_A(t)` across sampling lags. Its integrated value sets the
+approximate number of independent observations,
+
+.. math::
+
+   N_{\mathrm{eff}} \approx
+   \frac{N}{1 + 2\sum_{t=1}^{\infty}\rho_A(t)}.
+
+In practice, truncate the sum once the measured autocorrelation has decayed
+into noise and compare results across larger domains.
+
+Periodic boundaries
+-------------------
+
+With periodic boundaries enabled, opposite faces of the simulation box are
+identified. A sphere close to one face can therefore overlap a sphere close
+to the opposite face. This reduces boundary artefacts when estimating bulk
+properties such as a pair-correlation function. Use non-periodic boundaries
+when the edges themselves are part of the system being modelled.
+
+Pair correlations and structure factors
+---------------------------------------
+
+RSA and MC configurations can estimate the radial pair-correlation function
+:math:`g_{ij}(r)` from accepted centres. The analytical namespace calculates
+the corresponding PY pair correlations and structure factors over a
+user-supplied wavenumber grid. Match radii, number fractions, total volume
+fraction, boundary conditions, and the definition of each observable before
+comparing results.
+
+Agreement between an equilibrated MC calculation and PY can test how closely
+the approximation represents a specified equilibrium mixture. RSA--PY
+differences are expected even with matched inputs, because irreversible RSA
+deposition and an equilibrium hard-sphere fluid are different models. Use
+explicit configurations when their centres, finite size, or deposition history
+are the quantities of interest; use PY when a fast analytical equilibrium
+reference is the useful object.

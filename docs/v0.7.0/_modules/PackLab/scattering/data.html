@@ -1,0 +1,1058 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PackLab.scattering.data &#8212; PackLab  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=4340df76" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PackLab/scattering/data';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="../../../_static/packlab-favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.0" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/packlab-mark.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/packlab-mark.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PackLab</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../scattering.html">
+    Scattering
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../code.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../scattering.html">
+    Scattering
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../code.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">PackLab.scattering.data</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for PackLab.scattering.data</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+
+<div class="viewcode-block" id="ScatteringData">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringData">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScatteringData</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Far-field scattering data for a single particle diameter.</span>
+
+<span class="sd">    The quantity-bearing fields intentionally use ``Any`` because TypedUnit/Pint</span>
+<span class="sd">    quantities are generic at runtime and may wrap scalar or array values.</span>
+<span class="sd">    """</span>
+
+    <span class="n">S1</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">S2</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">k</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">Csca</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="n">phi</span><span class="p">:</span> <span class="n">Any</span>
+
+<div class="viewcode-block" id="ScatteringData.plot">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringData.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tight_layout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Plot the magnitudes of the two scattering amplitudes."""</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"radian"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">phi</span>
+        <span class="n">s1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">)</span>
+        <span class="n">s2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S2</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">S2</span><span class="p">,</span> <span class="s2">"magnitude"</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">S2</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">s1</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"|S1|"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">phi</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"|S2|"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">"polar angle (rad)"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"amplitude"</span><span class="p">)</span>
+        <span class="n">axes</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tight_layout</span><span class="p">:</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">figure</span></div>
+</div>
+
+
+
+<span class="c1"># Convention note:</span>
+<span class="c1"># In typical scattering convention, the polar scattering angle is in [0, pi]</span>
+<span class="c1"># and the azimuthal rotation around the incident axis is in [0, 2*pi).</span>
+<span class="c1"># In this class, `self.phi` is used with sin(self.phi) weights, so it behaves like a polar angle.</span>
+<div class="viewcode-block" id="ScatteringDataset">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">ScatteringDataset</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Container for multi size scattering data and mixture level post processing.</span>
+
+<span class="sd">    This class stores :class:`ScatteringData` instances, one for each diameter. It also provides mixture formulas</span>
+<span class="sd">    for a number density distribution over diameters and an inter particle correlation</span>
+<span class="sd">    term H(wavenumber).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    e_theta, e_phi : NDArray, shape (2,)</span>
+<span class="sd">        Unit basis vectors for the polarization basis used in `get_F_matrix`.</span>
+<span class="sd">        This code treats the scattering amplitude as a 2 component vector in a</span>
+<span class="sd">        (theta, phi) polarization basis.</span>
+
+<span class="sd">    k</span>
+<span class="sd">        Optical wavenumber in the surrounding medium (1/length).</span>
+<span class="sd">    phi</span>
+<span class="sd">        Polar scattering angle grid in radians. Expected range is [0, pi].</span>
+<span class="sd">    S1, S2</span>
+<span class="sd">        Arrays assembled by `process()` from each per diameter element.</span>
+<span class="sd">    Csca</span>
+<span class="sd">        Per diameter scattering cross section assembled by `process()`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Derived arrays are refreshed automatically by the mixture methods. Calling</span>
+<span class="sd">    :meth:`process` explicitly remains useful when inspecting those arrays.</span>
+<span class="sd">    """</span>
+
+    <span class="n">e_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+    <span class="n">e_phi</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+
+<div class="viewcode-block" id="ScatteringDataset.process">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.process">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Stack per diameter fields into dense arrays.</span>
+
+<span class="sd">        After calling this method, the object provides:</span>
+
+<span class="sd">        * `self.S1`: ndarray, shape (N, Pphi)</span>
+<span class="sd">        * `self.S2`: ndarray, shape (N, Pphi)</span>
+<span class="sd">        * `self.Csca`: Pint Quantity, shape (N,), units meter**2</span>
+
+<span class="sd">        where N is the number of diameters (len(self)) and Pphi is the number of</span>
+<span class="sd">        angular samples in each per diameter result.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ScatteringDataset must contain at least one ScatteringData item."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"phi"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ScatteringDataset.phi must be set before processing."</span><span class="p">)</span>
+
+        <span class="n">phi</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated_phi</span><span class="p">()</span>
+        <span class="n">expected_shape</span> <span class="o">=</span> <span class="n">phi</span><span class="o">.</span><span class="n">shape</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">ScatteringData</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"ScatteringDataset items must be ScatteringData instances."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">S1</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">expected_shape</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"S1 for species </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> must match the phi grid shape </span><span class="si">{</span><span class="n">expected_shape</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">S2</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">expected_shape</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"S2 for species </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> must match the phi grid shape </span><span class="si">{</span><span class="n">expected_shape</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">S1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">S1</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">S2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">S2</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">Csca</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">Csca</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter**2"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span> <span class="o">**</span> <span class="mi">2</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validated_phi</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the polar-angle grid in radians after validating it."""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"radian"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"phi must be a unit-bearing angle quantity."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+        <span class="k">if</span> <span class="n">phi</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">phi</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phi must be a one-dimensional angle grid with at least two points."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">phi</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phi must be finite and strictly increasing."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">phi</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.0</span> <span class="ow">or</span> <span class="n">phi</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phi must lie within the polar-angle interval [0, pi]."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">phi</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_mixture_inputs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Validate and normalize inputs shared by mixture calculations."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ScatteringDataset.k must be set before mixture calculations."</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1 / meter"</span><span class="p">)</span>
+            <span class="n">density_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">densities</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1 / meter**3"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">wavenumber_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">wavenumber</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1 / meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"densities and wavenumber must be unit-bearing quantities."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="ow">or</span> <span class="n">k</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"k must be finite and positive."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">density_values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">density_values</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"densities must be one-dimensional with one value per species."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">density_values</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">density_values</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"densities must be finite and non-negative."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">wavenumber_values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">wavenumber_values</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavenumber must be a one-dimensional grid with at least two points."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">wavenumber_values</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavenumber_values</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavenumber must be finite and strictly increasing."</span><span class="p">)</span>
+        <span class="n">H_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">expected_shape</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">wavenumber_values</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">H_values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">expected_shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"H must have shape </span><span class="si">{</span><span class="n">expected_shape</span><span class="si">}</span><span class="s2">; got </span><span class="si">{</span><span class="n">H_values</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">H_values</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"H must contain only finite values."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">density_values</span><span class="p">,</span> <span class="n">H_values</span><span class="p">,</span> <span class="n">wavenumber_values</span>
+
+<div class="viewcode-block" id="ScatteringDataset.get_alpha_beta_factor">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_alpha_beta_factor">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_alpha_beta_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Build number density factors for mixture sums.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        densities : NDArray, shape (N,)</span>
+<span class="sd">            Species number densities n_alpha. Units should be 1/length**3.</span>
+<span class="sd">            N must match the number of size classes stored in this object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_alpha : NDArray, shape (N,)</span>
+<span class="sd">            Same array as input (returned for convenience).</span>
+<span class="sd">        sqrt_alpha_beta : NDArray, shape (N, N)</span>
+<span class="sd">            Matrix with entries sqrt(n_alpha * n_beta). This is commonly used in</span>
+<span class="sd">            symmetric mixture formulations to weight cross correlations.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This uses the outer product and then takes a square root:</span>
+
+<span class="sd">        sqrt_alpha_beta[a, b] = sqrt(n_alpha[a] * n_alpha[b])</span>
+<span class="sd">        """</span>
+        <span class="n">n_alpha</span> <span class="o">=</span> <span class="n">densities</span>
+        <span class="n">n_alpha_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"i,j -&gt; ij"</span><span class="p">,</span> <span class="n">n_alpha</span><span class="p">,</span> <span class="n">n_alpha</span><span class="p">)</span>
+        <span class="n">sqrt_alpha_beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n_alpha_beta</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">n_alpha</span><span class="p">,</span> <span class="n">sqrt_alpha_beta</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.get_F_matrix">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_F_matrix">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_F_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Construct the vector scattering amplitude tensor F for each size, angle, and azimuth.</span>
+
+<span class="sd">        This builds a 2 component vector amplitude in the (e_theta, e_phi) basis using</span>
+<span class="sd">        the convention in your code:</span>
+
+<span class="sd">        F(θ_azimuth, φ_polar) = (i / k) * [ e_theta * S2(φ) * cos(θ) - e_phi * S1(φ) * sin(θ) ]</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        theta_points</span>
+<span class="sd">            Number of azimuthal sampling points in [0, 2*pi]. This is a rotation</span>
+<span class="sd">            around the incident axis.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        F : NDArray, complex, shape (2, N, Pphi, Ptheta)</span>
+<span class="sd">            Vector amplitude tensor.</span>
+
+<span class="sd">            Index meaning:</span>
+<span class="sd">            * first axis (size 2): polarization component (theta, phi)</span>
+<span class="sd">            * second axis: size class index (N)</span>
+<span class="sd">            * third axis: polar scattering angle samples (Pphi), from `self.phi`</span>
+<span class="sd">            * fourth axis: azimuthal angle samples (Ptheta), generated internally</span>
+
+<span class="sd">        theta : NDArray, shape (Ptheta,)</span>
+<span class="sd">            Azimuthal angle grid in radians spanning [0, 2*pi].</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The name `theta` here refers to an azimuthal angle. The polar scattering angle</span>
+<span class="sd">        is stored in `self.phi`.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="n">theta_points</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"theta_points must be at least 2."</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">)</span>
+
+        <span class="n">_cos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+        <span class="n">_sin</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="n">prefactor</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span>
+
+        <span class="n">term_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"i, jk, l -&gt; ijkl"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_theta</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">S2</span><span class="p">,</span> <span class="n">_cos</span><span class="p">)</span>
+        <span class="n">term_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"i, jk, l -&gt; ijkl"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">e_phi</span><span class="p">,</span>   <span class="bp">self</span><span class="o">.</span><span class="n">S1</span><span class="p">,</span> <span class="n">_sin</span><span class="p">)</span>
+
+        <span class="n">F</span> <span class="o">=</span> <span class="n">prefactor</span> <span class="o">*</span> <span class="p">(</span><span class="n">term_0</span> <span class="o">-</span> <span class="n">term_1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">F</span><span class="p">,</span> <span class="n">theta</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.get_mu_independant">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_mu_independant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_mu_independant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Compute the independent scattering contribution to the attenuation coefficient.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        densities : NDArray, shape (N,)</span>
+<span class="sd">            Species number densities n_alpha. Units should be 1/length**3.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mu_independant_scattering</span>
+<span class="sd">            Scalar attenuation coefficient contribution with units 1/length.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This implements a standard independent scattering approximation term:</span>
+
+<span class="sd">        mu_s,ind = sum_alpha n_alpha * Csca_alpha</span>
+
+<span class="sd">        The supplied density vector is validated against the number of species.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">n_alpha</span> <span class="o">=</span> <span class="n">densities</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1 / meter**3"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"densities must be a unit-bearing quantity."</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">n_alpha</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"densities must contain one value per species."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">n_alpha</span><span class="o">.</span><span class="n">magnitude</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">n_alpha</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"densities must be finite and non-negative."</span><span class="p">)</span>
+        <span class="n">mu_independant_scattering</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"i,i -&gt; "</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Csca</span><span class="p">,</span> <span class="n">n_alpha</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1/meter"</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mu_independant_scattering</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.get_mu_dependant">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_mu_dependant">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_mu_dependant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Compute the dependent scattering contribution using inter particle correlations H(wavenumber).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        densities : NDArray, shape (N,)</span>
+<span class="sd">            Species number densities n_alpha. Units should be 1/length**3.</span>
+<span class="sd">        H : NDArray, shape (N, N, Pp)</span>
+<span class="sd">            Mixture total correlation function in reciprocal space, evaluated on the</span>
+<span class="sd">            `wavenumber` grid. This should correspond to the same ordering as size classes.</span>
+<span class="sd">        wavenumber : NDArray, shape (Pp,)</span>
+<span class="sd">            Reciprocal space radial grid (1/length). Must cover the range needed to</span>
+<span class="sd">            evaluate H at wavenumber = 2k sin(φ/2) for φ in [0, pi].</span>
+<span class="sd">        theta_points</span>
+<span class="sd">            Number of azimuthal samples for the integral over the rotation angle.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mu_dependant_scattering</span>
+<span class="sd">            Scalar attenuation coefficient contribution. Units depend on the exact</span>
+<span class="sd">            normalization conventions of F and H used in the integrand, but it is</span>
+<span class="sd">            intended to be in 1/length.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The core integrand is:</span>
+
+<span class="sd">        term[p_index, theta_index] = sum_{a,b} sqrt(n_a n_b) F_a(wavenumber,theta) F*_b(wavenumber,theta) H_ab(wavenumber)</span>
+
+<span class="sd">        then integrated over polar angle (self.phi) and azimuth (theta).</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mixture_inputs</span><span class="p">(</span><span class="n">densities</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">)</span>
+        <span class="n">n_alpha</span><span class="p">,</span> <span class="n">sqrt_alpha_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alpha_beta_factor</span><span class="p">(</span><span class="n">densities</span><span class="o">=</span><span class="n">densities</span><span class="p">)</span>
+
+        <span class="n">F</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_F_matrix</span><span class="p">(</span><span class="n">theta_points</span><span class="o">=</span><span class="n">theta_points</span><span class="p">)</span>
+
+        <span class="n">phi</span><span class="p">,</span> <span class="n">interpolated_H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_interpolated_H</span><span class="p">(</span><span class="n">H</span><span class="o">=</span><span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="o">=</span><span class="n">wavenumber</span><span class="p">)</span>
+
+        <span class="n">term</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ab,iapt,ibpt,abp -&gt; pt"</span><span class="p">,</span> <span class="n">sqrt_alpha_beta</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="n">interpolated_H</span><span class="p">)</span>
+
+        <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">),</span> <span class="n">x</span><span class="o">=</span><span class="n">phi</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">mu_dependant_scattering</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapezoid</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">theta</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mu_dependant_scattering</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.get_mu">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_mu">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_mu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Compute total scattering attenuation coefficient mu_s.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        densities : NDArray, shape (N,)</span>
+<span class="sd">            Species number densities.</span>
+<span class="sd">        H : NDArray, shape (N, N, Pp)</span>
+<span class="sd">            Correlation function in wavenumber space.</span>
+<span class="sd">        wavenumber : NDArray, shape (Pp,)</span>
+<span class="sd">            wavenumber space grid (1/length).</span>
+<span class="sd">        theta_points</span>
+<span class="sd">            Azimuthal sampling count.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        mu</span>
+<span class="sd">            Total scattering attenuation coefficient (intended units 1/length), computed as:</span>
+
+<span class="sd">            mu = mu_independant + mu_dependant</span>
+<span class="sd">        """</span>
+        <span class="n">mu_independant</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mu_independant</span><span class="p">(</span><span class="n">densities</span><span class="o">=</span><span class="n">densities</span><span class="p">)</span>
+
+        <span class="n">mu_dependant</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_mu_dependant</span><span class="p">(</span><span class="n">densities</span><span class="o">=</span><span class="n">densities</span><span class="p">,</span> <span class="n">H</span><span class="o">=</span><span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="o">=</span><span class="n">wavenumber</span><span class="p">,</span> <span class="n">theta_points</span><span class="o">=</span><span class="n">theta_points</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">mu_independant</span> <span class="o">+</span> <span class="n">mu_dependant</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.interpolate_last_axis_linear">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.interpolate_last_axis_linear">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interpolate_last_axis_linear</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">H</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">wavenumber</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">evaluation_wavenumber</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Linear interpolation of H(..., wavenumber) onto evaluation_wavenumber, along the last axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        H : ndarray, shape (..., Pp)</span>
+<span class="sd">            Values sampled on grid wavenumber along the last axis.</span>
+<span class="sd">        wavenumber : ndarray, shape (Pp,)</span>
+<span class="sd">            Strictly increasing sample points.</span>
+<span class="sd">        evaluation_wavenumber : ndarray, shape (Pq,)</span>
+<span class="sd">            Query points.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray, shape (..., Pq)</span>
+<span class="sd">            Interpolated values.</span>
+<span class="sd">        """</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+        <span class="n">wavenumber</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">wavenumber</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">evaluation_wavenumber</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">evaluation_wavenumber</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">wavenumber</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">wavenumber</span><span class="o">.</span><span class="n">size</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavenumber must be a 1D grid with at least two points."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">wavenumber</span><span class="p">))</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavenumber</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavenumber must be finite and strictly increasing."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">evaluation_wavenumber</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"evaluation_wavenumber must contain only finite values."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">evaluation_wavenumber</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">wavenumber</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="n">evaluation_wavenumber</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">wavenumber</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavenumber does not cover the scattering wavevector range."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">wavenumber</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"H last axis (</span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">) must match wavenumber size (</span><span class="si">{</span><span class="n">wavenumber</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">)."</span><span class="p">)</span>
+
+        <span class="n">H_2d</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">wavenumber</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>  <span class="c1"># (M, Pp)</span>
+        <span class="n">out_2d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">H_2d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">evaluation_wavenumber</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">H_2d</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">H_2d</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">out_2d</span><span class="p">[</span><span class="n">row</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">evaluation_wavenumber</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">,</span> <span class="n">H_2d</span><span class="p">[</span><span class="n">row</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">out_2d</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">evaluation_wavenumber</span><span class="o">.</span><span class="n">size</span><span class="p">,))</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.get_interpolated_H">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_interpolated_H">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_interpolated_H</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Interpolate H(wavenumber) onto the scattering wavevector magnitude wavenumber = 2k sin(φ/2).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        H : array like, shape (N, N, Pp)</span>
+<span class="sd">            Correlation tensor sampled on the input wavenumber grid.</span>
+<span class="sd">        wavenumber : array like, shape (Pp,)</span>
+<span class="sd">            Radial reciprocal space grid (1/length).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        interpolated_H : NDArray, shape (N, N, Pphi)</span>
+<span class="sd">            H evaluated at the scattering wavenumber for φ in [0, pi], where:</span>
+
+<span class="sd">            wavenumber(φ) = 2 k sin(φ/2)</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This method assumes:</span>
+<span class="sd">        * `self.phi` spans [0, pi] and is the polar scattering angle</span>
+<span class="sd">        * `wavenumber` is provided in increasing order</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mixture_inputs</span><span class="p">(</span>
+            <span class="n">densities</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">H</span><span class="o">=</span><span class="n">H</span><span class="p">,</span>
+            <span class="n">wavenumber</span><span class="o">=</span><span class="n">wavenumber</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">phi_evaluate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validated_phi</span><span class="p">()</span>
+
+        <span class="n">evaluation_wavenumber</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">k</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi_evaluate</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">wavenumber_grid</span> <span class="o">=</span> <span class="n">wavenumber</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1/meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">evaluation_wavenumber_magnitude</span> <span class="o">=</span> <span class="n">evaluation_wavenumber</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"1/meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+        <span class="n">interpolated_H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolate_last_axis_linear</span><span class="p">(</span>
+            <span class="n">H</span><span class="p">,</span>
+            <span class="n">wavenumber_grid</span><span class="p">,</span>
+            <span class="n">evaluation_wavenumber_magnitude</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">phi_evaluate</span><span class="p">,</span> <span class="n">interpolated_H</span></div>
+
+
+<div class="viewcode-block" id="ScatteringDataset.get_phase_function">
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_phase_function">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_phase_function</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Compute the mixture phase function including dependent scattering corrections.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        densities : NDArray, shape (N,)</span>
+<span class="sd">            Species number densities n_alpha.</span>
+<span class="sd">        H : NDArray, shape (N, N, Pp)</span>
+<span class="sd">            Correlation tensor in reciprocal space on the wavenumber grid.</span>
+<span class="sd">        wavenumber : NDArray, shape (Pp,)</span>
+<span class="sd">            wavenumber space grid (1/length).</span>
+<span class="sd">        theta_points</span>
+<span class="sd">            Number of azimuthal samples.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        phi : ndarray, shape (Pphi,)</span>
+<span class="sd">            Polar angle grid in radians.</span>
+<span class="sd">        theta : ndarray, shape (Ptheta,)</span>
+<span class="sd">            Azimuthal angle grid in radians.</span>
+<span class="sd">        phase_function : NDArray, shape (Pphi, Ptheta)</span>
+<span class="sd">            Phase function indexed first by polar angle, then by azimuth.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The phase function is assembled as:</span>
+
+<span class="sd">        * Independent term: sum of ``n |F|^2`` over species.</span>
+<span class="sd">        * Dependent term: weighted cross terms involving ``F``, its conjugate,</span>
+<span class="sd">          and the correlation tensor ``H``.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_mixture_inputs</span><span class="p">(</span><span class="n">densities</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">)</span>
+        <span class="n">n_alpha</span><span class="p">,</span> <span class="n">sqrt_alpha_beta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_alpha_beta_factor</span><span class="p">(</span><span class="n">densities</span><span class="o">=</span><span class="n">densities</span><span class="p">)</span>
+
+        <span class="n">phi</span><span class="p">,</span> <span class="n">interpolated_H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_interpolated_H</span><span class="p">(</span><span class="n">H</span><span class="o">=</span><span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="o">=</span><span class="n">wavenumber</span><span class="p">)</span>
+
+        <span class="n">F</span><span class="p">,</span> <span class="n">theta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_F_matrix</span><span class="p">(</span><span class="n">theta_points</span><span class="o">=</span><span class="n">theta_points</span><span class="p">)</span>
+
+        <span class="n">phase_function</span><span class="p">:</span> <span class="n">NDArray</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"a, jatp, jatp -&gt; tp"</span><span class="p">,</span> <span class="n">n_alpha</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">F</span><span class="p">))</span>
+            <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s2">"ab, japt, jbpt, abp -&gt; pt"</span><span class="p">,</span> <span class="n">sqrt_alpha_beta</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">F</span><span class="p">),</span> <span class="n">interpolated_H</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phase_function</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
