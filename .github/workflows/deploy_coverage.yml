@@ -16,10 +16,11 @@ permissions:
 
 jobs:
   ManyLinux_x86_64:
-    # Pinned to the reviewed MPSActions master commit; update intentionally.
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@fae8d0cd3aeb1c98f05922a77a55ea277a3a068c
+    # Receive backward-compatible updates from the MPSActions v1 release line.
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_coverage.yml@v1
     with:
       python-version: "3.11"
       apt-package: xvfb
+      coverage-package: PackLab
     secrets:
       _GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
