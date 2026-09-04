@@ -8,11 +8,18 @@ import pytest
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+TOOLS_DIRECTORY = REPOSITORY_ROOT / "tools"
+
+if not TOOLS_DIRECTORY.is_dir():
+    pytest.skip(
+        "repository workflow helpers are not staged in this package test environment",
+        allow_module_level=True,
+    )
 
 
 def load_tool_module(name: str) -> ModuleType:
     """Load a repository-only workflow helper without packaging it."""
-    path = REPOSITORY_ROOT / "tools" / f"{name}.py"
+    path = TOOLS_DIRECTORY / f"{name}.py"
     specification = importlib.util.spec_from_file_location(f"packlab_test_{name}", path)
     if specification is None or specification.loader is None:
         raise RuntimeError(f"could not load workflow helper: {path}")
