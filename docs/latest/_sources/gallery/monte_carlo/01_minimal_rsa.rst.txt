@@ -39,7 +39,7 @@ accepted sphere configuration.
 
  .. code-block:: none
 
-    <PackLab.monte_carlo.results.PackingResult object at 0x7fe9c7d79e90>
+    <PackLab.monte_carlo.results.PackingResult object at 0x7f662fc9ab10>
     Packing fraction: 0.080
 
 
@@ -86,7 +86,7 @@ accepted sphere configuration.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.274 seconds)
+   **Total running time of the script:** (0 minutes 0.131 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_01_minimal_rsa.py:

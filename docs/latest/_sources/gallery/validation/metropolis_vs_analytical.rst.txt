@@ -100,7 +100,7 @@ Construct a fixed-volume hard-sphere system
  .. code-block:: none
 
 
-    <PackLab.monte_carlo.results.PackingResult object at 0x7fe9c41ca390>
+    <PackLab.monte_carlo.results.PackingResult object at 0x7f662dab9650>
 
 
 
@@ -203,7 +203,7 @@ Plot the comparison
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.176 seconds)
+   **Total running time of the script:** (0 minutes 0.106 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_metropolis_vs_analytical.py:
