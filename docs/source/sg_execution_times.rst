@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.093** total execution time for 18 files **from all galleries**:
+**00:00.329** total execution time for 18 files **from all galleries**:
 
 .. container::
 
@@ -32,8 +32,11 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_monte_carlo_03_radius_samplers.py` (``../examples/monte_carlo/03_radius_samplers.py``)
-     - 00:00.093
+   * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001.py` (``../examples/validation/percus_yevick_vs_tsang_2001.py``)
+     - 00:00.270
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py` (``../examples/validation/percus_yevick_vs_tsang_2001_monodisperse.py``)
+     - 00:00.058
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_01_monodisperse_volume_fraction.py` (``../examples/analytical/01_monodisperse_volume_fraction.py``)
      - 00:00.000
@@ -59,6 +62,9 @@ Computation times
    * - :ref:`sphx_glr_gallery_monte_carlo_02_periodic_boundaries.py` (``../examples/monte_carlo/02_periodic_boundaries.py``)
      - 00:00.000
      - 0.0
+   * - :ref:`sphx_glr_gallery_monte_carlo_03_radius_samplers.py` (``../examples/monte_carlo/03_radius_samplers.py``)
+     - 00:00.000
+     - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_04_metropolis_equilibration.py` (``../examples/monte_carlo/04_metropolis_equilibration.py``)
      - 00:00.000
      - 0.0
@@ -75,12 +81,6 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_grid_convergence.py` (``../examples/validation/percus_yevick_grid_convergence.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001.py` (``../examples/validation/percus_yevick_vs_tsang_2001.py``)
-     - 00:00.000
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py` (``../examples/validation/percus_yevick_vs_tsang_2001_monodisperse.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_rsa_ensemble_vs_analytical.py` (``../examples/validation/rsa_ensemble_vs_analytical.py``)
