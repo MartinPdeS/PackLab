@@ -3,7 +3,7 @@ package:
   version: 0.7.8
 
 source:
-  path: .
+  path: ..
 
 build:
   number: 0
@@ -13,9 +13,6 @@ build:
     # CMake 4 no longer recognises it; clearing the variable lets CMake select
     # the installed Visual Studio toolchain.
     - set "CMAKE_GENERATOR="  # [win]
-    # This source-only MATLAB project is nearly 1 GB. Remove it from Conda's
-    # temporary source tree before building so it cannot leak into the package.
-    - {{ PYTHON }} -c "from pathlib import Path; import shutil; shutil.rmtree(Path('matlab'), ignore_errors=True)"
     - {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
 channels:
@@ -57,8 +54,6 @@ files:
     - "PackLab/*.so"
     - "PackLab/monte_carlo/*.so"
     - "PackLab/analytical/*.so"
-  exclude:
-    - "matlab/**"
 
 test:
   imports:

@@ -4,6 +4,8 @@
 
 # Except ...
 !.github
+!conda.recipe
+!conda.recipe/meta.yaml
 !.gitmodules
 !extern
 !PackLab
