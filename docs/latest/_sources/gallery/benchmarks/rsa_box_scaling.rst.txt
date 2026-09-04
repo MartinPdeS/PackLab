@@ -119,14 +119,14 @@ Time configuration generation at increasing box sizes
 
     3.0 µm box:  516 spheres in 0.001 s
     3.2 µm box:  639 spheres in 0.001 s
-    3.4 µm box:  781 spheres in 0.002 s
+    3.4 µm box:  781 spheres in 0.001 s
     3.7 µm box:  942 spheres in 0.002 s
-    3.9 µm box: 1124 spheres in 0.003 s
+    3.9 µm box: 1124 spheres in 0.002 s
     4.1 µm box: 1328 spheres in 0.003 s
-    4.3 µm box: 1555 spheres in 0.004 s
-    4.6 µm box: 1806 spheres in 0.005 s
-    4.8 µm box: 2083 spheres in 0.006 s
-    5.0 µm box: 2388 spheres in 0.007 s
+    4.3 µm box: 1555 spheres in 0.003 s
+    4.6 µm box: 1806 spheres in 0.004 s
+    4.8 µm box: 2083 spheres in 0.005 s
+    5.0 µm box: 2388 spheres in 0.006 s
 
 
 
@@ -165,7 +165,7 @@ Display generation time against the realised workload
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.114 seconds)
+   **Total running time of the script:** (0 minutes 0.088 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_rsa_box_scaling.py:
