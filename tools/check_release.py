@@ -13,6 +13,7 @@ import tomllib
 
 
 ROOT = Path(__file__).resolve().parents[1]
+CONDA_RECIPE_PATH = ROOT / "conda.recipe" / "meta.yaml"
 
 
 def normalized_version(version: str) -> str:
@@ -35,8 +36,8 @@ def versions() -> dict[str, str]:
     return {
         "pyproject.toml": str(project["project"]["version"]),
         ".zenodo.json": str(zenodo["version"]),
-        "meta.yaml": extract(
-            r"^\s*version:\s*['\"]?([^'\"\s]+)", ROOT / "meta.yaml", "Conda version"
+        "conda.recipe/meta.yaml": extract(
+            r"^\s*version:\s*['\"]?([^'\"\s]+)", CONDA_RECIPE_PATH, "Conda version"
         ),
         "PackLab/_version.py": extract(
             r"^__version__\s*=\s*version\s*=\s*['\"]([^'\"]+)",

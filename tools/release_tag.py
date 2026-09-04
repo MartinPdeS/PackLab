@@ -21,7 +21,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 ZENODO_PATH = ROOT / ".zenodo.json"
-CONDA_RECIPE_PATH = ROOT / "meta.yaml"
+CONDA_RECIPE_PATH = ROOT / "conda.recipe" / "meta.yaml"
 PYPROJECT_PATH = ROOT / "pyproject.toml"
 VERSION_FILE = ROOT / "PackLab" / "_version.py"
 TAG_PATTERN = re.compile(
@@ -82,7 +82,7 @@ def update_conda_recipe(version: str) -> None:
         count=1,
     )
     if replacements != 1:
-        raise RuntimeError("could not find exactly one package version in meta.yaml")
+        raise RuntimeError("could not find exactly one package version in conda.recipe/meta.yaml")
     CONDA_RECIPE_PATH.write_text(updated_recipe, encoding="utf-8")
 
 
@@ -125,7 +125,7 @@ def create_release(tag: str, version: str) -> None:
         "git",
         "add",
         ".zenodo.json",
-        "meta.yaml",
+        "conda.recipe/meta.yaml",
         "pyproject.toml",
         "PackLab/_version.py",
     )
