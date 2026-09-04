@@ -15,6 +15,13 @@ permissions:
   pages: write
   id-token: write
 
+# A release push and its tag both publish to the same documentation_page branch:
+# one updates ``latest`` and the other adds the versioned documentation.  Queue
+# them so generated HTML and binary gallery assets are never rebased concurrently.
+concurrency:
+  group: documentation-page-deployment
+  cancel-in-progress: false
+
 jobs:
   ManyLinux_x86_64:
     # Pinned to the reviewed MPSActions master commit; update intentionally.
