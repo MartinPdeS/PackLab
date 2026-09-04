@@ -3,77 +3,119 @@
 API reference
 =============
 
-PackLab keeps its compiled extensions alongside their public Python APIs. Most
-workflows start from one of the three namespaces below:
+PackLab keeps compiled extensions alongside its public Python APIs. The
+reference below is generated from the installed package, so signatures and
+docstrings remain aligned with the released interfaces.
+
+Start with one of these public namespaces:
 
 * :mod:`PackLab.samplers` for radius distributions;
 * :mod:`PackLab.monte_carlo` for random sequential adsorption (RSA);
-* :mod:`PackLab.analytical` for Percus--Yevick structure-factor calculations.
+* :mod:`PackLab.analytical` for Percus--Yevick mixture calculations;
+* :mod:`PackLab.scattering` for the optional PyMieSim integration.
+
+Only public classes and functions are listed below. Use the module-source link
+next to each object when implementation details are useful.
 
 Radius samplers
 ---------------
 
 .. automodule:: PackLab.samplers
    :members:
-   :undoc-members:
+   :member-order: bysource
 
 Monte-Carlo hard-sphere workflows
 ---------------------------------
 
 .. automodule:: PackLab.monte_carlo
-   :members:
-   :undoc-members:
+
+Packing domain
+~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.monte_carlo.domain
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+RSA simulation
+~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.monte_carlo.simulator
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+Metropolis sampling
+~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.monte_carlo.metropolis
    :members:
-   :undoc-members:
+   :member-order: bysource
 
-.. automodule:: PackLab.monte_carlo.result
+Results and visualisation
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: PackLab.monte_carlo.results
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+Statistics and ensemble estimates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.monte_carlo.statistics
    :members:
-   :undoc-members:
+   :member-order: bysource
 
 .. automodule:: PackLab.monte_carlo.estimator
    :members:
-   :undoc-members:
+   :member-order: bysource
 
 Analytical model
 ----------------
 
 .. automodule:: PackLab.analytical
-   :members:
-   :undoc-members:
+
+Mixture domain
+~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.analytical.domain
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+Wavenumber grids
+~~~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.analytical.grid
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+Percus--Yevick solver
+~~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.analytical.solver
    :members:
-   :undoc-members:
+   :member-order: bysource
 
 Scattering tools
 ----------------
 
+.. automodule:: PackLab.scattering
+
+Data containers
+~~~~~~~~~~~~~~~
+
 .. automodule:: PackLab.scattering.data
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+Amplitude generation
+~~~~~~~~~~~~~~~~~~~~
 
 .. automodule:: PackLab.scattering.model
    :members:
-   :undoc-members:
+   :member-order: bysource
+
+Phase-function plots
+~~~~~~~~~~~~~~~~~~~~
+
+.. automodule:: PackLab.scattering.plottings
+   :members:
+   :member-order: bysource

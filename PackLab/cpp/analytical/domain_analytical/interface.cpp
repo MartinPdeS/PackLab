@@ -41,20 +41,9 @@ PYBIND11_MODULE(domain, module) {
             R"doc(
                 Rounding mode used when converting expected (non integer) particle counts to integers.
 
-                Values
-                ------
-                floor
-                    Always round down (equivalent to numpy.floor).
-                round
-                    Round to nearest integer (equivalent to numpy.round / std::llround semantics).
-
-                Notes
-                -----
-                This affects:
-                - number_of_particles_total
-                - number_of_particles_per_radius
-                - particle_densities_per_radius
-                - particle_density_total
+                ``floor`` always rounds down. ``round`` rounds to the nearest
+                integer. The selected mode affects particle counts and densities
+                derived from the supplied number fractions.
             )doc"
         )
         .value(
@@ -95,11 +84,10 @@ PYBIND11_MODULE(domain, module) {
 
             Notes
             -----
-            - The model assumes a single specification mechanism: number fractions plus a total
-            volume fraction. If you later support alternative specifications (densities, volume
-            fractions), expose them explicitly as different constructors to avoid ambiguous states.
-            - All returned arrays are NumPy arrays. Quantities are returned as Pint quantities with
-            SI units (meter, meter**3, 1/meter**3).
+            The model uses number fractions and a total volume fraction as its
+            sole specification mechanism. Alternative specifications should use
+            separate constructors. Returned arrays are NumPy arrays; quantities
+            use SI units (meter, meter**3, 1/meter**3).
             )doc"
         )
         .def(

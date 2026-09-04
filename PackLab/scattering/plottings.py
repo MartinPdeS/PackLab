@@ -62,10 +62,12 @@ def plot_phase_function_3d(
 
     Notes
     -----
-    In "spherical" mode, the surface is parameterized as:
+    In "spherical" mode, the surface is parameterized as::
+
         x = r * sin(phi) * cos(theta)
         y = r * sin(phi) * sin(theta)
         z = r * cos(phi)
+
     where r is the (optionally normalized) phase function.
     """
     phi = np.asarray(phi)

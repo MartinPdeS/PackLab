@@ -44,14 +44,6 @@ PYBIND11_MODULE(simulator, module) {
     py::class_<SphereConfiguration, std::shared_ptr<SphereConfiguration>>(module, "PackingConfiguration", R"doc(
 Sphere centers, radii, and size-class labels of a packing.
 
-Attributes
-----------
-positions : pint.Quantity, shape (n, 3)
-    Sphere-center coordinates in meters.
-radii : pint.Quantity, shape (n,)
-    Sphere radii in meters.
-classes_index : numpy.ndarray, shape (n,)
-    Radius-class index for each sphere.
 )doc")
         .def_property_readonly(
             "count",

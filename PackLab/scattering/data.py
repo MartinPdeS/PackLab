@@ -469,8 +469,9 @@ class ScatteringDataset(list):
         -----
         The phase function is assembled as:
 
-        * Independent term: sum_a n_a |F_a|^2
-        * Dependent term:   sum_{a,b} sqrt(n_a n_b) F_a F*_b H_ab
+        * Independent term: sum of ``n |F|^2`` over species.
+        * Dependent term: weighted cross terms involving ``F``, its conjugate,
+          and the correlation tensor ``H``.
         """
         self._validate_mixture_inputs(densities, H, wavenumber)
         n_alpha, sqrt_alpha_beta = self.get_alpha_beta_factor(densities=densities)

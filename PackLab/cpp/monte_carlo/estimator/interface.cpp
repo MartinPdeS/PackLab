@@ -110,10 +110,6 @@ options : RSAOptions
 number_of_bins : int
     Number of radial bins used for each estimate.
 
-Attributes
-----------
-statistics : EstimatorStatistics
-    Aggregate diagnostics from the most recent call to ``estimate``.
 )doc");
     estimator_cls
         .def(py::init<

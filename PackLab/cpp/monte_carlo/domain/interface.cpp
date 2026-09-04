@@ -18,12 +18,6 @@ length_x, length_y, length_z : pint.Quantity
 use_periodic_boundaries : bool
     Whether to apply periodic boundary conditions on all three axes.
 
-Attributes
-----------
-length_x, length_y, length_z : pint.Quantity
-    Box lengths in meters.
-volume : float
-    Box volume in cubic meters.
 )doc");
 
     domain_cls
