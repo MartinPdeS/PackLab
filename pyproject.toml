@@ -23,7 +23,7 @@ local_scheme = "no-local-version"
 
 [project]
 name = "PackLab"
-version = "0.7.0"
+version = "0.7.1"
 description = "Random Sequential Addition (RSA) particle packing with a fast C++ core."
 license = "MIT"
 readme = "README.rst"
