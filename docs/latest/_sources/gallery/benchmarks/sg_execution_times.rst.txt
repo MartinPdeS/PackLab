@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.362** total execution time for 2 files **from gallery/benchmarks**:
+**00:02.343** total execution time for 2 files **from gallery/benchmarks**:
 
 .. container::
 
@@ -33,8 +33,8 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_benchmarks_analytical_distance_scaling.py` (``analytical_distance_scaling.py``)
-     - 00:02.234
+     - 00:02.218
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_rsa_box_scaling.py` (``rsa_box_scaling.py``)
-     - 00:00.128
+     - 00:00.125
      - 0.0

@@ -58,7 +58,7 @@ high-precision error benchmark.
 Load the digitised reference data
 ---------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-38
+.. GENERATED FROM PYTHON SOURCE LINES 29-44
 
 .. code-block:: Python
 
@@ -67,7 +67,13 @@ Load the digitised reference data
         docs_root = Path(os.environ["PACKLAB_DOCS_ROOT"])
     else:
         docs_root = Path(__file__).resolve().parents[2]
-    data_path = docs_root / "manuscript" / "data" / "tsang_2001_figure_8_3_4_digitized.csv"
+    data_path = (
+        docs_root
+        / "manuscript"
+        / "softwareX"
+        / "data"
+        / "tsang_2001_figure_8_3_4_digitized.csv"
+    )
     digitized = np.genfromtxt(data_path, delimiter=",", names=True, dtype=None, encoding="utf-8")
 
 
@@ -78,12 +84,12 @@ Load the digitised reference data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-41
+.. GENERATED FROM PYTHON SOURCE LINES 45-47
 
 Match the mixture and calculate PackLab's PY solution
 ------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-64
+.. GENERATED FROM PYTHON SOURCE LINES 47-70
 
 .. code-block:: Python
 
@@ -117,12 +123,12 @@ Match the mixture and calculate PackLab's PY solution
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-67
+.. GENERATED FROM PYTHON SOURCE LINES 71-73
 
 Compare all three partial correlations
 --------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-119
+.. GENERATED FROM PYTHON SOURCE LINES 73-125
 
 .. code-block:: Python
 
@@ -193,7 +199,7 @@ Compare all three partial correlations
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.143 seconds)
+   **Total running time of the script:** (0 minutes 0.196 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_percus_yevick_vs_tsang_2001.py:
