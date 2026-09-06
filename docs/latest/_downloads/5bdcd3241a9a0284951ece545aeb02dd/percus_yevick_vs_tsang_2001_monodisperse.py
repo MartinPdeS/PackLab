@@ -29,13 +29,7 @@ if "PACKLAB_DOCS_ROOT" in os.environ:
     docs_root = Path(os.environ["PACKLAB_DOCS_ROOT"])
 else:
     docs_root = Path(__file__).resolve().parents[2]
-data_path = (
-    docs_root
-    / "manuscript"
-    / "softwareX"
-    / "data"
-    / "tsang_2001_figure_8_1_3_digitized.csv"
-)
+data_path = docs_root / "manuscript" / "data" / "tsang_2001_figure_8_1_3_digitized.csv"
 digitized = np.genfromtxt(data_path, delimiter=",", names=True, dtype=None, encoding="utf-8")
 
 

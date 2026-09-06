@@ -56,7 +56,7 @@ comparison rather than a high-precision numerical error estimate.
 Load the digitised PY curves
 ----------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-42
+.. GENERATED FROM PYTHON SOURCE LINES 27-36
 
 .. code-block:: Python
 
@@ -65,13 +65,7 @@ Load the digitised PY curves
         docs_root = Path(os.environ["PACKLAB_DOCS_ROOT"])
     else:
         docs_root = Path(__file__).resolve().parents[2]
-    data_path = (
-        docs_root
-        / "manuscript"
-        / "softwareX"
-        / "data"
-        / "tsang_2001_figure_8_1_3_digitized.csv"
-    )
+    data_path = docs_root / "manuscript" / "data" / "tsang_2001_figure_8_1_3_digitized.csv"
     digitized = np.genfromtxt(data_path, delimiter=",", names=True, dtype=None, encoding="utf-8")
 
 
@@ -82,12 +76,12 @@ Load the digitised PY curves
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 43-45
+.. GENERATED FROM PYTHON SOURCE LINES 37-39
 
 Evaluate the matching PackLab PY solutions
 ------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-87
+.. GENERATED FROM PYTHON SOURCE LINES 39-81
 
 .. code-block:: Python
 
@@ -148,7 +142,7 @@ Evaluate the matching PackLab PY solutions
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.102 seconds)
+   **Total running time of the script:** (0 minutes 0.130 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py:

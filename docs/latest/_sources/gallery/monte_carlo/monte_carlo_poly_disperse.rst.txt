@@ -156,7 +156,7 @@ Plot the pair correlation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.277 seconds)
+   **Total running time of the script:** (0 minutes 0.360 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_monte_carlo_poly_disperse.py:

@@ -52,7 +52,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.9';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.6.10';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="PackLab Percus–Yevick versus the Tsang et al. reference" href="percus_yevick_vs_tsang_2001.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.9" />
+  <meta name="docsearch:version" content="0.6.10" />
   </head>
   
   
@@ -545,13 +545,7 @@ comparison rather than a high-precision numerical error estimate.</p>
     <span class="n">docs_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PACKLAB_DOCS_ROOT"</span><span class="p">])</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">docs_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">docs_root</span>
-    <span class="o">/</span> <span class="s2">"manuscript"</span>
-    <span class="o">/</span> <span class="s2">"softwareX"</span>
-    <span class="o">/</span> <span class="s2">"data"</span>
-    <span class="o">/</span> <span class="s2">"tsang_2001_figure_8_1_3_digitized.csv"</span>
-<span class="p">)</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="n">docs_root</span> <span class="o">/</span> <span class="s2">"manuscript"</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"tsang_2001_figure_8_1_3_digitized.csv"</span>
 <span class="n">digitized</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -601,7 +595,7 @@ comparison rather than a high-precision numerical error estimate.</p>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" srcset="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" alt="PackLab and digitised Tsang et al. PY reference" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.102 seconds)</p>
+<img src="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" srcset="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" alt="PackLab and digitised Tsang et al. PY reference" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.130 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-percus-yevick-vs-tsang-2001-monodisperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/2fd5a0fbeac592fe9338be1c8410d88b/percus_yevick_vs_tsang_2001_monodisperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">percus_yevick_vs_tsang_2001_monodisperse.ipynb</span></code></a></p>
