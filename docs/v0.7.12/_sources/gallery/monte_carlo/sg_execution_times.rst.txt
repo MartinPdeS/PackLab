@@ -33,17 +33,17 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_monte_carlo_04_metropolis_equilibration.py` (``04_metropolis_equilibration.py``)
-     - 00:04.551
+     - 00:04.556
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_monte_carlo_poly_disperse.py` (``monte_carlo_poly_disperse.py``)
-     - 00:00.454
+     - 00:00.451
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_01_minimal_rsa.py` (``01_minimal_rsa.py``)
-     - 00:00.265
+     - 00:00.264
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_03_radius_samplers.py` (``03_radius_samplers.py``)
-     - 00:00.142
+     - 00:00.141
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_02_periodic_boundaries.py` (``02_periodic_boundaries.py``)
-     - 00:00.098
+     - 00:00.097
      - 0.0
