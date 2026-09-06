@@ -7,6 +7,7 @@ MANUSCRIPT_DIR ?= docs/manuscript/softwareX
 MANUSCRIPT_TEX ?= packlab.tex
 REGENERATE_FIGURES ?= 0
 TAG_VERSION ?= $(or $(VERSION),$(filter v%,$(MAKECMDGOALS)))
+RELEASE_KIND := $(filter major minor patch,$(MAKECMDGOALS))
 PYTHON_EXECUTABLE = $(shell $(PYTHON) -c "import sys; print(sys.executable)")
 PYBIND11_DIR = $(shell $(PYTHON) -m pybind11 --cmakedir)
 MPLBACKEND ?= Agg
@@ -27,7 +28,7 @@ FORMAT_PATHS := tools/check_manuscript.py tools/check_release.py tools/clean.py 
 .PHONY: help setup workflow-dirs configure build install uninstall quick rebuild editable \
 	test test-fast docs manuscript manuscript-figures manuscript-validation \
 	manuscript-check manuscript-clean reproduce-paper quality check doctor \
-	release-check tag clean
+	release-check tag release major minor patch clean
 
 .NOTPARALLEL: check reproduce-paper
 
@@ -49,6 +50,9 @@ help:
 	@echo "  make doctor                Diagnose the local development environment"
 	@echo "  make release-check         Check version metadata consistency"
 	@echo "  make tag VERSION=vX.Y.Z    Create a release commit and annotated tag"
+	@echo "  make release patch         Create the next patch release and tag"
+	@echo "  make release minor         Create the next minor release and tag"
+	@echo "  make release major         Create the next major release and tag"
 	@echo "  make clean                 Remove generated build and manuscript files"
 
 setup:
@@ -146,6 +150,15 @@ release-check:
 #   make tag VERSION=v0.7.1
 tag:
 	$(PYTHON) tools/release_tag.py "$(TAG_VERSION)"
+
+# Derive the next tag from the latest reachable vMAJOR.MINOR.PATCH release.
+# Examples: make release patch, make release minor, make release major
+release:
+	@test "$(words $(RELEASE_KIND))" -eq 1 || { echo "usage: make release [patch|minor|major]" >&2; exit 2; }
+	$(PYTHON) tools/release_tag.py "$$($(PYTHON) tools/next_release_version.py $(RELEASE_KIND))"
+
+major minor patch:
+	@:
 
 clean:
 	$(PYTHON) tools/clean.py --build-dir "$(BUILD_DIR)" --build-dir .skbuild \
