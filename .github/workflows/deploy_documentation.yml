@@ -4,6 +4,7 @@ name: Documentation
 on:
   push:
     branches: [ "**" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "master" ]
 
@@ -14,16 +15,16 @@ permissions:
   pages: write
   id-token: write
 
-# Documentation builds for all branches, but only the master build publishes Pages.
+# Documentation builds for all branches and publishes master and release-tag versions.
 concurrency:
   group: documentation-page-deployment
   cancel-in-progress: false
 
 jobs:
   ManyLinux_x86_64:
-    # Receive backward-compatible updates from the MPSActions v1 release line.
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v1
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_documentation.yml@v2
     with:
       python-version: "3.11"
       package-name: "PackLab"
       apt-package: xvfb jq
+      deploy-pages: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) }}
