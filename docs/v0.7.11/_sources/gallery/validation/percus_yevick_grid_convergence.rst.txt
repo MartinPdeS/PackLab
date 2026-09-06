@@ -155,7 +155,7 @@ is sufficiently resolved for this radial range. If it is not, decrease
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.598 seconds)
+   **Total running time of the script:** (0 minutes 0.593 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_percus_yevick_grid_convergence.py:
