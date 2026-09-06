@@ -135,7 +135,7 @@ Compare scattering cross sections across the diameter grid
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.172 seconds)
+   **Total running time of the script:** (0 minutes 0.147 seconds)
 
 
 .. _sphx_glr_download_gallery_scattering_01_single_particle_amplitudes.py:

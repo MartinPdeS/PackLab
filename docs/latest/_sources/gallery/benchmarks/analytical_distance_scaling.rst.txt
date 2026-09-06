@@ -112,16 +112,16 @@ Time evaluations at different distance-grid sizes
 
  .. code-block:: none
 
-     120 distances: 0.027 s (1922 wavenumber points)
-     180 distances: 0.040 s (1922 wavenumber points)
-     240 distances: 0.053 s (1922 wavenumber points)
-     360 distances: 0.080 s (1922 wavenumber points)
-     480 distances: 0.106 s (1922 wavenumber points)
-     720 distances: 0.159 s (1922 wavenumber points)
-     960 distances: 0.213 s (1922 wavenumber points)
-    1440 distances: 0.318 s (1922 wavenumber points)
-    1920 distances: 0.423 s (1922 wavenumber points)
-    2880 distances: 0.636 s (1922 wavenumber points)
+     120 distances: 0.026 s (1922 wavenumber points)
+     180 distances: 0.039 s (1922 wavenumber points)
+     240 distances: 0.051 s (1922 wavenumber points)
+     360 distances: 0.077 s (1922 wavenumber points)
+     480 distances: 0.102 s (1922 wavenumber points)
+     720 distances: 0.153 s (1922 wavenumber points)
+     960 distances: 0.204 s (1922 wavenumber points)
+    1440 distances: 0.305 s (1922 wavenumber points)
+    1920 distances: 0.407 s (1922 wavenumber points)
+    2880 distances: 0.610 s (1922 wavenumber points)
 
 
 
@@ -160,7 +160,7 @@ Display the workload and timing result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.226 seconds)
+   **Total running time of the script:** (0 minutes 2.119 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_analytical_distance_scaling.py:
