@@ -3,8 +3,7 @@ name: Documentation
 
 on:
   push:
-    branches: [ "master" ]
-    tags: '*'
+    branches: [ "**" ]
   pull_request:
     branches: [ "master" ]
 
@@ -15,9 +14,7 @@ permissions:
   pages: write
   id-token: write
 
-# A release push and its tag both publish to the same documentation_page branch:
-# one updates ``latest`` and the other adds the versioned documentation.  Queue
-# them so generated HTML and binary gallery assets are never rebased concurrently.
+# Documentation builds for all branches, but only the master build publishes Pages.
 concurrency:
   group: documentation-page-deployment
   cancel-in-progress: false
