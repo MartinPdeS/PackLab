@@ -1,0 +1,69 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{HansenMcDonald2013}
+J.-P. Hansen, I.~R. McDonald, Theory of Simple Liquids: With Applications to
+  Soft Matter, 4th Edition, Academic Press, 2013.
+\newblock \href {https://doi.org/10.1016/C2010-0-66686-6}
+  {\path{doi:10.1016/C2010-0-66686-6}}.
+
+\bibitem{Torquato2002}
+S.~Torquato, Random Heterogeneous Materials: Microstructure and Macroscopic
+  Properties, Springer, 2002.
+\newblock \href {https://doi.org/10.1007/978-1-4757-6355-3}
+  {\path{doi:10.1007/978-1-4757-6355-3}}.
+
+\bibitem{Attendu2026}
+X.~Attendu, M.~Poinsinet~de Sivry-Houle, M.~Shahsavari, D.~Faber, E.~van~der
+  Pol, T.~G. van Leeuwen, Scattering properties of {Intralipid} modeled using
+  dependent scattering theory, Journal of Biomedical Optics 31~(8) (2026)
+  085003.
+\newblock \href {https://doi.org/10.1117/1.JBO.31.8.085003}
+  {\path{doi:10.1117/1.JBO.31.8.085003}}.
+
+\bibitem{Percus1958}
+J.~K. Percus, G.~J. Yevick, Analysis of classical statistical mechanics by
+  means of collective coordinates, Physical Review 110~(1) (1958) 1--13.
+\newblock \href {https://doi.org/10.1103/PhysRev.110.1}
+  {\path{doi:10.1103/PhysRev.110.1}}.
+
+\bibitem{Lebowitz1964}
+J.~L. Lebowitz, Exact solution of generalized percus--yevick equation for a
+  mixture of hard spheres, Physical Review 133~(4A) (1964) A895--A899.
+\newblock \href {https://doi.org/10.1103/PhysRev.133.A895}
+  {\path{doi:10.1103/PhysRev.133.A895}}.
+
+\bibitem{SasViewHardSphere}
+{SasView Project}, Hard-sphere structure factor with percus--yevick closure,
+  \url{https://www.sasview.org/docs/user/models/hardsphere.html}, accessed 4
+  September 2026 (2026).
+
+\bibitem{SasViewBinaryHardSphere}
+{SasView Project}, Binary hard-sphere model,
+  \url{https://www.sasview.org/docs/old_docs/5.0.5/user/models/binary_hard_sphere.html},
+  accessed 4 September 2026 (2026).
+
+\bibitem{MctpyStructureFactors}
+T.~Voigtmann, mctpy: Static structure factors,
+  \url{https://mctpy.readthedocs.io/en/latest/structurefactors.html}, version
+  0.0.2-1, accessed 4 September 2026 (2026).
+\newblock \href {https://doi.org/10.5281/zenodo.19799936}
+  {\path{doi:10.5281/zenodo.19799936}}.
+
+\bibitem{Tsang2001}
+L.~Tsang, J.~A. Kong, K.-H. Ding, C.~O. Ao, Scattering of Electromagnetic
+  Waves: Numerical Simulations, John Wiley \& Sons, 2001.
+\newblock \href {https://doi.org/10.1002/0471224308}
+  {\path{doi:10.1002/0471224308}}.
+
+\bibitem{Feder1980}
+J.~Feder, Random sequential adsorption, Journal of Theoretical Biology 87~(2)
+  (1980) 237--254.
+\newblock \href {https://doi.org/10.1016/0022-5193(80)90358-6}
+  {\path{doi:10.1016/0022-5193(80)90358-6}}.
+
+\end{thebibliography}
