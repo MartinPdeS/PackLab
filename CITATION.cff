@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use PackLab in your research, please cite this software."
+title: "PackLab"
+type: software
+authors:
+  - family-names: "Poinsinet de Sivry-Houle"
+    given-names: "Martin"
+    affiliation: "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+  - family-names: "Attendu"
+    given-names: "Xavier"
+    affiliation: "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+  - family-names: "van Leeuwen"
+    given-names: "Ton G."
+    affiliation: "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+  - family-names: "van der Pol"
+    given-names: "Edwin"
+    affiliation: "Biomedical Engineering and Physics, Amsterdam UMC, University of Amsterdam, Amsterdam, the Netherlands"
+abstract: >
+  PackLab is a Python package for unit-aware Percus--Yevick pair correlations
+  and structure factors of multicomponent hard-sphere mixtures, with
+  complementary random sequential addition and Metropolis Monte Carlo workflows.
+license: "MIT"
+repository-code: "https://github.com/MartinPdeS/PackLab"
+keywords:
+  - hard-sphere mixtures
+  - Percus-Yevick
+  - random sequential addition
+  - Metropolis Monte Carlo
+  - structure factors

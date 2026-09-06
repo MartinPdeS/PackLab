@@ -22,6 +22,7 @@
 !pyproject.toml
 !README.rst
 !CONTRIBUTING.md
+!CITATION.cff
 !AGENTS.md
 !notebook.ipynb
 !CMakeLists.txt
