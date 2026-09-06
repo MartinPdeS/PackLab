@@ -151,11 +151,13 @@ release-check:
 tag:
 	$(PYTHON) tools/release_tag.py "$(TAG_VERSION)"
 
-# Derive the next tag from the highest existing vMAJOR.MINOR.PATCH release.
+# Derive and publish the next tag from the highest existing semantic release.
 # Examples: make release patch, make release minor, make release major
 release:
 	@test "$(words $(RELEASE_KIND))" -eq 1 || { echo "usage: make release [patch|minor|major]" >&2; exit 2; }
-	$(PYTHON) tools/release_tag.py "$$($(PYTHON) tools/next_release_version.py $(RELEASE_KIND))"
+	@set -eu; release_tag="$$($(PYTHON) tools/next_release_version.py $(RELEASE_KIND))"; \
+	$(PYTHON) tools/release_tag.py "$$release_tag"; \
+	git push origin HEAD "refs/tags/$$release_tag"
 
 major minor patch:
 	@:
