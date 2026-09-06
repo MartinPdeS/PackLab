@@ -39,7 +39,7 @@ accepted sphere configuration.
 
  .. code-block:: none
 
-    <PackLab.monte_carlo.results.PackingResult object at 0x7f6eb7605dd0>
+    <PackLab.monte_carlo.results.PackingResult object at 0x7fe8c73fa810>
     Packing fraction: 0.080
 
 

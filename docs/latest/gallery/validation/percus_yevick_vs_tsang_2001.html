@@ -52,7 +52,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.6.10';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.8';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,7 +63,7 @@
     <link rel="prev" title="Convergence of the Percus–Yevick reference" href="percus_yevick_grid_convergence.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.10" />
+  <meta name="docsearch:version" content="0.7.8" />
   </head>
   
   
@@ -547,7 +547,13 @@ high-precision error benchmark.</p>
     <span class="n">docs_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PACKLAB_DOCS_ROOT"</span><span class="p">])</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">docs_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">data_path</span> <span class="o">=</span> <span class="n">docs_root</span> <span class="o">/</span> <span class="s2">"manuscript"</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"tsang_2001_figure_8_3_4_digitized.csv"</span>
+<span class="n">data_path</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">docs_root</span>
+    <span class="o">/</span> <span class="s2">"manuscript"</span>
+    <span class="o">/</span> <span class="s2">"softwareX"</span>
+    <span class="o">/</span> <span class="s2">"data"</span>
+    <span class="o">/</span> <span class="s2">"tsang_2001_figure_8_3_4_digitized.csv"</span>
+<span class="p">)</span>
 <span class="n">digitized</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
 </pre></div>
 </div>

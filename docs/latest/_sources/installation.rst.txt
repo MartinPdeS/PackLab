@@ -63,6 +63,7 @@ Run it from a clean worktree. The helper accepts only release tags in the form
 Citing PackLab
 --------------
 
-Use the repository's ``CITATION.cff`` for software citation and retain the
-version number in the methods section of a scientific report. The references
-page lists the underlying hard-sphere literature and the release metadata.
+Cite the archived Zenodo release used in the study and retain its version
+number in the methods section. Machine-readable release metadata is maintained
+in ``.zenodo.json``. The references page lists the underlying hard-sphere
+literature and the release metadata.
