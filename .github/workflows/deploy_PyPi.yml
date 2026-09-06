@@ -9,8 +9,8 @@ permissions:
 
 jobs:
   PyPi:
-    # Receive backward-compatible updates from the MPSActions v1 release line.
-    uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_PyPi.yml@v1
+    # Use the versioned reusable workflow with current PyPI metadata support.
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_compiled_package_to_PyPi.yml@v2
     with:
       python-version: "3.11"
       build-Linux: true
