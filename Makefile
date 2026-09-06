@@ -151,7 +151,7 @@ release-check:
 tag:
 	$(PYTHON) tools/release_tag.py "$(TAG_VERSION)"
 
-# Derive the next tag from the latest reachable vMAJOR.MINOR.PATCH release.
+# Derive the next tag from the highest existing vMAJOR.MINOR.PATCH release.
 # Examples: make release patch, make release minor, make release major
 release:
 	@test "$(words $(RELEASE_KIND))" -eq 1 || { echo "usage: make release [patch|minor|major]" >&2; exit 2; }

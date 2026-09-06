@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Print the next semantic-version tag from the latest reachable release tag."""
+"""Print the next semantic-version tag from the highest existing release tag."""
 
 from __future__ import annotations
 
@@ -15,20 +15,24 @@ TAG_PATTERN = re.compile(r"v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<pa
 
 
 def latest_version() -> tuple[int, int, int]:
-    """Return the latest reachable semantic-version tag."""
+    """Return the highest semantic-version tag, including orphaned release tags."""
     completed = subprocess.run(
-        ["git", "describe", "--tags", "--abbrev=0", "--match", "v[0-9]*"],
+        ["git", "tag", "--list", "v*"],
         cwd=ROOT,
         check=False,
         text=True,
         capture_output=True,
     )
     if completed.returncode != 0:
-        raise RuntimeError("no reachable semantic-version tag was found")
-    match = TAG_PATTERN.fullmatch(completed.stdout.strip())
-    if match is None:
-        raise RuntimeError("latest reachable tag is not vMAJOR.MINOR.PATCH")
-    return tuple(int(match.group(name)) for name in ("major", "minor", "patch"))
+        raise RuntimeError("could not list Git tags")
+    versions = []
+    for tag in completed.stdout.splitlines():
+        match = TAG_PATTERN.fullmatch(tag)
+        if match is not None:
+            versions.append(tuple(int(match.group(name)) for name in ("major", "minor", "patch")))
+    if not versions:
+        raise RuntimeError("no semantic-version tag was found")
+    return max(versions)
 
 
 def main() -> int:
