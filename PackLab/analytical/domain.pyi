@@ -1,7 +1,14 @@
 from typing import Any
 
 class PercusYevickDomain:
-    def __init__(self, size: Any, radii: Any, volume_fraction: float, number_fractions: Any, rounding_mode: Any = ...) -> None: ...
+    def __init__(
+        self,
+        size: Any,
+        radii: Any,
+        volume_fraction: float,
+        number_fractions: Any,
+        rounding_mode: Any = ...,
+    ) -> None: ...
     size: Any
     radii: Any
     volume_fraction: float

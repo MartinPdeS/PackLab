@@ -1,7 +1,9 @@
 from typing import Any
 
 class PackingDomain:
-    def __init__(self, length_x: Any, length_y: Any, length_z: Any, use_periodic_boundaries: bool) -> None: ...
+    def __init__(
+        self, length_x: Any, length_y: Any, length_z: Any, use_periodic_boundaries: bool
+    ) -> None: ...
     @property
     def length_x(self) -> Any: ...
     @property

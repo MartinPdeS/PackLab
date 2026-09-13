@@ -1,14 +1,8 @@
-import numpy
-import numpy as np
-
 from PackLab import monte_carlo, samplers
 
 
 domain = monte_carlo.PackingDomain(
-    length_x=6.0,
-    length_y=6.0,
-    length_z=6.0,
-    use_periodic_boundaries=True
+    length_x=6.0, length_y=6.0, length_z=6.0, use_periodic_boundaries=True
 )
 
 domain.scale(10)
@@ -27,9 +21,7 @@ options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
 rsa_simulator = monte_carlo.RSASimulator(
-    domain=domain,
-    radius_sampler=radius_sampler,
-    options=options
+    domain=domain, radius_sampler=radius_sampler, options=options
 )
 
 result = rsa_simulator.run()

@@ -7,7 +7,7 @@ domain = monte_carlo.PackingDomain(
     length_x=6.0 * ureg.millimeter,
     length_y=6.0 * ureg.millimeter,
     length_z=6.0 * ureg.millimeter,
-    use_periodic_boundaries=True
+    use_periodic_boundaries=True,
 )
 
 domain.scale(10)
@@ -26,7 +26,9 @@ options.minimum_center_separation_addition = 0.0
 options.enforce_radii_distribution = True
 
 
-estimator = monte_carlo.PackingEstimator(domain=domain, radius_sampler=radius_sampler, options=options, number_of_bins=200)
+estimator = monte_carlo.PackingEstimator(
+    domain=domain, radius_sampler=radius_sampler, options=options, number_of_bins=200
+)
 
 estimate_result = estimator.estimate(number_of_samples=10, maximum_pairs=10_000_000)
 
@@ -39,12 +41,7 @@ for i in range(2):
         mean_g = mean_g_array[i, j, :]
         std_g = std_g_array[i, j, :]
 
-        plt.plot(mean_g, label=f"g_{i+1}{j+1}(r)")
-        plt.fill_between(
-            np.arange(len(mean_g)),
-            mean_g - std_g,
-            mean_g + std_g,
-            alpha=0.3
-        )
+        plt.plot(mean_g, label=f"g_{i + 1}{j + 1}(r)")
+        plt.fill_between(np.arange(len(mean_g)), mean_g - std_g, mean_g + std_g, alpha=0.3)
 
 plt.show()

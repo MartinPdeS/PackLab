@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from TypedUnit.units import ureg
 
+
 def _minimum_image_displacement(delta: np.ndarray, box_length: float) -> np.ndarray:
     return delta - box_length * np.round(delta / box_length)
 
 
 def post_mpl_plot(plot_function):
     """Return a plotting wrapper with the former ``show`` convenience option."""
+
     @wraps(plot_function)
     def wrapper(*args, show: bool = True, **kwargs):
         figure = plot_function(*args, **kwargs)
@@ -28,6 +30,7 @@ class PackingResult:
 
     Holds arrays plus domain metadata, computed statistics, and plotting helpers.
     """
+
     def __init__(self, binding):
         """
         Initialize the packing result.
@@ -177,7 +180,6 @@ class PackingResult:
         """
         return np.asarray(self.binding.pair_correlation_values)
 
-
     @post_mpl_plot
     def plot_centers_3d(self, maximum_points_3d: int = 10_000) -> plt.Figure:
         """
@@ -209,8 +211,7 @@ class PackingResult:
 
         lengths = (self.domain.length_x, self.domain.length_y, self.domain.length_z)
         lengths = [
-            length.to("meter").magnitude if hasattr(length, "to") else length
-            for length in lengths
+            length.to("meter").magnitude if hasattr(length, "to") else length for length in lengths
         ]
 
         axes.scatter(
@@ -228,11 +229,12 @@ class PackingResult:
         axes.set_zlabel("z (m)")
         axes.set_title("RSA centers (subsampled)")
 
-
         return figure
 
     @post_mpl_plot
-    def plot_radius_distribution(self, bins: int = 40, density: bool = True, alpha: float = 0.85) -> plt.Figure:
+    def plot_radius_distribution(
+        self, bins: int = 40, density: bool = True, alpha: float = 0.85
+    ) -> plt.Figure:
         """
         Plot the distribution of sphere radii.
 
@@ -256,7 +258,9 @@ class PackingResult:
 
         return figure
 
-    def _compute_slice_mask(self, coord: np.ndarray, slice_center: float, slice_thickness: float, box_length: float) -> np.ndarray:
+    def _compute_slice_mask(
+        self, coord: np.ndarray, slice_center: float, slice_thickness: float, box_length: float
+    ) -> np.ndarray:
         """
         Compute the mask for particles within the slice thickness.
         """
@@ -267,7 +271,13 @@ class PackingResult:
             return np.abs(coord - slice_center) <= 0.5 * slice_thickness
 
     @post_mpl_plot
-    def plot_slice_2d(self, slice_axis: Literal["x", "y", "z"] = "z", slice_center_fraction: float = 0.5, slice_thickness_fraction: float = 0.08, maximum_circles_in_slice: int = 2500) -> plt.Figure:
+    def plot_slice_2d(
+        self,
+        slice_axis: Literal["x", "y", "z"] = "z",
+        slice_center_fraction: float = 0.5,
+        slice_thickness_fraction: float = 0.08,
+        maximum_circles_in_slice: int = 2500,
+    ) -> plt.Figure:
         """
         Plot a 2D slice of the sphere configuration.
 
@@ -278,7 +288,8 @@ class PackingResult:
         slice_center_fraction : float
             Fractional position along the slice axis where the slice is centered (0.0 to 1.0).
         slice_thickness_fraction : float
-            Fractional thickness of the slice relative to the box length along the slice axis (0.0 to 1.0).
+            Fractional thickness of the slice relative to the box length along the slice axis
+            (0.0 to 1.0).
         maximum_circles_in_slice : int
             Maximum number of circles to plot in the slice (subsampling if necessary).
         """
@@ -319,16 +330,16 @@ class PackingResult:
         slice_positions = self.positions[slice_mask]
         slice_radii = self.radii[slice_mask]
 
-        if getattr(a_max, 'to', None):
-             a_max_val = a_max.to('meter').magnitude
-             b_max_val = b_max.to('meter').magnitude
-             slice_pos_val = slice_positions.to('meter').magnitude
-             slice_radii_val = slice_radii.to('meter').magnitude
+        if getattr(a_max, "to", None):
+            a_max_val = a_max.to("meter").magnitude
+            b_max_val = b_max.to("meter").magnitude
+            slice_pos_val = slice_positions.to("meter").magnitude
+            slice_radii_val = slice_radii.to("meter").magnitude
         else:
-             a_max_val = a_max
-             b_max_val = b_max
-             slice_pos_val = slice_positions
-             slice_radii_val = slice_radii
+            a_max_val = a_max
+            b_max_val = b_max
+            slice_pos_val = slice_positions
+            slice_radii_val = slice_radii
 
         # Subsampling
         n_spheres = slice_positions.shape[0]
@@ -360,7 +371,12 @@ class PackingResult:
                 )
             )
 
-        axes.plot([0, a_max_val, a_max_val, 0, 0], [0, 0, b_max_val, b_max_val, 0], linewidth=1.2, color='black')
+        axes.plot(
+            [0, a_max_val, a_max_val, 0, 0],
+            [0, 0, b_max_val, b_max_val, 0],
+            linewidth=1.2,
+            color="black",
+        )
 
         return figure
 

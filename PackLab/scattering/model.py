@@ -6,20 +6,21 @@ Gaussian = Sphere = Setup = PolarizationState = None
 
 
 def compute_scattering_amplitudes(
-        wavelength: Length,
-        diameters: Length,
-        material: RefractiveIndex,
-        medium: RefractiveIndex,
-        phi: Angle,
-        plot: bool = False,
-        polarization: float = 0 * ureg.degree,
-        debug_mode: bool = False
-    ) -> ScatteringDataset:
+    wavelength: Length,
+    diameters: Length,
+    material: RefractiveIndex,
+    medium: RefractiveIndex,
+    phi: Angle,
+    plot: bool = False,
+    polarization: float = 0 * ureg.degree,
+    debug_mode: bool = False,
+) -> ScatteringDataset:
     """
     Compute far field amplitude scattering functions S1 and S2 for a set of sphere diameters.
 
-    This helper constructs a `Gaussian` source and a `Sphere` scatterer for each diameter,
-    calls `Setup.get_s1s2(...)`, and stores the resulting objects in a `ScatteringDataset` container.
+    This helper constructs a `Gaussian` source and a `Sphere` scatterer for each
+    diameter, calls `Setup.get_s1s2(...)`, and stores the resulting objects in a
+    `ScatteringDataset` container.
 
     Parameters
     ----------
@@ -91,9 +92,7 @@ def compute_scattering_amplitudes(
 
         setup = Setup(source=source, scatterer=scatterer)
 
-        s1, s2 = setup.get_s1s2(
-            angles=polar_angle
-        )
+        s1, s2 = setup.get_s1s2(angles=polar_angle)
 
         data = ScatteringData(
             S1=s1,
@@ -109,7 +108,10 @@ def compute_scattering_amplitudes(
         datas.append(data)
 
         if debug_mode:
-            print(f"[compute_scattering_amplitudes] Diameter: {diameter}, material: {material}, medium: {medium}, Csca: {data.Csca}")
+            print(
+                "[compute_scattering_amplitudes] "
+                f"Diameter: {diameter}, material: {material}, medium: {medium}, Csca: {data.Csca}"
+            )
 
     datas.k = data.k
     datas.phi = polar_angle

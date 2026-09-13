@@ -11,7 +11,13 @@ class PackingEstimate:
     number_of_bins: int
 
 class PackingEstimator:
-    def __init__(self, domain: PackingDomain, radius_sampler: RadiusSampler, options: RSAOptions, number_of_bins: int) -> None: ...
+    def __init__(
+        self,
+        domain: PackingDomain,
+        radius_sampler: RadiusSampler,
+        options: RSAOptions,
+        number_of_bins: int,
+    ) -> None: ...
     def estimate(
         self,
         number_of_samples: int,

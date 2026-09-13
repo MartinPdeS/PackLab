@@ -24,9 +24,7 @@ ZENODO_PATH = ROOT / ".zenodo.json"
 CONDA_RECIPE_PATH = ROOT / "conda.recipe" / "meta.yaml"
 PYPROJECT_PATH = ROOT / "pyproject.toml"
 VERSION_FILE = ROOT / "PackLab" / "_version.py"
-TAG_PATTERN = re.compile(
-    r"v(?P<version>(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*))$"
-)
+TAG_PATTERN = re.compile(r"v(?P<version>(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*))$")
 
 
 def run(*command: str, capture_output: bool = False, env: dict[str, str] | None = None) -> str:
@@ -54,7 +52,9 @@ def require_clean_worktree() -> None:
     """Refuse to mix a release commit with unrelated working-tree changes."""
     status = run("git", "status", "--porcelain", capture_output=True)
     if status:
-        raise RuntimeError("working tree is not clean; commit or stash changes before creating a release tag")
+        raise RuntimeError(
+            "working tree is not clean; commit or stash changes before creating a release tag"
+        )
 
 
 def require_unused_tag(tag: str) -> None:

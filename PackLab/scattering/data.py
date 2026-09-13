@@ -47,9 +47,9 @@ class ScatteringDataset(list):
     """
     Container for multi size scattering data and mixture level post processing.
 
-    This class stores :class:`ScatteringData` instances, one for each diameter. It also provides mixture formulas
-    for a number density distribution over diameters and an inter particle correlation
-    term H(wavenumber).
+    This class stores :class:`ScatteringData` instances, one for each diameter. It also
+    provides mixture formulas for a number density distribution over diameters and an
+    inter particle correlation term H(wavenumber).
 
     Attributes
     ----------
@@ -74,7 +74,7 @@ class ScatteringDataset(list):
     """
 
     e_theta = np.array([1.0, 0.0])
-    e_phi   = np.array([0.0, 1.0])
+    e_phi = np.array([0.0, 1.0])
 
     def process(self):
         """
@@ -105,14 +105,18 @@ class ScatteringDataset(list):
             if not isinstance(data, ScatteringData):
                 raise TypeError("ScatteringDataset items must be ScatteringData instances.")
             if np.asarray(data.S1.magnitude).shape != expected_shape:
-                raise ValueError(f"S1 for species {index} must match the phi grid shape {expected_shape}.")
+                raise ValueError(
+                    f"S1 for species {index} must match the phi grid shape {expected_shape}."
+                )
             if np.asarray(data.S2.magnitude).shape != expected_shape:
-                raise ValueError(f"S2 for species {index} must match the phi grid shape {expected_shape}.")
+                raise ValueError(
+                    f"S2 for species {index} must match the phi grid shape {expected_shape}."
+                )
 
         self.S1 = np.asarray([d.S1.magnitude for d in self])
         self.S2 = np.asarray([d.S2.magnitude for d in self])
 
-        self.Csca = np.asarray([d.Csca.to("meter**2").magnitude for d in self]) * ureg.meter ** 2
+        self.Csca = np.asarray([d.Csca.to("meter**2").magnitude for d in self]) * ureg.meter**2
 
     def _validated_phi(self) -> np.ndarray:
         """Return the polar-angle grid in radians after validating it."""
@@ -234,7 +238,7 @@ class ScatteringDataset(list):
         prefactor = 1j / self.k
 
         term_0 = np.einsum("i, jk, l -> ijkl", self.e_theta, self.S2, _cos)
-        term_1 = np.einsum("i, jk, l -> ijkl", self.e_phi,   self.S1, _sin)
+        term_1 = np.einsum("i, jk, l -> ijkl", self.e_phi, self.S1, _sin)
 
         F = prefactor * (term_0 - term_1)
 
@@ -275,9 +279,12 @@ class ScatteringDataset(list):
 
         return mu_independant_scattering
 
-    def get_mu_dependant(self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150):
+    def get_mu_dependant(
+        self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150
+    ):
         """
-        Compute the dependent scattering contribution using inter particle correlations H(wavenumber).
+        Compute the dependent scattering contribution using inter particle correlations
+        H(wavenumber).
 
         Parameters
         ----------
@@ -303,7 +310,8 @@ class ScatteringDataset(list):
         -----
         The core integrand is:
 
-        term[p_index, theta_index] = sum_{a,b} sqrt(n_a n_b) F_a(wavenumber,theta) F*_b(wavenumber,theta) H_ab(wavenumber)
+        term[p_index, theta_index] = sum_{a,b} sqrt(n_a n_b)
+            F_a(wavenumber,theta) F*_b(wavenumber,theta) H_ab(wavenumber)
 
         then integrated over polar angle (self.phi) and azimuth (theta).
         """
@@ -322,7 +330,9 @@ class ScatteringDataset(list):
 
         return mu_dependant_scattering
 
-    def get_mu(self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150) -> NDArray:
+    def get_mu(
+        self, densities: NDArray, H: NDArray, wavenumber: NDArray, theta_points: int = 150
+    ) -> NDArray:
         """
         Compute total scattering attenuation coefficient mu_s.
 
@@ -346,7 +356,9 @@ class ScatteringDataset(list):
         """
         mu_independant = self.get_mu_independant(densities=densities)
 
-        mu_dependant = self.get_mu_dependant(densities=densities, H=H, wavenumber=wavenumber, theta_points=theta_points)
+        mu_dependant = self.get_mu_dependant(
+            densities=densities, H=H, wavenumber=wavenumber, theta_points=theta_points
+        )
 
         return mu_independant + mu_dependant
 
@@ -383,10 +395,15 @@ class ScatteringDataset(list):
             raise ValueError("wavenumber must be finite and strictly increasing.")
         if not np.all(np.isfinite(evaluation_wavenumber)):
             raise ValueError("evaluation_wavenumber must contain only finite values.")
-        if evaluation_wavenumber.min() < wavenumber[0] or evaluation_wavenumber.max() > wavenumber[-1]:
+        if (
+            evaluation_wavenumber.min() < wavenumber[0]
+            or evaluation_wavenumber.max() > wavenumber[-1]
+        ):
             raise ValueError("wavenumber does not cover the scattering wavevector range.")
         if H.shape[-1] != wavenumber.size:
-            raise ValueError(f"H last axis ({H.shape[-1]}) must match wavenumber size ({wavenumber.size}).")
+            raise ValueError(
+                f"H last axis ({H.shape[-1]}) must match wavenumber size ({wavenumber.size})."
+            )
 
         H_2d = H.reshape(-1, wavenumber.size)  # (M, Pp)
         out_2d = np.empty((H_2d.shape[0], evaluation_wavenumber.size), dtype=H_2d.dtype)
@@ -480,9 +497,8 @@ class ScatteringDataset(list):
 
         F, theta = self.get_F_matrix(theta_points=theta_points)
 
-        phase_function: NDArray = (
-            np.einsum("a, jatp, jatp -> tp", n_alpha, F, np.conj(F))
-            + np.einsum("ab, japt, jbpt, abp -> pt", sqrt_alpha_beta, F, np.conj(F), interpolated_H)
-        )
+        phase_function: NDArray = np.einsum(
+            "a, jatp, jatp -> tp", n_alpha, F, np.conj(F)
+        ) + np.einsum("ab, japt, jbpt, abp -> pt", sqrt_alpha_beta, F, np.conj(F), interpolated_H)
 
         return phi, theta, phase_function

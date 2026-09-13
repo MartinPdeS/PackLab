@@ -33,7 +33,7 @@ def _min_distance_periodic(positions, box_lengths):
 
     distances = np.sqrt(dx**2 + dy**2 + dz**2)
 
-    distances = distances.to('meter').magnitude
+    distances = distances.to("meter").magnitude
 
     i_upper = np.triu_indices_from(distances, k=1)
     return float(np.min(distances[i_upper])) * ureg.meter
@@ -51,9 +51,7 @@ def test_basic_rsa_run():
     )
 
     radius_sampler = samplers.UniformRadiusSampler(
-        minimum_radius=0.2 * ureg.meter,
-        maximum_radius=0.2 * ureg.meter,
-        bins=10
+        minimum_radius=0.2 * ureg.meter, maximum_radius=0.2 * ureg.meter, bins=10
     )
 
     options = monte_carlo.RSAOptions()
@@ -63,9 +61,7 @@ def test_basic_rsa_run():
     options.target_packing_fraction = 0.10
 
     simulator = monte_carlo.RSASimulator(
-        domain=domain,
-        radius_sampler=radius_sampler,
-        options=options
+        domain=domain, radius_sampler=radius_sampler, options=options
     )
     result = simulator.run()
 
@@ -92,7 +88,7 @@ def test_no_overlap_periodic():
         length_x=6.0 * ureg.meter,
         length_y=6.0 * ureg.meter,
         length_z=6.0 * ureg.meter,
-        use_periodic_boundaries=True
+        use_periodic_boundaries=True,
     )
 
     radius_sampler = samplers.UniformRadiusSampler(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
@@ -103,7 +99,9 @@ def test_no_overlap_periodic():
     options.maximum_consecutive_rejections = 30_000
     options.target_packing_fraction = 0.15
 
-    simulator = monte_carlo.RSASimulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = monte_carlo.RSASimulator(
+        domain=domain, radius_sampler=radius_sampler, options=options
+    )
     result = simulator.run()
 
     positions = result.positions
@@ -129,7 +127,7 @@ def test_packing_fraction_consistency():
         length_x=6.0 * ureg.meter,
         length_y=6.0 * ureg.meter,
         length_z=6.0 * ureg.meter,
-        use_periodic_boundaries=False
+        use_periodic_boundaries=False,
     )
 
     radius_sampler = samplers.UniformRadiusSampler(0.2 * ureg.meter, 0.2 * ureg.meter, bins=10)
@@ -140,7 +138,9 @@ def test_packing_fraction_consistency():
     options.maximum_consecutive_rejections = 50_000
     options.target_packing_fraction = 0.12
 
-    simulator = monte_carlo.RSASimulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = monte_carlo.RSASimulator(
+        domain=domain, radius_sampler=radius_sampler, options=options
+    )
     result = simulator.run()
 
     radii = result.radii
@@ -163,10 +163,7 @@ def test_packing_fraction_consistency():
 # ==========================================================
 def test_stop_by_maximum_spheres():
     domain = monte_carlo.PackingDomain(
-        10.0 * ureg.meter,
-        10.0 * ureg.meter,
-        10.0 * ureg.meter,
-        use_periodic_boundaries=True
+        10.0 * ureg.meter, 10.0 * ureg.meter, 10.0 * ureg.meter, use_periodic_boundaries=True
     )
 
     radius_sampler = samplers.UniformRadiusSampler(0.1 * ureg.meter, 0.1 * ureg.meter, bins=10)
@@ -177,7 +174,9 @@ def test_stop_by_maximum_spheres():
     options.maximum_consecutive_rejections = 1_000_000
     options.maximum_spheres = 25
 
-    simulator = monte_carlo.RSASimulator(domain=domain, radius_sampler=radius_sampler, options=options)
+    simulator = monte_carlo.RSASimulator(
+        domain=domain, radius_sampler=radius_sampler, options=options
+    )
     result = simulator.run()
 
     assert result.positions.shape[0] <= 25
@@ -206,7 +205,9 @@ def test_metropolis_equilibrates_an_rsa_configuration_without_overlap():
     options.random_seed = 42
     options.number_of_sweeps = 20
     options.maximum_displacement = 0.05 * ureg.meter
-    simulator = monte_carlo.MetropolisSimulator(domain, initial_result.sphere_configuration, options)
+    simulator = monte_carlo.MetropolisSimulator(
+        domain, initial_result.sphere_configuration, options
+    )
     equilibrated_result = simulator.run()
 
     statistics = simulator.statistics
@@ -227,7 +228,9 @@ def test_metropolis_equilibrates_an_rsa_configuration_without_overlap():
         equilibrated_result.positions,
         (domain.length_x, domain.length_y, domain.length_z),
     )
-    assert minimum_distance + 1e-12 * minimum_distance.units >= 2.0 * np.max(equilibrated_result.radii)
+    assert minimum_distance + 1e-12 * minimum_distance.units >= 2.0 * np.max(
+        equilibrated_result.radii
+    )
 
 
 def test_metropolis_reset_reproduces_a_seeded_trajectory():
@@ -246,7 +249,9 @@ def test_metropolis_reset_reproduces_a_seeded_trajectory():
     options.random_seed = 73
     options.number_of_sweeps = 12
     options.maximum_displacement = 0.04 * ureg.meter
-    simulator = monte_carlo.MetropolisSimulator(domain, initial_result.sphere_configuration, options)
+    simulator = monte_carlo.MetropolisSimulator(
+        domain, initial_result.sphere_configuration, options
+    )
 
     first_result = simulator.run()
     first_positions = first_result.positions.to("meter").magnitude.copy()
@@ -300,7 +305,10 @@ def test_packing_estimator_progress_and_statistics(capfd):
     assert statistics.completed_samples == 3
     assert statistics.accepted_insertions == 36
     assert statistics.attempted_insertions >= statistics.accepted_insertions
-    assert statistics.rejected_insertions == statistics.attempted_insertions - statistics.accepted_insertions
+    assert (
+        statistics.rejected_insertions
+        == statistics.attempted_insertions - statistics.accepted_insertions
+    )
     assert 0.0 < statistics.acceptance_rate <= 1.0
     assert statistics.mean_sphere_count == pytest.approx(12.0)
 
@@ -311,9 +319,11 @@ def test_packing_estimator_progress_and_statistics(capfd):
 # ==========================================================
 #  Test that plotting functions run without errors
 # ==========================================================
-@patch('matplotlib.pyplot.show')
+@patch("matplotlib.pyplot.show")
 def test_plot_slice_runs(patch):
-    domain = monte_carlo.PackingDomain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
+    domain = monte_carlo.PackingDomain(
+        4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True
+    )
     radius_sampler = samplers.UniformRadiusSampler(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
     options = monte_carlo.RSAOptions()
@@ -325,9 +335,11 @@ def test_plot_slice_runs(patch):
     result.plot_slice_2d(show=False)
 
 
-@patch('matplotlib.pyplot.show')
+@patch("matplotlib.pyplot.show")
 def test_plot_pair_correlation_runs(patch):
-    domain = monte_carlo.PackingDomain(4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True)
+    domain = monte_carlo.PackingDomain(
+        4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True
+    )
     radius_sampler = samplers.UniformRadiusSampler(0.15 * ureg.meter, 0.15 * ureg.meter, bins=10)
 
     options = monte_carlo.RSAOptions()

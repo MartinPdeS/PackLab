@@ -14,10 +14,18 @@ class UniformRadiusSampler(RadiusSampler):
     def __init__(self, minimum_radius: Any, maximum_radius: Any, bins: int = 0) -> None: ...
 
 class NormalRadiusSampler(RadiusSampler):
-    def __init__(self, mean: Any, standard_deviation: Any, maximum_clip: Any | None = None, bins: int = 0) -> None: ...
+    def __init__(
+        self, mean: Any, standard_deviation: Any, maximum_clip: Any | None = None, bins: int = 0
+    ) -> None: ...
 
 class LogNormalRadiusSampler(RadiusSampler):
-    def __init__(self, median_radius: Any, geometric_standard_deviation: float, maximum_radius_clip: Any, bins: int = 0) -> None: ...
+    def __init__(
+        self,
+        median_radius: Any,
+        geometric_standard_deviation: float,
+        maximum_radius_clip: Any,
+        bins: int = 0,
+    ) -> None: ...
 
 class DiscreteRadiusSampler(RadiusSampler):
     def __init__(self, radii: Any, weights: Any) -> None: ...

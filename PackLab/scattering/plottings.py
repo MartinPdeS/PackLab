@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from typing import Literal
 
+
 def _coerce_phase_function_axes(
     phase_function: np.ndarray,
     phi: np.ndarray,
@@ -23,7 +24,8 @@ def _coerce_phase_function_axes(
 
     raise ValueError(
         "phase_function has incompatible shape. "
-        f"Got {phase_function.shape}, expected ({phi.size}, {theta.size}) or ({theta.size}, {phi.size})."
+        f"Got {phase_function.shape}, expected ({phi.size}, {theta.size}) "
+        f"or ({theta.size}, {phi.size})."
     )
 
 
