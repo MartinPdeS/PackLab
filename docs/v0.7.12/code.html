@@ -745,10 +745,31 @@ fractions returned by <a class="reference internal" href="#PackLab.samplers.Radi
 <dd><p>Integer class index for each sphere</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.PackingConfiguration.compute_partial_pair_correlation_function">
+<span class="sig-name descname"><span class="pre">compute_partial_pair_correlation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.simulator.PackingConfiguration" title="PackLab.monte_carlo.simulator.PackingConfiguration"><span class="pre">PackLab.monte_carlo.simulator.PackingConfiguration</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.domain.PackingDomain" title="PackLab.monte_carlo.domain.PackingDomain"><span class="pre">PackLab.monte_carlo.domain.PackingDomain</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.PackingConfiguration.compute_partial_pair_correlation_function" title="Link to this definition">#</a></dt>
+<dd><p>Compute partial g_ij(r) for this configuration in a supplied domain.</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.PackingConfiguration.count">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">count</span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.PackingConfiguration.count" title="Link to this definition">#</a></dt>
 <dd><p>Number of spheres in the configuration.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.PackingConfiguration.from_arrays">
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_arrays</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">positions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">classes_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">object</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#PackLab.monte_carlo.simulator.PackingConfiguration" title="PackLab.monte_carlo.simulator.PackingConfiguration"><span class="pre">PackLab.monte_carlo.simulator.PackingConfiguration</span></a></span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.PackingConfiguration.from_arrays" title="Link to this definition">#</a></dt>
+<dd><p>Create a configuration from validated, unit-bearing particle arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>positions</strong> (<em>pint.Quantity</em><em>, </em><em>shape</em><em> (</em><em>N</em><em>, </em><em>3</em><em>)</em>) – Sphere centres convertible to metres.</p></li>
+<li><p><strong>radii</strong> (<em>pint.Quantity</em><em>, </em><em>shape</em><em> (</em><em>N</em><em>,</em><em>)</em>) – Positive sphere radii convertible to metres.</p></li>
+<li><p><strong>classes_index</strong> (<em>array-like</em><em>, </em><em>shape</em><em> (</em><em>N</em><em>,</em><em>)</em>) – Non-negative integer class label for each sphere.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -894,6 +915,12 @@ each coordinate in one move.  Tune it to obtain a practical acceptance rate.</p>
 <p class="rubric">Notes</p>
 <p>This sampler holds particle count, radii, and class labels fixed. It is an
 equilibrium workflow and is not a continuation of RSA deposition.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.metropolis.MetropolisSimulator.domain">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">domain</span></span><a class="headerlink" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.domain" title="Link to this definition">#</a></dt>
+<dd><p>Fixed simulation domain.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.metropolis.MetropolisSimulator.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator" title="PackLab.monte_carlo.metropolis.MetropolisSimulator"><span class="pre">PackLab.monte_carlo.metropolis.MetropolisSimulator</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.reset" title="Link to this definition">#</a></dt>
@@ -904,6 +931,12 @@ equilibrium workflow and is not a continuation of RSA deposition.</p>
 <dt class="sig sig-object py" id="PackLab.monte_carlo.metropolis.MetropolisSimulator.run">
 <span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator" title="PackLab.monte_carlo.metropolis.MetropolisSimulator"><span class="pre">PackLab.monte_carlo.metropolis.MetropolisSimulator</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.run" title="Link to this definition">#</a></dt>
 <dd><p>Run all configured sweeps and return a PackingResult.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.metropolis.MetropolisSimulator.run_sweeps">
+<span class="sig-name descname"><span class="pre">run_sweeps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator" title="PackLab.monte_carlo.metropolis.MetropolisSimulator"><span class="pre">PackLab.monte_carlo.metropolis.MetropolisSimulator</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_sweeps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">object</span></span></span><a class="headerlink" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.run_sweeps" title="Link to this definition">#</a></dt>
+<dd><p>Run a positive or zero explicit number of sweeps without resetting.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -940,10 +973,24 @@ not RSA insertion attempts.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.results.PackingResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">PackingResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binding</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#PackingResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.PackingResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">PackingResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binding</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#PackingResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.PackingResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Output container for an RSA simulation run.</p>
+<p>Output container for an RSA or Metropolis simulation run.</p>
 <p>Holds arrays plus domain metadata, computed statistics, and plotting helpers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.results.PackingResult.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#PackingResult.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.PackingResult.save" title="Link to this definition">#</a></dt>
+<dd><p>Save this configuration in PackLab’s portable <code class="docutils literal notranslate"><span class="pre">.npz</span></code> format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination archive ending in <code class="docutils literal notranslate"><span class="pre">.npz</span></code>.</p></li>
+<li><p><strong>**kwargs</strong> – Additional metadata accepted by <code class="xref py py-func docutils literal notranslate"><span class="pre">save_packing()</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.results.PackingResult.positions">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">positions</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#PackLab.monte_carlo.results.PackingResult.positions" title="Link to this definition">#</a></dt>
@@ -2285,7 +2332,9 @@ plots because it reduces the 2D angular dependence into a 1D curve versus phi.</
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PackLab.monte_carlo.simulator">RSA simulation</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.classes_index"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.classes_index</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.compute_partial_pair_correlation_function"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.compute_partial_pair_correlation_function()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.count"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.count</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.from_arrays"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.from_arrays()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.number_of_classes"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.number_of_classes</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.positions"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.positions</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.simulator.PackingConfiguration.radii"><code class="docutils literal notranslate"><span class="pre">PackingConfiguration.radii</span></code></a></li>
@@ -2312,8 +2361,10 @@ plots because it reduces the 2D angular dependence into a 1D curve versus phi.</
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.domain"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.domain</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.reset"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.reset()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.run"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.run()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.run_sweeps"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.run_sweeps()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.sphere_configuration"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.sphere_configuration</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.statistics"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.statistics</span></code></a></li>
 </ul>
@@ -2324,6 +2375,7 @@ plots because it reduces the 2D angular dependence into a 1D curve versus phi.</
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-PackLab.monte_carlo.results">Results and visualisation</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.post_mpl_plot"><code class="docutils literal notranslate"><span class="pre">post_mpl_plot()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.PackingResult"><code class="docutils literal notranslate"><span class="pre">PackingResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.PackingResult.save"><code class="docutils literal notranslate"><span class="pre">PackingResult.save()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.PackingResult.positions"><code class="docutils literal notranslate"><span class="pre">PackingResult.positions</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.PackingResult.radii"><code class="docutils literal notranslate"><span class="pre">PackingResult.radii</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.results.PackingResult.statistics"><code class="docutils literal notranslate"><span class="pre">PackingResult.statistics</span></code></a></li>

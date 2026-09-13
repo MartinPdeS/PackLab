@@ -497,12 +497,12 @@
 <a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PackingResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Output container for an RSA simulation run.</span>
+<span class="sd">    Output container for an RSA or Metropolis simulation run.</span>
 
 <span class="sd">    Holds arrays plus domain metadata, computed statistics, and plotting helpers.</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binding</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binding</span><span class="p">,</span> <span class="n">source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">run_metadata</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initialize the packing result.</span>
 
@@ -510,8 +510,32 @@
 <span class="sd">        ----------</span>
 <span class="sd">        binding : Binding</span>
 <span class="sd">            The binding object containing simulation data.</span>
+<span class="sd">        source : {"rsa", "metropolis"} or None, optional</span>
+<span class="sd">            Workflow that produced this result when known.</span>
+<span class="sd">        run_metadata : dict or None, optional</span>
+<span class="sd">            Reproducibility-relevant options retained by the producing workflow.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">binding</span> <span class="o">=</span> <span class="n">binding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span> <span class="ow">or</span> <span class="s2">"unknown"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">run_metadata</span> <span class="ow">or</span> <span class="p">{})</span>
+
+<div class="viewcode-block" id="PackingResult.save">
+<a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.save">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Save this configuration in PackLab's portable ``.npz`` format.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path : str or pathlib.Path</span>
+<span class="sd">            Destination archive ending in ``.npz``.</span>
+<span class="sd">        **kwargs</span>
+<span class="sd">            Additional metadata accepted by :func:`save_packing`.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PackLab.monte_carlo.persistence</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_packing</span>
+
+        <span class="n">save_packing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
     <span class="nd">@cached_property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
