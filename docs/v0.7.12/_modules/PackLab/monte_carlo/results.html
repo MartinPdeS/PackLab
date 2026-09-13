@@ -472,6 +472,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circle</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
 
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_minimum_image_displacement</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">box_length</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">delta</span> <span class="o">-</span> <span class="n">box_length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">delta</span> <span class="o">/</span> <span class="n">box_length</span><span class="p">)</span>
 
@@ -480,6 +481,7 @@
 <a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.post_mpl_plot">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">post_mpl_plot</span><span class="p">(</span><span class="n">plot_function</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Return a plotting wrapper with the former ``show`` convenience option."""</span>
+
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">plot_function</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">figure</span> <span class="o">=</span> <span class="n">plot_function</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -499,6 +501,7 @@
 
 <span class="sd">    Holds arrays plus domain metadata, computed statistics, and plotting helpers.</span>
 <span class="sd">    """</span>
+
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binding</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Initialize the packing result.</span>
@@ -654,7 +657,6 @@
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">pair_correlation_values</span><span class="p">)</span>
 
-
 <div class="viewcode-block" id="PackingResult.plot_centers_3d">
 <a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.plot_centers_3d">[docs]</a>
     <span class="nd">@post_mpl_plot</span>
@@ -688,8 +690,7 @@
 
         <span class="n">lengths</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_z</span><span class="p">)</span>
         <span class="n">lengths</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">length</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">length</span>
-            <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">lengths</span>
+            <span class="n">length</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">length</span> <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">lengths</span>
         <span class="p">]</span>
 
         <span class="n">axes</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
@@ -707,14 +708,15 @@
         <span class="n">axes</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">"z (m)"</span><span class="p">)</span>
         <span class="n">axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"RSA centers (subsampled)"</span><span class="p">)</span>
 
-
         <span class="k">return</span> <span class="n">figure</span></div>
 
 
 <div class="viewcode-block" id="PackingResult.plot_radius_distribution">
 <a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.plot_radius_distribution">[docs]</a>
     <span class="nd">@post_mpl_plot</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot_radius_distribution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">density</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_radius_distribution</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">density</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.85</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Plot the distribution of sphere radii.</span>
 
@@ -739,7 +741,9 @@
         <span class="k">return</span> <span class="n">figure</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_slice_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">slice_center</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">slice_thickness</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">box_length</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_slice_mask</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">slice_center</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">slice_thickness</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">box_length</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Compute the mask for particles within the slice thickness.</span>
 <span class="sd">        """</span>
@@ -752,7 +756,13 @@
 <div class="viewcode-block" id="PackingResult.plot_slice_2d">
 <a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.plot_slice_2d">[docs]</a>
     <span class="nd">@post_mpl_plot</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot_slice_2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slice_axis</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"z"</span><span class="p">,</span> <span class="n">slice_center_fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">slice_thickness_fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.08</span><span class="p">,</span> <span class="n">maximum_circles_in_slice</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2500</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_slice_2d</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">slice_axis</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"z"</span><span class="p">,</span>
+        <span class="n">slice_center_fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">slice_thickness_fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.08</span><span class="p">,</span>
+        <span class="n">maximum_circles_in_slice</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2500</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Plot a 2D slice of the sphere configuration.</span>
 
@@ -763,7 +773,8 @@
 <span class="sd">        slice_center_fraction : float</span>
 <span class="sd">            Fractional position along the slice axis where the slice is centered (0.0 to 1.0).</span>
 <span class="sd">        slice_thickness_fraction : float</span>
-<span class="sd">            Fractional thickness of the slice relative to the box length along the slice axis (0.0 to 1.0).</span>
+<span class="sd">            Fractional thickness of the slice relative to the box length along the slice axis</span>
+<span class="sd">            (0.0 to 1.0).</span>
 <span class="sd">        maximum_circles_in_slice : int</span>
 <span class="sd">            Maximum number of circles to plot in the slice (subsampling if necessary).</span>
 <span class="sd">        """</span>
@@ -804,16 +815,16 @@
         <span class="n">slice_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">slice_mask</span><span class="p">]</span>
         <span class="n">slice_radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">slice_mask</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a_max</span><span class="p">,</span> <span class="s1">'to'</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-             <span class="n">a_max_val</span> <span class="o">=</span> <span class="n">a_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'meter'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-             <span class="n">b_max_val</span> <span class="o">=</span> <span class="n">b_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'meter'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-             <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_positions</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'meter'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-             <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'meter'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a_max</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">a_max_val</span> <span class="o">=</span> <span class="n">a_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">b_max_val</span> <span class="o">=</span> <span class="n">b_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_positions</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="k">else</span><span class="p">:</span>
-             <span class="n">a_max_val</span> <span class="o">=</span> <span class="n">a_max</span>
-             <span class="n">b_max_val</span> <span class="o">=</span> <span class="n">b_max</span>
-             <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_positions</span>
-             <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii</span>
+            <span class="n">a_max_val</span> <span class="o">=</span> <span class="n">a_max</span>
+            <span class="n">b_max_val</span> <span class="o">=</span> <span class="n">b_max</span>
+            <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_positions</span>
+            <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii</span>
 
         <span class="c1"># Subsampling</span>
         <span class="n">n_spheres</span> <span class="o">=</span> <span class="n">slice_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -845,7 +856,12 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
-        <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">)</span>
+        <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">figure</span></div>
 

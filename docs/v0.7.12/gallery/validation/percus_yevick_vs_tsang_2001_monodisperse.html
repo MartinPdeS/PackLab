@@ -546,11 +546,7 @@ comparison rather than a high-precision numerical error estimate.</p>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">docs_root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">data_path</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">docs_root</span>
-    <span class="o">/</span> <span class="s2">"manuscript"</span>
-    <span class="o">/</span> <span class="s2">"softwareX"</span>
-    <span class="o">/</span> <span class="s2">"data"</span>
-    <span class="o">/</span> <span class="s2">"tsang_2001_figure_8_1_3_digitized.csv"</span>
+    <span class="n">docs_root</span> <span class="o">/</span> <span class="s2">"manuscript"</span> <span class="o">/</span> <span class="s2">"softwareX"</span> <span class="o">/</span> <span class="s2">"data"</span> <span class="o">/</span> <span class="s2">"tsang_2001_figure_8_1_3_digitized.csv"</span>
 <span class="p">)</span>
 <span class="n">digitized</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">genfromtxt</span><span class="p">(</span><span class="n">data_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
 </pre></div>
@@ -575,33 +571,51 @@ comparison rather than a high-precision numerical error estimate.</p>
         <span class="n">radii</span><span class="o">=</span><span class="n">domain</span><span class="o">.</span><span class="n">radii</span><span class="p">,</span>
         <span class="n">wavenumber</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">,</span>
     <span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">reduced_separation</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">radii</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">reduced_separation</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">line_style</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">reduced_separation</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">line_style</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span>
+    <span class="p">)</span>
 
     <span class="n">reference</span> <span class="o">=</span> <span class="n">digitized</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">digitized</span><span class="p">[</span><span class="s2">"volume_fraction"</span><span class="p">],</span> <span class="n">volume_fraction</span><span class="p">)]</span>
     <span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
         <span class="n">reference</span><span class="p">[</span><span class="s2">"reduced_separation"</span><span class="p">],</span>
         <span class="n">reference</span><span class="p">[</span><span class="s2">"g_r"</span><span class="p">],</span>
-        <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span>
-        <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">markeredgewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
+        <span class="n">linestyle</span><span class="o">=</span><span class="s2">"none"</span><span class="p">,</span>
+        <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
+        <span class="n">markersize</span><span class="o">=</span><span class="mf">4.5</span><span class="p">,</span>
+        <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span>
+        <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+        <span class="n">markeredgewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
     <span class="p">)</span>
 
 <span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"0.65"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">":"</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
-    <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span> <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span>
-    <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"reduced separation $r/b$"</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"pair correlation $g(r)$"</span><span class="p">,</span>
+    <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+    <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">3.5</span><span class="p">),</span>
+    <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"reduced separation $r/b$"</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s2">"pair correlation $g(r)$"</span><span class="p">,</span>
     <span class="n">title</span><span class="o">=</span><span class="s2">"PackLab and digitised Tsang et al. PY reference"</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="p">[</span>
-    <span class="n">Line2D</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="n">line_style</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
-           <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span> <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">"$f=</span><span class="si">{</span><span class="n">fraction</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">$"</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">fraction</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">line_style</span><span class="p">,</span> <span class="n">marker</span> <span class="ow">in</span> <span class="n">cases</span>
-<span class="p">])</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">axis</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span>
+    <span class="n">handles</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">Line2D</span><span class="p">(</span>
+            <span class="p">[],</span>
+            <span class="p">[],</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">colour</span><span class="p">,</span>
+            <span class="n">linestyle</span><span class="o">=</span><span class="n">line_style</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span>
+            <span class="n">markerfacecolor</span><span class="o">=</span><span class="s2">"white"</span><span class="p">,</span>
+            <span class="n">markeredgecolor</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">rf</span><span class="s2">"$f=</span><span class="si">{</span><span class="n">fraction</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">$"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">fraction</span><span class="p">,</span> <span class="n">colour</span><span class="p">,</span> <span class="n">line_style</span><span class="p">,</span> <span class="n">marker</span> <span class="ow">in</span> <span class="n">cases</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 <span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" srcset="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" alt="PackLab and digitised Tsang et al. PY reference" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.083 seconds)</p>
+<img src="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" srcset="../../_images/sphx_glr_percus_yevick_vs_tsang_2001_monodisperse_001.png" alt="PackLab and digitised Tsang et al. PY reference" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.154 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-percus-yevick-vs-tsang-2001-monodisperse-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/2fd5a0fbeac592fe9338be1c8410d88b/percus_yevick_vs_tsang_2001_monodisperse.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">percus_yevick_vs_tsang_2001_monodisperse.ipynb</span></code></a></p>
