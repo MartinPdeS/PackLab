@@ -159,11 +159,15 @@ Statistics MetropolisSimulator::result_statistics() const {
 }
 
 Result MetropolisSimulator::run() {
+    return run_sweeps(options->number_of_sweeps);
+}
+
+Result MetropolisSimulator::run_sweeps(std::size_t number_of_sweeps) {
     const auto start = std::chrono::steady_clock::now();
     const std::size_t particle_count = sphere_configuration->center_positions.size();
     std::uniform_real_distribution<double> displacement(-options->maximum_displacement, options->maximum_displacement);
 
-    for (std::size_t sweep = 0; sweep < options->number_of_sweeps; ++sweep) {
+    for (std::size_t sweep = 0; sweep < number_of_sweeps; ++sweep) {
         for (std::size_t particle = 0; particle < particle_count; ++particle) {
             ++statistics.attempted_moves;
             const Vector3d previous = sphere_configuration->center_positions[particle];

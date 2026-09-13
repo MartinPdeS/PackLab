@@ -41,6 +41,8 @@ public:
     */
     Result run();
 
+    [[nodiscard]] std::shared_ptr<Options> get_options() const { return options; }
+
     /*
     Attempt to insert a single sphere into the simulation.
     @return True if the insertion was successful, false otherwise.

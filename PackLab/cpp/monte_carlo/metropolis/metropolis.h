@@ -55,6 +55,11 @@ public:
     /// Run the configured number of sweeps and return the equilibrated state.
     Result run();
 
+    /// Run an explicit number of sweeps without resetting the current state.
+    Result run_sweeps(std::size_t number_of_sweeps);
+
+    [[nodiscard]] std::shared_ptr<MetropolisOptions> get_options() const { return options; }
+
 private:
     std::shared_ptr<SphereConfiguration> initial_configuration;
     std::shared_ptr<MetropolisOptions> options;

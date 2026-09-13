@@ -3,6 +3,10 @@ from PackLab.monte_carlo.domain import PackingDomain
 from PackLab.samplers import RadiusSampler
 
 class PackingConfiguration:
+    @classmethod
+    def from_arrays(
+        cls, positions: Any, radii: Any, classes_index: Any
+    ) -> PackingConfiguration: ...
     @property
     def count(self) -> int: ...
     @property
@@ -14,6 +18,9 @@ class PackingConfiguration:
     @property
     def number_of_classes(self) -> int: ...
     def total_sphere_volume(self) -> Any: ...
+    def compute_partial_pair_correlation_function(
+        self, domain: PackingDomain, n_bins: int, maximum_pairs: int = 1_000_000
+    ) -> tuple[Any, Any]: ...
 
 class RSAOptions:
     random_seed: int

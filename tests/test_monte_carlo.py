@@ -5,10 +5,21 @@ PackLab test.
 import numpy as np
 import pytest
 from unittest.mock import patch
+from pathlib import Path
+import json
 from TypedUnit.units import ureg
 
 
 from PackLab import monte_carlo, samplers
+
+
+@pytest.fixture
+def packing_archive_path():
+    """Provide a short-lived archive path inside the current worktree."""
+    path = Path(".packlab-persistence-test.npz")
+    path.unlink(missing_ok=True)
+    yield path
+    path.unlink(missing_ok=True)
 
 
 # ----------------------------------------------------------
@@ -271,6 +282,130 @@ def test_metropolis_requires_a_positive_unit_bearing_displacement():
 
     with pytest.raises(TypeError, match="pint.Quantity"):
         options.maximum_displacement = 0.1
+
+
+def test_packing_archive_roundtrip_reconstructs_a_metropolis_usable_configuration(
+    packing_archive_path,
+):
+    """Archives preserve SI configuration data and known RSA provenance."""
+    domain = monte_carlo.PackingDomain(4 * ureg.meter, 4 * ureg.meter, 4 * ureg.meter, True)
+    options = monte_carlo.RSAOptions()
+    options.random_seed = 8
+    options.maximum_spheres = 6
+    result = monte_carlo.RSASimulator(
+        domain, samplers.ConstantRadiusSampler(0.15 * ureg.meter, bins=1), options
+    ).run()
+
+    monte_carlo.save_packing(result, packing_archive_path, metadata={"description": "round trip"})
+    loaded = monte_carlo.load_packing(packing_archive_path)
+
+    assert result.source == "rsa"
+    assert loaded.source == "rsa"
+    assert loaded.run_metadata["random_seed"] == 8
+    assert loaded.metadata["user_metadata"]["description"] == "round trip"
+    np.testing.assert_allclose(
+        loaded.positions.to("meter").magnitude, result.positions.to("meter").magnitude
+    )
+    np.testing.assert_allclose(
+        loaded.radii.to("meter").magnitude, result.radii.to("meter").magnitude
+    )
+    assert loaded.domain.use_periodic_boundaries
+
+    metropolis_options = monte_carlo.MetropolisOptions()
+    metropolis_options.maximum_displacement = 0.02 * ureg.meter
+    simulator = monte_carlo.MetropolisSimulator(
+        loaded.domain, loaded.sphere_configuration, metropolis_options
+    )
+    assert simulator.run_sweeps(1).source == "metropolis"
+
+
+def test_packing_archive_rejects_overlapping_particles(packing_archive_path):
+    """Load-time validation rejects physically invalid serialized configurations."""
+    metadata = json.dumps(
+        {
+            "schema": "packlab.monte_carlo.packing",
+            "version": 1,
+            "source": "unknown",
+            "run_metadata": {},
+            "user_metadata": {},
+            "units": {
+                "positions_m": "meter",
+                "radii_m": "meter",
+                "box_lengths_m": "meter",
+            },
+        }
+    )
+    np.savez_compressed(
+        packing_archive_path,
+        positions_m=np.array([[1.0, 1.0, 1.0], [1.1, 1.0, 1.0]]),
+        radii_m=np.array([0.1, 0.1]),
+        classes_index=np.array([0, 0], dtype=np.int64),
+        box_lengths_m=np.array([3.0, 3.0, 3.0]),
+        periodic=np.asarray(True),
+        metadata_json=np.asarray(metadata),
+    )
+
+    with pytest.raises(ValueError, match="overlapping"):
+        monte_carlo.load_packing(packing_archive_path)
+
+
+def test_metropolis_diagnostics_retain_move_deltas_without_position_snapshots():
+    """Sampled chunks retain low-memory observables and advance the simulator."""
+    domain = monte_carlo.PackingDomain(5 * ureg.meter, 5 * ureg.meter, 5 * ureg.meter, True)
+    rsa_options = monte_carlo.RSAOptions()
+    rsa_options.random_seed = 9
+    rsa_options.maximum_spheres = 6
+    initial = monte_carlo.RSASimulator(
+        domain, samplers.ConstantRadiusSampler(0.15 * ureg.meter, bins=1), rsa_options
+    ).run()
+    options = monte_carlo.MetropolisOptions()
+    options.random_seed = 3
+    options.maximum_displacement = 0.04 * ureg.meter
+    simulator = monte_carlo.MetropolisSimulator(domain, initial.sphere_configuration, options)
+
+    report = monte_carlo.run_metropolis_diagnostics(
+        simulator, 12, sample_interval=2, burn_in_sweeps=0, block_size=1
+    )
+
+    assert report.sample_sweeps.tolist() == [2, 4, 6, 8, 10, 12]
+    assert np.all(report.accepted_move_deltas + report.rejected_move_deltas == 12)
+    assert np.all((report.acceptance_rates >= 0.0) & (report.acceptance_rates <= 1.0))
+    assert report.mean_squared_displacements.units == ureg.meter**2
+    assert report.effective_sample_size > 0.0
+    assert report.final_result.source == "metropolis"
+    assert not hasattr(report, "positions")
+
+
+def test_empirical_structure_is_labelled_and_scattering_compatible():
+    """Finite configuration correlations keep their empirical source explicit."""
+    domain = monte_carlo.PackingDomain(5 * ureg.meter, 5 * ureg.meter, 5 * ureg.meter, True)
+    configuration = monte_carlo.PackingConfiguration.from_arrays(
+        np.array([[0.5, 0.5, 0.5], [2.0, 2.0, 2.0], [4.0, 4.0, 4.0]]) * ureg.meter,
+        np.array([0.1, 0.2, 0.1]) * ureg.meter,
+        np.array([0, 1, 0], dtype=np.int64),
+    )
+
+    with pytest.warns(RuntimeWarning, match="finite-configuration"):
+        structure = monte_carlo.empirical_structure(
+            configuration,
+            domain=domain,
+            n_bins=8,
+            wavenumber=np.linspace(0.0, 20.0, 8) / ureg.meter,
+        )
+
+    class MockScatteringDataset:
+        def get_mu(self, densities, H, wavenumber):
+            self.inputs = densities, H, wavenumber
+
+    dataset = MockScatteringDataset()
+    dataset.get_mu(*structure.scattering_inputs())
+    densities, H, wavenumber = dataset.inputs
+    assert structure.source == "empirical finite-configuration"
+    assert structure.g.shape == (2, 2, 8)
+    assert H.shape == (2, 2, 8)
+    assert np.all(np.isfinite(H))
+    assert densities.units == ureg.meter**-3
+    assert wavenumber.units == ureg.meter**-1
 
 
 def test_packing_estimator_progress_and_statistics(capfd):

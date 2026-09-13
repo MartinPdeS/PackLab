@@ -26,12 +26,12 @@ def post_mpl_plot(plot_function):
 
 class PackingResult:
     """
-    Output container for an RSA simulation run.
+    Output container for an RSA or Metropolis simulation run.
 
     Holds arrays plus domain metadata, computed statistics, and plotting helpers.
     """
 
-    def __init__(self, binding):
+    def __init__(self, binding, source: str | None = None, run_metadata: dict | None = None):
         """
         Initialize the packing result.
 
@@ -39,8 +39,29 @@ class PackingResult:
         ----------
         binding : Binding
             The binding object containing simulation data.
+        source : {"rsa", "metropolis"} or None, optional
+            Workflow that produced this result when known.
+        run_metadata : dict or None, optional
+            Reproducibility-relevant options retained by the producing workflow.
         """
         self.binding = binding
+        self.source = source or "unknown"
+        self.run_metadata = dict(run_metadata or {})
+
+    def save(self, path, **kwargs) -> None:
+        """
+        Save this configuration in PackLab's portable ``.npz`` format.
+
+        Parameters
+        ----------
+        path : str or pathlib.Path
+            Destination archive ending in ``.npz``.
+        **kwargs
+            Additional metadata accepted by :func:`save_packing`.
+        """
+        from PackLab.monte_carlo.persistence import save_packing
+
+        save_packing(self, path, **kwargs)
 
     @cached_property
     def positions(self) -> np.ndarray:

@@ -11,7 +11,29 @@ namespace {
 py::object run_and_wrap(MetropolisSimulator& simulator) {
     auto cpp_result = simulator.run();
     py::object result_class = py::module_::import("PackLab.monte_carlo.results").attr("PackingResult");
-    return result_class(py::arg("binding") = py::cast(std::move(cpp_result)));
+    py::dict metadata;
+    metadata["random_seed"] = simulator.get_options()->random_seed;
+    metadata["number_of_sweeps"] = simulator.get_options()->number_of_sweeps;
+    metadata["maximum_displacement_m"] = simulator.get_options()->maximum_displacement;
+    return result_class(
+        py::arg("binding") = py::cast(std::move(cpp_result)),
+        py::arg("source") = "metropolis",
+        py::arg("run_metadata") = metadata
+    );
+}
+
+py::object run_sweeps_and_wrap(MetropolisSimulator& simulator, std::size_t number_of_sweeps) {
+    auto cpp_result = simulator.run_sweeps(number_of_sweeps);
+    py::object result_class = py::module_::import("PackLab.monte_carlo.results").attr("PackingResult");
+    py::dict metadata;
+    metadata["random_seed"] = simulator.get_options()->random_seed;
+    metadata["number_of_sweeps"] = number_of_sweeps;
+    metadata["maximum_displacement_m"] = simulator.get_options()->maximum_displacement;
+    return result_class(
+        py::arg("binding") = py::cast(std::move(cpp_result)),
+        py::arg("source") = "metropolis",
+        py::arg("run_metadata") = metadata
+    );
 }
 
 }  // namespace
@@ -84,6 +106,18 @@ equilibrium workflow and is not a continuation of RSA deposition.
         )
         .def("reset", &MetropolisSimulator::reset, "Restore the supplied initial configuration.")
         .def("run", &run_and_wrap, "Run all configured sweeps and return a PackingResult.")
+        .def(
+            "run_sweeps",
+            &run_sweeps_and_wrap,
+            py::arg("number_of_sweeps"),
+            "Run a positive or zero explicit number of sweeps without resetting."
+        )
+        .def_readonly(
+            "domain",
+            &MetropolisSimulator::domain,
+            py::return_value_policy::reference_internal,
+            "Fixed simulation domain."
+        )
         .def_readonly("sphere_configuration", &MetropolisSimulator::sphere_configuration,
                       py::return_value_policy::reference_internal,
                       "Current configuration after accepted displacement moves.")
