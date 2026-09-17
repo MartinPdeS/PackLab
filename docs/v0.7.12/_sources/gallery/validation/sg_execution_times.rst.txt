@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.905** total execution time for 5 files **from gallery/validation**:
+**00:03.975** total execution time for 5 files **from gallery/validation**:
 
 .. container::
 
@@ -33,16 +33,16 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_rsa_ensemble_vs_analytical.py` (``rsa_ensemble_vs_analytical.py``)
-     - 00:03.130
+     - 00:03.206
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_grid_convergence.py` (``percus_yevick_grid_convergence.py``)
-     - 00:00.413
+     - 00:00.409
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001.py` (``percus_yevick_vs_tsang_2001.py``)
-     - 00:00.140
+     - 00:00.139
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_metropolis_vs_analytical.py` (``metropolis_vs_analytical.py``)
-     - 00:00.120
+     - 00:00.119
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py` (``percus_yevick_vs_tsang_2001_monodisperse.py``)
      - 00:00.102
