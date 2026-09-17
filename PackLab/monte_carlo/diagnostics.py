@@ -1,6 +1,5 @@
 """Low-memory diagnostics for fixed-volume Metropolis hard-sphere sampling."""
 
-from __future__ import annotations
 
 from dataclasses import dataclass
 from statistics import NormalDist

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Safely remove PackLab build and manuscript-generated files."""
 
-from __future__ import annotations
 
 import argparse
 from pathlib import Path

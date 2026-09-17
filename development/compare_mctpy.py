@@ -17,7 +17,6 @@ in micrometres, and wavenumbers in micrometre**-1. See
 regeneration command.
 """
 
-from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass

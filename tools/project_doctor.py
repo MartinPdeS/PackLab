@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Diagnose the tools and Python packages used by PackLab development."""
 
-from __future__ import annotations
 
 import importlib
 import os

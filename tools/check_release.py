@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Check that PackLab release metadata agrees across project files."""
 
-from __future__ import annotations
 
 import argparse
 import json

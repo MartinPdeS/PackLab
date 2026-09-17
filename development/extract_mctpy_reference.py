@@ -11,7 +11,6 @@ dependencies before executing this script::
     python development/extract_mctpy_reference.py
 """
 
-from __future__ import annotations
 
 import csv
 from pathlib import Path
