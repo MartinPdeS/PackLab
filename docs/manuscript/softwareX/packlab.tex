@@ -15,11 +15,18 @@
 \glsdisablehyper
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \setlength{\parindent}{0pt}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.5}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.8}
 
 \newacronym{api}{API}{application programming interface}
 \newacronym{ci}{CI}{continuous integration}
 \newacronym{doi}{DOI}{digital object identifier}
-\newacronym{mc}{MC}{Metropolis Monte Carlo}
+\newacronym{mmc}{MMC}{Metropolis Monte Carlo}
 \newacronym{py}{PY}{Percus--Yevick}
 \newacronym{pypi}{PyPI}{Python Package Index}
 \newacronym{rsa}{RSA}{random sequential addition}
@@ -49,8 +56,9 @@
 PackLab is an open-source Python package centred on the analytical \gls{py} solution for multicomponent hard-sphere mixtures. %
 It evaluates equilibrium-reference partial pair correlations and structure factors with unit-aware inputs and explicit Fourier-resolution diagnostics. %
 A qualitative comparison with published real-space curves recovers the expected contact locations, curve ordering, and post-contact structure, while an external reciprocal-space implementation confirms mono-, bi-, and ternary-mixture results to within $9.6\times10^{-10}$. %
-Compiled \gls{rsa} tools complement the analytical workflow by constructing non-overlapping configurations, while an optional \gls{mc} utility evolves valid configurations through fixed-volume trial moves. %
+Compiled \gls{rsa} tools complement the analytical workflow by constructing non-overlapping configurations, while a complementary \gls{mmc} utility evolves valid configurations through fixed-volume trial moves. %
 \end{abstract}
+\glsresetall
 
 \begin{keyword}
 hard-sphere mixtures \sep Percus--Yevick \sep pair correlation \sep structure factor \sep random sequential addition \sep Monte Carlo
@@ -116,7 +124,7 @@ Such applications require the particle-size distribution, mixture correlation mo
 PackLab provides this analytical reference in one documented Python interface. %
 Its core \texttt{analytical} namespace evaluates the \gls{py} hard-sphere-mixture model \cite{Percus1958,Lebowitz1964}, retaining the mixture definition, dimensional inputs, and Fourier-resolution choices with the result. %
 The package is therefore suited to analytical parameter sweeps and structure-aware scattering models. %
-Complementary \gls{rsa} and \gls{mc} workflows provide explicit configurations for downstream coordinate-based calculations and carefully interpreted comparisons; they are not substitutes for the equilibrium analytical reference. %
+Complementary \gls{rsa} and \gls{mmc} workflows provide explicit configurations for downstream coordinate-based calculations and carefully interpreted comparisons; they are not substitutes for the equilibrium analytical reference. %
 
 \subsection{State of the field}
 
@@ -132,10 +140,23 @@ integration, but its specific contribution is to keep multicomponent mixture
 construction, real-space partial pair correlations, reciprocal-space partial
 structure factors, physical units, and Fourier-grid diagnostics within one
 Python workflow. %
-Its explicit-configuration tools additionally make it possible to generate \gls{rsa} packings, evolve valid configurations with hard-sphere \gls{mc}, and compare their estimated correlations with the analytical reference while preserving the distinction between the underlying models. %
+Its explicit-configuration tools additionally make it possible to generate \gls{rsa} packings, evolve valid configurations with hard-sphere \gls{mmc}, and compare their estimated correlations with the analytical reference while preserving the distinction between the underlying models. %
 PackLab is therefore intended for reproducible programmatic studies in which mixture definitions and numerical resolution must remain traceable across analytical, configuration, and optional scattering calculations; it is not a replacement for a general scattering-fitting or mode-coupling environment. %
 
+\FloatBarrier
 \section{Software description}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\linewidth]{figures/architecture.png}
+\caption{PackLab centres the \gls{py} equilibrium hard-sphere-mixture workflow and provides complementary numerical workflows. %
+The analytical workflow evaluates pair correlations and structure factors for specified mixture inputs. %
+The \gls{rsa} and \gls{mmc} workflows create irreversible deposition configurations and evolve valid configurations through fixed-volume trial moves, respectively. %
+All workflows have unit-aware Python \glspl{api} backed by native C++ kernels, but their results are compared and interpreted rather than treated as interchangeable.}
+	\label{fig:architecture}
+\end{figure}
+
+Figure~\ref{fig:architecture} summarises the project structure and the three complementary workflows: the analytical \gls{py} model, the irreversible \gls{rsa} generator, and the \gls{mmc} sampler. %
 
 \subsection{Percus--Yevick hard-sphere mixtures}
 
@@ -145,7 +166,7 @@ The analytical workflow evaluates the multicomponent \gls{py} approximation for 
 
 \gls{py} is an approximate equilibrium reference. Its approximation error depends on mixture density, composition, and size ratio, while its numerical error depends separately on the inverse-transform grid. %
 PackLab exposes both choices: automatic grids provide a documented default and the grid-construction interface permits explicit resolution studies. %
-The digitised binary-mixture \gls{py} curves of Tsang et al. \cite{Tsang2001}, used in Figure~\ref{fig:tsang-comparison}, provide an external visual comparison at matched radii and partial volume fractions. %
+The digitised binary-mixture \gls{py} curves of Tsang et al. \cite{Tsang2001} provide an external visual comparison at matched radii and partial volume fractions. %
 
 \subsection{Complementary simulation workflows}
 
@@ -170,10 +191,10 @@ A spatial-neighbour grid limits overlap checks to nearby accepted spheres, prese
 
 \subsubsection{Metropolis Monte Carlo}
 
-The optional \gls{mc} utility takes a valid non-overlapping configuration, holds its particle count, radii, and class labels fixed, and proposes symmetric single-particle displacements. %
+The \gls{mmc} utility takes a valid non-overlapping configuration, holds its particle count, radii, and class labels fixed, and proposes symmetric single-particle displacements. %
 A proposal is accepted only when it remains within the domain and introduces no overlap, and the result reports displacement-move acceptance statistics. %
 Users remain responsible for assessing burn-in, autocorrelation, and finite-size effects before interpreting saved states as equilibrium samples. %
-Figure~\ref{fig:validation} provides an equilibrium-consistency check against the matched \gls{py} reference using independently initialized chains and an explicit burn-in stability diagnostic. %
+The resulting trajectory can be checked against the matched \gls{py} reference through independently initialized chains and an explicit burn-in diagnostic. %
 
 \subsection{Software design and functionality}
 
@@ -183,7 +204,7 @@ Native extensions are installed beside their public Python APIs, keeping imports
 
 An analytical workflow first defines a mixture with \texttt{PercusYevickDomain}. %
 The resulting domain is evaluated by \texttt{PercusYevickSolver}. %
-Beginner-facing examples use \texttt{wavenumber="auto"}, which selects a zero-inclusive grid from the smallest particle radius and requested distance range. %
+Example workflows use \texttt{wavenumber="auto"}, which selects a zero-inclusive grid from the smallest particle radius and requested distance range. %
 Users can instead supply a grid with \texttt{make\_wavenumber\_grid} when they need explicit control over radial resolution and Fourier sampling. %
 
 For explicit configurations, an \gls{rsa} workflow combines a \texttt{PackingDomain}, a radius sampler, and \texttt{RSAOptions}. %
@@ -192,16 +213,7 @@ The result contains centres, radii, class labels, packing statistics, and total 
 \texttt{MetropolisSimulator} accepts such a configuration with \texttt{MetropolisOptions} and reports displacement-move acceptance statistics. %
 \texttt{PackingEstimator} reports ensemble correlation statistics together with insertion, rejection, runtime, and realised-packing diagnostics. %
 
-\begin{figure}[t]
-	\centering
-	\includegraphics[width=\linewidth]{figures/architecture.png}
-\caption{PackLab centres the \gls{py} equilibrium hard-sphere-mixture workflow and provides complementary numerical workflows. %
-The analytical workflow evaluates pair correlations and structure factors for specified mixture inputs. %
-The \gls{rsa} and \gls{mc} workflows create irreversible deposition configurations and evolve valid configurations through fixed-volume trial moves, respectively. %
-All workflows have unit-aware Python \glspl{api} backed by native C++ kernels, but their results are compared and interpreted rather than treated as interchangeable.}
-	\label{fig:architecture}
-\end{figure}
-
+\FloatBarrier
 \section{Illustrative examples}
 
 \subsection{Complementary configuration workflows}
@@ -225,6 +237,20 @@ The legend identifies each ensemble-mean coloured line; its matching same-colour
 	The red shaded interval is the exclusion range shared by all pairs, while the red dotted lines mark the three contact separations, $0.20$, $0.30$, and $0.40~\mathrm{\mu m}$. %
 	The dashed horizontal line marks the uncorrelated limit $g_{ij}(r)=1$.}
 	\label{fig:rsa}
+\end{figure}
+
+\FloatBarrier
+
+\subsubsection{Complementary RSA comparison and numerical convergence}
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/figure4_independent_validation.pdf}
+\caption{Independent validation of PackLab's real- and reciprocal-space \gls{py} outputs. %
+(a) Monodisperse PackLab correlations (coloured solid lines) and digitised Tsang et al. references \cite{Tsang2001} (black dashed lines) at volume fractions $f=0.2$ and $f=0.3$, plotted against $r/b$. %
+(b) Binary-mixture PackLab correlations (coloured solid lines) and digitised references (black dashed lines) for $a_2=2a_1$ and partial volume fractions $f_1=0.2$, $f_2=0.1$, plotted against $r/(2a_1)$. %
+(c) PackLab (coloured solid curves) and \texttt{mctpy} (black dashed curves) partial structure factors for radii 0.35 and 0.70~$\mathrm{\mu m}$, number fractions 0.65 and 0.35, and total volume fraction 0.25.}
+    \label{fig:tsang-comparison}
 \end{figure}
 
 \FloatBarrier
@@ -280,35 +306,23 @@ Both calculations use the density-scaled convention of Equation~\ref{eq:partial-
 For the displayed binary mixture, the maximum absolute difference across all partial structure factors is $9.58\times10^{-10}$. %
 The same reproducible comparison gives maximum differences of $2.32\times10^{-11}$ and $5.97\times10^{-10}$ for the monodisperse and ternary cases, respectively. %
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\linewidth]{figures/figure4_independent_validation.pdf}
-\caption{Independent validation of PackLab's real- and reciprocal-space \gls{py} outputs. %
-(a) Monodisperse PackLab correlations (coloured solid lines) and digitised Tsang et al. references \cite{Tsang2001} (black dashed lines) at volume fractions $f=0.2$ and $f=0.3$, plotted against $r/b$. %
-(b) Binary-mixture PackLab correlations (coloured solid lines) and digitised references (black dashed lines) for $a_2=2a_1$ and partial volume fractions $f_1=0.2$, $f_2=0.1$, plotted against $r/(2a_1)$. %
-(c) PackLab (coloured solid curves) and \texttt{mctpy} (black dashed curves) partial structure factors for radii 0.35 and 0.70~$\mathrm{\mu m}$, number fractions 0.65 and 0.35, and total volume fraction 0.25.}
-    \label{fig:tsang-comparison}
-\end{figure}
-
 \FloatBarrier
-
-\subsubsection{Complementary RSA comparison and numerical convergence}
 
 Figure~\ref{fig:validation} distinguishes model comparison from numerical verification. %
 Panel (a) compares all unique partial correlations from a 100-realisation \gls{rsa} ensemble with \gls{py} evaluated for the same binary-mixture inputs and the same radial coordinates. %
 The differences are expected physical consequences of comparing finite, irreversible \gls{rsa} with an equilibrium \gls{py} reference, rather than a numerical-error measure. %
-Panel (b) compares \gls{py} with 12 independently initialized \gls{mc} chains after 600 burn-in sweeps. %
+Panel (b) compares \gls{py} with 12 independently initialized \gls{mmc} chains after 600 burn-in sweeps. %
 The mean move-acceptance rate is 0.782, and the post-contact \gls{rms} differences are 0.045, 0.027, and 0.032 for $g_{00}$, $g_{01}$, and $g_{11}$, respectively. %
 Between 300 and 600 sweeps, 94.3\% of resolved correlation values agree within the combined 95\% uncertainty of the two ensemble means. %
 Because \gls{py} is approximate, this is an equilibrium-consistency check rather than an exact-error measurement. %
 Panel (c) isolates numerical convergence by measuring the \gls{py} result against a separately specified, much finer wavenumber grid. %
 
-\begin{figure}[!htbp]
+\begin{figure}[!t]
 	\centering
 	\includegraphics[width=\linewidth]{figures/figure3_validation.pdf}
 \caption{Matched configuration--\gls{py} comparisons and \gls{py} grid convergence for a binary mixture with radii 0.357 and 0.714~\textmu m, equal number fractions, and total volume fraction 0.25. %
 (a) \gls{rsa} ensemble means (coloured solid curves) with one-standard-error bands and \gls{py} references (black dashed curves) for the three unique partial correlations; dotted lines mark hard-core contact distances. %
-(b) Means from 12 independently initialized \gls{mc} chains after 600 burn-in sweeps, with one-standard-error bands and matched \gls{py} references. %
+(b) Means from 12 independently initialized \gls{mmc} chains after 600 burn-in sweeps, with one-standard-error bands and matched \gls{py} references. %
 (c) \gls{rms} difference from a 512-samples-per-oscillation \gls{py} reference as the wavenumber grid is refined; red and blue dashed lines mark the warning threshold (8) and automatic default (12), respectively.}
 	\label{fig:validation}
 \end{figure}
@@ -340,7 +354,7 @@ The public Python interface and executable examples also make systematic paramet
 
 PackLab tests analytical hard-core exclusion, automatic-grid selection, grid warnings, and convergence through its public \gls{api}. %
 Separate tests cover samplers, packing validity, periodic boundaries, and Metropolis move validation. %
-Executable documentation examples are organised around analytical, \gls{rsa}, \gls{mc}, and comparison workflows. %
+Executable documentation examples are organised around analytical, \gls{rsa}, \gls{mmc}, and comparison workflows. %
 \Gls{ci} builds the native extensions and runs the test suite for CPython 3.11--3.13. %
 
 PackLab version 0.7.0 requires Python 3.10 or later, is released under the MIT License, and is available from \gls{pypi} and conda. %
@@ -351,16 +365,17 @@ Archived releases are available from the Zenodo record at \href{https://doi.org/
 \subsection{Limitations}
 
 The current scope is three-dimensional, spherical, hard-core particles in cuboidal domains. %
-\gls{rsa} should not be interpreted as an equilibrium-fluid simulator; \gls{mc} requires explicit equilibration assessment; and \gls{py} should not be interpreted as a measured structure or a general interaction model. %
+\gls{rsa} should not be interpreted as an equilibrium-fluid simulator; \gls{mmc} requires explicit equilibration assessment; and \gls{py} should not be interpreted as a measured structure or a general interaction model. %
 
-The practical limits of both workflows depend on the requested mixture and numerical settings. %
+The practical limits of the stochastic workflows depend on the requested mixture and numerical settings. %
 For \gls{rsa}, insertion becomes progressively less efficient as the requested packing fraction increases; finite domains, broad radius distributions, and stringent stopping conditions can prevent the requested target from being reached. %
 Consequently, users should report the realised packing fraction, stopping diagnostics, random seed, ensemble size, and domain size rather than treating a requested target as an achieved state. %
 Pair-correlation estimates from finite configurations additionally depend on binning and are subject to finite-size uncertainty, particularly near the largest separations accessible in a domain. %
-For \gls{mc}, users should assess burn-in, autocorrelation, proposal acceptance, and finite-size effects before treating separated chain states as equilibrium samples. %
+For \gls{mmc}, users should assess burn-in, autocorrelation, proposal acceptance, and finite-size effects before treating separated chain states as equilibrium samples. %
 
 For \gls{py}, the approximation error depends on density, composition, and particle-size ratio, and is separate from Fourier-grid discretisation error. %
-The automatic grid and under-resolution warning are useful safeguards, but they do not establish convergence for every mixture, especially when near-contact structure is sharp, size ratios are extreme, or correlations are required over a long distance range. %
+The automatic grid and under-resolution warning are useful safeguards, but they do not establish convergence for every mixture: the default balances the maximum wavenumber, which controls real-space resolution, against the wavenumber spacing, which controls sampling of the inverse-transform kernel. %
+Sharper near-contact structure or extreme size ratios may require a larger maximum wavenumber, whereas correlations over a longer distance range may require a smaller wavenumber spacing. %
 Users should refine the wavenumber grid and compare against an independently chosen equilibrium benchmark when the analytical result informs a quantitative conclusion. %
 PackLab's separate namespaces, explicit input definitions, recorded stochastic settings, and grid diagnostics are designed to make these limitations visible at the point of use. %
 
@@ -368,7 +383,7 @@ PackLab's separate namespaces, explicit input definitions, recorded stochastic s
 
 PackLab provides a unit-aware Python interface to multicomponent \gls{py} pair correlations and partial structure factors, supported by native C++20 kernels and explicit Fourier-grid diagnostics. %
 Qualitative real-space comparisons recover the principal features of published hard-sphere-mixture curves, while reciprocal-space results agree with a separately implemented reference to within $9.6\times10^{-10}$ for the tested mono-, bi-, and ternary mixtures. %
-The package's \gls{rsa} generator and \gls{mc} sampler extend the workflow to explicit configurations without treating their outputs and the analytical reference as interchangeable. %
+The package's \gls{rsa} generator and \gls{mmc} sampler extend the workflow to explicit configurations without treating their outputs and the analytical reference as interchangeable. %
 Together, these facilities support reproducible structural inputs for hard-particle and dependent-scattering studies while retaining the numerical and physical assumptions needed to interpret each result. %
 
 \section*{CRediT authorship contribution statement}
