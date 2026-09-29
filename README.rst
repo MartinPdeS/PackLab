@@ -26,7 +26,7 @@ configurations with Metropolis Monte Carlo (MC).
    * - PyPI package
      - |PyPI|
    * - PyPI downloads
-     - |PyPI_download|
+     - |pepy_download|
    * - Anaconda package
      - |anaconda|
    * - Anaconda downloads
@@ -254,9 +254,9 @@ used. Release metadata is included in ``.zenodo.json``.
 .. |PyPI| image:: https://badge.fury.io/py/packlab.svg
    :alt: PyPI version
    :target: https://badge.fury.io/py/PackLab
-.. |PyPI_download| image:: https://img.shields.io/pypi/dm/PackLab?label=PyPI%20downloads
-   :alt: PyPI downloads
-   :target: https://pypistats.org/packages/packlab
+.. |pepy_download| image:: https://static.pepy.tech/badge/packlab/month
+   :alt: Monthly PackLab downloads
+   :target: https://pepy.tech/projects/packlab
 .. |anaconda| image:: https://anaconda.org/martinpdes/packlab/badges/version.svg
    :alt: Anaconda version
    :target: https://anaconda.org/martinpdes/packlab
