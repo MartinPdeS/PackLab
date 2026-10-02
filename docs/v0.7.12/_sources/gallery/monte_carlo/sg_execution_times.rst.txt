@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:04.525** total execution time for 5 files **from gallery/monte_carlo**:
+**00:05.642** total execution time for 5 files **from gallery/monte_carlo**:
 
 .. container::
 
@@ -33,17 +33,17 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_monte_carlo_04_metropolis_equilibration.py` (``04_metropolis_equilibration.py``)
-     - 00:03.905
+     - 00:04.660
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_monte_carlo_poly_disperse.py` (``monte_carlo_poly_disperse.py``)
-     - 00:00.281
+     - 00:00.467
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_01_minimal_rsa.py` (``01_minimal_rsa.py``)
-     - 00:00.171
+     - 00:00.275
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_03_radius_samplers.py` (``03_radius_samplers.py``)
-     - 00:00.094
+     - 00:00.142
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_02_periodic_boundaries.py` (``02_periodic_boundaries.py``)
-     - 00:00.073
+     - 00:00.098
      - 0.0
