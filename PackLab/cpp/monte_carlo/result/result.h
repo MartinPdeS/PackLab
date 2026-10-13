@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <vector>
 #include <tuple>
 #include <cmath>
@@ -69,7 +70,7 @@ public:
     @param maximum_distance Maximum separation to include.
     @param method "grid" or "monte-carlo".
     @param maximum_number_of_pairs Number of sampled pairs (MC only).
-    @param random_seed RNG seed.
+    @param random_seed Deterministic pair-sampling seed (including zero).
     @param grid_cell_size Spatial grid cell size (grid method only).
     */
     void compute_pair_correlation_function(
@@ -85,8 +86,8 @@ public:
     Compute partial pair correlation g_ij(r) for class-labeled particles.
 
     @param n_bins Number of r-bins.
-    @param maximum_pairs Maximum number of random pairs to sample.
-    @param random_seed RNG seed.
+    @param maximum_pairs Maximum unordered pairs examined; zero examines all.
+    @param random_seed Deterministic pair-sampling seed (including zero).
 
     @return (bin_centers, g_ij[r][i][j]):
             - bin_centers[k] is center of bin k,
@@ -95,17 +96,20 @@ public:
     std::tuple<std::vector<double>, std::vector<std::vector<std::vector<double>>>>
     compute_partial_pair_correlation_function(
         std::size_t n_bins,
-        std::size_t maximum_pairs
+        std::size_t maximum_pairs,
+        std::uint64_t random_seed = 0
     ) const;
 
     /*
         Compute all pair distances along with their class indices.
-        @param maximum_pairs Maximum number of random pairs to sample.
+        @param maximum_pairs Maximum unordered pairs examined; zero examines all.
+        @param random_seed Deterministic pair-sampling seed (including zero).
         @return (distances, class_i_indices, class_j_indices)
     */
     std::tuple<std::vector<double>, std::vector<int>, std::vector<int>>
     compute_partial_pair_distances(
-        std::size_t maximum_pairs
+        std::size_t maximum_pairs,
+        std::uint64_t random_seed = 0
     ) const;
 
 private:
@@ -130,6 +134,7 @@ private:
         double r_max,
         double dr,
         std::size_t maximum_pairs,
+        std::uint64_t random_seed,
         std::size_t& examined_unordered_pairs
     ) const;
 

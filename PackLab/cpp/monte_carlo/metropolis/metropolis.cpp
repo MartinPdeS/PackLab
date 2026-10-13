@@ -49,6 +49,7 @@ MetropolisSimulator::MetropolisSimulator(
 void MetropolisSimulator::reset() {
     sphere_configuration = copy_configuration(initial_configuration);
     statistics = MetropolisStatistics{};
+    cumulative_displacements.assign(sphere_configuration->center_positions.size(), Vector3d{0.0, 0.0, 0.0});
     random_generator.seed(options->random_seed == 0 ? std::random_device{}() : options->random_seed);
 }
 
@@ -103,6 +104,10 @@ void MetropolisSimulator::validate_initial_configuration() const {
     for (std::size_t index = 0; index < positions.size(); ++index) {
         if (!(radii[index] > 0.0) || !std::isfinite(radii[index])) {
             throw std::invalid_argument("initial configuration radii must be finite and positive.");
+        }
+        if (domain->use_periodic_boundaries &&
+            radii[index] > 0.5 * std::min({domain->length_x, domain->length_y, domain->length_z})) {
+            throw std::invalid_argument("initial configuration contains a sphere overlapping its own periodic image.");
         }
         const auto& position = positions[index];
         if (!std::isfinite(position.x) || !std::isfinite(position.y) || !std::isfinite(position.z)) {
@@ -171,11 +176,9 @@ Result MetropolisSimulator::run_sweeps(std::size_t number_of_sweeps) {
         for (std::size_t particle = 0; particle < particle_count; ++particle) {
             ++statistics.attempted_moves;
             const Vector3d previous = sphere_configuration->center_positions[particle];
-            Vector3d candidate{
-                previous.x + displacement(random_generator),
-                previous.y + displacement(random_generator),
-                previous.z + displacement(random_generator),
-            };
+            const Vector3d step{displacement(random_generator), displacement(random_generator),
+                                displacement(random_generator)};
+            Vector3d candidate{previous.x + step.x, previous.y + step.y, previous.z + step.z};
 
             if (domain->use_periodic_boundaries) {
                 candidate = domain->wrap_position_if_periodic(candidate);
@@ -188,6 +191,10 @@ Result MetropolisSimulator::run_sweeps(std::size_t number_of_sweeps) {
                 continue;
             }
             sphere_configuration->center_positions[particle] = candidate;
+            auto& total = cumulative_displacements[particle];
+            total.x += step.x;
+            total.y += step.y;
+            total.z += step.z;
             ++statistics.accepted_moves;
         }
         ++statistics.completed_sweeps;

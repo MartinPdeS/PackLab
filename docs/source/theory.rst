@@ -15,14 +15,21 @@ the same physical process.
 Technique guides
 ----------------
 
+Read :doc:`rsa_mathematics`, :doc:`metropolis_mathematics`, and
+:doc:`percus_yevick_mathematics` for the assumptions, equations, and vocabulary
+of each technique.
+
 Use the :doc:`analytical` guide for the PY Python workflow and the
 :doc:`monte_carlo` guide for RSA packing generation and Metropolis MC moves.
 The :doc:`references` page collects the underlying literature and release
 citation information.
 
 .. toctree::
-   :hidden:
+   :maxdepth: 1
 
+   rsa_mathematics
+   metropolis_mathematics
+   percus_yevick_mathematics
    analytical
    monte_carlo
    assumptions
@@ -81,7 +88,7 @@ the sphere never moves; a rejected proposal is discarded. Early accepted
 spheres can therefore block positions permanently, making the final packing
 depend on the random proposal order. RSA produces a physically valid,
 history-dependent deposition configuration, not an equilibrium hard-sphere
-sample. In PackLab, ``maximum_attempts`` limits rejected proposals and
+sample. In PackLab, ``maximum_attempts`` limits outer insertion iterations and
 ``target_packing_fraction`` provides an optional earlier stopping condition.
 
 For spheres with radii :math:`r_i` in a domain of volume :math:`V`, the packing

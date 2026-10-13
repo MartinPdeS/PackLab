@@ -19,7 +19,8 @@ class PackingConfiguration:
     def number_of_classes(self) -> int: ...
     def total_sphere_volume(self) -> Any: ...
     def compute_partial_pair_correlation_function(
-        self, domain: PackingDomain, n_bins: int, maximum_pairs: int = 1_000_000
+        self, domain: PackingDomain, n_bins: int,
+        maximum_pairs: int = 1_000_000, random_seed: int = 0
     ) -> tuple[Any, Any]: ...
 
 class RSAOptions:

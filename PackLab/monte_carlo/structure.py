@@ -87,6 +87,7 @@ def empirical_structure(
     domain: Any | None = None,
     n_bins: int = 64,
     maximum_pairs: int = 1_000_000,
+    random_seed: int = 0,
     wavenumber: Any | Literal["auto"] = "auto",
     samples_per_oscillation: int = 12,
 ) -> EmpiricalStructure:
@@ -103,7 +104,10 @@ def empirical_structure(
     n_bins : int, default=64
         Number of radial bins used for partial pair correlations.
     maximum_pairs : int, default=1_000_000
-        Maximum native pair count; zero requests all available pairs.
+        Maximum number of uniformly sampled unordered pairs without replacement;
+        zero requests all available pairs.
+    random_seed : int, default=0
+        Seed for pair sampling. Zero is deterministic, unlike simulation seeds.
     wavenumber : pint.Quantity or "auto", default="auto"
         Reciprocal grid. Automatic selection uses the radial bin width and
         finite correlation range.
@@ -144,11 +148,11 @@ def empirical_structure(
 
     if hasattr(owner, "sphere_configuration"):
         distances, g = owner.compute_partial_pair_correlation_function(
-            n_bins=n_bins, maximum_pairs=maximum_pairs
+            n_bins=n_bins, maximum_pairs=maximum_pairs, random_seed=random_seed
         )
     else:
         distances, g = configuration.compute_partial_pair_correlation_function(
-            packing_domain, n_bins=n_bins, maximum_pairs=maximum_pairs
+            packing_domain, n_bins=n_bins, maximum_pairs=maximum_pairs, random_seed=random_seed
         )
         distances = np.asarray(distances) * ureg.meter
     distances_m = np.asarray(distances.to("meter").magnitude, dtype=float)

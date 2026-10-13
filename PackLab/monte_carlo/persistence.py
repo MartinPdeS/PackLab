@@ -80,7 +80,7 @@ class LoadedPackingConfiguration:
         Parameters
         ----------
         **kwargs : dict
-            ``n_bins`` and optional ``maximum_pairs`` forwarded to the native
+            ``n_bins``, optional ``maximum_pairs``, and ``random_seed`` forwarded to the native
             configuration method.
         """
         centers, values = self.sphere_configuration.compute_partial_pair_correlation_function(
@@ -148,6 +148,8 @@ def _validate_arrays(
     if not np.issubdtype(classes.dtype, np.integer) or np.any(classes < 0):
         raise ValueError("archive classes_index must contain non-negative integers.")
     if periodic:
+        if np.any(radii > 0.5 * np.min(lengths)):
+            raise ValueError("archive contains a sphere overlapping its own periodic image.")
         if np.any(positions < 0.0) or np.any(positions >= lengths):
             raise ValueError("archive periodic positions must lie in [0, box length).")
     elif np.any(positions < radii[:, None]) or np.any(positions > lengths - radii[:, None]):

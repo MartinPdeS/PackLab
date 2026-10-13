@@ -130,7 +130,9 @@ class PackingResult:
         Parameters
         ----------
         **kwargs : dict
-            Keyword arguments passed to the binding method.
+            ``n_bins``, ``maximum_pairs`` (zero examines all pairs), and
+            ``random_seed`` (default zero, deterministic) passed to the binding.
+            Capped pairs are sampled uniformly without replacement.
 
         Returns
         -------
@@ -402,7 +404,9 @@ class PackingResult:
         return figure
 
     @post_mpl_plot
-    def plot_pair_correlation(self, n_bins: int = 80, maximum_pairs: int = 300_000) -> plt.Figure:
+    def plot_pair_correlation(
+        self, n_bins: int = 80, maximum_pairs: int = 300_000, random_seed: int = 0
+    ) -> plt.Figure:
         """
         Plot the partial pair correlation functions g_ij(r) obtained from the RSA
         configuration, overlaying all (i, j) curves on a single axis.
@@ -412,7 +416,10 @@ class PackingResult:
         n_bins : int
             Number of radial distance bins.
         maximum_pairs : int
-            Number of Monte Carlo sampled pairs used for estimation.
+            Maximum number of unordered pairs sampled uniformly without replacement.
+            Zero examines all pairs.
+        random_seed : int, default=0
+            Seed for pair sampling; zero is deterministic.
 
         Returns
         -------
@@ -423,6 +430,7 @@ class PackingResult:
         centers, g_matrix = self.binding.compute_partial_pair_correlation_function(
             n_bins=n_bins,
             maximum_pairs=maximum_pairs,
+            random_seed=random_seed,
         )
 
         centers = np.asarray(centers)

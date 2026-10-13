@@ -128,10 +128,12 @@ class _FakeSimulator:
         self.domain = _FakeDomain()
         self.sphere_configuration = _FakeConfiguration()
         self.statistics = _FakeStatistics()
+        self.cumulative_displacements = np.zeros((1, 3)) * ureg.meter
 
     def run_sweeps(self, sweeps):
         self.statistics.accepted_moves += sweeps
         self.sphere_configuration.positions += 0.1 * sweeps * ureg.meter
+        self.cumulative_displacements += 0.1 * sweeps * ureg.meter
         return object()
 
 

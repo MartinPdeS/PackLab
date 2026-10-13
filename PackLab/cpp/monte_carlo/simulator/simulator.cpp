@@ -28,7 +28,7 @@ void Simulator::reset() {
 
 bool Simulator::sphere_fits_inside_domain_if_walls(const Vector3d& center_position, double radius) const {
     if (domain->use_periodic_boundaries)
-        return true;
+        return radius <= 0.5 * std::min({domain->length_x, domain->length_y, domain->length_z});
 
     const double padding = std::max(0.0, options->containment_padding);
     const double effective_radius = radius + padding;

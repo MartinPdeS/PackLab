@@ -1,6 +1,7 @@
 #include "metropolis.h"
 
 #include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 
 #include <pint/pint.h>
 
@@ -121,6 +122,17 @@ equilibrium workflow and is not a continuation of RSA deposition.
         .def_readonly("sphere_configuration", &MetropolisSimulator::sphere_configuration,
                       py::return_value_policy::reference_internal,
                       "Current configuration after accepted displacement moves.")
+        .def_property_readonly("cumulative_displacements", [](const MetropolisSimulator& simulator) {
+            py::array_t<double> values({static_cast<py::ssize_t>(simulator.cumulative_displacements.size()), py::ssize_t(3)});
+            auto output = values.mutable_unchecked<2>();
+            for (py::ssize_t index = 0; index < output.shape(0); ++index) {
+                const auto& value = simulator.cumulative_displacements[static_cast<std::size_t>(index)];
+                output(index, 0) = value.x;
+                output(index, 1) = value.y;
+                output(index, 2) = value.z;
+            }
+            return py::reinterpret_borrow<py::object>(values) * get_shared_ureg().attr("meter");
+        }, "Accepted displacement since reset as a quantity of shape (N, 3), including periodic crossings. Returns a copy.")
         .def_readonly("statistics", &MetropolisSimulator::statistics,
                       py::return_value_policy::reference_internal,
                       "Metropolis displacement-move statistics.")

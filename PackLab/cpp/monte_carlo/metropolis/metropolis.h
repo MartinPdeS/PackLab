@@ -42,6 +42,7 @@ public:
     std::shared_ptr<MCDomain> domain;
     std::shared_ptr<SphereConfiguration> sphere_configuration;
     MetropolisStatistics statistics;
+    std::vector<Vector3d> cumulative_displacements;
 
     MetropolisSimulator(
         std::shared_ptr<MCDomain> domain,

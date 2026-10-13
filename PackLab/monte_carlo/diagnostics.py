@@ -99,8 +99,9 @@ def run_metropolis_diagnostics(
     -------
     MetropolisDiagnosticReport
         Move deltas, per-sample rates, MSD relative to the starting state, and
-        autocorrelation/block summaries. The report does not establish
-        equilibration.
+        autocorrelation/block summaries. MSD uses accumulated accepted moves,
+        including periodic crossings, relative to the start of this call.
+        The report does not establish equilibration.
     """
     total = _validate_integer("number_of_sweeps", number_of_sweeps, 1)
     interval = _validate_integer("sample_interval", sample_interval, 1)
@@ -112,18 +113,9 @@ def run_metropolis_diagnostics(
     if not callable(getattr(simulator, "run_sweeps", None)):
         raise TypeError("simulator must be a MetropolisSimulator exposing run_sweeps().")
 
-    start = np.asarray(
-        simulator.sphere_configuration.positions.to("meter").magnitude, dtype=float
+    start_displacement = np.asarray(
+        simulator.cumulative_displacements.to("meter").magnitude, dtype=float
     ).copy()
-    lengths = np.asarray(
-        [
-            simulator.domain.length_x.to("meter").magnitude,
-            simulator.domain.length_y.to("meter").magnitude,
-            simulator.domain.length_z.to("meter").magnitude,
-        ],
-        dtype=float,
-    )
-    periodic = bool(simulator.domain.use_periodic_boundaries)
     previous_accepted = int(simulator.statistics.accepted_moves)
     previous_rejected = int(simulator.statistics.rejected_moves)
     sweeps: list[int] = []
@@ -142,12 +134,9 @@ def run_metropolis_diagnostics(
         accepted_delta = current_statistics.accepted_moves - previous_accepted
         rejected_delta = current_statistics.rejected_moves - previous_rejected
         attempted_delta = accepted_delta + rejected_delta
-        positions = np.asarray(
-            simulator.sphere_configuration.positions.to("meter").magnitude, dtype=float
-        )
-        displacement = positions - start
-        if periodic:
-            displacement -= lengths * np.round(displacement / lengths)
+        displacement = np.asarray(
+            simulator.cumulative_displacements.to("meter").magnitude, dtype=float
+        ) - start_displacement
         current_msd = float(
             np.mean(np.einsum("ij,ij->i", displacement, displacement))
         )

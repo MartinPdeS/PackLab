@@ -19,6 +19,7 @@ def empirical_structure(
     domain: Any | None = ...,
     n_bins: int = ...,
     maximum_pairs: int = ...,
+    random_seed: int = ...,
     wavenumber: Any | Literal["auto"] = ...,
     samples_per_oscillation: int = ...,
 ) -> EmpiricalStructure: ...

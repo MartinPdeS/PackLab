@@ -9,7 +9,9 @@ class PackingResult:
     classes: Any
     number_of_classes: int
     domain: Any
-    def compute_partial_pair_distances(self, maximum_pairs: int) -> tuple[Any, Any, Any]: ...
+    def compute_partial_pair_distances(
+        self, maximum_pairs: int, random_seed: int = 0
+    ) -> tuple[Any, Any, Any]: ...
     def compute_partial_pair_correlation_function(
-        self, n_bins: int, maximum_pairs: int = 1_000_000
+        self, n_bins: int, maximum_pairs: int = 1_000_000, random_seed: int = 0
     ) -> tuple[Any, Any]: ...

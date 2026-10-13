@@ -55,3 +55,9 @@ The analytical gallery starts with the two common equilibrium cases:
 
 Use :doc:`scattering` when the Percus--Yevick correlation tensor is to be
 combined with optical single-particle amplitudes.
+
+Mathematical guide
+------------------
+
+See :doc:`percus_yevick_mathematics` for the closure, matrix normalization,
+Fourier transforms, and numerical convergence requirements.

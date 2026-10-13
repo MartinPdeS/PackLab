@@ -1,27 +1,13 @@
 #include "result.h"
+#include "pair_sampling.h"
 
 // -----------------------------------------------------------------------------
 // Minimum image helper
 // -----------------------------------------------------------------------------
 Vector3d Result::apply_minimum_image(Vector3d d) const {
-    const double hx = 0.5 * domain->length_x;
-    const double hy = 0.5 * domain->length_y;
-    const double hz = 0.5 * domain->length_z;
-
-    if
-        (d.x >  hx) d.x -= domain->length_x;
-    else if(d.x < -hx)
-        d.x += domain->length_x;
-
-    if
-        (d.y >  hy) d.y -= domain->length_y;
-    else if
-        (d.y < -hy) d.y += domain->length_y;
-
-    if
-        (d.z >  hz) d.z -= domain->length_z;
-    else if
-        (d.z < -hz) d.z += domain->length_z;
+    d.x = domain->minimum_image_displacement(d.x, domain->length_x);
+    d.y = domain->minimum_image_displacement(d.y, domain->length_y);
+    d.z = domain->minimum_image_displacement(d.z, domain->length_z);
 
     return d;
 }
@@ -101,7 +87,7 @@ RadialGrid Result::get_radial_grid(std::size_t number_of_distance_bins) const
 // Partial g_ij(r) for class-labeled polydisperse system
 // -----------------------------------------------------------------------------
 std::tuple<std::vector<double>, std::vector<int>, std::vector<int>>
-Result::compute_partial_pair_distances(std::size_t maximum_pairs) const
+Result::compute_partial_pair_distances(std::size_t maximum_pairs, std::uint64_t random_seed) const
 {
     const std::size_t N = this->sphere_configuration->center_positions.size();
     if (N < 2) {
@@ -118,69 +104,24 @@ Result::compute_partial_pair_distances(std::size_t maximum_pairs) const
             "class_index_values and center_positions must have the same length."
         );
 
-    const double Lx = domain->length_x;
-    const double Ly = domain->length_y;
-    const double Lz = domain->length_z;
-    const bool periodic = domain->use_periodic_boundaries;
-
-    const double hx = 0.5 * Lx;
-    const double hy = 0.5 * Ly;
-    const double hz = 0.5 * Lz;
-
-    const double r_max = 0.5 * std::min({Lx, Ly, Lz});
-    const double r_max2 = r_max * r_max;
-
-    const std::size_t total_unordered_pairs = (N * (N - 1)) / 2;
-    const std::size_t maximum_pairs_effective =
-        (maximum_pairs == 0) ? total_unordered_pairs : std::min(maximum_pairs, total_unordered_pairs);
-
+    const double r_max = 0.5 * std::min({domain->length_x, domain->length_y, domain->length_z});
+    const std::size_t total = N * (N - 1) / 2;
+    const std::size_t samples = maximum_pairs == 0 ? total : std::min(maximum_pairs, total);
     std::vector<double> distances;
-    std::vector<int> class_i;
-    std::vector<int> class_j;
-
-    distances.reserve(maximum_pairs_effective);
-    class_i.reserve(maximum_pairs_effective);
-    class_j.reserve(maximum_pairs_effective);
-
-    std::size_t produced = 0;
-
-    const auto& positions = this->sphere_configuration->center_positions;
-    const auto& classes = this->sphere_configuration->class_index_values;
-
-    for (std::size_t p = 0; p < N && produced < maximum_pairs_effective; ++p) {
-        const Vector3d& pp = positions[p];
-        const int ci = classes[p];
-
-        for (std::size_t q = p + 1; q < N && produced < maximum_pairs_effective; ++q) {
-            const Vector3d& pq = positions[q];
-            const int cj = classes[q];
-
-            double dx = pq.x - pp.x;
-            double dy = pq.y - pp.y;
-            double dz = pq.z - pp.z;
-
-            if (periodic) {
-                if (dx >  hx) dx -= Lx;
-                else if (dx < -hx) dx += Lx;
-
-                if (dy >  hy) dy -= Ly;
-                else if (dy < -hy) dy += Ly;
-
-                if (dz >  hz) dz -= Lz;
-                else if (dz < -hz) dz += Lz;
-            }
-
-            const double r2 = dx * dx + dy * dy + dz * dz;
-            if (r2 >= r_max2) {
-                continue;
-            }
-
-            distances.push_back(std::sqrt(r2));
-            class_i.push_back(ci);
-            class_j.push_back(cj);
-            produced += 1;
-        }
-    }
+    std::vector<int> class_i, class_j;
+    distances.reserve(samples);
+    class_i.reserve(samples);
+    class_j.reserve(samples);
+    const auto& positions = sphere_configuration->center_positions;
+    const auto& classes = sphere_configuration->class_index_values;
+    visit_unordered_pairs(N, maximum_pairs, random_seed, [&](std::size_t first, std::size_t second) {
+        const auto delta = apply_minimum_image(positions[second] - positions[first]);
+        const double distance = delta.norm();
+        if (distance >= r_max) return;
+        distances.push_back(distance);
+        class_i.push_back(classes[first]);
+        class_j.push_back(classes[second]);
+    });
 
     return { distances, class_i, class_j };
 }
@@ -262,6 +203,7 @@ std::vector<std::vector<std::vector<std::size_t>>> Result::build_partial_histogr
     double r_max,
     double dr,
     std::size_t maximum_pairs,
+    std::uint64_t random_seed,
     std::size_t& examined_unordered_pairs) const
 {
     const std::size_t N = this->sphere_configuration->center_positions.size();
@@ -272,43 +214,20 @@ std::vector<std::vector<std::vector<std::size_t>>> Result::build_partial_histogr
         std::vector<std::vector<std::size_t>>(K, std::vector<std::size_t>(number_of_distance_bins, 0))
     );
 
-    const bool periodic = domain->use_periodic_boundaries;
-
-    const std::size_t total_unordered_pairs = (N * (N - 1)) / 2;
-    const std::size_t maximum_pairs_effective =
-        (maximum_pairs == 0) ? total_unordered_pairs : std::min(maximum_pairs, total_unordered_pairs);
-
     examined_unordered_pairs = 0;
-
-    for (std::size_t p = 0; p < N && examined_unordered_pairs < maximum_pairs_effective; ++p) {
-        const int ci = this->sphere_configuration->class_index_values[p];
-        const std::size_t ic = static_cast<std::size_t>(ci);
-
-        const Vector3d& position_p = this->sphere_configuration->center_positions[p];
-
-        for (std::size_t q = p + 1; q < N && examined_unordered_pairs < maximum_pairs_effective; ++q) {
-            examined_unordered_pairs += 1;
-
-            const int cj = this->sphere_configuration->class_index_values[q];
-            const std::size_t jc = static_cast<std::size_t>(cj);
-
-            Vector3d d = this->sphere_configuration->center_positions[q] - position_p;
-
-            if (periodic)
-                d = apply_minimum_image(d);
-
-            const double r = d.norm();
-            if (r >= r_max)
-                continue;
-
-            const std::size_t b = static_cast<std::size_t>(r / dr);
-            if (b >= number_of_distance_bins)
-                continue;
-
-            histogram_ordered[ic][jc][b] += 1;
-            histogram_ordered[jc][ic][b] += 1;
-        }
-    }
+    visit_unordered_pairs(N, maximum_pairs, random_seed, [&](std::size_t first, std::size_t second) {
+        ++examined_unordered_pairs;
+        const auto ic = static_cast<std::size_t>(sphere_configuration->class_index_values[first]);
+        const auto jc = static_cast<std::size_t>(sphere_configuration->class_index_values[second]);
+        const auto delta = apply_minimum_image(sphere_configuration->center_positions[second] -
+                                               sphere_configuration->center_positions[first]);
+        const double distance = delta.norm();
+        if (distance >= r_max) return;
+        const auto bin = static_cast<std::size_t>(distance / dr);
+        if (bin >= number_of_distance_bins) return;
+        ++histogram_ordered[ic][jc][bin];
+        ++histogram_ordered[jc][ic][bin];
+    });
 
     return histogram_ordered;
 }
@@ -380,7 +299,8 @@ Result::get_uncorrelated_Cij(std::size_t n_bins) const
 std::tuple<std::vector<double>, std::vector<std::vector<std::vector<double>>>>
 Result::compute_partial_pair_correlation_function(
     std::size_t n_bins,
-    std::size_t maximum_pairs) const
+    std::size_t maximum_pairs,
+    std::uint64_t random_seed) const
 {
     this->validate_partial_pair_inputs(n_bins);
 
@@ -395,6 +315,7 @@ Result::compute_partial_pair_correlation_function(
         grid.r_max,
         grid.dr,
         maximum_pairs,
+        random_seed,
         examined_unordered_pairs
     );
 

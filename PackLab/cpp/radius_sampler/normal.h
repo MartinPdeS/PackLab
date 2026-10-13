@@ -16,7 +16,7 @@ public:
 
     std::pair<std::vector<double>, std::vector<double>> to_bins() const override;
 
-    double maximum_possible_radius() const override { return 0; }
+    double maximum_possible_radius() const override { return maximum_radius_clip_value_; }
 
 private:
     double mean_value_;

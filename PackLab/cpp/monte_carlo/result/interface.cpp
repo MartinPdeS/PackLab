@@ -82,9 +82,9 @@ and unit-aware convenience methods around this native object.
         )
         .def(
             "compute_partial_pair_distances",
-            [](const Result& r, std::size_t maximum_pairs)
+            [](const Result& r, std::size_t maximum_pairs, std::uint64_t random_seed)
             {
-                auto [distances, class_i, class_j] = r.compute_partial_pair_distances(maximum_pairs);
+                auto [distances, class_i, class_j] = r.compute_partial_pair_distances(maximum_pairs, random_seed);
 
                 py::array::ShapeContainer shape({distances.size()});
 
@@ -107,16 +107,35 @@ and unit-aware convenience methods around this native object.
                 return py::make_tuple(py_distance, py_class_i, py_class_j);
             },
             py::arg("maximum_pairs"),
-            "Compute all pair distances along with their class indices."
+            py::arg("random_seed") = 0,
+            R"doc(
+Sample unordered pair distances uniformly without replacement.
+
+Parameters
+----------
+maximum_pairs : int
+    Maximum number of pairs examined before radial filtering. Zero examines
+    all pairs. Only distances below half the shortest box length are returned.
+random_seed : int, default=0
+    Unsigned seed for capped sampling; zero is deterministic.
+
+Returns
+-------
+distances : numpy.ndarray
+    Retained centre distances in SI metres, using minimum images when periodic.
+class_i, class_j : numpy.ndarray
+    Class labels of the two particles in each retained pair. The arrays may
+    contain fewer than maximum_pairs entries because of radial filtering.
+)doc"
         )
         // -----------------------
         // Partial g_ij(r)
         // -----------------------
         .def(
             "compute_partial_pair_correlation_function",
-            [](const Result& r, std::size_t n_bins, std::size_t maximum_pairs)
+            [](const Result& r, std::size_t n_bins, std::size_t maximum_pairs, std::uint64_t random_seed)
             {
-                auto [centers, gij] = r.compute_partial_pair_correlation_function(n_bins, maximum_pairs);
+                auto [centers, gij] = r.compute_partial_pair_correlation_function(n_bins, maximum_pairs, random_seed);
 
                 py::array::ShapeContainer shape({r.number_of_classes, r.number_of_classes, n_bins});
 
@@ -138,7 +157,28 @@ and unit-aware convenience methods around this native object.
             },
             py::arg("n_bins"),
             py::arg("maximum_pairs") = 1'000'000,
-            "Compute partial pair correlation function g_ij(r) and return (centers, g_ij)."
+            py::arg("random_seed") = 0,
+            R"doc(
+Estimate partial pair correlations from unordered particle pairs.
+
+Parameters
+----------
+n_bins : int
+    Positive number of radial bins up to half the shortest box length.
+maximum_pairs : int, default=1000000
+    Maximum number of pairs examined, sampled uniformly without replacement.
+    Zero examines every pair. Pairs outside the radial range still count
+    toward this limit.
+random_seed : int, default=0
+    Unsigned seed for capped pair sampling. Zero is deterministic.
+
+Returns
+-------
+centers : numpy.ndarray
+    Radial bin centres in SI metres.
+g_ij : numpy.ndarray, shape (species, species, n_bins)
+    Partial pair correlations with finite-particle normalization.
+)doc"
         )
         .def("__repr__", [](const Result& self) {
             return "<PackingResult spheres=" + std::to_string(self.sphere_configuration->radii_values.size())

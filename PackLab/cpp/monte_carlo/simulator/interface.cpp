@@ -139,7 +139,7 @@ classes_index : array-like, shape (N,)
             [](const std::shared_ptr<SphereConfiguration>& configuration,
                const std::shared_ptr<MCDomain>& domain,
                std::size_t n_bins,
-               std::size_t maximum_pairs) {
+               std::size_t maximum_pairs, std::uint64_t random_seed) {
                 if (configuration->center_positions.size() < 2) {
                     throw py::value_error("at least two particles are required for partial pair correlation.");
                 }
@@ -148,7 +148,7 @@ classes_index : array-like, shape (N,)
                     maximum_class = std::max(maximum_class, class_index);
                 }
                 Result result(configuration, domain, Statistics{}, static_cast<std::size_t>(maximum_class + 1));
-                auto [centers, gij] = result.compute_partial_pair_correlation_function(n_bins, maximum_pairs);
+                auto [centers, gij] = result.compute_partial_pair_correlation_function(n_bins, maximum_pairs, random_seed);
                 py::array_t<double> centers_array(centers.size(), centers.data());
                 py::array_t<double> gij_array({
                     static_cast<py::ssize_t>(maximum_class + 1),
@@ -165,7 +165,30 @@ classes_index : array-like, shape (N,)
             py::arg("domain"),
             py::arg("n_bins"),
             py::arg("maximum_pairs") = 1'000'000,
-            "Compute partial g_ij(r) for this configuration in a supplied domain."
+            py::arg("random_seed") = 0,
+            R"doc(
+Estimate partial pair correlations from unordered particle pairs.
+
+Parameters
+----------
+domain : PackingDomain
+    Domain defining volume and periodic boundary conditions.
+n_bins : int
+    Positive number of radial bins up to half the shortest box length.
+maximum_pairs : int, default=1000000
+    Maximum number of pairs examined, sampled uniformly without replacement.
+    Zero examines every pair. Pairs outside the radial range still count
+    toward this limit.
+random_seed : int, default=0
+    Unsigned seed for capped pair sampling. Zero is deterministic.
+
+Returns
+-------
+centers : numpy.ndarray
+    Radial bin centres in SI metres.
+g_ij : numpy.ndarray, shape (species, species, n_bins)
+    Partial pair correlations with finite-particle normalization.
+)doc"
         )
         .def(
             "total_sphere_volume",

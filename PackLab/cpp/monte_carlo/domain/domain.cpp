@@ -46,12 +46,5 @@ double MCDomain::minimum_image_displacement(double delta, double box_length) con
     if (!use_periodic_boundaries)
         return delta;
 
-    const double half_length = 0.5 * box_length;
-
-    if (delta > half_length)
-        return delta - box_length;
-    if (delta < -half_length)
-        return delta + box_length;
-    return delta;
+    return delta - box_length * std::round(delta / box_length);
 }
-

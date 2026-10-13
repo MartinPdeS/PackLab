@@ -294,12 +294,15 @@ weights : array-like, shape (n,)
 
     // Normal (Gaussian) sampler ----------------------------------------------
     py::class_<Normal, RadiusSampler, std::shared_ptr<Normal>>(module, "NormalRadiusSampler", R"doc(
-Clipped normal distribution of particle radii.
+Normal radii conditioned to be strictly positive, then clipped at the upper bound.
 
 Parameters
 ----------
 mean, standard_deviation : pint.Quantity
-    Parameters of the normal distribution.
+    Location and scale of the underlying normal distribution. The mean must
+    be non-negative; the standard deviation must be non-negative. A zero
+    standard deviation requires a positive mean. These are not the moments
+    of the conditioned, clipped distribution.
 maximum_clip : pint.Quantity, optional
     Upper radius cutoff. Defaults to ``mean + 5 * standard_deviation``.
 bins : int, default=0
@@ -331,7 +334,7 @@ bins : int, default=0
                 py::arg("standard_deviation"),
                 py::arg("maximum_clip") = py::none(),
                 py::arg("bins") = 0,
-                "Create a clipped normal radius sampler."
+                "Create a positive-conditioned, upper-clipped normal radius sampler."
             )
             .def("__repr__", [](const Normal& self) {
                 return "<NormalRadiusSampler bins=" + std::to_string(self.number_of_bins()) + ">";
