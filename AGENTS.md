@@ -106,7 +106,7 @@ not hand-edit `PackLab/_version.py`; the build backend generates it from Git.
 ## Packaging and CI
 
 - Runtime dependencies and build configuration live in `pyproject.toml`.
-- cibuildwheel builds CPython 3.11--3.13 wheels for Linux, macOS, and Windows.
+- cibuildwheel builds CPython 3.11--3.14 wheels for Linux, macOS, and Windows.
 - Linux uses `manylinux_2_28` so current scientific Python dependencies can be
   installed as binary wheels during isolated wheel tests. Do not downgrade this
   baseline without checking the complete dependency and wheel policy.

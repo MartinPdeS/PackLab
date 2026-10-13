@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit-build-core>=0.3.3", "pybind11", "setuptools_scm[toml]>=8.0"]
+requires = ["scikit-build-core>=0.3.3", "pybind11; python_version < '3.14'", "pybind11>=3.0.1; python_version >= '3.14'", "setuptools_scm[toml]>=8.0"]
 build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
@@ -38,6 +38,7 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: C++",
   "Operating System :: MacOS",
@@ -79,11 +80,13 @@ documentation = [
     "sphinx>=5.1.1",
     "sphinx-gallery==0.20.0",
     "pydata-sphinx-theme==0.16.1",
-    "PyMieSim ==5.0.2",
+    "PyMieSim ==5.0.2; python_version < '3.14'",
+    "PyMieSim >=5.8.0,<5.9; python_version >= '3.14'",
 ]
 
 scattering = [
-    "PyMieSim ==5.0.2",
+    "PyMieSim ==5.0.2; python_version < '3.14'",
+    "PyMieSim >=5.8.0,<5.9; python_version >= '3.14'",
 ]
 
 dev = [
@@ -104,7 +107,7 @@ test-extras = ["testing"]
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64"]
-build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*"]
+build = ["cp311-manylinux*", "cp312-manylinux*", "cp313-manylinux*", "cp314-manylinux*"]
 # Modern scientific Python dependencies no longer consistently publish
 # manylinux2014 wheels.  Building on 2.28 lets cibuildwheel install those
 # dependencies as wheels during its isolated test phase.
@@ -115,11 +118,11 @@ test-command = "cd /tmp && python -m pytest --import-mode=importlib --config-fil
 
 [tool.cibuildwheel.macos]
 archs = ["arm64"]
-build = ["cp311-*", "cp312-*", "cp313-*"]
+build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 repair-wheel-command = "delocate-wheel -w {dest_dir} -v {wheel}"  # --exclude=libomp.dylib
 test-command = 'cd /tmp && python -m pytest --import-mode=importlib --config-file={project}/pytest.ini {project}/tests'  # DYLD_PRINT_LIBRARIES=NO
 
 [tool.cibuildwheel.windows]
 archs = ["AMD64"]
-build = ["cp311-*", "cp312-*", "cp313-*"]
+build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 test-command = 'cd /d %TEMP% && python -m pytest --import-mode=importlib --config-file={project}/pytest.ini {project}/tests'
