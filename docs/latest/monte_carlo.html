@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -51,7 +51,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.12';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,7 +62,7 @@
     <link rel="prev" title="Analytical structure factors" href="analytical.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.12" />
+  <meta name="docsearch:version" content="0.7.13" />
   </head>
   
   
@@ -419,6 +419,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="rsa_mathematics.html">RSA Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metropolis_mathematics.html">Metropolis Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="percus_yevick_mathematics.html">Percus–Yevick: mathematics and assumptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analytical.html">Analytical structure factors</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Monte-Carlo packings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and limitations</a></li>
@@ -512,8 +515,8 @@ log-normal, and discrete distributions.</p>
 </section>
 <section id="run-rsa">
 <h2>Run RSA<a class="headerlink" href="#run-rsa" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">maximum_attempts</span></code> controls how long RSA continues after unsuccessful
-proposals. <code class="docutils literal notranslate"><span class="pre">target_packing_fraction</span></code> is optional and stops the simulation as
+<p><code class="docutils literal notranslate"><span class="pre">maximum_attempts</span></code> limits the outer insertion loop; with radius retries
+enabled, one iteration can attempt several placements. <code class="docutils literal notranslate"><span class="pre">target_packing_fraction</span></code> is optional and stops the simulation as
 soon as the requested fraction is reached.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">options</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">RSAOptions</span><span class="p">()</span>
 <span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span> <span class="o">=</span> <span class="mi">100_000</span>
@@ -561,6 +564,11 @@ density and particle sizes. A finite number of sweeps alone does not establish
 equilibration: assess stationarity and collect independent samples for the
 observable of interest.</p>
 </section>
+<section id="mathematical-guides">
+<h2>Mathematical guides<a class="headerlink" href="#mathematical-guides" title="Link to this heading">#</a></h2>
+<p>See <a class="reference internal" href="rsa_mathematics.html"><span class="doc">RSA Monte Carlo: mathematics and assumptions</span></a> for insertion probabilities and periodic geometry,
+and <a class="reference internal" href="metropolis_mathematics.html"><span class="doc">Metropolis Monte Carlo: mathematics and assumptions</span></a> for equilibrium moves and diagnostics.</p>
+</section>
 </section>
 
 
@@ -590,6 +598,7 @@ observable of interest.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-rsa">Run RSA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-results">Inspecting results</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#equilibrating-a-configuration-with-metropolis-moves">Equilibrating a configuration with Metropolis moves</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-guides">Mathematical guides</a></li>
 </ul>
   </nav></div>
 

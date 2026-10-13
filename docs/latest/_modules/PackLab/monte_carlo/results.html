@@ -30,7 +30,7 @@
 <link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -50,7 +50,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.12';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -59,7 +59,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.12" />
+  <meta name="docsearch:version" content="0.7.13" />
   </head>
   
   
@@ -606,7 +606,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        **kwargs : dict</span>
-<span class="sd">            Keyword arguments passed to the binding method.</span>
+<span class="sd">            ``n_bins``, ``maximum_pairs`` (zero examines all pairs), and</span>
+<span class="sd">            ``random_seed`` (default zero, deterministic) passed to the binding.</span>
+<span class="sd">            Capped pairs are sampled uniformly without replacement.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -893,7 +895,9 @@
 <div class="viewcode-block" id="PackingResult.plot_pair_correlation">
 <a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.plot_pair_correlation">[docs]</a>
     <span class="nd">@post_mpl_plot</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot_pair_correlation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="n">maximum_pairs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300_000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_pair_correlation</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">n_bins</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span> <span class="n">maximum_pairs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">300_000</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Plot the partial pair correlation functions g_ij(r) obtained from the RSA</span>
 <span class="sd">        configuration, overlaying all (i, j) curves on a single axis.</span>
@@ -903,7 +907,10 @@
 <span class="sd">        n_bins : int</span>
 <span class="sd">            Number of radial distance bins.</span>
 <span class="sd">        maximum_pairs : int</span>
-<span class="sd">            Number of Monte Carlo sampled pairs used for estimation.</span>
+<span class="sd">            Maximum number of unordered pairs sampled uniformly without replacement.</span>
+<span class="sd">            Zero examines all pairs.</span>
+<span class="sd">        random_seed : int, default=0</span>
+<span class="sd">            Seed for pair sampling; zero is deterministic.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -914,6 +921,7 @@
         <span class="n">centers</span><span class="p">,</span> <span class="n">g_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binding</span><span class="o">.</span><span class="n">compute_partial_pair_correlation_function</span><span class="p">(</span>
             <span class="n">n_bins</span><span class="o">=</span><span class="n">n_bins</span><span class="p">,</span>
             <span class="n">maximum_pairs</span><span class="o">=</span><span class="n">maximum_pairs</span><span class="p">,</span>
+            <span class="n">random_seed</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">centers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">centers</span><span class="p">)</span>

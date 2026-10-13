@@ -32,8 +32,8 @@ log-normal, and discrete distributions.
 Run RSA
 -------
 
-``maximum_attempts`` controls how long RSA continues after unsuccessful
-proposals. ``target_packing_fraction`` is optional and stops the simulation as
+``maximum_attempts`` limits the outer insertion loop; with radius retries
+enabled, one iteration can attempt several placements. ``target_packing_fraction`` is optional and stops the simulation as
 soon as the requested fraction is reached.
 
 .. code-block:: python
@@ -87,3 +87,9 @@ The displacement controls the acceptance rate and should be tuned for the
 density and particle sizes. A finite number of sweeps alone does not establish
 equilibration: assess stationarity and collect independent samples for the
 observable of interest.
+
+Mathematical guides
+-------------------
+
+See :doc:`rsa_mathematics` for insertion probabilities and periodic geometry,
+and :doc:`metropolis_mathematics` for equilibrium moves and diagnostics.

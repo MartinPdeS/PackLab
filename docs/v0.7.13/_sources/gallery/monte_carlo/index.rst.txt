@@ -1,0 +1,122 @@
+
+
+.. _sphx_glr_gallery_monte_carlo:
+
+Monte-Carlo hard-sphere workflows
+=================================
+
+Examples that generate explicit random sequential adsorption configurations.
+They cover the basic simulation setup, periodic boundary conditions, radius
+distributions, visualisation, and pair-correlation estimates. The Metropolis
+example starts from an RSA configuration but then uses a separate equilibrium
+hard-sphere workflow with fixed particle count and radii.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example creates a small periodic RSA packing from a uniform radius distribution. It then visualises a central two-dimensional slice of the accepted sphere configuration.">
+
+.. only:: html
+
+  .. image:: /gallery/monte_carlo/images/thumb/sphx_glr_01_minimal_rsa_thumb.png
+    :alt:
+
+  :doc:`/gallery/monte_carlo/01_minimal_rsa`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Minimal random sequential adsorption</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Periodic boundaries identify opposite faces of the simulation box. They are a good default when measuring bulk quantities because a sphere near one face interacts with spheres near the opposing face.">
+
+.. only:: html
+
+  .. image:: /gallery/monte_carlo/images/thumb/sphx_glr_02_periodic_boundaries_thumb.png
+    :alt:
+
+  :doc:`/gallery/monte_carlo/02_periodic_boundaries`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Periodic-boundary RSA packing</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Radius samplers are explicit physical inputs to an RSA simulation. Their to_bins method converts a continuous distribution into radius classes and number fractions for use by the analytical Percus--Yevick model.">
+
+.. only:: html
+
+  .. image:: /gallery/monte_carlo/images/thumb/sphx_glr_03_radius_samplers_thumb.png
+    :alt:
+
+  :doc:`/gallery/monte_carlo/03_radius_samplers`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Comparing radius samplers</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Random sequential addition (RSA) creates a valid hard-sphere packing, but it is irreversible and does not sample the equilibrium hard-sphere ensemble. This example uses that RSA configuration only as an initial state for single-particle Metropolis moves. The Metropolis sampler keeps every radius, class label, and the particle count fixed; it only changes sphere centres.">
+
+.. only:: html
+
+  .. image:: /gallery/monte_carlo/images/thumb/sphx_glr_04_metropolis_equilibration_thumb.png
+    :alt:
+
+  :doc:`/gallery/monte_carlo/04_metropolis_equilibration`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Equilibrating an RSA configuration with Metropolis moves</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows the complete workflow of using PackLab to perform a Random Sequential Addition (RSA) simulation in three dimensions.">
+
+.. only:: html
+
+  .. image:: /gallery/monte_carlo/images/thumb/sphx_glr_monte_carlo_poly_disperse_thumb.png
+    :alt:
+
+  :doc:`/gallery/monte_carlo/monte_carlo_poly_disperse`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">A full workflow example with PackLab</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/monte_carlo/01_minimal_rsa
+   /gallery/monte_carlo/02_periodic_boundaries
+   /gallery/monte_carlo/03_radius_samplers
+   /gallery/monte_carlo/04_metropolis_equilibration
+   /gallery/monte_carlo/monte_carlo_poly_disperse
+

@@ -1,0 +1,717 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Percus–Yevick: mathematics and assumptions &#8212; PackLab  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=4340df76" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'percus_yevick_mathematics';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="_static/packlab-favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Analytical structure factors" href="analytical.html" />
+    <link rel="prev" title="Metropolis Monte Carlo: mathematics and assumptions" href="metropolis_mathematics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.13" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/packlab-mark.png" class="logo__image only-light" alt=""/>
+    <img src="_static/packlab-mark.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PackLab</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scattering.html">
+    Scattering
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scattering.html">
+    Scattering
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="rsa_mathematics.html">RSA Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metropolis_mathematics.html">Metropolis Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Percus–Yevick: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical.html">Analytical structure factors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monte_carlo.html">Monte-Carlo packings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References and citation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="theory.html" class="nav-link">Theoretical background</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Percus–Yevick: mathematics and assumptions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="percus-yevick-mathematics-and-assumptions">
+<span id="percus-yevick-mathematics"></span><h1>Percus–Yevick: mathematics and assumptions<a class="headerlink" href="#percus-yevick-mathematics-and-assumptions" title="Link to this heading">#</a></h1>
+<p>Percus–Yevick (PY) is a closure approximation for the correlations of a
+homogeneous, isotropic equilibrium hard-sphere mixture. It produces functions
+of separation and wavenumber rather than particle centres or a deposition
+history. See <a class="reference internal" href="analytical.html"><span class="doc">Analytical structure factors</span></a> for the Python workflow,
+<a class="reference internal" href="metropolis_mathematics.html"><span class="doc">Metropolis Monte Carlo: mathematics and assumptions</span></a> for explicit equilibrium sampling, and
+<a class="reference internal" href="rsa_mathematics.html"><span class="doc">RSA Monte Carlo: mathematics and assumptions</span></a> for irreversible deposition.</p>
+<section id="physical-inputs-and-correlation-functions">
+<h2>Physical inputs and correlation functions<a class="headerlink" href="#physical-inputs-and-correlation-functions" title="Link to this heading">#</a></h2>
+<p>Species <span class="math notranslate nohighlight">\(i\)</span> has radius <span class="math notranslate nohighlight">\(a_i&gt;0\)</span>, number fraction <span class="math notranslate nohighlight">\(x_i\)</span>, and
+number density <span class="math notranslate nohighlight">\(\rho_i\)</span>, with <span class="math notranslate nohighlight">\(\sum_i x_i=1\)</span>. A <strong>number fraction</strong>
+counts particles; a <strong>volume fraction</strong> weights their occupied volume. For
+total volume fraction <span class="math notranslate nohighlight">\(\eta\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\rho=\frac{\eta}{\sum_i x_i(4\pi a_i^3/3)},\qquad
+\rho_i=x_i\rho,\qquad
+\eta_i=\rho_i\frac{4\pi a_i^3}{3},\qquad \sum_i\eta_i=\eta.\]</div>
+<p><strong>Additive</strong> spheres have contact distance <span class="math notranslate nohighlight">\(\sigma_{ij}=a_i+a_j\)</span>.
+Their potential is infinite below contact and zero outside. The equilibrium
+fluid assumptions exclude walls, directional order, attractions, and
+irreversible insertion. Mathematical validity of an input volume fraction
+does not establish a stable fluid phase at that density.</p>
+<p>The <strong>partial pair correlation</strong> <span class="math notranslate nohighlight">\(g_{ij}(r)\)</span> gives the relative
+likelihood of finding a species <span class="math notranslate nohighlight">\(j\)</span> centre at separation <span class="math notranslate nohighlight">\(r\)</span>
+from species <span class="math notranslate nohighlight">\(i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{d}N_j=\rho_jg_{ij}(r)4\pi r^2\mathrm{d}r,\qquad
+h_{ij}(r)=g_{ij}(r)-1.\]</div>
+<p><span class="math notranslate nohighlight">\(h\)</span> is the <strong>total correlation</strong>: it includes both direct and indirect
+correlation through other particles. In a homogeneous fluid, <span class="math notranslate nohighlight">\(g\)</span> tends
+to one far away; the hard core requires <span class="math notranslate nohighlight">\(g=0\)</span> below contact.</p>
+</section>
+<section id="ornstein-zernike-equation-and-the-py-postulate">
+<h2>Ornstein–Zernike equation and the PY postulate<a class="headerlink" href="#ornstein-zernike-equation-and-the-py-postulate" title="Link to this heading">#</a></h2>
+<p>The <strong>direct correlation</strong> <span class="math notranslate nohighlight">\(c_{ij}\)</span> separates the direct part from
+chains mediated by other species. The mixture Ornstein–Zernike equation is</p>
+<div class="math notranslate nohighlight">
+\[h_{ij}(\mathbf{r})=c_{ij}(\mathbf{r})+
+\sum_\ell\rho_\ell\int_{\mathbb{R}^3}
+c_{i\ell}(\mathbf{r}-\mathbf{r}')h_{\ell j}(\mathbf{r}')\,
+\mathrm{d}^3\mathbf{r}'.\]</div>
+<p>This relation alone contains two unknown functions. A <strong>closure</strong> supplies
+another relation; PY postulates</p>
+<div class="math notranslate nohighlight">
+\[c_{ij}(r)=\bigl(1+h_{ij}(r)-c_{ij}(r)\bigr)
+\bigl(\exp[-\beta u_{ij}(r)]-1\bigr).\]</div>
+<p>For hard spheres this is equivalent to</p>
+<div class="math notranslate nohighlight">
+\[h_{ij}(r)=-1\quad(r&lt;\sigma_{ij}),\qquad
+c_{ij}(r)=0\quad(r&gt;\sigma_{ij}).\]</div>
+<p>The first condition enforces impenetrability; the second is the approximation.
+The total correlation outside contact generally remains nonzero because the
+Ornstein–Zernike convolution propagates indirect correlations. A closure is
+not a deposition or particle-motion rule.</p>
+</section>
+<section id="fourier-transforms-and-packlab-s-matrix-normalization">
+<h2>Fourier transforms and PackLab’s matrix normalization<a class="headerlink" href="#fourier-transforms-and-packlab-s-matrix-normalization" title="Link to this heading">#</a></h2>
+<p><strong>Wavenumber</strong> <span class="math notranslate nohighlight">\(k\)</span> has units of inverse length. For an isotropic function,
+PackLab’s three-dimensional radial transform convention is</p>
+<div class="math notranslate nohighlight">
+\[\widetilde{h}_{ij}(k)=4\pi\int_0^\infty
+r^2h_{ij}(r)\operatorname{sinc}(kr)\,\mathrm{d}r,\qquad
+\operatorname{sinc}(z)=\frac{\sin z}{z},\quad\operatorname{sinc}(0)=1.\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\widetilde h\)</span> has units of volume. PackLab returns the
+<strong>density-normalized</strong>, dimensionless matrices</p>
+<div class="math notranslate nohighlight">
+\[C_{ij}(k)=\sqrt{\rho_i\rho_j}\,\widetilde c_{ij}(k),\qquad
+H_{ij}(k)=\sqrt{\rho_i\rho_j}\,\widetilde h_{ij}(k).\]</div>
+<p>The result field <code class="docutils literal notranslate"><span class="pre">Cpy</span></code> is <span class="math notranslate nohighlight">\(C\)</span>, and <code class="docutils literal notranslate"><span class="pre">H</span></code> is <span class="math notranslate nohighlight">\(H\)</span>, not the
+unnormalized transform <span class="math notranslate nohighlight">\(\widetilde h\)</span>. Multiplying the Fourier-space
+Ornstein–Zernike equation by the density factors gives</p>
+<div class="math notranslate nohighlight">
+\[H=C+CH,\qquad (I-C)H=C,\qquad S=I+H=(I-C)^{-1}.\]</div>
+<p><span class="math notranslate nohighlight">\(I\)</span> is the identity matrix and <span class="math notranslate nohighlight">\(S\)</span> is the corresponding partial
+<strong>structure-factor matrix</strong>. It describes density fluctuations in reciprocal
+space. <code class="docutils literal notranslate"><span class="pre">H</span></code> and <code class="docutils literal notranslate"><span class="pre">Cpy</span></code> have shape <code class="docutils literal notranslate"><span class="pre">(species,</span> <span class="pre">species,</span> <span class="pre">wavenumber)</span></code>;
+<code class="docutils literal notranslate"><span class="pre">g</span></code> and <code class="docutils literal notranslate"><span class="pre">h</span></code> use distance as their last axis. Form <span class="math notranslate nohighlight">\(S\)</span> from <code class="docutils literal notranslate"><span class="pre">H</span></code>
+by adding the species identity at each wavenumber. An experimentally weighted
+mixture scattering intensity also needs species amplitudes and their weights;
+it is not simply every element of <span class="math notranslate nohighlight">\(S\)</span> summed together.</p>
+<p>The inverse transform for positive-density species is</p>
+<div class="math notranslate nohighlight">
+\[h_{ij}(r)=\frac{1}{2\pi^2\sqrt{\rho_i\rho_j}}
+\int_0^\infty k^2H_{ij}(k)\operatorname{sinc}(kr)\,\mathrm{d}k.\]</div>
+<p>PackLab evaluates this numerically on a finite wavenumber grid. It explicitly
+enforces the hard core in the reported <code class="docutils literal notranslate"><span class="pre">g</span></code>; <code class="docutils literal notranslate"><span class="pre">h</span></code> retains the numerical
+inverse transform, so <code class="docutils literal notranslate"><span class="pre">g</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">+</span> <span class="pre">h</span></code> can fail inside the core. For pairs
+involving a zero-density species, the inverse transform sets <code class="docutils literal notranslate"><span class="pre">h</span></code> to zero
+and <code class="docutils literal notranslate"><span class="pre">g</span></code> is zero inside contact and one outside; this convention does not
+compute infinite-dilution tracer correlations.</p>
+</section>
+<section id="resolution-periodic-terminology-and-interpretation">
+<h2>Resolution, periodic terminology, and interpretation<a class="headerlink" href="#resolution-periodic-terminology-and-interpretation" title="Link to this heading">#</a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">wavenumber=&quot;auto&quot;</span></code> for a first calculation. For a chosen real-space
+resolution <span class="math notranslate nohighlight">\(\delta r\)</span> and largest requested distance <span class="math notranslate nohighlight">\(r_{\max}\)</span>,
+a useful grid design is</p>
+<div class="math notranslate nohighlight">
+\[k_{\max}=\frac{\pi}{\delta r},\qquad
+\Delta k\lesssim\frac{2\pi}{m r_{\max}},\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> is the number of samples per oscillation of the inverse kernel
+(default 12). Increasing <span class="math notranslate nohighlight">\(k_{\max}\)</span> resolves sharper features;
+decreasing <span class="math notranslate nohighlight">\(\Delta k\)</span> resolves oscillations over longer distances.
+These are independent requirements. Finite cutoff causes ringing near the
+contact discontinuity; coarse spacing causes integration errors. Retain
+PackLab’s inadequate-sampling warning and test convergence by increasing the
+cutoff and refining the spacing separately. A smooth-looking curve alone is
+not an accuracy test. Compare distances away from contact as well as the
+contact region, where limits from either side differ.</p>
+<p><strong>Periodic images</strong> and <strong>minimum-image distances</strong> apply to the explicit
+simulation box (see <a class="reference internal" href="rsa_mathematics.html"><span class="doc">RSA Monte Carlo: mathematics and assumptions</span></a>). The PY solver assumes an infinite
+bulk mixture; its wavenumber grid is an integration grid, not a list of
+periodic box modes. It has no wrapped centres, winding numbers, or finite
+particle count. Match radii, densities, and normalization when comparing with
+Metropolis, and check equilibration and box size on the simulation side.
+RSA need not agree with PY because its deposition process is irreversible.
+Grid refinement reduces numerical error within PY; it does not remove the
+physical error of the closure approximation.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<p>Percus and Yevick introduced the approximation in
+<a class="reference external" href="https://doi.org/10.1103/PhysRev.110.1">Analysis of Classical Statistical Mechanics by Means of Collective Coordinates</a> (1958). For an example of mixture
+structure-factor normalization and scattering weights, see
+<a class="reference external" href="https://journals.iucr.org/j/issues/2024/05/00/ge5154/">Measurable structure factors of dense dispersions containing polydisperse
+optically inhomogeneous particles</a>
+(2024). The equations above specify the normalization used by PackLab.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#physical-inputs-and-correlation-functions">Physical inputs and correlation functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ornstein-zernike-equation-and-the-py-postulate">Ornstein–Zernike equation and the PY postulate</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fourier-transforms-and-packlab-s-matrix-normalization">Fourier transforms and PackLab’s matrix normalization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resolution-periodic-terminology-and-interpretation">Resolution, periodic terminology, and interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/percus_yevick_mathematics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

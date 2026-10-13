@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -51,7 +51,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.12';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -59,10 +59,10 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Monte-Carlo packings" href="monte_carlo.html" />
-    <link rel="prev" title="Theoretical background" href="theory.html" />
+    <link rel="prev" title="Percus–Yevick: mathematics and assumptions" href="percus_yevick_mathematics.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.12" />
+  <meta name="docsearch:version" content="0.7.13" />
   </head>
   
   
@@ -419,6 +419,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="rsa_mathematics.html">RSA Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metropolis_mathematics.html">Metropolis Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="percus_yevick_mathematics.html">Percus–Yevick: mathematics and assumptions</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Analytical structure factors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monte_carlo.html">Monte-Carlo packings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and limitations</a></li>
@@ -535,6 +538,11 @@ continuous size distribution to a multi-class mixture.</p></li>
 <p>Use <a class="reference internal" href="scattering.html"><span class="doc">Scattering calculations</span></a> when the Percus–Yevick correlation tensor is to be
 combined with optical single-particle amplitudes.</p>
 </section>
+<section id="mathematical-guide">
+<h2>Mathematical guide<a class="headerlink" href="#mathematical-guide" title="Link to this heading">#</a></h2>
+<p>See <a class="reference internal" href="percus_yevick_mathematics.html"><span class="doc">Percus–Yevick: mathematics and assumptions</span></a> for the closure, matrix normalization,
+Fourier transforms, and numerical convergence requirements.</p>
+</section>
 </section>
 
 
@@ -561,6 +569,7 @@ combined with optical single-particle amplitudes.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mathematical-guide">Mathematical guide</a></li>
 </ul>
   </nav></div>
 

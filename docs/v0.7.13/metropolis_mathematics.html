@@ -1,0 +1,704 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Metropolis Monte Carlo: mathematics and assumptions &#8212; PackLab  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=4340df76" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'metropolis_mathematics';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <link rel="icon" href="_static/packlab-favicon.png"/>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Percus–Yevick: mathematics and assumptions" href="percus_yevick_mathematics.html" />
+    <link rel="prev" title="RSA Monte Carlo: mathematics and assumptions" href="rsa_mathematics.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.7.13" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/packlab-mark.png" class="logo__image only-light" alt=""/>
+    <img src="_static/packlab-mark.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">PackLab</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scattering.html">
+    Scattering
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Getting started
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="scattering.html">
+    Scattering
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code.html">
+    API reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/PackLab" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/PackLab/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/PackLab" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="rsa_mathematics.html">RSA Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Metropolis Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="percus_yevick_mathematics.html">Percus–Yevick: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical.html">Analytical structure factors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monte_carlo.html">Monte-Carlo packings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References and citation</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="theory.html" class="nav-link">Theoretical background</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Metropolis Monte Carlo: mathematics and assumptions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="metropolis-monte-carlo-mathematics-and-assumptions">
+<span id="metropolis-mathematics"></span><h1>Metropolis Monte Carlo: mathematics and assumptions<a class="headerlink" href="#metropolis-monte-carlo-mathematics-and-assumptions" title="Link to this heading">#</a></h1>
+<p>Metropolis sampling moves an existing non-overlapping packing at fixed
+particle count, radii, composition, and box volume. Its postulate is the
+canonical equilibrium distribution for rigid hard spheres. An RSA packing
+can supply the starting centres, but equilibration must be assessed before
+interpreting samples as equilibrium measurements. See <a class="reference internal" href="monte_carlo.html"><span class="doc">Monte-Carlo packings</span></a>
+for API usage and <a class="reference internal" href="rsa_mathematics.html"><span class="doc">RSA Monte Carlo: mathematics and assumptions</span></a> for irreversible deposition.</p>
+<section id="hard-sphere-potential-and-equilibrium-measure">
+<h2>Hard-sphere potential and equilibrium measure<a class="headerlink" href="#hard-sphere-potential-and-equilibrium-measure" title="Link to this heading">#</a></h2>
+<p>For species radii <span class="math notranslate nohighlight">\(a_i,a_j\)</span>, the additive hard-sphere potential is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}u_{ij}(r)=\begin{cases}
++\infty,&amp;r&lt;a_i+a_j,\\
+0,&amp;r\geq a_i+a_j.
+\end{cases}\end{split}\]</div>
+<p>For a configuration <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, the potential energy <span class="math notranslate nohighlight">\(U\)</span> sums
+these pair interactions and any wall exclusions. Its configurational
+probability density is</p>
+<div class="math notranslate nohighlight">
+\[\pi(\mathbf{X})=Z^{-1}\exp[-\beta U(\mathbf{X})],\qquad
+\beta=(k_BT)^{-1}.\]</div>
+<p><span class="math notranslate nohighlight">\(Z\)</span> normalizes probability over allowed configurations. Consequently,
+all valid configurations have the same density, and overlapping states have
+zero probability. Temperature cancels from this purely hard-sphere acceptance
+rule. Packing fraction stays fixed because particle radii and volume do.</p>
+</section>
+<section id="symmetric-proposals-and-acceptance">
+<h2>Symmetric proposals and acceptance<a class="headerlink" href="#symmetric-proposals-and-acceptance" title="Link to this heading">#</a></h2>
+<p>PackLab proposes one displacement per particle per <strong>sweep</strong>, in particle
+index order. Each component is sampled independently from
+<span class="math notranslate nohighlight">\(\mathrm{Uniform}[-d,d]\)</span>, where <span class="math notranslate nohighlight">\(d\)</span> is
+<code class="docutils literal notranslate"><span class="pre">maximum_displacement</span></code>. Thus <span class="math notranslate nohighlight">\(d\)</span> is a coordinate bound, not a bound on
+the vector length, whose maximum is <span class="math notranslate nohighlight">\(\sqrt{3}d\)</span>.</p>
+<p>A <strong>symmetric proposal</strong> has equal forward and reverse probability density.
+The single-particle Metropolis rule is then</p>
+<div class="math notranslate nohighlight">
+\[P_{\mathrm{accept}}(\mathbf{X}\to\mathbf{X}')=
+\min\{1,\exp[-\beta(U(\mathbf{X}')-U(\mathbf{X}))]\}.\]</div>
+<p>Starting from a valid packing, this is one if the new centre satisfies walls
+and all pair exclusions, and zero otherwise. A rejected move retains the
+previous centre. Rejected states must still contribute to time-indexed
+measurements; measuring only accepted moves changes the sampled distribution.
+Each particle update obeys <strong>detailed balance</strong> (equal equilibrium probability
+flow forward and backward); their sequential sweep preserves the equilibrium
+measure, although the composed sweep need not itself obey detailed balance.</p>
+<p>Reaching equilibrium also requires adequate exploration, or <strong>mixing</strong>.
+Local moves can mix very slowly in crowded states. A valid configuration or
+high acceptance rate alone does not establish equilibration. Small proposals
+are often accepted but explore slowly; large proposals can be mostly rejected.</p>
+</section>
+<section id="periodic-geometry-and-accumulated-displacement">
+<h2>Periodic geometry and accumulated displacement<a class="headerlink" href="#periodic-geometry-and-accumulated-displacement" title="Link to this heading">#</a></h2>
+<p>A <strong>periodic image</strong> is a particle translated by integer box lengths. The
+<strong>minimum-image convention</strong> finds the nearest such copy for overlap checks;
+its formula and a worked example are in <a class="reference internal" href="rsa_mathematics.html"><span class="doc">RSA Monte Carlo: mathematics and assumptions</span></a>. Spheres must
+satisfy <span class="math notranslate nohighlight">\(2a\leq\min(L_x,L_y,L_z)\)</span> to avoid their own periodic images.
+Stored centres are wrapped into the primary box after accepted periodic moves.</p>
+<p>Wrapped centres are suitable for pair distances, but lose the number of times
+a particle has crossed a face. A <strong>winding</strong> counts these traversals.
+<strong>Unwrapped displacement</strong> retains every accepted proposal vector:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{D}_n(s)=\sum_{\ell\leq s}
+I_{n\ell}\,\delta\mathbf{x}_{n\ell},\qquad
+\mathrm{MSD}(s;s_0)=\frac{1}{N}\sum_n
+\left\|\mathbf{D}_n(s)-\mathbf{D}_n(s_0)\right\|^2.\]</div>
+<p><span class="math notranslate nohighlight">\(I_{n\ell}\)</span> is one for an accepted move and zero for a rejection.
+<code class="docutils literal notranslate"><span class="pre">simulator.cumulative_displacements</span></code> stores <span class="math notranslate nohighlight">\(\mathbf{D}_n\)</span> as a length
+quantity of shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">3)</span></code> and clears it on <code class="docutils literal notranslate"><span class="pre">reset</span></code>.
+<code class="docutils literal notranslate"><span class="pre">run_metropolis_diagnostics</span></code> measures mean squared displacement (MSD)
+relative to the start of that call, even when the simulator has already run.
+Tracking the actual proposal preserves travel even across several box lengths
+in one accepted move. Minimum-image subtraction of two endpoints would lose
+this information and artificially bound the MSD.</p>
+<p>MSD here measures movement in Monte Carlo sweeps. Metropolis proposals are
+numerical sampling steps, not Newtonian or Brownian time evolution. A physical
+diffusion coefficient requires a separately justified dynamical model.</p>
+</section>
+<section id="burn-in-autocorrelation-and-uncertainty">
+<h2>Burn-in, autocorrelation, and uncertainty<a class="headerlink" href="#burn-in-autocorrelation-and-uncertainty" title="Link to this heading">#</a></h2>
+<p><strong>Burn-in</strong> is an initial interval excluded from measurements because the
+chain still remembers its starting state. <strong>Stationarity</strong> means the measured
+observable’s distribution no longer changes with sampling time. Check several
+observables, different initial states, and longer runs; no fixed burn-in count
+guarantees stationarity.</p>
+<p>For a stationary scalar observable <span class="math notranslate nohighlight">\(A_t\)</span>, define the lag correlation
+and integrated autocorrelation time (in retained-sample intervals) by</p>
+<div class="math notranslate nohighlight">
+\[\rho_A(\ell)=\frac{\operatorname{Cov}(A_t,A_{t+\ell})}
+{\operatorname{Var}(A_t)},\qquad
+\tau_{\mathrm{int}}=\frac12+\sum_{\ell=1}^{\infty}\rho_A(\ell),\qquad
+N_{\mathrm{eff}}\simeq\frac{M}{2\tau_{\mathrm{int}}}.\]</div>
+<p><span class="math notranslate nohighlight">\(M\)</span> is the number of retained observations, and
+<span class="math notranslate nohighlight">\(N_{\mathrm{eff}}\)</span> is the <strong>effective sample size</strong> for that observable.
+It is not the particle count. PackLab truncates the correlation sum at its
+first non-positive lag, so estimates can be unreliable for short or complex
+trajectories. <strong>Block averaging</strong> divides observations into complete blocks;
+if block means are approximately independent, the standard error is their
+sample standard deviation divided by the square root of the block count.
+PackLab’s interval uses a normal quantile; few blocks can give poor coverage.</p>
+<p>The helper’s default observable is MSD from one initial time, which generally
+changes during a run. For equilibrium confidence intervals and effective
+sample sizes, supply a stationary structural observable through <code class="docutils literal notranslate"><span class="pre">observable</span></code>
+and check block-size sensitivity. The report does not prove equilibration.
+Periodic boundaries reduce wall effects but preserve finite-box effects;
+compare larger boxes and independent seeded trajectories before drawing bulk
+conclusions. Equilibrated Metropolis and PY comparisons test an approximation;
+RSA and PY can differ for physical reasons even with matched inputs.</p>
+</section>
+<section id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">#</a></h2>
+<p>The original algorithm and periodic construction appear in Metropolis,
+Rosenbluth, Rosenbluth, Teller, and Teller,
+<a class="reference external" href="https://doi.org/10.1063/1.1699114">Equation of State Calculations by Fast Computing Machines</a> (1953).</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#hard-sphere-potential-and-equilibrium-measure">Hard-sphere potential and equilibrium measure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetric-proposals-and-acceptance">Symmetric proposals and acceptance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#periodic-geometry-and-accumulated-displacement">Periodic geometry and accumulated displacement</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#burn-in-autocorrelation-and-uncertainty">Burn-in, autocorrelation, and uncertainty</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-reading">Further reading</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/metropolis_mathematics.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

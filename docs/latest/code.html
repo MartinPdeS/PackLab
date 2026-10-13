@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -51,7 +51,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.12';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -61,7 +61,7 @@
     <link rel="prev" title="RSA ensemble versus a Percus–Yevick reference" href="gallery/validation/rsa_ensemble_vs_analytical.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.12" />
+  <meta name="docsearch:version" content="0.7.13" />
   </head>
   
   
@@ -541,12 +541,18 @@ next to each object when implementation details are useful.</p>
 <dt class="sig sig-object py" id="PackLab.samplers.NormalRadiusSampler">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">NormalRadiusSampler</span></span><a class="headerlink" href="#PackLab.samplers.NormalRadiusSampler" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#PackLab.samplers.RadiusSampler" title="PackLab.samplers.RadiusSampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">RadiusSampler</span></code></a></p>
-<p>Clipped normal distribution of particle radii.</p>
+<p>Normal radii conditioned to be strictly positive, then clipped at the upper bound.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mean</strong> (<em>pint.Quantity</em>) – Parameters of the normal distribution.</p></li>
-<li><p><strong>standard_deviation</strong> (<em>pint.Quantity</em>) – Parameters of the normal distribution.</p></li>
+<li><p><strong>mean</strong> (<em>pint.Quantity</em>) – Location and scale of the underlying normal distribution. The mean must
+be non-negative; the standard deviation must be non-negative. A zero
+standard deviation requires a positive mean. These are not the moments
+of the conditioned, clipped distribution.</p></li>
+<li><p><strong>standard_deviation</strong> (<em>pint.Quantity</em>) – Location and scale of the underlying normal distribution. The mean must
+be non-negative; the standard deviation must be non-negative. A zero
+standard deviation requires a positive mean. These are not the moments
+of the conditioned, clipped distribution.</p></li>
 <li><p><strong>maximum_clip</strong> (<em>pint.Quantity</em><em>, </em><em>optional</em>) – Upper radius cutoff. Defaults to <code class="docutils literal notranslate"><span class="pre">mean</span> <span class="pre">+</span> <span class="pre">5</span> <span class="pre">*</span> <span class="pre">standard_deviation</span></code>.</p></li>
 <li><p><strong>bins</strong> (<em>int</em><em>, </em><em>default=0</em>) – Optional number of radius bins.</p></li>
 </ul>
@@ -747,8 +753,27 @@ fractions returned by <a class="reference internal" href="#PackLab.samplers.Radi
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.simulator.PackingConfiguration.compute_partial_pair_correlation_function">
-<span class="sig-name descname"><span class="pre">compute_partial_pair_correlation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.simulator.PackingConfiguration" title="PackLab.monte_carlo.simulator.PackingConfiguration"><span class="pre">PackLab.monte_carlo.simulator.PackingConfiguration</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.domain.PackingDomain" title="PackLab.monte_carlo.domain.PackingDomain"><span class="pre">PackLab.monte_carlo.domain.PackingDomain</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.PackingConfiguration.compute_partial_pair_correlation_function" title="Link to this definition">#</a></dt>
-<dd><p>Compute partial g_ij(r) for this configuration in a supplied domain.</p>
+<span class="sig-name descname"><span class="pre">compute_partial_pair_correlation_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.simulator.PackingConfiguration" title="PackLab.monte_carlo.simulator.PackingConfiguration"><span class="pre">PackLab.monte_carlo.simulator.PackingConfiguration</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#PackLab.monte_carlo.domain.PackingDomain" title="PackLab.monte_carlo.domain.PackingDomain"><span class="pre">PackLab.monte_carlo.domain.PackingDomain</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1000000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SupportsInt</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SupportsIndex</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.float64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#PackLab.monte_carlo.simulator.PackingConfiguration.compute_partial_pair_correlation_function" title="Link to this definition">#</a></dt>
+<dd><p>Estimate partial pair correlations from unordered particle pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain</strong> (<a class="reference internal" href="#PackLab.monte_carlo.domain.PackingDomain" title="PackLab.monte_carlo.domain.PackingDomain"><em>PackingDomain</em></a>) – Domain defining volume and periodic boundary conditions.</p></li>
+<li><p><strong>n_bins</strong> (<em>int</em>) – Positive number of radial bins up to half the shortest box length.</p></li>
+<li><p><strong>maximum_pairs</strong> (<em>int</em><em>, </em><em>default=1000000</em>) – Maximum number of pairs examined, sampled uniformly without replacement.
+Zero examines every pair. Pairs outside the radial range still count
+toward this limit.</p></li>
+<li><p><strong>random_seed</strong> (<em>int</em><em>, </em><em>default=0</em>) – Unsigned seed for capped pair sampling. Zero is deterministic.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>centers</strong> (<em>numpy.ndarray</em>) – Radial bin centres in SI metres.</p></li>
+<li><p><strong>g_ij</strong> (<em>numpy.ndarray, shape (species, species, n_bins)</em>) – Partial pair correlations with finite-particle normalization.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -916,6 +941,12 @@ each coordinate in one move.  Tune it to obtain a practical acceptance rate.</p>
 <p>This sampler holds particle count, radii, and class labels fixed. It is an
 equilibrium workflow and is not a continuation of RSA deposition.</p>
 <dl class="py property">
+<dt class="sig sig-object py" id="PackLab.monte_carlo.metropolis.MetropolisSimulator.cumulative_displacements">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">cumulative_displacements</span></span><a class="headerlink" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.cumulative_displacements" title="Link to this definition">#</a></dt>
+<dd><p>Accepted displacement since reset as a quantity of shape (N, 3), including periodic crossings. Returns a copy.</p>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.metropolis.MetropolisSimulator.domain">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">domain</span></span><a class="headerlink" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.domain" title="Link to this definition">#</a></dt>
 <dd><p>Fixed simulation domain.</p>
@@ -1067,7 +1098,9 @@ not RSA insertion attempts.</p>
 <dd><p>Compute the partial pair correlation function g_ij(r).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> (<em>dict</em>) – Keyword arguments passed to the binding method.</p>
+<dd class="field-odd"><p><strong>**kwargs</strong> (<em>dict</em>) – <code class="docutils literal notranslate"><span class="pre">n_bins</span></code>, <code class="docutils literal notranslate"><span class="pre">maximum_pairs</span></code> (zero examines all pairs), and
+<code class="docutils literal notranslate"><span class="pre">random_seed</span></code> (default zero, deterministic) passed to the binding.
+Capped pairs are sampled uniformly without replacement.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A tuple containing:
@@ -1198,14 +1231,16 @@ not RSA insertion attempts.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="PackLab.monte_carlo.results.PackingResult.plot_pair_correlation">
-<span class="sig-name descname"><span class="pre">plot_pair_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300000</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#PackingResult.plot_pair_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.PackingResult.plot_pair_correlation" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_pair_correlation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_bins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_pairs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">300000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="reference internal" href="_modules/PackLab/monte_carlo/results.html#PackingResult.plot_pair_correlation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#PackLab.monte_carlo.results.PackingResult.plot_pair_correlation" title="Link to this definition">#</a></dt>
 <dd><p>Plot the partial pair correlation functions g_ij(r) obtained from the RSA
 configuration, overlaying all (i, j) curves on a single axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_bins</strong> (<em>int</em>) – Number of radial distance bins.</p></li>
-<li><p><strong>maximum_pairs</strong> (<em>int</em>) – Number of Monte Carlo sampled pairs used for estimation.</p></li>
+<li><p><strong>maximum_pairs</strong> (<em>int</em>) – Maximum number of unordered pairs sampled uniformly without replacement.
+Zero examines all pairs.</p></li>
+<li><p><strong>random_seed</strong> (<em>int</em><em>, </em><em>default=0</em>) – Seed for pair sampling; zero is deterministic.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2361,6 +2396,7 @@ plots because it reduces the 2D angular dependence into a 1D curve versus phi.</
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.cumulative_displacements"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.cumulative_displacements</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.domain"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.domain</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.reset"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.reset()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#PackLab.monte_carlo.metropolis.MetropolisSimulator.run"><code class="docutils literal notranslate"><span class="pre">MetropolisSimulator.run()</span></code></a></li>

@@ -31,7 +31,7 @@
 <link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.16/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
@@ -52,18 +52,18 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.12';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.7.13';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
     <link rel="icon" href="_static/packlab-favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Analytical structure factors" href="analytical.html" />
+    <link rel="next" title="RSA Monte Carlo: mathematics and assumptions" href="rsa_mathematics.html" />
     <link rel="prev" title="Installation and reproducibility" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.7.12" />
+  <meta name="docsearch:version" content="0.7.13" />
   </head>
   
   
@@ -420,6 +420,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="rsa_mathematics.html">RSA Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metropolis_mathematics.html">Metropolis Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="percus_yevick_mathematics.html">Percus–Yevick: mathematics and assumptions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="analytical.html">Analytical structure factors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="monte_carlo.html">Monte-Carlo packings</a></li>
 <li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and limitations</a></li>
@@ -491,11 +494,23 @@ can share radii, composition, and volume fraction, but they do not represent
 the same physical process.</p>
 <section id="technique-guides">
 <h2>Technique guides<a class="headerlink" href="#technique-guides" title="Link to this heading">#</a></h2>
+<p>Read <a class="reference internal" href="rsa_mathematics.html"><span class="doc">RSA Monte Carlo: mathematics and assumptions</span></a>, <a class="reference internal" href="metropolis_mathematics.html"><span class="doc">Metropolis Monte Carlo: mathematics and assumptions</span></a>, and
+<a class="reference internal" href="percus_yevick_mathematics.html"><span class="doc">Percus–Yevick: mathematics and assumptions</span></a> for the assumptions, equations, and vocabulary
+of each technique.</p>
 <p>Use the <a class="reference internal" href="analytical.html"><span class="doc">Analytical structure factors</span></a> guide for the PY Python workflow and the
 <a class="reference internal" href="monte_carlo.html"><span class="doc">Monte-Carlo packings</span></a> guide for RSA packing generation and Metropolis MC moves.
 The <a class="reference internal" href="references.html"><span class="doc">References and citation</span></a> page collects the underlying literature and release
 citation information.</p>
 <div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rsa_mathematics.html">RSA Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metropolis_mathematics.html">Metropolis Monte Carlo: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="percus_yevick_mathematics.html">Percus–Yevick: mathematics and assumptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="analytical.html">Analytical structure factors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monte_carlo.html">Monte-Carlo packings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assumptions.html">Assumptions and limitations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References and citation</a></li>
+</ul>
 </div>
 </section>
 <section id="percus-yevick-hard-sphere-mixtures">
@@ -538,7 +553,7 @@ the sphere never moves; a rejected proposal is discarded. Early accepted
 spheres can therefore block positions permanently, making the final packing
 depend on the random proposal order. RSA produces a physically valid,
 history-dependent deposition configuration, not an equilibrium hard-sphere
-sample. In PackLab, <code class="docutils literal notranslate"><span class="pre">maximum_attempts</span></code> limits rejected proposals and
+sample. In PackLab, <code class="docutils literal notranslate"><span class="pre">maximum_attempts</span></code> limits outer insertion iterations and
 <code class="docutils literal notranslate"><span class="pre">target_packing_fraction</span></code> provides an optional earlier stopping condition.</p>
 <p>For spheres with radii <span class="math notranslate nohighlight">\(r_i\)</span> in a domain of volume <span class="math notranslate nohighlight">\(V\)</span>, the packing
 fraction is</p>
