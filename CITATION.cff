@@ -27,3 +27,5 @@ keywords:
   - random sequential addition
   - Metropolis Monte Carlo
   - structure factors
+version: "0.7.13"
+date-released: "2026-10-13"
