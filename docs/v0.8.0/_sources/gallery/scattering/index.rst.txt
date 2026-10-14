@@ -1,0 +1,74 @@
+
+
+.. _sphx_glr_gallery_scattering:
+
+Scattering
+==========
+
+Examples for the optional PyMieSim-backed scattering workflow. Install the
+extra before running them:
+
+.. code-block:: console
+
+   $ pip install "packlab[scattering]"
+
+The first example treats individual sphere sizes independently. The second
+combines the optical amplitudes with a Percus--Yevick mixture structure factor;
+it is an analytical scattering calculation, not a simulation of an RSA
+configuration.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Evaluate the far-field amplitudes of a dielectric sphere and inspect its scattering cross section. This example uses PackLab&#x27;s optional PyMieSim integration and does not require a packing configuration.">
+
+.. only:: html
+
+  .. image:: /gallery/scattering/images/thumb/sphx_glr_01_single_particle_amplitudes_thumb.png
+    :alt:
+
+  :doc:`/gallery/scattering/01_single_particle_amplitudes`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Single-particle scattering amplitudes</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Combine optical sphere amplitudes with the Percus--Yevick reciprocal-space correlation tensor of a binary hard-sphere mixture. The resulting phase function includes the analytical mixture structure; it does not represent an RSA configuration.">
+
+.. only:: html
+
+  .. image:: /gallery/scattering/images/thumb/sphx_glr_02_structure_factor_phase_function_thumb.png
+    :alt:
+
+  :doc:`/gallery/scattering/02_structure_factor_phase_function`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Mixture phase function with a structure factor</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/scattering/01_single_particle_amplitudes
+   /gallery/scattering/02_structure_factor_phase_function
+

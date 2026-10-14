@@ -1,0 +1,71 @@
+
+
+.. _sphx_glr_gallery_benchmarks:
+
+Benchmarks
+==========
+
+This category contains reproducible performance benchmarks for PackLab's
+public workflows. Each benchmark should state the machine and software
+environment, workload parameters, repetitions, timing method, and the metric
+being reported (for example runtime, throughput, or peak memory).
+
+Benchmarks measure computational cost. They are distinct from the validation
+examples, which assess numerical resolution or compare models with matched
+physical inputs.
+
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This benchmark measures the wall-clock time required to evaluate a fixed binary Percus--Yevick mixture at increasingly dense real-space distance grids. It measures computational cost only; it is not a numerical-convergence or physical-validation test.">
+
+.. only:: html
+
+  .. image:: /gallery/benchmarks/images/thumb/sphx_glr_analytical_distance_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/benchmarks/analytical_distance_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analytical evaluation scaling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This benchmark measures the time to generate periodic random sequential adsorption (RSA) configurations as the box volume, and therefore the requested particle count, increases. The radius, target packing fraction, and stopping criteria remain fixed.">
+
+.. only:: html
+
+  .. image:: /gallery/benchmarks/images/thumb/sphx_glr_rsa_box_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/benchmarks/rsa_box_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">RSA generation scaling</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /gallery/benchmarks/analytical_distance_scaling
+   /gallery/benchmarks/rsa_box_scaling
+
