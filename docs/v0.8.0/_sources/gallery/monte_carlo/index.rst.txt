@@ -12,6 +12,10 @@ example starts from an RSA configuration but then uses a separate equilibrium
 hard-sphere workflow with fixed particle count and radii.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

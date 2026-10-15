@@ -24,6 +24,10 @@ Percus--Yevick is an analytical equilibrium reference, so agreement with RSA
 is informative but is not an expectation of exact equality.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

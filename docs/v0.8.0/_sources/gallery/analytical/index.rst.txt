@@ -10,6 +10,10 @@ scattering workflow builds on this result and requires the optional
 ``packlab[scattering]`` installation extra.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 

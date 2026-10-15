@@ -23,6 +23,10 @@ computational cost for a clearly specified machine and workload; they do not
 establish physical agreement between models.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -43,6 +47,10 @@ Examples that solve the Percus--Yevick hard-sphere model directly. The
 scattering workflow builds on this result and requires the optional
 ``packlab[scattering]`` installation extra.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -138,6 +146,10 @@ examples, which assess numerical resolution or compare models with matched
 physical inputs.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -194,6 +206,10 @@ distributions, visualisation, and pair-correlation estimates. The Metropolis
 example starts from an RSA configuration but then uses a separate equilibrium
 hard-sphere workflow with fixed particle count and radii.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -309,6 +325,10 @@ it is an analytical scattering calculation, not a simulation of an RSA
 configuration.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -377,6 +397,10 @@ the equilibrium hard-sphere ensemble only after adequate burn-in and sampling.
 Percus--Yevick is an analytical equilibrium reference, so agreement with RSA
 is informative but is not an expectation of exact equality.
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html

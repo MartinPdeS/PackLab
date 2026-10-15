@@ -18,6 +18,10 @@ it is an analytical scattering calculation, not a simulation of an RSA
 configuration.
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
