@@ -3,15 +3,16 @@
 
 import sys
 import os
-from sphinx_gallery.sorting import FileNameSortKey
 import matplotlib.pyplot as plt
 from pathlib import Path
 import PackLab
-from PackLab.directories import doc_css_path
 
 
 package_name = "PackLab"
 version = PackLab.__version__
+
+# Keep gallery reset hooks importable so Sphinx can cache its configuration.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 current_dir = Path(".")
 os.environ["PACKLAB_DOCS_ROOT"] = str(Path(__file__).resolve().parents[1])
@@ -19,15 +20,7 @@ os.environ["PACKLAB_DOCS_ROOT"] = str(Path(__file__).resolve().parents[1])
 sys.path.append(str(current_dir.resolve()))
 
 
-def setup(app):
-    app.add_css_file(str(doc_css_path))
 
-
-autodoc_mock_imports = [
-    "numpy",
-    "matplotlib",
-    "numpydoc",
-]
 
 
 project = package_name
@@ -36,6 +29,7 @@ author = "Martin Poinsinet de Sivry-Houle"
 
 extensions = [
     "sphinx.ext.mathjax",
+    "sphinx_design",
     "sphinx_gallery.gen_gallery",
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
@@ -64,18 +58,19 @@ sphinx_gallery_conf = {
     "filename_pattern": r".*\.py",
     "plot_gallery": True,
     "thumbnail_size": [600, 600],
+    "default_thumb_file": str(Path(__file__).resolve().parent / "_static" / "gallery-default.png"),
     "download_all_examples": False,
-    "reset_modules": reset_mpl,
+    "reset_modules": "conf.reset_mpl",
     "line_numbers": False,
     "remove_config_comments": True,
     "capture_repr": ("_repr_html_", "__repr__"),
     "nested_sections": True,
-    "within_subsection_order": FileNameSortKey,
+    "within_subsection_order": "FileNameSortKey",
 }
 
 
 autodoc_default_options = {
-    "members-order": "bysource",
+    "member-order": "bysource",
     "show-inheritance": True,
 }
 
@@ -97,13 +92,22 @@ exclude_trees = []
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
-major, minor = version[:2]
+major, minor = version.split(".")[:2]
 binder_branch = f"v{major}.{minor}.x"
+
+html_context = {
+    "github_url": "https://github.com",
+    "github_user": "MartinPdeS",
+    "github_repo": package_name,
+    "github_version": "master",
+    "doc_path": "docs/source",
+    "default_mode": "dark",
+}
 
 html_theme_options = dict()
 
 html_theme_options["logo"] = dict(text=package_name, image="_static/packlab-mark.png")
-html_theme_options["show_nav_level"] = 0
+html_theme_options["show_nav_level"] = 1
 
 html_theme_options.update(
     {
@@ -125,9 +129,8 @@ html_theme_options.update(
             },
         ],
         "navbar_align": "left",
-        "header_links_before_dropdown": 99,
-        "navbar_end": ["version-switcher", "navbar-icon-links"],
-        "show_prev_next": False,
+                "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
+        "show_prev_next": True,
         "show_version_warning_banner": True,
         # Footer
         "footer_start": ["copyright"],
@@ -180,6 +183,5 @@ html_static_path = ["_static"]
 templates_path = ["_templates"]
 html_css_files = ["default.css"]
 epub_exclude_files = ["search.html"]
-suppress_warnings = ["config.cache"]
 
 # -
