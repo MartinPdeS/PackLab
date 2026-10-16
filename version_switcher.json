@@ -1,103 +1,87 @@
 [
-{
-  "name": "latest",
-  "version": "latest",
-  "url": "https://martinpdes.github.io/PackLab/docs/latest"
-}
-,
-{
-  "name": "v0.8.2",
-  "version": "v0.8.2",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.8.2"
-}
-,
-{
-  "name": "v0.8.1",
-  "version": "v0.8.1",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.8.1"
-}
-,
-{
-  "name": "v0.8.0",
-  "version": "v0.8.0",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.8.0"
-}
-,
-{
-  "name": "v0.7.13",
-  "version": "v0.7.13",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.13"
-}
-,
-{
-  "name": "v0.7.12",
-  "version": "v0.7.12",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.12"
-}
-,
-{
-  "name": "v0.7.11",
-  "version": "v0.7.11",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.11"
-}
-,
-{
-  "name": "v0.7.9",
-  "version": "v0.7.9",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.9"
-}
-,
-{
-  "name": "v0.7.8",
-  "version": "v0.7.8",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.8"
-}
-,
-{
-  "name": "v0.7.7",
-  "version": "v0.7.7",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.7"
-}
-,
-{
-  "name": "v0.7.5",
-  "version": "v0.7.5",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.5"
-}
-,
-{
-  "name": "v0.7.4",
-  "version": "v0.7.4",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.4"
-}
-,
-{
-  "name": "v0.7.3",
-  "version": "v0.7.3",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.3"
-}
-,
-{
-  "name": "v0.7.2",
-  "version": "v0.7.2",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.2"
-}
-,
-{
-  "name": "v0.7.1",
-  "version": "v0.7.1",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.1"
-}
-,
-{
-  "name": "v0.7.0",
-  "version": "v0.7.0",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.7.0"
-}
-,
-{
-  "name": "v0.6.10",
-  "version": "v0.6.10",
-  "url": "https://martinpdes.github.io/PackLab/docs/v0.6.10"
-}
+  {
+    "name": "latest",
+    "version": "latest",
+    "url": "https://martinpdes.github.io/PackLab/docs/latest"
+  },
+  {
+    "name": "v0.8.2",
+    "version": "v0.8.2",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.8.2"
+  },
+  {
+    "name": "v0.8.1",
+    "version": "v0.8.1",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.8.1"
+  },
+  {
+    "name": "v0.8.0",
+    "version": "v0.8.0",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.8.0"
+  },
+  {
+    "name": "v0.7.13",
+    "version": "v0.7.13",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.13"
+  },
+  {
+    "name": "v0.7.12",
+    "version": "v0.7.12",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.12"
+  },
+  {
+    "name": "v0.7.11",
+    "version": "v0.7.11",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.11"
+  },
+  {
+    "name": "v0.7.9",
+    "version": "v0.7.9",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.9"
+  },
+  {
+    "name": "v0.7.8",
+    "version": "v0.7.8",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.8"
+  },
+  {
+    "name": "v0.7.7",
+    "version": "v0.7.7",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.7"
+  },
+  {
+    "name": "v0.7.5",
+    "version": "v0.7.5",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.5"
+  },
+  {
+    "name": "v0.7.4",
+    "version": "v0.7.4",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.4"
+  },
+  {
+    "name": "v0.7.3",
+    "version": "v0.7.3",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.3"
+  },
+  {
+    "name": "v0.7.2",
+    "version": "v0.7.2",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.2"
+  },
+  {
+    "name": "v0.7.1",
+    "version": "v0.7.1",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.1"
+  },
+  {
+    "name": "v0.7.0",
+    "version": "v0.7.0",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.7.0"
+  },
+  {
+    "name": "v0.6.10",
+    "version": "v0.6.10",
+    "url": "https://martinpdes.github.io/PackLab/docs/v0.6.10"
+  }
 ]
