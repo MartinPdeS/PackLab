@@ -95,17 +95,17 @@ message(STATUS "")
 # ----------------- logging build configuration --------------------
 
 # ----------------- collect subdirectories --------------------
-add_subdirectory(PackLab/cpp/pint)                          # pint
-add_subdirectory(PackLab/cpp/monte_carlo/utils)             # utils
-add_subdirectory(PackLab/cpp/monte_carlo/result)            # result
-add_subdirectory(PackLab/cpp/monte_carlo/domain)            # domain
-add_subdirectory(PackLab/cpp/monte_carlo/statistics)        # statistics
-add_subdirectory(PackLab/cpp/radius_sampler)                # radius_sampler
-add_subdirectory(PackLab/cpp/monte_carlo/simulator)         # simulator
-add_subdirectory(PackLab/cpp/monte_carlo/metropolis)        # equilibrium Metropolis sampler
-add_subdirectory(PackLab/cpp/monte_carlo/estimator)         # estimator
-add_subdirectory(PackLab/cpp/analytical/domain_analytical)  # domain
-add_subdirectory(PackLab/cpp/analytical/solver)             # solver
+add_subdirectory(cpp/pint)                          # pint
+add_subdirectory(cpp/monte_carlo/utils)             # utils
+add_subdirectory(cpp/monte_carlo/result)            # result
+add_subdirectory(cpp/monte_carlo/domain)            # domain
+add_subdirectory(cpp/monte_carlo/statistics)        # statistics
+add_subdirectory(cpp/radius_sampler)                # radius_sampler
+add_subdirectory(cpp/monte_carlo/simulator)         # simulator
+add_subdirectory(cpp/monte_carlo/metropolis)        # equilibrium Metropolis sampler
+add_subdirectory(cpp/monte_carlo/estimator)         # estimator
+add_subdirectory(cpp/analytical/domain_analytical)  # domain
+add_subdirectory(cpp/analytical/solver)             # solver
 # ----------------- collect subdirectories --------------------
 
 get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)
