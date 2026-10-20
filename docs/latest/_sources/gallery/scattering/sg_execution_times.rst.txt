@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.189** total execution time for 2 files **from gallery/scattering**:
+**00:00.185** total execution time for 2 files **from gallery/scattering**:
 
 .. container::
 
@@ -36,5 +36,5 @@ Computation times
      - 00:00.096
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_02_structure_factor_phase_function.py` (``02_structure_factor_phase_function.py``)
-     - 00:00.093
+     - 00:00.089
      - 0.0
