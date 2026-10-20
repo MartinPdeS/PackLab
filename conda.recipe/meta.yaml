@@ -34,7 +34,7 @@ requirements:
     - numpy >=2.3.3,<3  # [py>=314]
   run:
     - python {{ PY_VER }}
-    - martinpdes::typedunit
+    - martinpdes::typedunit >=0.2.9
     - matplotlib >=3.9,<4
     - numpy >=2.0,<3  # [py<314]
     - numpy >=2.3.3,<3  # [py>=314]

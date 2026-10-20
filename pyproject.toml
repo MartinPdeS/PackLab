@@ -49,7 +49,7 @@ classifiers = [
 dependencies = [
     "matplotlib",
     "numpy",
-    "TypedUnit",
+    "TypedUnit>=0.2.9",
 ]
 
 [project.urls]
@@ -82,13 +82,11 @@ documentation = [
     "sphinx-gallery==0.22.1",
     "pydata-sphinx-theme==0.23.0",
     "MartinPdeS-docs>=0.1.2",
-    "PyMieSim ==5.0.2; python_version < '3.14'",
-    "PyMieSim >=5.8.0,<5.9; python_version >= '3.14'",
+    "PyMieSim>=6.0.4,<6.1",
 ]
 
 scattering = [
-    "PyMieSim ==5.0.2; python_version < '3.14'",
-    "PyMieSim >=5.8.0,<5.9; python_version >= '3.14'",
+    "PyMieSim>=6.0.4,<6.1",
 ]
 
 dev = [
