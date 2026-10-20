@@ -14,10 +14,7 @@ version = distribution_version(package_name)
 # Keep gallery reset hooks importable so Sphinx can cache its configuration.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-current_dir = Path(".")
 os.environ["PACKLAB_DOCS_ROOT"] = str(Path(__file__).resolve().parents[1])
-
-sys.path.append(str(current_dir.resolve()))
 
 
 
