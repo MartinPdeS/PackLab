@@ -11,6 +11,14 @@ from pathlib import Path
 package_name = "PackLab"
 version = distribution_version(package_name)
 
+# The documentation workflow installs the built wheel before invoking Sphinx.
+# Remove the checkout root so gallery examples do not shadow that wheel with
+# the source tree, which does not contain the platform-specific extensions.
+repository_root = Path(__file__).resolve().parents[2]
+sys.path[:] = [
+    entry for entry in sys.path if Path(entry or ".").resolve() != repository_root
+]
+
 # Keep gallery reset hooks importable so Sphinx can cache its configuration.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
