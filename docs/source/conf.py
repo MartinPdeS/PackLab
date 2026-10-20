@@ -3,13 +3,13 @@
 
 import sys
 import os
+from importlib.metadata import version as distribution_version
 import matplotlib.pyplot as plt
 from pathlib import Path
-import PackLab
 
 
 package_name = "PackLab"
-version = PackLab.__version__
+version = distribution_version(package_name)
 
 # Keep gallery reset hooks importable so Sphinx can cache its configuration.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
