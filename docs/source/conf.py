@@ -11,7 +11,9 @@ from martinpdes_docs import configure
 
 
 package_name = "PackLab"
-version = os.getenv("tag", distribution_version(package_name))
+tag = os.getenv("tag", "")
+tag_parts = tag.lstrip("v").split(".")
+version = tag if len(tag_parts) >= 2 and tag_parts[0].isdigit() else distribution_version(package_name)
 
 # The documentation workflow installs the built wheel before invoking Sphinx.
 # Keep the gallery examples on that wheel so they use PackLab's native core.
