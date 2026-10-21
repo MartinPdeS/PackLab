@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=dc96f8db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/martinpdes_layout.css?v=a8cc01cd" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -44,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -603,8 +604,8 @@ RSA converges to Percus–Yevick. RSA and Percus–Yevick remain distinct models
 </span>    <span class="n">wavenumber</span><span class="o">=</span><span class="n">refined_grid</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">distances</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Automatic grid: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.wavenumber" title="PackLab.analytical.PercusYevickResult.wavenumber"><span class="n">automatic</span><span class="o">.</span><span class="n">wavenumber</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> wavenumber points</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
-</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Refined grid:   </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.wavenumber" title="PackLab.analytical.PercusYevickResult.wavenumber"><span class="n">refined</span><span class="o">.</span><span class="n">wavenumber</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> wavenumber points</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Automatic grid: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#id10" title="PackLab.analytical.PercusYevickResult.wavenumber"><span class="n">automatic</span><span class="o">.</span><span class="n">wavenumber</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> wavenumber points</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Refined grid:   </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#id10" title="PackLab.analytical.PercusYevickResult.wavenumber"><span class="n">refined</span><span class="o">.</span><span class="n">wavenumber</span></a><span class="p">)</span><span class="si">}</span><span class="s2"> wavenumber points</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Automatic grid: 1922 wavenumber points
 Refined grid:   3842 wavenumber points
@@ -620,11 +621,11 @@ is sufficiently resolved for this radial range. If it is not, decrease
 </span><span class="w">
 </span><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="p">(</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="p">)</span><span class="p">:</span><span class="w">
 </span>    <span class="n">label</span> <span class="o">=</span> <span class="sa">rf</span><span class="s2">&quot;</span><span class="s2">$g_</span><span class="se">{{</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="se">}}</span><span class="s2">$</span><span class="s2">&quot;</span><span class="w">
-</span>    <span class="n">_</span> <span class="o">=</span> <span class="n">curves_axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">automatic</span></a><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">auto </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
-</span>    <span class="n">_</span> <span class="o">=</span> <span class="n">curves_axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">refined</span></a><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">--</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">black</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span><span class="w">
+</span>    <span class="n">_</span> <span class="o">=</span> <span class="n">curves_axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.g" title="PackLab.analytical.PercusYevickResult.g"><span class="n">automatic</span><span class="o">.</span><span class="n">g</span></a><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">auto </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span>    <span class="n">_</span> <span class="o">=</span> <span class="n">curves_axis</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.g" title="PackLab.analytical.PercusYevickResult.g"><span class="n">refined</span><span class="o">.</span><span class="n">g</span></a><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">--</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">black</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.65</span><span class="p">)</span><span class="w">
 </span>    <span class="n">_</span> <span class="o">=</span> <span class="n">error_axis</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="w">
 </span>        <span class="n">distances</span><span class="p">,</span><span class="w">
-</span>        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">automatic</span></a><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">refined</span></a><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.g" title="PackLab.analytical.PercusYevickResult.g"><span class="n">automatic</span><span class="o">.</span><span class="n">g</span></a><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-</span> <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.g" title="PackLab.analytical.PercusYevickResult.g"><span class="n">refined</span><span class="o">.</span><span class="n">g</span></a><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">)</span><span class="p">,</span> <span class="mf">1e-12</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>        <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span><span class="w">
@@ -641,7 +642,7 @@ is sufficiently resolved for this radial range. If it is not, decrease
 </span><span class="n">error_axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span><span class="w">
 </span><span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../_images/sphx_glr_percus_yevick_grid_convergence_001.png" srcset="../../_images/sphx_glr_percus_yevick_grid_convergence_001.png" alt="Automatic grid (colour) and refined grid (dashed), Absolute change after grid refinement" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.415 seconds)</p>
+<img src="../../_images/sphx_glr_percus_yevick_grid_convergence_001.png" srcset="../../_images/sphx_glr_percus_yevick_grid_convergence_001.png" alt="Automatic grid (colour) and refined grid (dashed), Absolute change after grid refinement" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.524 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-validation-percus-yevick-grid-convergence-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f7ca5661d439dd9afd5d4d90f461b6c7/percus_yevick_grid_convergence.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">percus_yevick_grid_convergence.ipynb</span></code></a></p>
@@ -711,6 +712,22 @@ is sufficiently resolved for this radial range. If it is not, decrease
 
   <div class="sidebar-secondary-item">
 
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/master/docs/source/gallery/validation/percus_yevick_grid_convergence.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="../../_sources/gallery/validation/percus_yevick_grid_convergence.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -743,7 +760,7 @@ is sufficiently resolved for this radial range. If it is not, decrease
 
   <p class="copyright">
     
-      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      © Copyright Martin Poinsinet de Sivry-Houle.
       <br/>
     
   </p>

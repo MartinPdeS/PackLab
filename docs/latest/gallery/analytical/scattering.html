@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=dc96f8db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/martinpdes_layout.css?v=a8cc01cd" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -44,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -606,8 +607,8 @@ mixture and corresponding phase function calculation.</p>
 </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="p">:</span><span class="w">
 </span>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)</span><span class="p">:</span><span class="w">
 </span>        <span class="n">_</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
-</span>            <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">py_result</span></a><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">micrometer</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">,</span><span class="w">
-</span>            <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">py_result</span></a><span class="o">.</span><span class="n">g</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>            <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.distances" title="PackLab.analytical.PercusYevickResult.distances"><span class="n">py_result</span><span class="o">.</span><span class="n">distances</span><span class="o">.</span><span class="n">to</span></a><span class="p">(</span><span class="s2">&quot;</span><span class="s2">micrometer</span><span class="s2">&quot;</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>            <a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.g" title="PackLab.analytical.PercusYevickResult.g"><span class="n">py_result</span><span class="o">.</span><span class="n">g</span></a><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="p">,</span><span class="w">
 </span>            <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span><span class="w">
 </span>            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>        <span class="p">)</span><span class="w">
@@ -621,22 +622,22 @@ mixture and corresponding phase function calculation.</p>
 </span></pre></div></div>
 <img src="../../_images/sphx_glr_scattering_001.png" srcset="../../_images/sphx_glr_scattering_001.png" alt="Partial pair correlation: RSA vs Percus Yevick" class = "sphx-glr-single-img"/><section id="calculate-and-plot-the-scattering-phase-function">
 <h2>Calculate and plot the scattering phase function<a class="headerlink" href="#calculate-and-plot-the-scattering-phase-function" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.scattering.data.ScatteringDataset" title="PackLab.scattering.ScatteringDataset"><span class="n">datas</span></a> <span class="o">=</span> <span class="n">scattering</span><span class="o">.</span><span class="n">compute_scattering_amplitudes</span><span class="p">(</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.scattering.ScatteringDataset" title="PackLab.scattering.ScatteringDataset"><span class="n">datas</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-function reference internal" href="../../code.html#PackLab.scattering.compute_scattering_amplitudes" title="PackLab.scattering.compute_scattering_amplitudes"><span class="n">scattering</span><span class="o">.</span><span class="n">compute_scattering_amplitudes</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">wavelength</span><span class="o">=</span><span class="mi">150</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
-</span>    <span class="n">diameters</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.radii" title="PackLab.analytical.PercusYevickResult.radii"><span class="n">py_result</span><span class="o">.</span><span class="n">radii</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">diameters</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#id9" title="PackLab.analytical.PercusYevickResult.radii"><span class="n">py_result</span><span class="o">.</span><span class="n">radii</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">material</span><span class="o">=</span><span class="mf">1.45</span><span class="p">,</span><span class="w">
 </span>    <span class="n">medium</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span><span class="w">
 </span>    <span class="n">phi</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">radian</span><span class="p">,</span><span class="w">
 </span>    <span class="n">polarization</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-method reference internal" href="../../code.html#PackLab.scattering.data.ScatteringDataset.process" title="PackLab.scattering.ScatteringDataset.process"><span class="n">datas</span><span class="o">.</span><span class="n">process</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-method reference internal" href="../../code.html#PackLab.scattering.ScatteringDataset.process" title="PackLab.scattering.ScatteringDataset.process"><span class="n">datas</span><span class="o">.</span><span class="n">process</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="w">
-</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phase_function</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-method reference internal" href="../../code.html#PackLab.scattering.data.ScatteringDataset.get_phase_function" title="PackLab.scattering.ScatteringDataset.get_phase_function"><span class="n">datas</span><span class="o">.</span><span class="n">get_phase_function</span></a><span class="p">(</span><span class="w">
-</span>    <span class="n">densities</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.densities" title="PackLab.analytical.PercusYevickResult.densities"><span class="n">py_result</span><span class="o">.</span><span class="n">densities</span></a><span class="p">,</span><span class="w">
-</span>    <span class="n">H</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult" title="PackLab.analytical.PercusYevickResult"><span class="n">py_result</span></a><span class="o">.</span><span class="n">H</span><span class="p">,</span><span class="w">
-</span>    <span class="n">wavenumber</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.wavenumber" title="PackLab.analytical.PercusYevickResult.wavenumber"><span class="n">py_result</span><span class="o">.</span><span class="n">wavenumber</span></a><span class="p">,</span><span class="w">
+</span><span class="n">phi</span><span class="p">,</span> <span class="n">theta</span><span class="p">,</span> <span class="n">phase_function</span> <span class="o">=</span> <a class="sphx-glr-backref-module-PackLab-scattering sphx-glr-backref-type-py-method reference internal" href="../../code.html#PackLab.scattering.ScatteringDataset.get_phase_function" title="PackLab.scattering.ScatteringDataset.get_phase_function"><span class="n">datas</span><span class="o">.</span><span class="n">get_phase_function</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">densities</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#id8" title="PackLab.analytical.PercusYevickResult.densities"><span class="n">py_result</span><span class="o">.</span><span class="n">densities</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">H</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.analytical.solver.PercusYevickResult.H" title="PackLab.analytical.PercusYevickResult.H"><span class="n">py_result</span><span class="o">.</span><span class="n">H</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">wavenumber</span><span class="o">=</span><a class="sphx-glr-backref-module-PackLab-analytical sphx-glr-backref-type-py-property reference internal" href="../../code.html#id10" title="PackLab.analytical.PercusYevickResult.wavenumber"><span class="n">py_result</span><span class="o">.</span><span class="n">wavenumber</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">theta_points</span><span class="o">=</span><span class="mi">150</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
@@ -650,7 +651,7 @@ mixture and corresponding phase function calculation.</p>
 </span><span class="w">
 </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../_images/sphx_glr_scattering_002.png" srcset="../../_images/sphx_glr_scattering_002.png" alt="Phase function mapped on sphere (radius proportional to P)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 14.087 seconds)</p>
+<img src="../../_images/sphx_glr_scattering_002.png" srcset="../../_images/sphx_glr_scattering_002.png" alt="Phase function mapped on sphere (radius proportional to P)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 14.967 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-analytical-scattering-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ccccc41771234f41babb954975696487/scattering.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">scattering.ipynb</span></code></a></p>
@@ -719,6 +720,22 @@ mixture and corresponding phase function calculation.</p>
 
   <div class="sidebar-secondary-item">
 
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/master/docs/source/gallery/analytical/scattering.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="../../_sources/gallery/analytical/scattering.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -751,7 +768,7 @@ mixture and corresponding phase function calculation.</p>
 
   <p class="copyright">
     
-      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      © Copyright Martin Poinsinet de Sivry-Houle.
       <br/>
     
   </p>

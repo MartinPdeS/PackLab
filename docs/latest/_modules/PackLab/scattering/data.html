@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../../_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="../../../_static/layout.css?v=dc96f8db" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/martinpdes_layout.css?v=a8cc01cd" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -43,7 +44,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -505,7 +506,7 @@
 
 
 <div class="viewcode-block" id="ScatteringData">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringData">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringData">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">ScatteringData</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Far-field scattering data for a single particle diameter.</span>
@@ -521,7 +522,7 @@
     <span class="n">phi</span><span class="p">:</span> <span class="n">Any</span>
 
 <div class="viewcode-block" id="ScatteringData.plot">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringData.plot">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringData.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">tight_layout</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Plot the magnitudes of the two scattering amplitudes."""</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -548,7 +549,7 @@
 <span class="c1"># and the azimuthal rotation around the incident axis is in [0, 2*pi).</span>
 <span class="c1"># In this class, `self.phi` is used with sin(self.phi) weights, so it behaves like a polar angle.</span>
 <div class="viewcode-block" id="ScatteringDataset">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ScatteringDataset</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Container for multi size scattering data and mixture level post processing.</span>
@@ -583,7 +584,7 @@
     <span class="n">e_phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 
 <div class="viewcode-block" id="ScatteringDataset.process">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.process">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.process">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Stack per diameter fields into dense arrays.</span>
@@ -673,7 +674,7 @@
         <span class="k">return</span> <span class="n">density_values</span><span class="p">,</span> <span class="n">H_values</span><span class="p">,</span> <span class="n">wavenumber_values</span>
 
 <div class="viewcode-block" id="ScatteringDataset.get_alpha_beta_factor">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_alpha_beta_factor">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_alpha_beta_factor">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_alpha_beta_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Build number density factors for mixture sums.</span>
@@ -706,7 +707,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.get_F_matrix">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_F_matrix">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_F_matrix">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_F_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Construct the vector scattering amplitude tensor F for each size, angle, and azimuth.</span>
@@ -760,7 +761,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.get_mu_independant">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_mu_independant">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_mu_independant">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_mu_independant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Compute the independent scattering contribution to the attenuation coefficient.</span>
@@ -798,7 +799,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.get_mu_dependant">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_mu_dependant">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_mu_dependant">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_mu_dependant</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150</span>
     <span class="p">):</span>
@@ -852,7 +853,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.get_mu">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_mu">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_mu">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_mu</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">:</span>
@@ -887,7 +888,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.interpolate_last_axis_linear">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.interpolate_last_axis_linear">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.interpolate_last_axis_linear">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">interpolate_last_axis_linear</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">H</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -941,7 +942,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.get_interpolated_H">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_interpolated_H">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_interpolated_H">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_interpolated_H</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Interpolate H(wavenumber) onto the scattering wavevector magnitude wavenumber = 2k sin(φ/2).</span>
@@ -987,7 +988,7 @@
 
 
 <div class="viewcode-block" id="ScatteringDataset.get_phase_function">
-<a class="viewcode-back" href="../../../code.html#PackLab.scattering.data.ScatteringDataset.get_phase_function">[docs]</a>
+<a class="viewcode-back" href="../../../code.html#PackLab.scattering.ScatteringDataset.get_phase_function">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_phase_function</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">densities</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">H</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">wavenumber</span><span class="p">:</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">theta_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">150</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">,</span> <span class="n">NDArray</span><span class="p">]:</span>
@@ -1077,7 +1078,7 @@
 
   <p class="copyright">
     
-      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      © Copyright Martin Poinsinet de Sivry-Houle.
       <br/>
     
   </p>

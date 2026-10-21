@@ -37,6 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=dc96f8db" />
+    <link rel="stylesheet" type="text/css" href="../../_static/martinpdes_layout.css?v=a8cc01cd" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -44,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/documentation_options.js?v=8a448e45"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -597,30 +598,30 @@ hard-sphere model.</p>
 </span>        <span class="n">use_periodic_boundaries</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions" title="PackLab.monte_carlo.RSAOptions"><span class="n">options</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions" title="PackLab.monte_carlo.RSAOptions"><span class="n">monte_carlo</span><span class="o">.</span><span class="n">RSAOptions</span></a><span class="p">(</span><span class="p">)</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions" title="PackLab.monte_carlo.RSAOptions"><span class="n">options</span></a><span class="o">.</span><span class="n">random_seed</span> <span class="o">=</span> <span class="mi">2026</span> <span class="o">+</span> <span class="n">index</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions.maximum_attempts" title="PackLab.monte_carlo.RSAOptions.maximum_attempts"><span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span></a> <span class="o">=</span> <span class="mi">50_000</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions" title="PackLab.monte_carlo.RSAOptions"><span class="n">options</span></a><span class="o">.</span><span class="n">maximum_consecutive_rejections</span> <span class="o">=</span> <span class="mi">10_000</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions.target_packing_fraction" title="PackLab.monte_carlo.RSAOptions.target_packing_fraction"><span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span></a> <span class="o">=</span> <span class="n">target_packing_fraction</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions.random_seed" title="PackLab.monte_carlo.RSAOptions.random_seed"><span class="n">options</span><span class="o">.</span><span class="n">random_seed</span></a> <span class="o">=</span> <span class="mi">2026</span> <span class="o">+</span> <span class="n">index</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-property reference internal" href="../../code.html#id0" title="PackLab.monte_carlo.RSAOptions.maximum_attempts"><span class="n">options</span><span class="o">.</span><span class="n">maximum_attempts</span></a> <span class="o">=</span> <span class="mi">50_000</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-property reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions.maximum_consecutive_rejections" title="PackLab.monte_carlo.RSAOptions.maximum_consecutive_rejections"><span class="n">options</span><span class="o">.</span><span class="n">maximum_consecutive_rejections</span></a> <span class="o">=</span> <span class="mi">10_000</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-property reference internal" href="../../code.html#id2" title="PackLab.monte_carlo.RSAOptions.target_packing_fraction"><span class="n">options</span><span class="o">.</span><span class="n">target_packing_fraction</span></a> <span class="o">=</span> <span class="n">target_packing_fraction</span><span class="w">
 </span><span class="w">
 </span>    <span class="n">started</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.monte_carlo.results.PackingResult" title="PackLab.monte_carlo.PackingResult"><span class="n">result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSASimulator" title="PackLab.monte_carlo.RSASimulator"><span class="n">monte_carlo</span><span class="o">.</span><span class="n">RSASimulator</span></a><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.monte_carlo.domain.PackingDomain" title="PackLab.monte_carlo.PackingDomain"><span class="n">domain</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PackLab-samplers sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.samplers.ConstantRadiusSampler" title="PackLab.samplers.ConstantRadiusSampler"><span class="n">sampler</span></a><span class="p">,</span> <a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../code.html#PackLab.monte_carlo.simulator.RSAOptions" title="PackLab.monte_carlo.RSAOptions"><span class="n">options</span></a><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span>    <span class="n">elapsed_seconds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span> <span class="o">-</span> <span class="n">started</span><span class="p">)</span><span class="w">
-</span>    <span class="n">sphere_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-attribute reference internal" href="../../code.html#PackLab.monte_carlo.statistics.PackingStatistics.sphere_count" title="PackLab.monte_carlo.PackingStatistics.sphere_count"><span class="n">result</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">sphere_count</span></a><span class="p">)</span><span class="w">
+</span>    <span class="n">sphere_counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a class="sphx-glr-backref-module-PackLab-monte_carlo sphx-glr-backref-type-py-property reference internal" href="../../code.html#id4" title="PackLab.monte_carlo.PackingStatistics.sphere_count"><span class="n">result</span><span class="o">.</span><span class="n">statistics</span><span class="o">.</span><span class="n">sphere_count</span></a><span class="p">)</span><span class="w">
 </span>    <span class="nb">print</span><span class="p">(</span><span class="w">
 </span>        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">box_length</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'</span><span class="s1">micrometer</span><span class="s1">'</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> µm box: </span><span class="s2">&quot;</span><span class="w">
 </span>        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">sphere_counts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> spheres in </span><span class="si">{</span><span class="n">elapsed_seconds</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>3.0 µm box:  516 spheres in 0.001 s
-3.2 µm box:  639 spheres in 0.001 s
-3.4 µm box:  781 spheres in 0.001 s
+3.2 µm box:  639 spheres in 0.002 s
+3.4 µm box:  781 spheres in 0.002 s
 3.7 µm box:  942 spheres in 0.002 s
-3.9 µm box: 1124 spheres in 0.002 s
-4.1 µm box: 1328 spheres in 0.003 s
-4.3 µm box: 1555 spheres in 0.003 s
-4.6 µm box: 1806 spheres in 0.004 s
-4.8 µm box: 2083 spheres in 0.005 s
-5.0 µm box: 2388 spheres in 0.006 s
+3.9 µm box: 1124 spheres in 0.003 s
+4.1 µm box: 1328 spheres in 0.004 s
+4.3 µm box: 1555 spheres in 0.004 s
+4.6 µm box: 1806 spheres in 0.005 s
+4.8 µm box: 2083 spheres in 0.006 s
+5.0 µm box: 2388 spheres in 0.008 s
 </pre></div>
 </div>
 </section>
@@ -636,7 +637,7 @@ hard-sphere model.</p>
 </span><span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span><span class="w">
 </span><span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../_images/sphx_glr_rsa_box_scaling_001.png" srcset="../../_images/sphx_glr_rsa_box_scaling_001.png" alt="Periodic RSA generation scaling" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.087 seconds)</p>
+<img src="../../_images/sphx_glr_rsa_box_scaling_001.png" srcset="../../_images/sphx_glr_rsa_box_scaling_001.png" alt="Periodic RSA generation scaling" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.121 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-rsa-box-scaling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0c772c16168b0f7aeb090ec79b03f38a/rsa_box_scaling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">rsa_box_scaling.ipynb</span></code></a></p>
@@ -707,6 +708,22 @@ hard-sphere model.</p>
 
   <div class="sidebar-secondary-item">
 
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/master/docs/source/gallery/benchmarks/rsa_box_scaling.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
+
+  <div class="sidebar-secondary-item">
+
   <div class="tocsection sourcelink">
     <a href="../../_sources/gallery/benchmarks/rsa_box_scaling.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
@@ -739,7 +756,7 @@ hard-sphere model.</p>
 
   <p class="copyright">
     
-      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      © Copyright Martin Poinsinet de Sivry-Houle.
       <br/>
     
   </p>

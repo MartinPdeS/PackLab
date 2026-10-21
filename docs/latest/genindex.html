@@ -36,6 +36,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="_static/layout.css?v=dc96f8db" />
+    <link rel="stylesheet" type="text/css" href="_static/martinpdes_layout.css?v=a8cc01cd" />
   
   <!-- So that users can add custom icons -->
   <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -43,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/documentation_options.js?v=8a448e45"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -52,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.9';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -479,6 +480,7 @@
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
@@ -496,13 +498,43 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.A_i">A_i (PercusYevickResult property)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.acceptance_rate">acceptance_rate (EstimatorStatistics attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id6">(EstimatorStatistics property)</a>
+</li>
+        <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics.acceptance_rate">(MetropolisStatistics property)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.accepted_insertions">accepted_insertions (EstimatorStatistics property)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.accepted_insertions">(PackingStatistics property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics.accepted_moves">accepted_moves (MetropolisStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.attempted_insertions">attempted_insertions (EstimatorStatistics property)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.attempted_insertions">(PackingStatistics property)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics.attempted_moves">attempted_moves (MetropolisStatistics property)</a>
 </li>
   </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.B_i">B_i (PercusYevickResult property)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.bins_table">bins_table() (PercusYevickDomain method)</a>
 </li>
@@ -513,8 +545,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimate.centers">centers (PackingEstimate attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id7">(PackingEstimate property)</a>
 </li>
+      </ul></li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration.classes_index">classes_index (PackingConfiguration property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.completed_samples">completed_samples (EstimatorStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics.completed_sweeps">completed_sweeps (MetropolisStatistics property)</a>
 </li>
       <li><a href="code.html#PackLab.analytical.solver.PercusYevickSolver.compute">compute() (PercusYevickSolver method)</a>
 </li>
@@ -528,14 +568,28 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#PackLab.scattering.model.compute_scattering_amplitudes">compute_scattering_amplitudes() (in module PackLab.scattering.model)</a>
+      <li><a href="code.html#PackLab.scattering.compute_scattering_amplitudes">compute_scattering_amplitudes() (in module PackLab.scattering)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.scattering.model.compute_scattering_amplitudes">(in module PackLab.scattering.model)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.consecutive_rejections">consecutive_rejections (PackingStatistics property)</a>
 </li>
       <li><a href="code.html#PackLab.samplers.ConstantRadiusSampler">ConstantRadiusSampler (class in PackLab.samplers)</a>
 </li>
+      <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.containment_padding">containment_padding (RSAOptions property)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration.count">count (PackingConfiguration property)</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.Csca">Csca (ScatteringDataset attribute)</a>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.Cpy">Cpy (PercusYevickResult property)</a>
 </li>
+      <li><a href="code.html#PackLab.scattering.ScatteringData.Csca">Csca (ScatteringData attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringData.Csca">[1]</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.scattering.ScatteringDataset.Csca">(ScatteringDataset attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.Csca">[1]</a>
+</li>
+      </ul></li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisSimulator.cumulative_displacements">cumulative_displacements (MetropolisSimulator property)</a>
 </li>
   </ul></td>
@@ -544,12 +598,20 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.D_ij">D_ij (PercusYevickResult property)</a>
+</li>
       <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.densities">densities (PercusYevickResult attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id8">(PercusYevickResult property)</a>
 </li>
-      <li><a href="code.html#PackLab.samplers.DiscreteRadiusSampler">DiscreteRadiusSampler (class in PackLab.samplers)</a>
-</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.samplers.DiscreteRadiusSampler">DiscreteRadiusSampler (class in PackLab.samplers)</a>
+</li>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.distances">distances (PercusYevickResult property)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisSimulator.domain">domain (MetropolisSimulator property)</a>
 
       <ul>
@@ -562,10 +624,18 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimator.estimate">estimate() (PackingEstimator method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.e_phi">e_phi (ScatteringDataset attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.e_phi">[1]</a>
+</li>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.e_theta">e_theta (ScatteringDataset attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.e_theta">[1]</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.enforce_radii_distribution">enforce_radii_distribution (RSAOptions property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.epsilons">epsilons (PercusYevickResult property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimator.estimate">estimate() (PackingEstimator method)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics">EstimatorStatistics (class in PackLab.monte_carlo.estimator)</a>
 </li>
   </ul></td>
@@ -573,6 +643,10 @@
 
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.domain.RoundingMode.floor">floor (RoundingMode attribute)</a>
+</li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration.from_arrays">from_arrays() (PackingConfiguration static method)</a>
 </li>
@@ -582,21 +656,35 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_alpha_beta_factor">get_alpha_beta_factor() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.g">g (PercusYevickResult property)</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_F_matrix">get_F_matrix() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_alpha_beta_factor">get_alpha_beta_factor() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_alpha_beta_factor">[1]</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_interpolated_H">get_interpolated_H() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_F_matrix">get_F_matrix() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_F_matrix">[1]</a>
+</li>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_interpolated_H">get_interpolated_H() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_interpolated_H">[1]</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_mu">get_mu() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_mu">get_mu() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_mu">[1]</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_mu_dependant">get_mu_dependant() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_mu_dependant">get_mu_dependant() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_mu_dependant">[1]</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_mu_independant">get_mu_independant() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_mu_independant">get_mu_independant() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_mu_independant">[1]</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.get_phase_function">get_phase_function() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.get_phase_function">get_phase_function() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.get_phase_function">[1]</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.H">H (PercusYevickResult property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.h">h (PercusYevickResult property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -604,7 +692,7 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.interpolate_last_axis_linear">interpolate_last_axis_linear() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.interpolate_last_axis_linear">interpolate_last_axis_linear() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.interpolate_last_axis_linear">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -612,8 +700,12 @@
 <h2 id="K">K</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.k">k (ScatteringDataset attribute)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringData.k">k (ScatteringData attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringData.k">[1]</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.scattering.ScatteringDataset.k">(ScatteringDataset attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.k">[1]</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -639,12 +731,30 @@
       <li><a href="code.html#PackLab.analytical.grid.make_wavenumber_grid">make_wavenumber_grid() (in module PackLab.analytical.grid)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.maximum_attempts">maximum_attempts (RSAOptions attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id0">(RSAOptions property)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.maximum_consecutive_rejections">maximum_consecutive_rejections (RSAOptions property)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisOptions.maximum_displacement">maximum_displacement (MetropolisOptions property)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.maximum_spheres">maximum_spheres (RSAOptions attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id1">(RSAOptions property)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimate.mean_g">mean_g (PackingEstimate property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.mean_packing_fraction">mean_packing_fraction (EstimatorStatistics property)</a>
 </li>
       <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.mean_particle_volume_number_weighted">mean_particle_volume_number_weighted (PercusYevickDomain property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.mean_runtime_seconds">mean_runtime_seconds (EstimatorStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.mean_sphere_count">mean_sphere_count (EstimatorStatistics property)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisOptions">MetropolisOptions (class in PackLab.monte_carlo.metropolis)</a>
 </li>
@@ -652,6 +762,10 @@
 </li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics">MetropolisStatistics (class in PackLab.monte_carlo.metropolis)</a>
 </li>
+      <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.minimum_center_separation_addition">minimum_center_separation_addition (RSAOptions property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     module
 
@@ -699,8 +813,12 @@
 </li>
       <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.number_fractions">number_fractions (PercusYevickDomain property)</a>
 </li>
-      <li><a href="code.html#PackLab.samplers.RadiusSampler.number_of_bins">number_of_bins (RadiusSampler property)</a>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimate.number_of_bins">number_of_bins (PackingEstimate property)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.samplers.RadiusSampler.number_of_bins">(RadiusSampler property)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration.number_of_classes">number_of_classes (PackingConfiguration property)</a>
@@ -709,6 +827,10 @@
 </li>
       <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.number_of_particles_total">number_of_particles_total (PercusYevickDomain property)</a>
 </li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimate.number_of_species">number_of_species (PackingEstimate property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisOptions.number_of_sweeps">number_of_sweeps (MetropolisOptions property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -716,6 +838,12 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.packing_fraction_geometry">packing_fraction_geometry (PackingStatistics attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id3">(PackingStatistics property)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.packing_fraction_simulator">packing_fraction_simulator (PackingStatistics property)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration">PackingConfiguration (class in PackLab.monte_carlo.simulator)</a>
 </li>
@@ -863,9 +991,13 @@
 </li>
       <li><a href="code.html#PackLab.analytical.solver.PercusYevickSolver">PercusYevickSolver (class in PackLab.analytical.solver)</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.phi">phi (ScatteringDataset attribute)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringData.phi">phi (ScatteringData attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringData.phi">[1]</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.scattering.ScatteringDataset.phi">(ScatteringDataset attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.phi">[1]</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringData.plot">plot() (ScatteringData method)</a>
+      </ul></li>
+      <li><a href="code.html#PackLab.scattering.ScatteringData.plot">plot() (ScatteringData method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringData.plot">[1]</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.results.PackingResult.plot_centers_3d">plot_centers_3d() (PackingResult method)</a>
 </li>
@@ -899,7 +1031,7 @@
 </li>
       <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimator.print_statistics">print_statistics() (PackingEstimator method)</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset.process">process() (ScatteringDataset method)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset.process">process() (ScatteringDataset method)</a>, <a href="code.html#PackLab.scattering.data.ScatteringDataset.process">[1]</a>
 </li>
   </ul></td>
 </tr></table>
@@ -907,6 +1039,8 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.R_ij">R_ij (PercusYevickResult property)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration.radii">radii (PackingConfiguration property)</a>
 
       <ul>
@@ -916,8 +1050,38 @@
 </li>
         <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.radii">(PercusYevickResult attribute)</a>
 </li>
+        <li><a href="code.html#id9">(PercusYevickResult property)</a>
+</li>
       </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.radius_max">radius_max (PackingStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.radius_mean">radius_mean (PackingStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.radius_median">radius_median (PackingStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.radius_min">radius_min (PackingStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.radius_std">radius_std (PackingStatistics property)</a>
+</li>
       <li><a href="code.html#PackLab.samplers.RadiusSampler">RadiusSampler (class in PackLab.samplers)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisOptions.random_seed">random_seed (MetropolisOptions property)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.random_seed">(RSAOptions property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.rejected_insertions">rejected_insertions (EstimatorStatistics property)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.rejected_insertions">(PackingStatistics property)</a>
+</li>
+      </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics.rejected_moves">rejected_moves (MetropolisStatistics property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.requested_samples">requested_samples (EstimatorStatistics property)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisSimulator.reset">reset() (MetropolisSimulator method)</a>
 
@@ -925,8 +1089,8 @@
         <li><a href="code.html#PackLab.monte_carlo.simulator.RSASimulator.reset">(RSASimulator method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.domain.RoundingMode.round">round (RoundingMode attribute)</a>
+</li>
       <li><a href="code.html#PackLab.analytical.domain.RoundingMode">RoundingMode (class in PackLab.analytical.domain)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions">RSAOptions (class in PackLab.monte_carlo.simulator)</a>
@@ -947,22 +1111,38 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.scattering.ScatteringData.S1">S1 (ScatteringData attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringData.S1">[1]</a>
+</li>
+      <li><a href="code.html#PackLab.scattering.ScatteringData.S2">S2 (ScatteringData attribute)</a>, <a href="code.html#PackLab.scattering.data.ScatteringData.S2">[1]</a>
+</li>
+      <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.S_ij">S_ij (PercusYevickResult property)</a>
+</li>
       <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.sample_radii">sample_radii() (PercusYevickDomain method)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.results.PackingResult.save">save() (PackingResult method)</a>
 </li>
       <li><a href="code.html#PackLab.monte_carlo.domain.PackingDomain.scale">scale() (PackingDomain method)</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringData">ScatteringData (class in PackLab.scattering.data)</a>
+      <li><a href="code.html#PackLab.scattering.ScatteringData">ScatteringData (class in PackLab.scattering)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.scattering.data.ScatteringData">(class in PackLab.scattering.data)</a>
 </li>
-      <li><a href="code.html#PackLab.scattering.data.ScatteringDataset">ScatteringDataset (class in PackLab.scattering.data)</a>
+      </ul></li>
+      <li><a href="code.html#PackLab.scattering.ScatteringDataset">ScatteringDataset (class in PackLab.scattering)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.scattering.data.ScatteringDataset">(class in PackLab.scattering.data)</a>
 </li>
+      </ul></li>
       <li><a href="code.html#PackLab.samplers.RadiusSampler.set_number_of_bins">set_number_of_bins() (RadiusSampler method)</a>
-</li>
-      <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.size">size (PercusYevickDomain property)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.size">size (PercusYevickDomain property)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.spatial_grid_cell_size">spatial_grid_cell_size (RSAOptions property)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisSimulator.sphere_configuration">sphere_configuration (MetropolisSimulator property)</a>
 
       <ul>
@@ -972,7 +1152,11 @@
 </li>
       </ul></li>
       <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.sphere_count">sphere_count (PackingStatistics attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id4">(PackingStatistics property)</a>
 </li>
+      </ul></li>
       <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisSimulator.statistics">statistics (MetropolisSimulator property)</a>
 
       <ul>
@@ -981,6 +1165,8 @@
         <li><a href="code.html#PackLab.monte_carlo.results.PackingResult.statistics">(PackingResult property)</a>
 </li>
       </ul></li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.PackingEstimate.std_g">std_g (PackingEstimate property)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -988,16 +1174,30 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.monte_carlo.simulator.RSAOptions.target_packing_fraction">target_packing_fraction (RSAOptions attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id2">(RSAOptions property)</a>
 </li>
+      </ul></li>
       <li><a href="code.html#PackLab.samplers.RadiusSampler.to_bins">to_bins() (RadiusSampler method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.analytical.domain.PercusYevickDomain.total_particle_volume">total_particle_volume (PercusYevickDomain property)</a>
 </li>
-      <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.total_runtime_seconds">total_runtime_seconds (PackingStatistics attribute)</a>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.total_runtime_seconds">total_runtime_seconds (EstimatorStatistics property)</a>
+
+      <ul>
+        <li><a href="code.html#PackLab.monte_carlo.metropolis.MetropolisStatistics.total_runtime_seconds">(MetropolisStatistics property)</a>
 </li>
+        <li><a href="code.html#PackLab.monte_carlo.statistics.PackingStatistics.total_runtime_seconds">(PackingStatistics attribute)</a>
+</li>
+        <li><a href="code.html#id5">(PackingStatistics property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.monte_carlo.simulator.PackingConfiguration.total_sphere_volume">total_sphere_volume() (PackingConfiguration method)</a>
+</li>
+      <li><a href="code.html#PackLab.monte_carlo.estimator.EstimatorStatistics.total_spheres">total_spheres (EstimatorStatistics property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1017,6 +1217,8 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code.html#PackLab.analytical.domain.RoundingMode.value">value (RoundingMode property)</a>
+</li>
       <li><a href="code.html#PackLab.monte_carlo.domain.PackingDomain.volume">volume (PackingDomain property)</a>
 
       <ul>
@@ -1036,7 +1238,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="code.html#PackLab.analytical.solver.PercusYevickResult.wavenumber">wavenumber (PercusYevickResult attribute)</a>
+
+      <ul>
+        <li><a href="code.html#id10">(PercusYevickResult property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1081,7 +1287,7 @@
 
   <p class="copyright">
     
-      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      © Copyright Martin Poinsinet de Sivry-Houle.
       <br/>
     
   </p>
