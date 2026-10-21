@@ -5,7 +5,7 @@ build-backend = "scikit_build_core.build"
 [tool.scikit-build]
 build-dir = ".skbuild/{wheel_tag}"
 logging.level = "INFO"
-wheel.exclude = ["PackLab/cpp", "matlab", "matlab/**"]
+wheel.exclude = ["cpp", "matlab", "matlab/**"]
 install.strip = false
 sdist.exclude = [
     "tests",
@@ -17,13 +17,12 @@ sdist.exclude = [
 ]
 
 [tool.setuptools_scm]
-write_to = "PackLab/_version.py"
 version_scheme = "only-version"
 local_scheme = "no-local-version"
 
 [project]
 name = "PackLab"
-version = "0.7.13"
+version = "0.8.10"
 description = "Random Sequential Addition (RSA) particle packing with a fast C++ core."
 license = "MIT"
 readme = "README.rst"
@@ -49,7 +48,7 @@ classifiers = [
 dependencies = [
     "matplotlib",
     "numpy",
-    "TypedUnit",
+    "TypedUnit>=0.2.9",
 ]
 
 [project.urls]
@@ -68,25 +67,25 @@ include = ["PackLab*"]
 
 [project.optional-dependencies]
 testing = [
-    "pytest>=8,<10",
-    "pytest-cov>=5,<7",
+    "pytest>=8,<9",
+    "pytest-cov>=5,<8",
     "pytest-json-report==1.5.0",
     "coverage>=7.6,<8",
     "ruff>=0.8,<1",
 ]
 
 documentation = [
-    "numpydoc==1.10.0",
+    "sphinx-design==0.7.0",
+    "numpydoc==1.11.0",
     "sphinx>=5.1.1",
-    "sphinx-gallery==0.20.0",
-    "pydata-sphinx-theme==0.16.1",
-    "PyMieSim ==5.0.2; python_version < '3.14'",
-    "PyMieSim >=5.8.0,<5.9; python_version >= '3.14'",
+    "sphinx-gallery==0.22.1",
+    "pydata-sphinx-theme==0.23.0",
+    "MartinPdeS-docs>=0.2.5,<0.3",
+    "PyMieSim>=6.0.4,<6.1",
 ]
 
 scattering = [
-    "PyMieSim ==5.0.2; python_version < '3.14'",
-    "PyMieSim >=5.8.0,<5.9; python_version >= '3.14'",
+    "PyMieSim>=6.0.4,<6.1",
 ]
 
 dev = [

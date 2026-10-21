@@ -1,4 +1,4 @@
-name: Static quality checks
+name: Quality
 
 on:
   push:
@@ -11,12 +11,8 @@ permissions:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python and CI dependencies
-        uses: MartinPdeS/MPSActions/actions/setup-python@0f5927acf88b25b5d253421e508387897096a2cc
-        with:
-          python-version: "3.11"
-          install-command: >-
-            python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
-      - run: python -m ruff check PackLab tests
+    uses: MartinPdeS/MPSActions/.github/workflows/run_quality.yml@v11
+    with:
+      install-command: >-
+        python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+      quality-command: python -m ruff check PackLab tests

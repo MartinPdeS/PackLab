@@ -14,8 +14,8 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Type of build")
 
 
 # --------------------- Set the output directory for libraries --------------------
-set(LOCAL_CXX_DIR "${PROJECT_NAME}/cpp")
-include_directories(${NAME} ${LOCAL_CXX_DIR})
+set(LOCAL_CXX_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cpp")
+include_directories(${LOCAL_CXX_DIR})
 # --------------------- Set the output directory for libraries --------------------
 
 # --------------------- Platform-specific compiler and linker options --------------------
@@ -95,17 +95,17 @@ message(STATUS "")
 # ----------------- logging build configuration --------------------
 
 # ----------------- collect subdirectories --------------------
-add_subdirectory(PackLab/cpp/pint)                          # pint
-add_subdirectory(PackLab/cpp/monte_carlo/utils)             # utils
-add_subdirectory(PackLab/cpp/monte_carlo/result)            # result
-add_subdirectory(PackLab/cpp/monte_carlo/domain)            # domain
-add_subdirectory(PackLab/cpp/monte_carlo/statistics)        # statistics
-add_subdirectory(PackLab/cpp/radius_sampler)                # radius_sampler
-add_subdirectory(PackLab/cpp/monte_carlo/simulator)         # simulator
-add_subdirectory(PackLab/cpp/monte_carlo/metropolis)        # equilibrium Metropolis sampler
-add_subdirectory(PackLab/cpp/monte_carlo/estimator)         # estimator
-add_subdirectory(PackLab/cpp/analytical/domain_analytical)  # domain
-add_subdirectory(PackLab/cpp/analytical/solver)             # solver
+add_subdirectory(cpp/pint)                          # pint
+add_subdirectory(cpp/monte_carlo/utils)             # utils
+add_subdirectory(cpp/monte_carlo/result)            # result
+add_subdirectory(cpp/monte_carlo/domain)            # domain
+add_subdirectory(cpp/monte_carlo/statistics)        # statistics
+add_subdirectory(cpp/radius_sampler)                # radius_sampler
+add_subdirectory(cpp/monte_carlo/simulator)         # simulator
+add_subdirectory(cpp/monte_carlo/metropolis)        # equilibrium Metropolis sampler
+add_subdirectory(cpp/monte_carlo/estimator)         # estimator
+add_subdirectory(cpp/analytical/domain_analytical)  # domain
+add_subdirectory(cpp/analytical/solver)             # solver
 # ----------------- collect subdirectories --------------------
 
 get_property(PACKLAB_TARGETS GLOBAL PROPERTY PACKLAB_TARGETS)

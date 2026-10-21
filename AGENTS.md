@@ -21,7 +21,7 @@ model. Validation should match physical inputs and explain expected differences.
 | `PackLab/analytical/` | Python-facing Percus--Yevick workflow and grid helper. |
 | `PackLab/samplers.*` | Native radius-distribution bindings. |
 | `PackLab/scattering/` | Optional PyMieSim-based scattering workflow. |
-| `PackLab/cpp/` | C++20 implementations and pybind11 interfaces. |
+| `cpp/` | C++20 implementations and pybind11 interfaces. |
 | `tests/` | Public-API, packing, sampler, analytical, and scattering tests. |
 | `docs/source/` | Sphinx documentation. |
 | `docs/examples/` | Executable gallery examples: `monte_carlo`, `analytical`, and `validation`. |
@@ -81,7 +81,7 @@ not hand-edit `PackLab/_version.py`; the build backend generates it from Git.
 ## C++ and bindings
 
 - CMake uses C++20 and builds extensions with pybind11.
-- Put native implementation beside its binding interface under `PackLab/cpp/`.
+- Put native implementation beside its binding interface under `cpp/`.
 - Register a new native target in its local `CMakeLists.txt`; make its install
   destination match the corresponding Python package.
 - Keep binding validation explicit: check shapes, units, finite values, and

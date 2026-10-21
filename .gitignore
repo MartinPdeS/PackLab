@@ -9,6 +9,8 @@
 !.gitmodules
 !extern
 !PackLab
+!cpp
+!cpp/**
 !development
 !docs
 !tests

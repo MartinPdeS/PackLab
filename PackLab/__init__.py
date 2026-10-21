@@ -1,3 +1,4 @@
+from PackLab import _unit_registry  # noqa: F401
 from PackLab.units import ureg # noqa: F401
 from PackLab import samplers, monte_carlo, analytical  # noqa: F401
 
