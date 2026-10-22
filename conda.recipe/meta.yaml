@@ -1,6 +1,6 @@
 package:
   name: packlab
-  version: 0.8.12
+  version: 0.8.13
 
 source:
   path: ..
