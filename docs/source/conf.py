@@ -21,9 +21,28 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 os.environ["PACKLAB_DOCS_ROOT"] = str(Path(__file__).resolve().parents[1])
 
 
-def reset_mpl(gallery_conf, fname):
-    """Restore Matplotlib defaults between gallery examples."""
+def _configure_mpl_fonts() -> None:
+    """Use fonts bundled with Matplotlib on every documentation runner."""
     plt.rcdefaults()
+    plt.rcParams.update(
+        {
+            "font.family": "DejaVu Sans",
+            "font.sans-serif": ["DejaVu Sans"],
+            "font.cursive": ["DejaVu Sans"],
+            "font.fantasy": ["DejaVu Sans"],
+            "mathtext.rm": "DejaVu Sans",
+            "mathtext.it": "DejaVu Sans:italic",
+            "mathtext.bf": "DejaVu Sans:bold",
+        }
+    )
+
+
+def reset_mpl(gallery_conf, fname):
+    """Restore deterministic Matplotlib defaults between gallery examples."""
+    _configure_mpl_fonts()
+
+
+_configure_mpl_fonts()
 
 
 globals().update(
