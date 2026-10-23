@@ -76,8 +76,8 @@ html {
     }
 
     #pst-header .navbar-brand img.logo__image {
-        width: 4rem;
-        height: 4rem;
+        width: 14rem;
+        height: 4.5rem;
         filter: none !important;
         object-fit: contain;
     }
