@@ -31,11 +31,11 @@ globals().update(
         project=package_name,
         package=package_name,
         repository="MartinPdeS/PackLab",
-        logo="_static/packlab-mark.png",
+        logo="../images/logo.svg",
         favicon="_static/packlab-favicon.png",
         prefer_installed_package=True,
         gallery_default_thumb="_static/gallery-default.png",
-        logo_text=package_name,
+        logo_text="",
         html_css_files=["layout.css"],
         autodoc_default_options={
             "members": True,
