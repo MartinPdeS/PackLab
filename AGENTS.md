@@ -59,7 +59,7 @@ python -m pytest tests/test_scattering.py
 ```
 
 After modifying C++ sources, rebuild the editable install before testing. Do
-not hand-edit `PackLab/_version.py`; the build backend generates it from Git.
+not hand-edit `PackLab/_version.py`; martinpdes-maintenance maintains it alongside explicit project metadata.
 
 ## API and numerical conventions
 

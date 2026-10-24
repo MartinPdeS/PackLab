@@ -6,6 +6,8 @@ from types import ModuleType
 
 import pytest
 
+from martinpdes_maintenance.cli import load, versions
+
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 TOOLS_DIRECTORY = REPOSITORY_ROOT / "tools"
@@ -29,7 +31,6 @@ def load_tool_module(name: str) -> ModuleType:
 
 
 check_manuscript = load_tool_module("check_manuscript")
-check_release = load_tool_module("check_release")
 clean = load_tool_module("clean")
 
 
@@ -41,17 +42,9 @@ def test_extract_latex_environment() -> None:
 
 def test_release_versions_are_aligned() -> None:
     """Package release artifacts declare one version."""
-    declared = check_release.versions()
+    _, config = load(REPOSITORY_ROOT)
+    declared = versions(REPOSITORY_ROOT, config)
     assert len(set(declared.values())) == 1
-
-
-@pytest.mark.parametrize(
-    ("version", "expected"),
-    [("1.2.3", "1.2.3"), ("v1.2.3", "1.2.3")],
-)
-def test_normalized_version(version: str, expected: str) -> None:
-    """Release checks accept plain and Git-style version strings."""
-    assert check_release.normalized_version(version) == expected
 
 
 def test_cleaner_rejects_repository_root() -> None:
