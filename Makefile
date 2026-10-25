@@ -20,7 +20,7 @@ MANUSCRIPT_FIGURES := \
 	$(MANUSCRIPT_DIR)/figures/create_figure4_independent_validation.py
 LINT_PATHS := PackLab tests tools development/compare_mctpy.py \
 	development/extract_mctpy_reference.py $(MANUSCRIPT_DIR)/figures
-FORMAT_PATHS := tools/check_manuscript.py tools/check_release.py tools/clean.py \
+FORMAT_PATHS := tools/check_manuscript.py tools/clean.py \
 	tools/project_doctor.py tests/test_workflow_tools.py \
 	development/compare_mctpy.py development/extract_mctpy_reference.py \
 	$(MANUSCRIPT_DIR)/figures
@@ -143,20 +143,20 @@ doctor:
 	$(PYTHON) tools/project_doctor.py
 
 release-check:
-	$(PYTHON) tools/check_release.py $(if $(VERSION),--version $(VERSION),)
+	$(PYTHON) -m martinpdes_maintenance.cli check $(if $(VERSION),--version $(VERSION),)
 
 # Create a release commit and annotated tag. Both forms are supported:
 #   make tag v0.7.1
 #   make tag VERSION=v0.7.1
 tag:
-	$(PYTHON) tools/release_tag.py "$(TAG_VERSION)"
+	$(PYTHON) -m martinpdes_maintenance.cli tag "$(TAG_VERSION)"
 
 # Derive and publish the next tag from the highest existing semantic release.
 # Examples: make release patch, make release minor, make release major
 release:
 	@test "$(words $(RELEASE_KIND))" -eq 1 || { echo "usage: make release [patch|minor|major]" >&2; exit 2; }
-	@set -eu; release_tag="$$($(PYTHON) tools/next_release_version.py $(RELEASE_KIND))"; \
-	$(PYTHON) tools/release_tag.py "$$release_tag"; \
+	@set -eu; release_tag="$$($(PYTHON) -m martinpdes_maintenance.cli next $(RELEASE_KIND))"; \
+	$(PYTHON) -m martinpdes_maintenance.cli tag "$$release_tag"; \
 	git push origin HEAD "refs/tags/$$release_tag"
 
 major minor patch:
