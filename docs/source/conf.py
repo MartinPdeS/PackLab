@@ -1,7 +1,6 @@
 """Sphinx configuration for PackLab documentation."""
 
 import os
-import sys
 from pathlib import Path
 
 from martinpdes_docs import configure
@@ -10,9 +9,7 @@ from martinpdes_docs import configure
 package_name = "PackLab"
 docs_source = Path(__file__).resolve().parent
 
-# The documentation workflow installs the built wheel before invoking Sphinx.
-# Keep the gallery examples on that wheel so they use PackLab's native core.
-sys.path.insert(0, str(docs_source))
+# Validation examples use this root to locate manuscript reference data.
 os.environ["PACKLAB_DOCS_ROOT"] = str(docs_source.parent)
 
 globals().update(
