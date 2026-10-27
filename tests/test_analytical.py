@@ -1,5 +1,7 @@
 """Tests for analytical reciprocal-space grid handling."""
 
+from concurrent.futures import ThreadPoolExecutor
+
 import numpy as np
 import pytest
 
@@ -119,3 +121,73 @@ def test_automatic_wavenumber_grid_converges_against_refined_grid():
 
     assert len(refined.wavenumber) > len(automatic.wavenumber)
     np.testing.assert_allclose(automatic.g, refined.g, rtol=5e-3, atol=5e-4)
+
+
+@pytest.mark.parametrize("volume_fraction,size_ratio", [(0.05, 1.5), (0.20, 2.0), (0.35, 3.0)])
+def test_binary_automatic_grid_converges_across_regimes(volume_fraction, size_ratio):
+    """Resolve all partial correlations away from their hard-core contacts."""
+    radii = np.array([0.1, 0.1 * size_ratio]) * ureg.micrometer
+    domain = analytical.PercusYevickDomain(
+        size=100 * ureg.micrometer,
+        radii=radii,
+        volume_fraction=volume_fraction,
+        number_fractions=[0.5, 0.5],
+    )
+    distances = np.linspace(0, 1.5, 160) * ureg.micrometer
+    kwargs = dict(densities=domain.particle_densities_per_radius, radii=domain.radii)
+    automatic = analytical.PercusYevickSolver(**kwargs, wavenumber="auto").compute(distances)
+    grid = analytical.make_wavenumber_grid(
+        radial_resolution=radii.min() / 20,
+        maximum_distance=distances.max(),
+        samples_per_oscillation=24,
+    )
+    refined = analytical.PercusYevickSolver(**kwargs, wavenumber=grid).compute(distances)
+
+    for i, j in ((0, 0), (0, 1), (1, 1)):
+        contact = (radii[i] + radii[j]).to("micrometer").magnitude
+        mask = distances.magnitude > contact + 0.04
+        np.testing.assert_allclose(
+            automatic.g[i, j, mask], refined.g[i, j, mask], atol=5e-4, rtol=5e-3
+        )
+
+
+@pytest.mark.parametrize("start", [0.0, 0.15])
+def test_inverse_transform_matches_direct_nonuniform_quadrature(start):
+    """Independently integrate H for all pairs, including zero density and r=0."""
+    wavenumber = start + np.linspace(0.0, 1.0, 401) ** 1.3 * 80.0
+    distances = np.array([0.0, 0.05, 0.2, 0.4, 0.8])
+    densities = np.array([0.7, 1.2, 0.0])
+    radii = np.array([0.1, 0.2, 0.3])
+    result = analytical.PercusYevickSolver(
+        densities=densities / ureg.meter**3,
+        radii=radii * ureg.meter,
+        wavenumber=wavenumber / ureg.meter,
+    ).compute(distances * ureg.meter)
+
+    for i in range(3):
+        for j in range(3):
+            if densities[i] == 0.0 or densities[j] == 0.0:
+                np.testing.assert_array_equal(result.h[i, j], 0.0)
+                continue
+            for index, distance in enumerate(distances):
+                integrand = (
+                    result.H[i, j] * wavenumber**2
+                    * np.sinc(wavenumber * distance / np.pi)
+                )
+                integral = np.sum(
+                    0.5 * np.diff(wavenumber) * (integrand[:-1] + integrand[1:])
+                )
+                expected = integral / (2 * np.pi**2 * np.sqrt(densities[i] * densities[j]))
+                assert result.h[i, j, index] == pytest.approx(expected, rel=1e-11, abs=1e-12)
+    np.testing.assert_allclose(result.Cpy, result.Cpy.swapaxes(0, 1), atol=1e-14)
+    np.testing.assert_allclose(result.H, result.H.swapaxes(0, 1), atol=1e-14)
+
+
+def test_solver_supports_concurrent_calls():
+    solver = _solver("auto")
+    distances = np.linspace(0.0, 1.0, 80) * ureg.meter
+    expected = solver.compute(distances).g
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        results = list(executor.map(solver.compute, [distances] * 4))
+    for result in results:
+        np.testing.assert_allclose(result.g, expected, rtol=1e-13, atol=1e-13)

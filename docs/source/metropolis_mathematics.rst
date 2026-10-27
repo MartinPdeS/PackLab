@@ -98,6 +98,13 @@ this information and artificially bound the MSD.
 MSD here measures movement in Monte Carlo sweeps. Metropolis proposals are
 numerical sampling steps, not Newtonian or Brownian time evolution. A physical
 diffusion coefficient requires a separately justified dynamical model.
+Because MSD relative to the beginning of the run typically changes with time,
+it is a mobility diagnostic rather than a stationary equilibrium observable.
+By default the diagnostic report contains MSD and move statistics, and its
+observable and uncertainty fields are ``None``. Supply an ``observable``
+callable to request uncertainty estimates for a scalar quantity chosen to be
+approximately stationary after burn-in. Choosing an observable does not itself
+establish stationarity or equilibration.
 
 Burn-in, autocorrelation, and uncertainty
 -----------------------------------------
@@ -126,11 +133,36 @@ trajectories. **Block averaging** divides observations into complete blocks;
 if block means are approximately independent, the standard error is their
 sample standard deviation divided by the square root of the block count.
 PackLab's interval uses a normal quantile; few blocks can give poor coverage.
+If every retained value is identical, autocorrelation and uncertainty are
+reported as unavailable: the trace alone cannot distinguish a truly constant
+quantity from a chain that has failed to explore its distribution.
 
-The helper's default observable is MSD from one initial time, which generally
-changes during a run. For equilibrium confidence intervals and effective
-sample sizes, supply a stationary structural observable through ``observable``
-and check block-size sensitivity. The report does not prove equilibration.
+For example, after constructing a periodic ``simulator``, the cosine component
+of its longest-wavelength density mode can be monitored as follows:
+
+.. code-block:: python
+
+   import numpy as np
+   from PackLab import monte_carlo
+
+   box_length_m = simulator.domain.length_x.to("meter").magnitude
+
+   def density_mode(configuration):
+       x = configuration.positions.to("meter").magnitude[:, 0]
+       return float(np.cos(2 * np.pi * x / box_length_m).mean())
+
+   report = monte_carlo.run_metropolis_diagnostics(
+       simulator, number_of_sweeps=10_000, sample_interval=10,
+       burn_in_sweeps=2_000, observable=density_mode,
+       observable_name="density_mode_x", block_size=50,
+   )
+   print(report.effective_sample_size, report.confidence_interval)
+
+This is an illustration, not an established burn-in or block size: inspect
+the observable, compare independent chains, and check block-size sensitivity.
+Statistics use only regularly spaced post-burn-in samples; a final shorter
+interval remains in the recorded trajectory but is excluded from them.
+The report does not prove equilibration.
 Periodic boundaries reduce wall effects but preserve finite-box effects;
 compare larger boxes and independent seeded trajectories before drawing bulk
 conclusions. Equilibrated Metropolis and PY comparisons test an approximation;

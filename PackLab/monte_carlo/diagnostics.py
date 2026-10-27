@@ -26,15 +26,15 @@ class MetropolisDiagnosticReport:
     accepted_move_deltas: np.ndarray
     rejected_move_deltas: np.ndarray
     mean_squared_displacements: Any
-    observable: np.ndarray
-    observable_name: str
+    observable: np.ndarray | None
+    observable_name: str | None
     burn_in_sweeps: int
-    autocorrelation_time: float
-    effective_sample_size: float
-    block_means: np.ndarray
-    standard_error: float
-    confidence_interval: tuple[float, float]
-    confidence_level: float
+    autocorrelation_time: float | None
+    effective_sample_size: float | None
+    block_means: np.ndarray | None
+    standard_error: float | None
+    confidence_interval: tuple[float, float] | None
+    confidence_level: float | None
     final_result: Any
 
 
@@ -44,11 +44,11 @@ def _validate_integer(name: str, value: int, minimum: int) -> int:
     return int(value)
 
 
-def _autocorrelation_time(values: np.ndarray) -> float:
+def _autocorrelation_time(values: np.ndarray) -> float | None:
     centered = values - values.mean()
     variance = np.dot(centered, centered) / values.size
     if variance == 0.0:
-        return 0.5
+        return None
     correlations = np.correlate(centered, centered, mode="full")[values.size - 1 :] / (
         variance * np.arange(values.size, 0, -1)
     )
@@ -67,7 +67,7 @@ def run_metropolis_diagnostics(
     sample_interval: int = 10,
     burn_in_sweeps: int = 0,
     observable: Callable[[Any], float] | None = None,
-    observable_name: str = "mean_squared_displacement_m2",
+    observable_name: str = "observable",
     block_size: int | None = None,
     confidence_level: float = 0.95,
 ) -> MetropolisDiagnosticReport:
@@ -86,9 +86,11 @@ def run_metropolis_diagnostics(
         Initial sweeps excluded from autocorrelation and block statistics.
     observable : callable, optional
         Function taking the current ``PackingConfiguration`` and returning one
-        finite scalar. The default records mean squared displacement (MSD).
-    observable_name : str, default="mean_squared_displacement_m2"
-        Label for the scalar observable in the report.
+        finite scalar. Supply an approximately stationary observable to obtain
+        autocorrelation and uncertainty estimates. If omitted, only mobility
+        and move diagnostics are reported.
+    observable_name : str, default="observable"
+        Label for the supplied scalar observable.
     block_size : int, optional
         Number of post-burn-in samples per block. By default it is selected
         from the estimated autocorrelation time.
@@ -99,9 +101,14 @@ def run_metropolis_diagnostics(
     -------
     MetropolisDiagnosticReport
         Move deltas, per-sample rates, MSD relative to the starting state, and
-        autocorrelation/block summaries. MSD uses accumulated accepted moves,
+        autocorrelation/block summaries when an observable is supplied; those
+        fields are otherwise ``None``. MSD uses accumulated accepted moves,
         including periodic crossings, relative to the start of this call.
-        The report does not establish equilibration.
+        A final sample at a shorter interval is retained but excluded from
+        autocorrelation and block statistics. The report does not establish
+        stationarity or equilibration; uncertainty estimates rely on both.
+        If the retained observable is constant, its autocorrelation and
+        uncertainty are indeterminate and the corresponding fields are ``None``.
     """
     total = _validate_integer("number_of_sweeps", number_of_sweeps, 1)
     interval = _validate_integer("sample_interval", sample_interval, 1)
@@ -112,6 +119,20 @@ def run_metropolis_diagnostics(
         raise ValueError("confidence_level must lie strictly between 0 and 1.")
     if not callable(getattr(simulator, "run_sweeps", None)):
         raise TypeError("simulator must be a MetropolisSimulator exposing run_sweeps().")
+    if observable is not None and not callable(observable):
+        raise TypeError("observable must be callable.")
+    if block_size is not None:
+        block_size = _validate_integer("block_size", block_size, 1)
+        if observable is None:
+            raise ValueError("block_size requires an observable.")
+    if observable is not None:
+        retained_count = total // interval - burn_in // interval
+        if retained_count < 2:
+            raise ValueError("burn-in leaves fewer than two regularly spaced samples.")
+        if block_size is not None and retained_count // block_size < 2:
+            raise ValueError(
+                "fewer than two complete blocks remain; reduce block_size or collect more samples."
+            )
 
     start_displacement = np.asarray(
         simulator.cumulative_displacements.to("meter").magnitude, dtype=float
@@ -140,29 +161,46 @@ def run_metropolis_diagnostics(
         current_msd = float(
             np.mean(np.einsum("ij,ij->i", displacement, displacement))
         )
-        value = (
-            current_msd if observable is None else float(observable(simulator.sphere_configuration))
-        )
-        if not np.isfinite(value):
-            raise ValueError("observable must return a finite scalar.")
+        if observable is not None:
+            value = float(observable(simulator.sphere_configuration))
+            if not np.isfinite(value):
+                raise ValueError("observable must return a finite scalar.")
+            observations.append(value)
         sweeps.append(completed)
         rates.append(accepted_delta / attempted_delta if attempted_delta else 0.0)
         accepted.append(accepted_delta)
         rejected.append(rejected_delta)
         msd.append(current_msd)
-        observations.append(value)
         previous_accepted = int(current_statistics.accepted_moves)
         previous_rejected = int(current_statistics.rejected_moves)
 
     sample_sweeps = np.asarray(sweeps, dtype=int)
-    selected = sample_sweeps > burn_in
+    if observable is None:
+        return MetropolisDiagnosticReport(
+            sample_sweeps=sample_sweeps,
+            acceptance_rates=np.asarray(rates),
+            accepted_move_deltas=np.asarray(accepted, dtype=int),
+            rejected_move_deltas=np.asarray(rejected, dtype=int),
+            mean_squared_displacements=np.asarray(msd) * ureg.meter**2,
+            observable=None,
+            observable_name=None,
+            burn_in_sweeps=burn_in,
+            autocorrelation_time=None,
+            effective_sample_size=None,
+            block_means=None,
+            standard_error=None,
+            confidence_interval=None,
+            confidence_level=None,
+            final_result=final_result,
+        )
+    selected = (sample_sweeps > burn_in) & (sample_sweeps % interval == 0)
     post_burn_values = np.asarray(observations, dtype=float)[selected]
     if post_burn_values.size < 2:
         raise ValueError("burn-in leaves fewer than two retained samples for diagnostics.")
     tau = _autocorrelation_time(post_burn_values)
-    ess = post_burn_values.size / (2.0 * tau)
+    ess = post_burn_values.size / (2.0 * tau) if tau is not None else None
     selected_block_size = (
-        int(np.ceil(2.0 * tau))
+        (int(np.ceil(2.0 * tau)) if tau is not None else 1)
         if block_size is None
         else _validate_integer("block_size", block_size, 1)
     )
@@ -176,9 +214,13 @@ def run_metropolis_diagnostics(
             "fewer than two complete blocks remain; reduce block_size or collect more samples."
         )
     block_means = np.asarray(blocks)
-    standard_error = float(block_means.std(ddof=1) / np.sqrt(block_means.size))
-    z_value = NormalDist().inv_cdf((1.0 + confidence_level) / 2.0)
-    mean = float(block_means.mean())
+    standard_error = None
+    confidence_interval = None
+    if tau is not None:
+        standard_error = float(block_means.std(ddof=1) / np.sqrt(block_means.size))
+        z_value = NormalDist().inv_cdf((1.0 + confidence_level) / 2.0)
+        mean = float(block_means.mean())
+        confidence_interval = (mean - z_value * standard_error, mean + z_value * standard_error)
     return MetropolisDiagnosticReport(
         sample_sweeps=sample_sweeps,
         acceptance_rates=np.asarray(rates),
@@ -192,7 +234,7 @@ def run_metropolis_diagnostics(
         effective_sample_size=ess,
         block_means=block_means,
         standard_error=standard_error,
-        confidence_interval=(mean - z_value * standard_error, mean + z_value * standard_error),
-        confidence_level=confidence_level,
+        confidence_interval=confidence_interval,
+        confidence_level=confidence_level if confidence_interval is not None else None,
         final_result=final_result,
     )

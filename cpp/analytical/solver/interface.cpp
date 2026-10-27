@@ -221,6 +221,7 @@ has fewer than eight samples per kernel oscillation. Use
                         }
                     }
                 }
+                py::gil_scoped_release release;
                 return self.compute(distances_m);
             },
             py::arg("distances"),

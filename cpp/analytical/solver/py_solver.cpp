@@ -266,14 +266,14 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
     const double denom = 1.0 - e3;
     require(std::isfinite(denom) && denom != 0.0, "Invalid (1 - e3) denominator.");
 
-    // Precompute per species and p:
-    // X_k(p) = r_k * p
+    // Precompute per species and wavenumber:
     // R_k = 2 r_k
-    // N_k(p) = R_k^2 * sin(X)/X
-    // M_k(p) = 3 R_k^3 * (sin/X^3 - cos/X^2)
-    std::vector<double> X(N * P, 0.0);
+    // N_k = R_k^2 * sin(X)/X
+    // M_k = 3 R_k^3 * (sin/X^3 - cos/X^2), with X = r_k * wavenumber.
     std::vector<double> Nk(N * P, 0.0);
     std::vector<double> Mk(N * P, 0.0);
+    std::vector<double> cos_X(N * P, 0.0);
+    std::vector<double> bracket(N * P, 0.0);
 
     for (std::size_t k = 0; k < N; ++k) {
         const double r = radii_m_[k];
@@ -281,13 +281,18 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
         for (std::size_t p = 0; p < P; ++p) {
             const double pp = wavenumber_per_m_[p];
             const double x = r * pp;
-            X[index_2d(k, p, P)] = x;
 
             const double s_over_x = safe_sin_over_x(x);
             const double s_over_x3_minus_c_over_x2 = safe_sin_over_x3_minus_cos_over_x2(x);
 
             Nk[index_2d(k, p, P)] = (Rk * Rk) * s_over_x;
             Mk[index_2d(k, p, P)] = 3.0 * (Rk * Rk * Rk) * s_over_x3_minus_c_over_x2;
+            const double cos_x = std::cos(x);
+            cos_X[index_2d(k, p, P)] = cos_x;
+            const double nk = Nk[index_2d(k, p, P)];
+            bracket[index_2d(k, p, P)] =
+                cos_x + x * std::sin(x) + (3.0 * e2 * Rk * cos_x) / denom
+                + (3.0 * e1 * nk) / denom + (9.0 * e2 * e2 * nk) / (denom * denom);
         }
     }
 
@@ -297,7 +302,7 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
         const double ni = densities_per_m3_[i];
         const double Ri = 2.0 * radii_m_[i];
 
-        for (std::size_t j = 0; j < N; ++j) {
+        for (std::size_t j = i; j < N; ++j) {
             const double nj = densities_per_m3_[j];
             const double Rj = 2.0 * radii_m_[j];
 
@@ -306,33 +311,16 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
             for (std::size_t p = 0; p < P; ++p) {
                 const double pp = wavenumber_per_m_[p];
 
-                const double Xi = X[index_2d(i, p, P)];
-                const double Xj = X[index_2d(j, p, P)];
-
                 const double Ni_p = Nk[index_2d(i, p, P)];
                 const double Nj_p = Nk[index_2d(j, p, P)];
 
                 const double Mi_p = Mk[index_2d(i, p, P)];
                 const double Mj_p = Mk[index_2d(j, p, P)];
 
-                const double cos_Xi = std::cos(Xi);
-                const double sin_Xi = std::sin(Xi);
-                const double cos_Xj = std::cos(Xj);
-                const double sin_Xj = std::sin(Xj);
-
-                const double bracket_i =
-                    cos_Xi
-                    + Xi * sin_Xi
-                    + (3.0 * e2 * Ri * cos_Xi) / denom
-                    + (3.0 * e1 * Ni_p) / denom
-                    + (9.0 * e2 * e2 * Ni_p) / (denom * denom);
-
-                const double bracket_j =
-                    cos_Xj
-                    + Xj * sin_Xj
-                    + (3.0 * e2 * Rj * cos_Xj) / denom
-                    + (3.0 * e1 * Nj_p) / denom
-                    + (9.0 * e2 * e2 * Nj_p) / (denom * denom);
+                const double cos_Xi = cos_X[index_2d(i, p, P)];
+                const double cos_Xj = cos_X[index_2d(j, p, P)];
+                const double bracket_i = bracket[index_2d(i, p, P)];
+                const double bracket_j = bracket[index_2d(j, p, P)];
 
                 const double term2 = Mj_p * bracket_i;
                 const double term3 = Mi_p * bracket_j;
@@ -353,6 +341,7 @@ std::vector<double> PercusYevickSolver::compute_Cpy(const std::vector<double>& e
                 const double value = term0 * (term2 + term3 + term4 + term5 + term6 + term7);
 
                 C[index_3d(i, j, p, N, P)] = value;
+                C[index_3d(j, i, p, N, P)] = value;
             }
         }
     }
@@ -414,46 +403,49 @@ std::vector<double> PercusYevickSolver::radial_fourier_h_from_H(
     //           * ∫ H_ij(k) k^2 sin(kr)/(kr) dk
     const double prefactor = 1.0 / (2.0 * pi_value * pi_value);
 
+    // Fold nonuniform trapezoidal weights and k^2 into each pair once. The
+    // temporary storage is O(N^2 P + P), independent of the distance count.
+    std::vector<double> weights(P);
+    weights[0] = 0.5 * (wavenumber_per_m[1] - wavenumber_per_m[0]);
+    for (std::size_t k = 1; k + 1 < P; ++k) {
+        weights[k] = 0.5 * (wavenumber_per_m[k + 1] - wavenumber_per_m[k - 1]);
+    }
+    weights[P - 1] = 0.5 * (wavenumber_per_m[P - 1] - wavenumber_per_m[P - 2]);
+    for (std::size_t k = 0; k < P; ++k) {
+        weights[k] *= wavenumber_per_m[k] * wavenumber_per_m[k];
+    }
+
+    std::vector<double> weighted_H(N * N * P, 0.0);
     for (std::size_t i = 0; i < N; ++i) {
         for (std::size_t j = 0; j < N; ++j) {
             const double ni = densities_per_m3[i];
             const double nj = densities_per_m3[j];
-
-            if (!(ni > 0.0) || !(nj > 0.0)) {
-                for (std::size_t r = 0; r < R; ++r) {
-                    h[index_3d(i, j, r, N, R)] = 0.0;
-                }
-                continue;
-            }
-
+            if (!(ni > 0.0) || !(nj > 0.0)) continue;
             const double dens_factor = std::sqrt(ni * nj);
-
-
             require(dens_factor > 0.0, "densities must be positive for h(r) conversion.");
+            const std::size_t offset = index_3d(i, j, 0, N, P);
+            for (std::size_t k = 0; k < P; ++k) {
+                weighted_H[offset + k] = H[offset + k] * weights[k] * (prefactor / dens_factor);
+            }
+        }
+    }
 
-            for (std::size_t r = 0; r < R; ++r) {
-                const double rr = distances_m[r];
-
+    // One distance at a time bounds memory while sharing its sinc kernel
+    // across all species pairs, including r=0 and k=0.
+    std::vector<double> kernel(P);
+    for (std::size_t r = 0; r < R; ++r) {
+        const double rr = distances_m[r];
+        for (std::size_t k = 0; k < P; ++k) {
+            kernel[k] = safe_sin_over_x(rr * wavenumber_per_m[k]);
+        }
+        for (std::size_t i = 0; i < N; ++i) {
+            for (std::size_t j = 0; j < N; ++j) {
+                const std::size_t offset = index_3d(i, j, 0, N, P);
                 double integral = 0.0;
-
-                for (std::size_t k = 0; k + 1 < P; ++k) {
-                    const double p0 = wavenumber_per_m[k];
-                    const double p1 = wavenumber_per_m[k + 1];
-                    const double dp = p1 - p0;
-
-                    const double x0 = rr * p0;
-                    const double x1 = rr * p1;
-
-                    const double kernel0 = (rr == 0.0) ? 1.0 : safe_sin_over_x(x0);
-                    const double kernel1 = (rr == 0.0) ? 1.0 : safe_sin_over_x(x1);
-
-                    const double f0 = H[index_3d(i, j, k, N, P)] * (p0 * p0) * kernel0;
-                    const double f1 = H[index_3d(i, j, k + 1, N, P)] * (p1 * p1) * kernel1;
-
-                    integral += 0.5 * dp * (f0 + f1);
+                for (std::size_t k = 0; k < P; ++k) {
+                    integral += weighted_H[offset + k] * kernel[k];
                 }
-
-                h[index_3d(i, j, r, N, R)] = prefactor * (integral / dens_factor);
+                h[index_3d(i, j, r, N, R)] = integral;
             }
         }
     }

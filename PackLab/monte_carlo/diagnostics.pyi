@@ -6,15 +6,15 @@ class MetropolisDiagnosticReport:
     accepted_move_deltas: Any
     rejected_move_deltas: Any
     mean_squared_displacements: Any
-    observable: Any
-    observable_name: str
+    observable: Any | None
+    observable_name: str | None
     burn_in_sweeps: int
-    autocorrelation_time: float
-    effective_sample_size: float
-    block_means: Any
-    standard_error: float
-    confidence_interval: tuple[float, float]
-    confidence_level: float
+    autocorrelation_time: float | None
+    effective_sample_size: float | None
+    block_means: Any | None
+    standard_error: float | None
+    confidence_interval: tuple[float, float] | None
+    confidence_level: float | None
     final_result: Any
 
 def run_metropolis_diagnostics(

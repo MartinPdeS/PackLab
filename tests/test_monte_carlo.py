@@ -364,14 +364,19 @@ def test_metropolis_diagnostics_retain_move_deltas_without_position_snapshots():
     simulator = monte_carlo.MetropolisSimulator(domain, initial.sphere_configuration, options)
 
     report = monte_carlo.run_metropolis_diagnostics(
-        simulator, 12, sample_interval=2, burn_in_sweeps=0, block_size=1
+        simulator, 12, sample_interval=2, burn_in_sweeps=0
     )
 
     assert report.sample_sweeps.tolist() == [2, 4, 6, 8, 10, 12]
     assert np.all(report.accepted_move_deltas + report.rejected_move_deltas == 12)
     assert np.all((report.acceptance_rates >= 0.0) & (report.acceptance_rates <= 1.0))
     assert report.mean_squared_displacements.units == ureg.meter**2
-    assert report.effective_sample_size > 0.0
+    assert report.observable is None
+    assert report.autocorrelation_time is None
+    assert report.effective_sample_size is None
+    assert report.block_means is None
+    assert report.standard_error is None
+    assert report.confidence_interval is None
     assert report.final_result.source == "metropolis"
     assert not hasattr(report, "positions")
 

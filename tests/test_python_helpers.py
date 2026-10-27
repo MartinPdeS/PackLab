@@ -156,6 +156,60 @@ def test_metropolis_diagnostics_support_custom_observables():
     assert len(report.block_means) == 2
 
 
+def test_metropolis_diagnostics_correlated_stationary_observable():
+    """An AR(1) process has tau=(1+rho)/(2*(1-rho)) and known mean error."""
+    rng = np.random.default_rng(2026)
+    rho = 0.8
+    values = np.empty(8192)
+    values[0] = rng.normal()
+    for index in range(1, len(values)):
+        values[index] = rho * values[index - 1] + np.sqrt(1 - rho**2) * rng.normal()
+    samples = iter(values)
+    report = run_metropolis_diagnostics(
+        _FakeSimulator(), len(values), sample_interval=1, block_size=64,
+        observable=lambda _: next(samples), observable_name="AR(1)",
+    )
+    expected_tau = (1 + rho) / (2 * (1 - rho))
+    expected_error = np.sqrt(2 * expected_tau / len(values))
+    assert report.autocorrelation_time == pytest.approx(expected_tau, rel=0.25)
+    assert report.effective_sample_size == pytest.approx(len(values) / (2 * expected_tau), rel=0.3)
+    assert report.standard_error == pytest.approx(expected_error, rel=0.3)
+    assert report.confidence_interval[0] < 0 < report.confidence_interval[1]
+
+
+def test_metropolis_diagnostics_excludes_short_final_interval_from_statistics():
+    values = iter([1.0, 2.0, 3.0, 100.0])
+    report = run_metropolis_diagnostics(
+        _FakeSimulator(), 7, sample_interval=2, block_size=1,
+        observable=lambda _: next(values),
+    )
+    assert report.sample_sweeps.tolist() == [2, 4, 6, 7]
+    assert report.observable.tolist() == [1.0, 2.0, 3.0, 100.0]
+    np.testing.assert_array_equal(report.block_means, [1.0, 2.0, 3.0])
+
+
+def test_metropolis_diagnostics_constant_observable_has_no_uncertainty_estimate():
+    report = run_metropolis_diagnostics(
+        _FakeSimulator(), 4, sample_interval=1, observable=lambda _: 1.0,
+    )
+    np.testing.assert_array_equal(report.block_means, [1.0] * 4)
+    assert report.autocorrelation_time is None
+    assert report.effective_sample_size is None
+    assert report.standard_error is None
+    assert report.confidence_interval is None
+    assert report.confidence_level is None
+
+
+def test_metropolis_diagnostics_validates_known_errors_before_advancing():
+    simulator = _FakeSimulator()
+    with pytest.raises(ValueError, match="block_size requires an observable"):
+        run_metropolis_diagnostics(simulator, 10, block_size=1)
+    with pytest.raises(ValueError, match="two complete blocks"):
+        run_metropolis_diagnostics(simulator, 10, sample_interval=2, block_size=3,
+                                   observable=lambda _: 1.0)
+    assert simulator.statistics.accepted_moves == 0
+
+
 @pytest.mark.parametrize(
     ("kwargs", "message"),
     [
