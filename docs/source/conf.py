@@ -2,74 +2,37 @@
 
 import os
 import sys
-from importlib.metadata import version as distribution_version
 from pathlib import Path
-
-import matplotlib.pyplot as plt
 
 from martinpdes_docs import configure
 
 
 package_name = "PackLab"
-tag = os.getenv("tag", "")
-tag_parts = tag.lstrip("v").split(".")
-version = tag if len(tag_parts) >= 2 and tag_parts[0].isdigit() else distribution_version(package_name)
+docs_source = Path(__file__).resolve().parent
 
 # The documentation workflow installs the built wheel before invoking Sphinx.
 # Keep the gallery examples on that wheel so they use PackLab's native core.
-sys.path.insert(0, str(Path(__file__).resolve().parent))
-os.environ["PACKLAB_DOCS_ROOT"] = str(Path(__file__).resolve().parents[1])
-
-
-def _configure_mpl_fonts() -> None:
-    """Use fonts bundled with Matplotlib on every documentation runner."""
-    plt.rcdefaults()
-    plt.rcParams.update(
-        {
-            "font.family": "DejaVu Sans",
-            "font.sans-serif": ["DejaVu Sans"],
-            "font.cursive": ["DejaVu Sans"],
-            "font.fantasy": ["DejaVu Sans"],
-            "mathtext.rm": "DejaVu Sans",
-            "mathtext.it": "DejaVu Sans:italic",
-            "mathtext.bf": "DejaVu Sans:bold",
-        }
-    )
-
-
-def reset_mpl(gallery_conf, fname):
-    """Restore deterministic Matplotlib defaults between gallery examples."""
-    _configure_mpl_fonts()
-
-
-_configure_mpl_fonts()
-
+sys.path.insert(0, str(docs_source))
+os.environ["PACKLAB_DOCS_ROOT"] = str(docs_source.parent)
 
 globals().update(
     configure(
         project=package_name,
         package=package_name,
-        repository="MartinPdeS/PackLab",
+        version="auto",
+        author="Martin Poinsinet de Sivry-Houle",
+        repository=f"MartinPdeS/{package_name}",
         logo="../images/logo.svg",
         favicon="_static/packlab-favicon.png",
         prefer_installed_package=True,
-        gallery_default_thumb="_static/gallery-default.png",
+        gallery_default_thumb=str(docs_source / "_static" / "gallery-default.png"),
+        gallery_options={"capture_repr": ()},
         logo_text="",
+        logo_alt_text=f"{package_name} hard-sphere packing logo",
         html_css_files=["layout.css"],
         autodoc_default_options={
             "members": True,
             "member-order": "bysource",
         },
-        gallery_options={
-            "reset_modules": "conf.reset_mpl",
-        },
-        html_theme_options={
-            "show_nav_level": 1,
-            "navbar_end": ["version-switcher", "theme-switcher", "navbar-icon-links"],
-            "show_prev_next": True,
-        },
     )
 )
-
-major, minor = version.split(".")[:2]
-binder_branch = f"v{major}.{minor}.x"

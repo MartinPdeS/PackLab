@@ -1,9 +1,12 @@
 """Tests for repository workflow helpers."""
 
 import importlib.util
+from importlib.metadata import version as distribution_version
 from pathlib import Path
+import runpy
 from types import ModuleType
 
+from packaging.version import Version
 import pytest
 
 from martinpdes_maintenance.cli import load, versions
@@ -45,6 +48,18 @@ def test_release_versions_are_aligned() -> None:
     _, config = load(REPOSITORY_ROOT)
     declared = versions(REPOSITORY_ROOT, config)
     assert len(set(declared.values())) == 1
+
+
+def test_docs_version_uses_package_version(monkeypatch) -> None:
+    """The Sphinx version and switcher use _version.py, even when a tag is set."""
+    pytest.importorskip("martinpdes_docs")
+    if Version(distribution_version("MartinPdeS-docs")) < Version("0.4.0"):
+        pytest.skip("automatic version discovery requires MartinPdeS-docs 0.4.0")
+    monkeypatch.setenv("tag", "v9.9.9")
+    config = runpy.run_path(str(REPOSITORY_ROOT / "docs" / "source" / "conf.py"))
+    expected = runpy.run_path(str(REPOSITORY_ROOT / "PackLab" / "_version.py"))["__version__"]
+    assert config["version"] == config["release"] == expected
+    assert config["html_theme_options"]["switcher"]["version_match"] == expected
 
 
 def test_cleaner_rejects_repository_root() -> None:
