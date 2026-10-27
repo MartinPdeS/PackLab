@@ -44,14 +44,14 @@ Timings depend on the machine, build, and random seeds. RSA is irreversible.
     target 0.05, seed 22: achieved 0.0503, N=96, time=0.0002 s
     target 0.05, seed 33: achieved 0.0503, N=96, time=0.0002 s
     target 0.10, seed 11: achieved 0.1000, N=191, time=0.0004 s
-    target 0.10, seed 22: achieved 0.1000, N=191, time=0.0005 s
-    target 0.10, seed 33: achieved 0.1000, N=191, time=0.0004 s
+    target 0.10, seed 22: achieved 0.1000, N=191, time=0.0004 s
+    target 0.10, seed 33: achieved 0.1000, N=191, time=0.0005 s
     target 0.15, seed 11: achieved 0.1503, N=287, time=0.0009 s
     target 0.15, seed 22: achieved 0.1503, N=287, time=0.0009 s
     target 0.15, seed 33: achieved 0.1503, N=287, time=0.0009 s
     target 0.20, seed 11: achieved 0.2000, N=382, time=0.0017 s
     target 0.20, seed 22: achieved 0.2000, N=382, time=0.0019 s
-    target 0.20, seed 33: achieved 0.2000, N=382, time=0.0018 s
+    target 0.20, seed 33: achieved 0.2000, N=382, time=0.0017 s
 
 
 
@@ -102,7 +102,7 @@ Timings depend on the machine, build, and random seeds. RSA is irreversible.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.116 seconds)
+   **Total running time of the script:** (0 minutes 0.109 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_rsa_density_scaling.py:

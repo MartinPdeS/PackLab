@@ -41,10 +41,10 @@ Report hardware, package version, and thread settings with results.
 
  .. code-block:: none
 
-    20 sweeps, 191 spheres: median 0.0181 s
-    50 sweeps, 191 spheres: median 0.0449 s
-    100 sweeps, 191 spheres: median 0.0893 s
-    200 sweeps, 191 spheres: median 0.1809 s
+    20 sweeps, 191 spheres: median 0.0182 s
+    50 sweeps, 191 spheres: median 0.0447 s
+    100 sweeps, 191 spheres: median 0.0895 s
+    200 sweeps, 191 spheres: median 0.1805 s
 
 
 
@@ -95,7 +95,7 @@ Report hardware, package version, and thread settings with results.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.102 seconds)
+   **Total running time of the script:** (0 minutes 1.100 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_metropolis_sweep_scaling.py:

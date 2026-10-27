@@ -215,13 +215,22 @@ than plotting two different radial grids.
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/matplotlib/cbook.py:1355: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+      return np.asarray(x, float)
+    /opt/hostedtoolcache/Python/3.11.17/x64/lib/python3.11/site-packages/numpy/ma/core.py:2425: UnitStrippedWarning: The unit of the quantity is stripped when downcasting to ndarray.
+      a = np.array(a, copy=None, subok=True)
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.993 seconds)
+   **Total running time of the script:** (0 minutes 4.969 seconds)
 
 
 .. _sphx_glr_download_gallery_validation_rsa_ensemble_vs_analytical.py:

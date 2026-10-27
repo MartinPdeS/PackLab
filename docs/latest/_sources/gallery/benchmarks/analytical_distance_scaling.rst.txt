@@ -160,7 +160,7 @@ Display the workload and timing result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.480 seconds)
+   **Total running time of the script:** (0 minutes 0.476 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_analytical_distance_scaling.py:

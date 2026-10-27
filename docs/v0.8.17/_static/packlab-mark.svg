@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title">
+  <title id="title">PackLab scientific seal</title>
+  <defs><clipPath id="seal"><circle cx="128" cy="128" r="99"/></clipPath></defs>
+  <rect width="256" height="256" rx="42" fill="#07345c"/>
+  <circle cx="128" cy="128" r="104" fill="#fffdf8" stroke="#07345c" stroke-width="7"/>
+  <g clip-path="url(#seal)" fill="#07345c"><circle cx="87" cy="79" r="27"/><circle cx="153" cy="70" r="11"/><circle cx="188" cy="86" r="17"/><circle cx="62" cy="121" r="17"/><circle cx="111" cy="120" r="25"/><circle cx="164" cy="118" r="29"/><circle cx="204" cy="129" r="20"/><circle cx="81" cy="166" r="28"/><circle cx="134" cy="164" r="12"/><circle cx="181" cy="170" r="25"/><circle cx="117" cy="208" r="20"/><circle cx="164" cy="211" r="15"/></g>
+  <g clip-path="url(#seal)" fill="#c8783f"><circle cx="140" cy="96" r="26"/><circle cx="47" cy="85" r="13"/><circle cx="202" cy="66" r="11"/><circle cx="71" cy="136" r="13"/><circle cx="190" cy="148" r="14"/><circle cx="53" cy="196" r="16"/><circle cx="152" cy="198" r="21"/><circle cx="205" cy="195" r="12"/></g>
+  <g clip-path="url(#seal)" fill="#55534f"><circle cx="100" cy="104" r="8"/><circle cx="171" cy="98" r="8"/><circle cx="123" cy="145" r="8"/><circle cx="157" cy="139" r="7"/></g>
+</svg>

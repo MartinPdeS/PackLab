@@ -43,7 +43,7 @@ software versions and thread settings when comparing measurements.
 
     451 wavenumbers: median 0.0012 s
     901 wavenumbers: median 0.0023 s
-    1351 wavenumbers: median 0.0035 s
+    1351 wavenumbers: median 0.0034 s
     1801 wavenumbers: median 0.0045 s
 
 
