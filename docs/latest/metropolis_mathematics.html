@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.15';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.16';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="v0.8.15" />
+  <meta name="docsearch:version" content="v0.8.16" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -612,7 +612,14 @@ in one accepted move. Minimum-image subtraction of two endpoints would lose
 this information and artificially bound the MSD.</p>
 <p>MSD here measures movement in Monte Carlo sweeps. Metropolis proposals are
 numerical sampling steps, not Newtonian or Brownian time evolution. A physical
-diffusion coefficient requires a separately justified dynamical model.</p>
+diffusion coefficient requires a separately justified dynamical model.
+Because MSD relative to the beginning of the run typically changes with time,
+it is a mobility diagnostic rather than a stationary equilibrium observable.
+By default the diagnostic report contains MSD and move statistics, and its
+observable and uncertainty fields are <code class="docutils literal notranslate"><span class="pre">None</span></code>. Supply an <code class="docutils literal notranslate"><span class="pre">observable</span></code>
+callable to request uncertainty estimates for a scalar quantity chosen to be
+approximately stationary after burn-in. Choosing an observable does not itself
+establish stationarity or equilibration.</p>
 </section>
 <section id="burn-in-autocorrelation-and-uncertainty">
 <h2>Burn-in, autocorrelation, and uncertainty<a class="headerlink" href="#burn-in-autocorrelation-and-uncertainty" title="Link to this heading">#</a></h2>
@@ -635,11 +642,34 @@ first non-positive lag, so estimates can be unreliable for short or complex
 trajectories. <strong>Block averaging</strong> divides observations into complete blocks;
 if block means are approximately independent, the standard error is their
 sample standard deviation divided by the square root of the block count.
-PackLab’s interval uses a normal quantile; few blocks can give poor coverage.</p>
-<p>The helper’s default observable is MSD from one initial time, which generally
-changes during a run. For equilibrium confidence intervals and effective
-sample sizes, supply a stationary structural observable through <code class="docutils literal notranslate"><span class="pre">observable</span></code>
-and check block-size sensitivity. The report does not prove equilibration.
+PackLab’s interval uses a normal quantile; few blocks can give poor coverage.
+If every retained value is identical, autocorrelation and uncertainty are
+reported as unavailable: the trace alone cannot distinguish a truly constant
+quantity from a chain that has failed to explore its distribution.</p>
+<p>For example, after constructing a periodic <code class="docutils literal notranslate"><span class="pre">simulator</span></code>, the cosine component
+of its longest-wavelength density mode can be monitored as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PackLab</span><span class="w"> </span><span class="kn">import</span> <span class="n">monte_carlo</span>
+
+<span class="n">box_length_m</span> <span class="o">=</span> <span class="n">simulator</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">density_mode</span><span class="p">(</span><span class="n">configuration</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="n">box_length_m</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="n">report</span> <span class="o">=</span> <span class="n">monte_carlo</span><span class="o">.</span><span class="n">run_metropolis_diagnostics</span><span class="p">(</span>
+    <span class="n">simulator</span><span class="p">,</span> <span class="n">number_of_sweeps</span><span class="o">=</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">sample_interval</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">burn_in_sweeps</span><span class="o">=</span><span class="mi">2_000</span><span class="p">,</span> <span class="n">observable</span><span class="o">=</span><span class="n">density_mode</span><span class="p">,</span>
+    <span class="n">observable_name</span><span class="o">=</span><span class="s2">"density_mode_x"</span><span class="p">,</span> <span class="n">block_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">effective_sample_size</span><span class="p">,</span> <span class="n">report</span><span class="o">.</span><span class="n">confidence_interval</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is an illustration, not an established burn-in or block size: inspect
+the observable, compare independent chains, and check block-size sensitivity.
+Statistics use only regularly spaced post-burn-in samples; a final shorter
+interval remains in the recorded trajectory but is excluded from them.
+The report does not prove equilibration.
 Periodic boundaries reduce wall effects but preserve finite-box effects;
 compare larger boxes and independent seeded trajectories before drawing bulk
 conclusions. Equilibrated Metropolis and PY comparisons test an approximation;
@@ -712,7 +742,7 @@ Rosenbluth, Rosenbluth, Teller, and Teller,
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.15/docs/source/metropolis_mathematics.rst">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.16/docs/source/metropolis_mathematics.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.15';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.16';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="v0.8.15" />
+  <meta name="docsearch:version" content="v0.8.16" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -461,13 +461,18 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../analytical/index.html">Analytical models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/01_monodisperse_volume_fraction.html">Monodisperse Percus–Yevick fluid at several densities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/02_binary_mixture_pair_correlations.html">Binary-mixture Percus–Yevick pair correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../analytical/03_binary_composition.html">Binary-mixture composition at fixed volume fraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/analytical_poly_disperse.html">Percus Yevick mixture solver workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/scattering.html">Scattering Example: Percus Yevick Structure Factor and Phase Function</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Benchmarks</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="analytical_distance_scaling.html">Analytical evaluation scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analytical_grid_scaling.html">Analytical wavenumber-grid cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analytical_species_scaling.html">Percus–Yevick mixture-size scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metropolis_sweep_scaling.html">Metropolis sampling cost per sweep</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rsa_box_scaling.html">RSA generation scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rsa_density_scaling.html">RSA cost at different target fractions</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../monte_carlo/index.html">Monte-Carlo hard-sphere workflows</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -481,13 +486,18 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../scattering/index.html">Scattering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../scattering/01_single_particle_amplitudes.html">Single-particle scattering amplitudes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../scattering/02_structure_factor_phase_function.html">Mixture phase function with a structure factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/03_wavelength_sweep.html">Single-sphere wavelength sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/04_refractive_index.html">Effect of optical contrast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/05_independent_mixture.html">Independent scattering from a size mixture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation and comparison</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../validation/metropolis_vs_analytical.html">Metropolis hard-sphere samples versus Percus–Yevick</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_grid_convergence.html">Convergence of the Percus–Yevick reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_regime_convergence.html">Grid refinement across mixture regimes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_vs_tsang_2001.html">PackLab Percus–Yevick versus the Tsang et al. reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_vs_tsang_2001_monodisperse.html">PackLab monodisperse Percus–Yevick versus Tsang et al.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/rsa_density_ensemble.html">RSA ensembles across packing fractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/rsa_ensemble_vs_analytical.html">RSA ensemble versus a Percus–Yevick reference</a></li>
 </ul>
 </details></li>
@@ -563,9 +573,21 @@ physical inputs.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This benchmark measures the wall-clock time required to evaluate a fixed binary Percus--Yevick mixture at increasingly dense real-space distance grids. It measures computational cost only; it is not a numerical-convergence or physical-validation test."><img alt="" src="../../_images/sphx_glr_analytical_distance_scaling_thumb.png" />
 <p><a class="reference internal" href="analytical_distance_scaling.html"><span class="doc">Analytical evaluation scaling</span></a></p>
   <div class="sphx-glr-thumbnail-title">Analytical evaluation scaling</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Time a fixed binary mixture on increasingly fine manual grids. Grid spacing resolves at least 12 samples per longest-distance oscillation; decreasing the real-space resolution increases the high-wavenumber cutoff. The median of three runs is a timing measure, not an accuracy assessment. Report machine, software versions and thread settings when comparing measurements."><img alt="" src="../../_images/sphx_glr_analytical_grid_scaling_thumb.png" />
+<p><a class="reference internal" href="analytical_grid_scaling.html"><span class="doc">Analytical wavenumber-grid cost</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Analytical wavenumber-grid cost</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Measure the cost of evaluating mixtures with different numbers of radius classes on fixed radial and wavenumber grids. The physical size distribution changes with the number of classes, so this benchmark measures computational scaling rather than a numerical convergence sequence. The manual grid uses 12 samples per longest-distance oscillation and a 0.01 µm radial resolution; verify convergence separately before using it in a scientific calculation."><img alt="" src="../../_images/sphx_glr_analytical_species_scaling_thumb.png" />
+<p><a class="reference internal" href="analytical_species_scaling.html"><span class="doc">Percus–Yevick mixture-size scaling</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Percus--Yevick mixture-size scaling</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Measure the cost of advancing the same initial periodic configuration for several sweep counts. Each measurement starts a new sampler with the same seed; the reported median of three runs includes sampler construction. These short timings measure work, not equilibration or statistical accuracy. Report hardware, package version, and thread settings with results."><img alt="" src="../../_images/sphx_glr_metropolis_sweep_scaling_thumb.png" />
+<p><a class="reference internal" href="metropolis_sweep_scaling.html"><span class="doc">Metropolis sampling cost per sweep</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Metropolis sampling cost per sweep</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This benchmark measures the time to generate periodic random sequential adsorption (RSA) configurations as the box volume, and therefore the requested particle count, increases. The radius, target packing fraction, and stopping criteria remain fixed."><img alt="" src="../../_images/sphx_glr_rsa_box_scaling_thumb.png" />
 <p><a class="reference internal" href="rsa_box_scaling.html"><span class="doc">RSA generation scaling</span></a></p>
   <div class="sphx-glr-thumbnail-title">RSA generation scaling</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Compare insertion times at fixed box size and radius. Each point is the median of three seeded independent runs; print achieved fractions and particle counts because stopping limits can prevent a target from being reached. Timings depend on the machine, build, and random seeds. RSA is irreversible."><img alt="" src="../../_images/sphx_glr_rsa_density_scaling_thumb.png" />
+<p><a class="reference internal" href="rsa_density_scaling.html"><span class="doc">RSA cost at different target fractions</span></a></p>
+  <div class="sphx-glr-thumbnail-title">RSA cost at different target fractions</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 </section>
@@ -613,7 +635,7 @@ physical inputs.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.15/docs/source/gallery/benchmarks/index.rst">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.16/docs/source/gallery/benchmarks/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

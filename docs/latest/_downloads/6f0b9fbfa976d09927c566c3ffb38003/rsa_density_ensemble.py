@@ -1,0 +1,73 @@
+"""
+RSA ensembles across packing fractions
+======================================
+
+Compare independent monodisperse RSA configurations with Percus--Yevick at
+three packing fractions. Each analytical curve uses the mean measured RSA
+fraction; individual runs have the same radius and periodic box size. Shading
+shows one standard error across independent RSA configurations, not the error
+of the analytical model or a confidence interval for model discrepancy.
+
+The ensembles are deliberately small for the documentation build. RSA is
+irreversible and history-dependent, whereas Percus--Yevick is an equilibrium
+reference; agreement is not expected to be exact. Finite size, radial bins,
+and the finite ensemble also affect the comparison.
+"""
+
+import matplotlib.pyplot as plt
+import numpy as np
+from PackLab import analytical, monte_carlo, samplers, ureg
+
+radius = 0.2 * ureg.micrometer
+domain = monte_carlo.PackingDomain(
+    4 * ureg.micrometer,
+    4 * ureg.micrometer,
+    4 * ureg.micrometer,
+    use_periodic_boundaries=True,
+)
+sampler = samplers.ConstantRadiusSampler(radius, bins=1)
+figure, axes = plt.subplots(1, 3, figsize=(12, 3.5), sharey=True)
+for axis, target in zip(axes, (0.05, 0.10, 0.20)):
+    curves, fractions = [], []
+    for seed in range(10, 18):
+        options = monte_carlo.RSAOptions()
+        options.random_seed = seed
+        options.target_packing_fraction = target
+        options.maximum_attempts = 100_000
+        options.maximum_consecutive_rejections = 20_000
+        result = monte_carlo.RSASimulator(domain, sampler, options).run()
+        centers, partial_g = result.compute_partial_pair_correlation_function(
+            n_bins=60,
+            maximum_pairs=100_000,
+        )
+        curves.append(partial_g[0, 0])
+        fractions.append(result.statistics.packing_fraction_geometry)
+    mean = np.mean(curves, axis=0)
+    standard_error = np.std(curves, axis=0, ddof=1) / np.sqrt(len(curves))
+    fraction = np.mean(fractions)
+    reference_domain = analytical.PercusYevickDomain(
+        size=100 * ureg.micrometer,
+        radii=np.array([0.2]) * ureg.micrometer,
+        volume_fraction=fraction,
+        number_fractions=[1.0],
+    )
+    reference = analytical.PercusYevickSolver(
+        densities=reference_domain.particle_densities_per_radius,
+        radii=reference_domain.radii,
+        wavenumber="auto",
+    ).compute(centers)
+    x = centers.to("micrometer").magnitude
+    axis.plot(x, mean, label="RSA ensemble mean")
+    axis.fill_between(
+        x, mean - standard_error, mean + standard_error, alpha=0.25, label="RSA standard error"
+    )
+    axis.plot(x, reference.g[0, 0], "k--", label="Percus--Yevick")
+    axis.set(title=f"mean fraction = {fraction:.3f}", xlabel="separation (µm)")
+    axis.grid(alpha=0.2)
+    print(
+        f"target={target:.2f}; measured range={min(fractions):.4f}–{max(fractions):.4f}; "
+        f"independent runs={len(curves)}"
+    )
+axes[0].set_ylabel("pair correlation g(r)")
+axes[0].legend(fontsize="small")
+figure.tight_layout()

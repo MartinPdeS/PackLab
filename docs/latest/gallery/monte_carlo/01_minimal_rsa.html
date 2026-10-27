@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.15';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.16';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="v0.8.15" />
+  <meta name="docsearch:version" content="v0.8.16" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -461,13 +461,18 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../analytical/index.html">Analytical models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/01_monodisperse_volume_fraction.html">Monodisperse Percus–Yevick fluid at several densities</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/02_binary_mixture_pair_correlations.html">Binary-mixture Percus–Yevick pair correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../analytical/03_binary_composition.html">Binary-mixture composition at fixed volume fraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/analytical_poly_disperse.html">Percus Yevick mixture solver workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../analytical/scattering.html">Scattering Example: Percus Yevick Structure Factor and Phase Function</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarks/analytical_distance_scaling.html">Analytical evaluation scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/analytical_grid_scaling.html">Analytical wavenumber-grid cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/analytical_species_scaling.html">Percus–Yevick mixture-size scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/metropolis_sweep_scaling.html">Metropolis sampling cost per sweep</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarks/rsa_box_scaling.html">RSA generation scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/rsa_density_scaling.html">RSA cost at different target fractions</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Monte-Carlo hard-sphere workflows</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -481,13 +486,18 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../scattering/index.html">Scattering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../scattering/01_single_particle_amplitudes.html">Single-particle scattering amplitudes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../scattering/02_structure_factor_phase_function.html">Mixture phase function with a structure factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/03_wavelength_sweep.html">Single-sphere wavelength sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/04_refractive_index.html">Effect of optical contrast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/05_independent_mixture.html">Independent scattering from a size mixture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation and comparison</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../validation/metropolis_vs_analytical.html">Metropolis hard-sphere samples versus Percus–Yevick</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_grid_convergence.html">Convergence of the Percus–Yevick reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_regime_convergence.html">Grid refinement across mixture regimes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_vs_tsang_2001.html">PackLab Percus–Yevick versus the Tsang et al. reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_vs_tsang_2001_monodisperse.html">PackLab monodisperse Percus–Yevick versus Tsang et al.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/rsa_density_ensemble.html">RSA ensembles across packing fractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/rsa_ensemble_vs_analytical.html">RSA ensemble versus a Percus–Yevick reference</a></li>
 </ul>
 </details></li>
@@ -564,7 +574,7 @@ to download the full example code.</p>
 <p>This example creates a small periodic RSA packing from a uniform radius
 distribution. It then visualises a central two-dimensional slice of the
 accepted sphere configuration.</p>
-<img src="../../_images/sphx_glr_01_minimal_rsa_001.png" srcset="../../_images/sphx_glr_01_minimal_rsa_001.png" alt="Central slice of a periodic RSA packing, 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 89 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;PackLab.monte_carlo.results.PackingResult object at 0x7f2aae7429d0&gt;
+<img src="../../_images/sphx_glr_01_minimal_rsa_001.png" srcset="../../_images/sphx_glr_01_minimal_rsa_001.png" alt="Central slice of a periodic RSA packing, 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 89 spheres" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;PackLab.monte_carlo.results.PackingResult object at 0x7f41b095fc50&gt;
 Packing fraction: 0.080
 </pre></div>
 </div>
@@ -660,7 +670,7 @@ Packing fraction: 0.080
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.15/docs/source/gallery/monte_carlo/01_minimal_rsa.rst">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.16/docs/source/gallery/monte_carlo/01_minimal_rsa.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

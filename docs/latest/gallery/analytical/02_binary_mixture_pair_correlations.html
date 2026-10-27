@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.15';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v0.8.16';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,12 +63,12 @@
     <link rel="icon" href="../../_static/packlab-favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Percus Yevick mixture solver workflow" href="analytical_poly_disperse.html" />
+    <link rel="next" title="Binary-mixture composition at fixed volume fraction" href="03_binary_composition.html" />
     <link rel="prev" title="Monodisperse Percus–Yevick fluid at several densities" href="01_monodisperse_volume_fraction.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="v0.8.15" />
+  <meta name="docsearch:version" content="v0.8.16" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -462,13 +462,18 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Analytical models</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="01_monodisperse_volume_fraction.html">Monodisperse Percus–Yevick fluid at several densities</a></li>
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Binary-mixture Percus–Yevick pair correlations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="03_binary_composition.html">Binary-mixture composition at fixed volume fraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analytical_poly_disperse.html">Percus Yevick mixture solver workflow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scattering.html">Scattering Example: Percus Yevick Structure Factor and Phase Function</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarks/analytical_distance_scaling.html">Analytical evaluation scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/analytical_grid_scaling.html">Analytical wavenumber-grid cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/analytical_species_scaling.html">Percus–Yevick mixture-size scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/metropolis_sweep_scaling.html">Metropolis sampling cost per sweep</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../benchmarks/rsa_box_scaling.html">RSA generation scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../benchmarks/rsa_density_scaling.html">RSA cost at different target fractions</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../monte_carlo/index.html">Monte-Carlo hard-sphere workflows</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -482,13 +487,18 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../scattering/index.html">Scattering</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../scattering/01_single_particle_amplitudes.html">Single-particle scattering amplitudes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../scattering/02_structure_factor_phase_function.html">Mixture phase function with a structure factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/03_wavelength_sweep.html">Single-sphere wavelength sweep</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/04_refractive_index.html">Effect of optical contrast</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../scattering/05_independent_mixture.html">Independent scattering from a size mixture</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation and comparison</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../validation/metropolis_vs_analytical.html">Metropolis hard-sphere samples versus Percus–Yevick</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_grid_convergence.html">Convergence of the Percus–Yevick reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_regime_convergence.html">Grid refinement across mixture regimes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_vs_tsang_2001.html">PackLab Percus–Yevick versus the Tsang et al. reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/percus_yevick_vs_tsang_2001_monodisperse.html">PackLab monodisperse Percus–Yevick versus Tsang et al.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/rsa_density_ensemble.html">RSA ensembles across packing fractions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../validation/rsa_ensemble_vs_analytical.html">RSA ensemble versus a Percus–Yevick reference</a></li>
 </ul>
 </details></li>
@@ -602,7 +612,7 @@ mixture.  The hard-core cutoffs occur at the corresponding contact distances
 </span><span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span><span class="w">
 </span><span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../_images/sphx_glr_02_binary_mixture_pair_correlations_001.png" srcset="../../_images/sphx_glr_02_binary_mixture_pair_correlations_001.png" alt="Binary Percus--Yevick hard-sphere mixture" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.212 seconds)</p>
+<img src="../../_images/sphx_glr_02_binary_mixture_pair_correlations_001.png" srcset="../../_images/sphx_glr_02_binary_mixture_pair_correlations_001.png" alt="Binary Percus--Yevick hard-sphere mixture" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.148 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-analytical-02-binary-mixture-pair-correlations-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/0444606fdc2a34e6650d135db7eedc0b/02_binary_mixture_pair_correlations.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">02_binary_mixture_pair_correlations.ipynb</span></code></a></p>
@@ -638,11 +648,11 @@ mixture.  The hard-core cutoffs occur at the corresponding contact distances
       </div>
     </a>
     <a class="right-next"
-       href="analytical_poly_disperse.html"
+       href="03_binary_composition.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Percus Yevick mixture solver workflow</p>
+        <p class="prev-next-title">Binary-mixture composition at fixed volume fraction</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -674,7 +684,7 @@ mixture.  The hard-core cutoffs occur at the corresponding contact distances
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.15/docs/source/gallery/analytical/02_binary_mixture_pair_correlations.rst">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.16/docs/source/gallery/analytical/02_binary_mixture_pair_correlations.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

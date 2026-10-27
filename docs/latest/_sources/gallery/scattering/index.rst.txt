@@ -12,10 +12,10 @@ extra before running them:
 
    $ pip install "packlab[scattering]"
 
-The first example treats individual sphere sizes independently. The second
-combines the optical amplitudes with a Percus--Yevick mixture structure factor;
-it is an analytical scattering calculation, not a simulation of an RSA
-configuration.
+The single-sphere examples explore size, wavelength, and optical contrast.
+The mixture examples compare independent scattering with a structure-corrected
+Percus--Yevick reference. The latter is an analytical calculation, not a
+simulation of an RSA configuration.
 
 
 .. raw:: html
@@ -63,6 +63,57 @@ configuration.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare scattering cross sections of a fixed sphere across wavelengths in the same medium. This independent-particle optical calculation contains no packing structure or multiple scattering.">
+
+.. only:: html
+
+  .. image:: /gallery/scattering/images/thumb/sphx_glr_03_wavelength_sweep_thumb.png
+    :alt:
+
+  :doc:`/gallery/scattering/03_wavelength_sweep`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Single-sphere wavelength sweep</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Change the sphere refractive index at fixed diameter, wavelength, and medium. The resulting cross sections describe isolated spheres, without structural correlations between particles.">
+
+.. only:: html
+
+  .. image:: /gallery/scattering/images/thumb/sphx_glr_04_refractive_index_thumb.png
+    :alt:
+
+  :doc:`/gallery/scattering/04_refractive_index`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Effect of optical contrast</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The independent scattering coefficient sums each cross section weighted by its number density. This approximation omits interference from particle correlations; see the structure-factor example for a correlated reference.">
+
+.. only:: html
+
+  .. image:: /gallery/scattering/images/thumb/sphx_glr_05_independent_mixture_thumb.png
+    :alt:
+
+  :doc:`/gallery/scattering/05_independent_mixture`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Independent scattering from a size mixture</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -75,4 +126,7 @@ configuration.
 
    /gallery/scattering/01_single_particle_amplitudes
    /gallery/scattering/02_structure_factor_phase_function
+   /gallery/scattering/03_wavelength_sweep
+   /gallery/scattering/04_refractive_index
+   /gallery/scattering/05_independent_mixture
 

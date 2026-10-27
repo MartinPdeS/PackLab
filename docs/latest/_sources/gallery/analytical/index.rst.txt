@@ -57,6 +57,23 @@ scattering workflow builds on this result and requires the optional
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Vary the number fraction of small spheres while keeping both radii and total volume fraction fixed. Number fraction is not volume fraction: large spheres contribute more volume per particle. These curves are equilibrium Percus--Yevick references, not RSA configurations.">
+
+.. only:: html
+
+  .. image:: /gallery/analytical/images/thumb/sphx_glr_03_binary_composition_thumb.png
+    :alt:
+
+  :doc:`/gallery/analytical/03_binary_composition`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Binary-mixture composition at fixed volume fraction</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example demonstrates the complete workflow for computing the radial distribution function g_{ij}(r) of a polydisperse hard sphere mixture using a Percus Yevick style solver.">
 
 .. only:: html
@@ -101,6 +118,7 @@ scattering workflow builds on this result and requires the optional
 
    /gallery/analytical/01_monodisperse_volume_fraction
    /gallery/analytical/02_binary_mixture_pair_correlations
+   /gallery/analytical/03_binary_composition
    /gallery/analytical/analytical_poly_disperse
    /gallery/analytical/scattering
 

@@ -45,6 +45,57 @@ physical inputs.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Time a fixed binary mixture on increasingly fine manual grids. Grid spacing resolves at least 12 samples per longest-distance oscillation; decreasing the real-space resolution increases the high-wavenumber cutoff. The median of three runs is a timing measure, not an accuracy assessment. Report machine, software versions and thread settings when comparing measurements.">
+
+.. only:: html
+
+  .. image:: /gallery/benchmarks/images/thumb/sphx_glr_analytical_grid_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/benchmarks/analytical_grid_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analytical wavenumber-grid cost</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Measure the cost of evaluating mixtures with different numbers of radius classes on fixed radial and wavenumber grids. The physical size distribution changes with the number of classes, so this benchmark measures computational scaling rather than a numerical convergence sequence. The manual grid uses 12 samples per longest-distance oscillation and a 0.01 µm radial resolution; verify convergence separately before using it in a scientific calculation.">
+
+.. only:: html
+
+  .. image:: /gallery/benchmarks/images/thumb/sphx_glr_analytical_species_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/benchmarks/analytical_species_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Percus--Yevick mixture-size scaling</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Measure the cost of advancing the same initial periodic configuration for several sweep counts. Each measurement starts a new sampler with the same seed; the reported median of three runs includes sampler construction. These short timings measure work, not equilibration or statistical accuracy. Report hardware, package version, and thread settings with results.">
+
+.. only:: html
+
+  .. image:: /gallery/benchmarks/images/thumb/sphx_glr_metropolis_sweep_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/benchmarks/metropolis_sweep_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Metropolis sampling cost per sweep</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This benchmark measures the time to generate periodic random sequential adsorption (RSA) configurations as the box volume, and therefore the requested particle count, increases. The radius, target packing fraction, and stopping criteria remain fixed.">
 
 .. only:: html
@@ -60,6 +111,23 @@ physical inputs.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare insertion times at fixed box size and radius. Each point is the median of three seeded independent runs; print achieved fractions and particle counts because stopping limits can prevent a target from being reached. Timings depend on the machine, build, and random seeds. RSA is irreversible.">
+
+.. only:: html
+
+  .. image:: /gallery/benchmarks/images/thumb/sphx_glr_rsa_density_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/benchmarks/rsa_density_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">RSA cost at different target fractions</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -71,5 +139,9 @@ physical inputs.
    :hidden:
 
    /gallery/benchmarks/analytical_distance_scaling
+   /gallery/benchmarks/analytical_grid_scaling
+   /gallery/benchmarks/analytical_species_scaling
+   /gallery/benchmarks/metropolis_sweep_scaling
    /gallery/benchmarks/rsa_box_scaling
+   /gallery/benchmarks/rsa_density_scaling
 

@@ -5,10 +5,11 @@
 Validation and comparison
 =========================
 
-These examples make three complementary validation checks:
+These examples make complementary validation checks:
 
 * compare an ensemble of explicit, finite RSA packings with a matching
-  Percus--Yevick reference, including the RSA standard error;
+  Percus--Yevick reference, including the RSA standard error, and repeat the
+  comparison across packing fractions;
 * compare samples from a fixed-volume Metropolis hard-sphere chain with the
   same Percus--Yevick reference;
 * compare PackLab's binary-mixture Percus--Yevick solution with digitised
@@ -16,7 +17,7 @@ These examples make three complementary validation checks:
 * compare PackLab's monodisperse Percus--Yevick solution at $f=0.2$ and
   $f=0.3$ with digitised curves from the same reference;
 * verify convergence of the numerical Percus--Yevick inverse transform by
-  refining its wavenumber grid.
+  refining its wavenumber grid across mixture sizes and volume fractions.
 
 RSA is an irreversible, history-dependent packing process. Metropolis samples
 the equilibrium hard-sphere ensemble only after adequate burn-in and sampling.
@@ -71,6 +72,23 @@ is informative but is not an expectation of exact equality.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Check how the automatic Percus--Yevick inverse-transform grid responds to changes in volume fraction and size ratio. The reported maximum difference is measured away from hard-core contacts, where the discontinuity makes pointwise Fourier convergence slower. This assesses numerical resolution of one model; it does not imply that irreversible RSA is equivalent to the equilibrium Percus--Yevick reference.">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_percus_yevick_regime_convergence_thumb.png
+    :alt:
+
+  :doc:`/gallery/validation/percus_yevick_regime_convergence`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Grid refinement across mixture regimes</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This validation example compares PackLab&#x27;s Percus--Yevick (PY) solution for a binary hard-sphere mixture with manually digitised PY curves from Figure 8.3.4 of Tsang, Kong, Ding, and Ao (2001).  The book uses radii a_2 = 2a_1, partial volume fractions f_1=0.2 and f_2=0.1, and reduced separation r/(2a_1).">
 
 .. only:: html
@@ -105,6 +123,23 @@ is informative but is not an expectation of exact equality.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare independent monodisperse RSA configurations with Percus--Yevick at three packing fractions. Each analytical curve uses the mean measured RSA fraction; individual runs have the same radius and periodic box size. Shading shows one standard error across independent RSA configurations, not the error of the analytical model or a confidence interval for model discrepancy.">
+
+.. only:: html
+
+  .. image:: /gallery/validation/images/thumb/sphx_glr_rsa_density_ensemble_thumb.png
+    :alt:
+
+  :doc:`/gallery/validation/rsa_density_ensemble`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">RSA ensembles across packing fractions</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This validation example compares partial pair correlations g_{ij}(r) from an ensemble of explicit random sequential adsorption (RSA) configurations with a Percus--Yevick hard-sphere-mixture reference at the same radius distribution and volume fraction.">
 
 .. only:: html
@@ -132,7 +167,9 @@ is informative but is not an expectation of exact equality.
 
    /gallery/validation/metropolis_vs_analytical
    /gallery/validation/percus_yevick_grid_convergence
+   /gallery/validation/percus_yevick_regime_convergence
    /gallery/validation/percus_yevick_vs_tsang_2001
    /gallery/validation/percus_yevick_vs_tsang_2001_monodisperse
+   /gallery/validation/rsa_density_ensemble
    /gallery/validation/rsa_ensemble_vs_analytical
 
