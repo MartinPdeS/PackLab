@@ -22,8 +22,6 @@ globals().update(
         logo="../images/logo.svg",
         favicon="_static/packlab-favicon.png",
         prefer_installed_package=True,
-        docs_root=docs_source.parent,
-        profile="scientific-gallery",
         gallery_default_thumb=str(docs_source / "_static" / "gallery-default.png"),
         gallery_options={"capture_repr": ()},
         logo_text="",
