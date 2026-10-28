@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:21.001** total execution time for 28 files **from all galleries**:
+**00:16.456** total execution time for 28 files **from all galleries**:
 
 .. container::
 
@@ -33,86 +33,86 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_monte_carlo_04_metropolis_equilibration.py` (``../examples/monte_carlo/04_metropolis_equilibration.py``)
-     - 00:06.660
+     - 00:06.077
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_rsa_ensemble_vs_analytical.py` (``../examples/validation/rsa_ensemble_vs_analytical.py``)
-     - 00:04.969
+     - 00:03.982
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_scattering.py` (``../examples/analytical/scattering.py``)
-     - 00:03.029
+     - 00:02.013
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_metropolis_sweep_scaling.py` (``../examples/benchmarks/metropolis_sweep_scaling.py``)
-     - 00:01.100
+     - 00:00.999
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_analytical_poly_disperse.py` (``../examples/analytical/analytical_poly_disperse.py``)
-     - 00:00.578
-     - 0.0
-   * - :ref:`sphx_glr_gallery_monte_carlo_monte_carlo_poly_disperse.py` (``../examples/monte_carlo/monte_carlo_poly_disperse.py``)
-     - 00:00.500
+     - 00:00.364
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_grid_convergence.py` (``../examples/validation/percus_yevick_grid_convergence.py``)
-     - 00:00.494
+     - 00:00.322
+     - 0.0
+   * - :ref:`sphx_glr_gallery_monte_carlo_monte_carlo_poly_disperse.py` (``../examples/monte_carlo/monte_carlo_poly_disperse.py``)
+     - 00:00.315
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_analytical_distance_scaling.py` (``../examples/benchmarks/analytical_distance_scaling.py``)
-     - 00:00.476
+     - 00:00.303
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_rsa_density_ensemble.py` (``../examples/validation/rsa_density_ensemble.py``)
-     - 00:00.323
+     - 00:00.200
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_regime_convergence.py` (``../examples/validation/percus_yevick_regime_convergence.py``)
-     - 00:00.296
-     - 0.0
-   * - :ref:`sphx_glr_gallery_monte_carlo_01_minimal_rsa.py` (``../examples/monte_carlo/01_minimal_rsa.py``)
-     - 00:00.265
-     - 0.0
-   * - :ref:`sphx_glr_gallery_benchmarks_analytical_species_scaling.py` (``../examples/benchmarks/analytical_species_scaling.py``)
-     - 00:00.239
+     - 00:00.200
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_metropolis_vs_analytical.py` (``../examples/validation/metropolis_vs_analytical.py``)
-     - 00:00.204
+     - 00:00.155
+     - 0.0
+   * - :ref:`sphx_glr_gallery_benchmarks_analytical_species_scaling.py` (``../examples/benchmarks/analytical_species_scaling.py``)
+     - 00:00.151
+     - 0.0
+   * - :ref:`sphx_glr_gallery_monte_carlo_01_minimal_rsa.py` (``../examples/monte_carlo/01_minimal_rsa.py``)
+     - 00:00.147
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_01_monodisperse_volume_fraction.py` (``../examples/analytical/01_monodisperse_volume_fraction.py``)
-     - 00:00.184
+     - 00:00.123
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_01_single_particle_amplitudes.py` (``../examples/scattering/01_single_particle_amplitudes.py``)
-     - 00:00.170
+     - 00:00.112
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_03_radius_samplers.py` (``../examples/monte_carlo/03_radius_samplers.py``)
-     - 00:00.144
+     - 00:00.091
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001.py` (``../examples/validation/percus_yevick_vs_tsang_2001.py``)
-     - 00:00.139
+     - 00:00.091
      - 0.0
    * - :ref:`sphx_glr_gallery_analytical_02_binary_mixture_pair_correlations.py` (``../examples/analytical/02_binary_mixture_pair_correlations.py``)
-     - 00:00.136
-     - 0.0
-   * - :ref:`sphx_glr_gallery_analytical_03_binary_composition.py` (``../examples/analytical/03_binary_composition.py``)
-     - 00:00.135
-     - 0.0
-   * - :ref:`sphx_glr_gallery_benchmarks_analytical_grid_scaling.py` (``../examples/benchmarks/analytical_grid_scaling.py``)
-     - 00:00.133
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py` (``../examples/validation/percus_yevick_vs_tsang_2001_monodisperse.py``)
-     - 00:00.130
+     - 00:00.090
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_rsa_box_scaling.py` (``../examples/benchmarks/rsa_box_scaling.py``)
-     - 00:00.125
+     - 00:00.087
+     - 0.0
+   * - :ref:`sphx_glr_gallery_analytical_03_binary_composition.py` (``../examples/analytical/03_binary_composition.py``)
+     - 00:00.087
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py` (``../examples/validation/percus_yevick_vs_tsang_2001_monodisperse.py``)
+     - 00:00.086
+     - 0.0
+   * - :ref:`sphx_glr_gallery_benchmarks_analytical_grid_scaling.py` (``../examples/benchmarks/analytical_grid_scaling.py``)
+     - 00:00.081
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_rsa_density_scaling.py` (``../examples/benchmarks/rsa_density_scaling.py``)
-     - 00:00.109
-     - 0.0
-   * - :ref:`sphx_glr_gallery_scattering_04_refractive_index.py` (``../examples/scattering/04_refractive_index.py``)
-     - 00:00.104
+     - 00:00.074
      - 0.0
    * - :ref:`sphx_glr_gallery_monte_carlo_02_periodic_boundaries.py` (``../examples/monte_carlo/02_periodic_boundaries.py``)
-     - 00:00.098
+     - 00:00.069
+     - 0.0
+   * - :ref:`sphx_glr_gallery_scattering_04_refractive_index.py` (``../examples/scattering/04_refractive_index.py``)
+     - 00:00.068
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_03_wavelength_sweep.py` (``../examples/scattering/03_wavelength_sweep.py``)
-     - 00:00.098
+     - 00:00.063
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_05_independent_mixture.py` (``../examples/scattering/05_independent_mixture.py``)
-     - 00:00.088
+     - 00:00.058
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_02_structure_factor_phase_function.py` (``../examples/scattering/02_structure_factor_phase_function.py``)
-     - 00:00.074
+     - 00:00.049
      - 0.0

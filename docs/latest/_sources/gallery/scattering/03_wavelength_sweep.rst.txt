@@ -68,7 +68,7 @@ packing structure or multiple scattering.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.098 seconds)
+   **Total running time of the script:** (0 minutes 0.063 seconds)
 
 
 .. _sphx_glr_download_gallery_scattering_03_wavelength_sweep.py:

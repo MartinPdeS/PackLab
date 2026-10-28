@@ -41,10 +41,10 @@ software versions and thread settings when comparing measurements.
 
  .. code-block:: none
 
-    451 wavenumbers: median 0.0012 s
-    901 wavenumbers: median 0.0023 s
-    1351 wavenumbers: median 0.0034 s
-    1801 wavenumbers: median 0.0045 s
+    451 wavenumbers: median 0.0008 s
+    901 wavenumbers: median 0.0016 s
+    1351 wavenumbers: median 0.0023 s
+    1801 wavenumbers: median 0.0031 s
 
 
 
@@ -93,7 +93,7 @@ software versions and thread settings when comparing measurements.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.133 seconds)
+   **Total running time of the script:** (0 minutes 0.081 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_analytical_grid_scaling.py:

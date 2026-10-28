@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:06.555** total execution time for 7 files **from gallery/validation**:
+**00:05.036** total execution time for 7 files **from gallery/validation**:
 
 .. container::
 
@@ -33,23 +33,23 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_rsa_ensemble_vs_analytical.py` (``rsa_ensemble_vs_analytical.py``)
-     - 00:04.969
+     - 00:03.982
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_grid_convergence.py` (``percus_yevick_grid_convergence.py``)
-     - 00:00.494
+     - 00:00.322
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_rsa_density_ensemble.py` (``rsa_density_ensemble.py``)
-     - 00:00.323
+     - 00:00.200
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_regime_convergence.py` (``percus_yevick_regime_convergence.py``)
-     - 00:00.296
+     - 00:00.200
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_metropolis_vs_analytical.py` (``metropolis_vs_analytical.py``)
-     - 00:00.204
+     - 00:00.155
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001.py` (``percus_yevick_vs_tsang_2001.py``)
-     - 00:00.139
+     - 00:00.091
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_percus_yevick_vs_tsang_2001_monodisperse.py` (``percus_yevick_vs_tsang_2001_monodisperse.py``)
-     - 00:00.130
+     - 00:00.086
      - 0.0
