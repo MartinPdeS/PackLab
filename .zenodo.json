@@ -22,8 +22,8 @@
   "license": "MIT",
   "upload_type": "software",
   "access_right": "open",
-  "version": "0.8.17",
-  "publication_date": "2026-10-27",
+  "version": "0.8.18",
+  "publication_date": "2026-10-28",
   "keywords": [
     "Percus-Yevick",
     "hard-sphere mixtures",
