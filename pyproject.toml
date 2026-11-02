@@ -62,14 +62,8 @@ include = ["PackLab*"]
 
 
 [project.optional-dependencies]
-release = ["martinpdes-maintenance==0.2.2"]
-testing = ["martinpdes-maintenance==0.2.2",
-    "pytest>=8,<9",
-    "pytest-cov>=5,<8",
-    "pytest-json-report==1.5.0",
-    "coverage>=7.6,<8",
-    "ruff>=0.8,<1",
-]
+release = ["martinpdes-maintenance==0.2.3"]
+testing = ["martinpdes-maintenance[testing]==0.2.3", "pytest-json-report==1.5.0", "pytest<9", "coverage>=7.6,<8", "pytest-cov<8"]
 
 documentation = [
     "MartinPdeS-docs>=0.4.0,<0.5",
@@ -80,10 +74,7 @@ scattering = [
     "PyMieSim>=6.0.4,<6.1",
 ]
 
-dev = [
-    "pre-commit>=4,<5",
-    "ruff>=0.8,<1",
-]
+dev = ["martinpdes-maintenance[quality]==0.2.3", "pre-commit>=4,<5"]
 
 [tool.ruff]
 target-version = "py310"
