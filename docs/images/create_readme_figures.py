@@ -4,7 +4,6 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.ticker import FuncFormatter
 
 from PackLab import analytical, monte_carlo, samplers, ureg
 
@@ -13,7 +12,7 @@ OUTPUT_DIRECTORY = Path(__file__).parent
 
 
 def create_rsa_packing_figure() -> None:
-    """Save a deterministic two-dimensional slice through an RSA packing."""
+    """Save a deterministic three-dimensional RSA packing."""
     domain = monte_carlo.PackingDomain(
         5 * ureg.micrometer,
         5 * ureg.micrometer,
@@ -32,23 +31,10 @@ def create_rsa_packing_figure() -> None:
     options.target_packing_fraction = 0.12
 
     result = monte_carlo.RSASimulator(domain, sampler, options).run()
-    figure = result.plot_slice_2d(show=False, slice_thickness_fraction=0.12)
-    axis = figure.axes[0]
-    for circle in axis.patches:
-        circle.set_edgecolor("#1864ab")
-        circle.set_facecolor("#d0ebff")
-        circle.set_alpha(0.75)
+    figure = result.plot_packing_3d(show=False)
+    figure.update_layout(title="Periodic RSA packing")
+    figure.write_image(OUTPUT_DIRECTORY / "readme_rsa_packing.png", width=800, height=680, scale=2)
 
-    micrometer_formatter = FuncFormatter(lambda value, _: f"{value / 1e-6:g}")
-    axis.xaxis.set_major_formatter(micrometer_formatter)
-    axis.yaxis.set_major_formatter(micrometer_formatter)
-    axis.set_title("Periodic RSA packing")
-    axis.set_xlabel(r"$x$ ($\mu$m)")
-    axis.set_ylabel(r"$y$ ($\mu$m)")
-    figure.set_size_inches(5.2, 4.4)
-    figure.tight_layout()
-    figure.savefig(OUTPUT_DIRECTORY / "readme_rsa_packing.png", dpi=180, bbox_inches="tight")
-    plt.close(figure)
 
 
 def create_percus_yevick_figure() -> None:
@@ -108,23 +94,10 @@ def create_metropolis_figure() -> None:
         options,
     ).run()
 
-    figure = result.plot_slice_2d(show=False, slice_thickness_fraction=0.20)
-    axis = figure.axes[0]
-    for circle in axis.patches:
-        circle.set_edgecolor("#087f5b")
-        circle.set_facecolor("#d3f9d8")
-        circle.set_alpha(0.75)
+    figure = result.plot_packing_3d(show=False)
+    figure.update_layout(title="Hard spheres after Metropolis moves")
+    figure.write_image(OUTPUT_DIRECTORY / "readme_metropolis.png", width=800, height=680, scale=2)
 
-    micrometer_formatter = FuncFormatter(lambda value, _: f"{value / 1e-6:g}")
-    axis.xaxis.set_major_formatter(micrometer_formatter)
-    axis.yaxis.set_major_formatter(micrometer_formatter)
-    axis.set_title("Hard spheres after Metropolis moves")
-    axis.set_xlabel(r"$x$ ($\mu$m)")
-    axis.set_ylabel(r"$y$ ($\mu$m)")
-    figure.set_size_inches(5.2, 4.4)
-    figure.tight_layout()
-    figure.savefig(OUTPUT_DIRECTORY / "readme_metropolis.png", dpi=180, bbox_inches="tight")
-    plt.close(figure)
 
 
 if __name__ == "__main__":

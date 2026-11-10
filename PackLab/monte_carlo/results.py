@@ -1,14 +1,9 @@
-from typing import Literal
 from functools import cached_property
 from functools import wraps
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.patches import Circle
+import plotly.graph_objects as go
 from TypedUnit.units import ureg
-
-
-def _minimum_image_displacement(delta: np.ndarray, box_length: float) -> np.ndarray:
-    return delta - box_length * np.round(delta / box_length)
 
 
 def post_mpl_plot(plot_function):
@@ -281,126 +276,113 @@ class PackingResult:
 
         return figure
 
-    def _compute_slice_mask(
-        self, coord: np.ndarray, slice_center: float, slice_thickness: float, box_length: float
-    ) -> np.ndarray:
-        """
-        Compute the mask for particles within the slice thickness.
-        """
-        if self.domain.use_periodic_boundaries:
-            delta = _minimum_image_displacement(coord - slice_center, box_length)
-            return np.abs(delta) <= 0.5 * slice_thickness
-        else:
-            return np.abs(coord - slice_center) <= 0.5 * slice_thickness
-
-    @post_mpl_plot
-    def plot_slice_2d(
-        self,
-        slice_axis: Literal["x", "y", "z"] = "z",
-        slice_center_fraction: float = 0.5,
-        slice_thickness_fraction: float = 0.08,
-        maximum_circles_in_slice: int = 2500,
-    ) -> plt.Figure:
-        """
-        Plot a 2D slice of the sphere configuration.
+    def plot_packing_3d(self, *, show: bool = True) -> go.Figure:
+        """Show all spheres and the simulation box in an interactive 3D view.
 
         Parameters
         ----------
-        slice_axis : Literal["x", "y", "z"]
-            Axis along which to take the slice.
-        slice_center_fraction : float
-            Fractional position along the slice axis where the slice is centered (0.0 to 1.0).
-        slice_thickness_fraction : float
-            Fractional thickness of the slice relative to the box length along the slice axis
-            (0.0 to 1.0).
-        maximum_circles_in_slice : int
-            Maximum number of circles to plot in the slice (subsampling if necessary).
+        show : bool, default=True
+            Open the Plotly figure after constructing it.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            A figure in micrometres, with sphere radii represented geometrically.
+            Spheres are shown whole at their stored centres; periodic images are
+            not drawn, so particles at a periodic boundary can extend outside the box.
+
+        Notes
+        -----
+        Every particle is rendered as a triangulated sphere. Large packings can
+        require substantial browser memory and take time to render.
         """
-        if not (0.0 <= slice_center_fraction <= 1.0):
-            raise ValueError("slice_center_fraction must be between 0.0 and 1.0")
-        if not (0.0 <= slice_thickness_fraction <= 1.0):
-            raise ValueError("slice_thickness_fraction must be between 0.0 and 1.0")
-
-        axis_map = {"x": 0, "y": 1, "z": 2}
-        slice_idx = axis_map[slice_axis]
-
-        # Determine plot axes indices (a, b) such that slice_idx is excluded
-        # For 'z' (2) -> x(0), y(1)
-        # For 'y' (1) -> x(0), z(2)
-        # For 'x' (0) -> y(1), z(2)
-        remaining_axes = [i for i in range(3) if i != slice_idx]
-        a_idx, b_idx = remaining_axes[0], remaining_axes[1]
-
-        labels = ["x", "y", "z"]
-        a_label, b_label = labels[a_idx], labels[b_idx]
-
-        # box_lengths = np.array([self.domain.length_x, self.domain.length_y, self.domain.length_z])
-        box_lengths = [self.domain.length_x, self.domain.length_y, self.domain.length_z]
-
-        # Dimensions for plot
-        a_max = box_lengths[a_idx]
-        b_max = box_lengths[b_idx]
-
-        # Slice parameters
-        L_slice = box_lengths[slice_idx]
-        slice_center = slice_center_fraction * L_slice
-        slice_thickness = slice_thickness_fraction * L_slice
-
-        # Compute mask
-        coord = self.positions[:, slice_idx]
-        slice_mask = self._compute_slice_mask(coord, slice_center, slice_thickness, L_slice)
-
-        slice_positions = self.positions[slice_mask]
-        slice_radii = self.radii[slice_mask]
-
-        if getattr(a_max, "to", None):
-            a_max_val = a_max.to("meter").magnitude
-            b_max_val = b_max.to("meter").magnitude
-            slice_pos_val = slice_positions.to("meter").magnitude
-            slice_radii_val = slice_radii.to("meter").magnitude
-        else:
-            a_max_val = a_max
-            b_max_val = b_max
-            slice_pos_val = slice_positions
-            slice_radii_val = slice_radii
-
-        # Subsampling
-        n_spheres = slice_positions.shape[0]
-        if n_spheres > maximum_circles_in_slice:
-            rng = np.random.default_rng()
-            indices = rng.choice(n_spheres, size=maximum_circles_in_slice, replace=False)
-            slice_pos_val = slice_pos_val[indices]
-            slice_radii_val = slice_radii_val[indices]
-
-        figure, axes = plt.subplots()
-        axes.set_aspect("equal", adjustable="box")
-        axes.set_xlim(0, a_max_val)
-        axes.set_ylim(0, b_max_val)
-        axes.set_xlabel(a_label)
-        axes.set_ylabel(b_label)
-        axes.set_title(
-            f"2D slice at {slice_axis}≈{slice_center:.2f}, thickness {slice_thickness:.2f}"
-            + f" | showing {int(np.sum(slice_mask))} spheres"
+        positions = self.positions
+        radii = self.radii
+        positions = np.asarray(
+            positions.to("micrometer").magnitude if hasattr(positions, "to") else positions * 1e6
         )
-
-        for center, radius in zip(slice_pos_val, slice_radii_val):
-            axes.add_patch(
-                Circle(
-                    (center[a_idx], center[b_idx]),
-                    radius=radius,
-                    fill=False,
-                    linewidth=0.8,
-                    alpha=0.7,
+        radii = np.asarray(
+            radii.to("micrometer").magnitude if hasattr(radii, "to") else radii * 1e6
+        )
+        lengths = np.asarray(
+            [
+                length.to("micrometer").magnitude if hasattr(length, "to") else length * 1e6
+                for length in (self.domain.length_x, self.domain.length_y, self.domain.length_z)
+            ]
+        )
+        longitude = np.linspace(0, 2 * np.pi, 13)[:-1]
+        latitude = np.linspace(0, np.pi, 9)
+        theta, phi = np.meshgrid(longitude, latitude)
+        unit_vertices = np.column_stack(
+            (
+                (np.sin(phi) * np.cos(theta)).ravel(),
+                (np.sin(phi) * np.sin(theta)).ravel(),
+                np.cos(phi).ravel(),
+            )
+        )
+        vertices_per_sphere = len(unit_vertices)
+        vertices = (positions[:, None, :] + radii[:, None, None] * unit_vertices).reshape(-1, 3)
+        triangles = []
+        for row in range(len(latitude) - 1):
+            for column in range(len(longitude)):
+                first = row * len(longitude) + column
+                second = row * len(longitude) + (column + 1) % len(longitude)
+                triangles.extend(
+                    (
+                        (first, second, first + len(longitude)),
+                        (second, second + len(longitude), first + len(longitude)),
+                    )
+                )
+        triangles = np.asarray(triangles)
+        triangles = (
+            triangles[None, :, :] + np.arange(len(radii))[:, None, None] * vertices_per_sphere
+        ).reshape(-1, 3)
+        figure = go.Figure()
+        if len(radii):
+            figure.add_trace(
+                go.Mesh3d(
+                    x=vertices[:, 0],
+                    y=vertices[:, 1],
+                    z=vertices[:, 2],
+                    i=triangles[:, 0],
+                    j=triangles[:, 1],
+                    k=triangles[:, 2],
+                    color="#2583b8",
+                    opacity=1.0,
+                    flatshading=False,
+                    lighting=dict(ambient=0.55, diffuse=0.8, specular=0.25),
+                    hoverinfo="skip",
+                    name="Particles",
                 )
             )
-
-        axes.plot(
-            [0, a_max_val, a_max_val, 0, 0],
-            [0, 0, b_max_val, b_max_val, 0],
-            linewidth=1.2,
-            color="black",
+        corners = np.array(
+            [[x, y, z] for x in (0, lengths[0]) for y in (0, lengths[1]) for z in (0, lengths[2])]
         )
-
+        edges = [(i, j) for i in range(8) for j in range(i + 1, 8) if bin(i ^ j).count("1") == 1]
+        coordinates = [
+            [value for i, j in edges for value in (corners[i, axis], corners[j, axis], None)]
+            for axis in range(3)
+        ]
+        figure.add_trace(
+            go.Scatter3d(
+                x=coordinates[0],
+                y=coordinates[1],
+                z=coordinates[2],
+                mode="lines",
+                line=dict(color="#263746", width=4),
+                hoverinfo="skip",
+                showlegend=False,
+            )
+        )
+        figure.update_layout(
+            scene=dict(
+                xaxis_title="x (µm)", yaxis_title="y (µm)", zaxis_title="z (µm)", aspectmode="data"
+            ),
+            margin=dict(l=0, r=0, t=35, b=0),
+            title=f"Packing: {len(radii)} spheres",
+        )
+        if show:
+            figure.show()
         return figure
 
     @post_mpl_plot

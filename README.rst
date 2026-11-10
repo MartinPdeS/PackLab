@@ -122,7 +122,7 @@ Accepted particles never move, so the final configuration is physically valid
 but history-dependent rather than an equilibrium sample.
 
 .. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_rsa_packing.png
-   :alt: Two-dimensional slice through a periodic random sequential adsorption packing.
+   :alt: Three-dimensional view of a periodic random sequential adsorption packing.
    :width: 62%
    :align: center
 
@@ -148,10 +148,12 @@ but history-dependent rather than an equilibrium sample.
 
    rsa_result = monte_carlo.RSASimulator(domain, sampler, options).run()
    print(rsa_result.statistics.packing_fraction_geometry)
-   figure = rsa_result.plot_slice_2d(show=False)
+   figure = rsa_result.plot_packing_3d(show=False)
 
 ``PackingResult`` provides accepted centres, sampled radii, packing
-statistics, pair-correlation estimators, and plotting helpers. Radius samplers
+statistics, pair-correlation estimators, and plotting helpers. The interactive
+3D view shows whole spheres at their stored centres; periodic images are not
+drawn. Large packings can be slow to render. Radius samplers
 support constant, uniform, normal, log-normal, and discrete distributions.
 
 3. Equilibrate hard spheres with Metropolis MC
@@ -162,7 +164,7 @@ from the valid RSA configuration above, but then proposes particle
 displacements; particle count, radii, and class labels remain fixed.
 
 .. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_metropolis.png
-   :alt: Two-dimensional slice of a hard-sphere configuration after Metropolis Monte Carlo moves.
+   :alt: Three-dimensional view of a hard-sphere configuration after Metropolis Monte Carlo moves.
    :width: 62%
    :align: center
 
@@ -180,7 +182,7 @@ displacements; particle count, radii, and class labels remain fixed.
    )
    mc_result = simulator.run()
    print(simulator.statistics.acceptance_rate)
-   figure = mc_result.plot_slice_2d(show=False)
+   figure = mc_result.plot_packing_3d(show=False)
 
 The number of sweeps alone does not establish equilibration. Discard an
 initial burn-in interval, assess autocorrelation for the quantity of interest,

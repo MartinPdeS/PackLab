@@ -459,8 +459,7 @@ def test_packing_estimator_progress_and_statistics(capfd):
 # ==========================================================
 #  Test that plotting functions run without errors
 # ==========================================================
-@patch("matplotlib.pyplot.show")
-def test_plot_slice_runs(patch):
+def test_plot_packing_3d_runs():
     domain = monte_carlo.PackingDomain(
         4.0 * ureg.meter, 4.0 * ureg.meter, 4.0 * ureg.meter, use_periodic_boundaries=True
     )
@@ -472,7 +471,8 @@ def test_plot_slice_runs(patch):
 
     result = monte_carlo.RSASimulator(domain, radius_sampler, options).run()
 
-    result.plot_slice_2d(show=False)
+    figure = result.plot_packing_3d(show=False)
+    assert len(figure.data) == 2
 
 
 @patch("matplotlib.pyplot.show")

@@ -4,11 +4,11 @@ The figure is generated from a fixed-seed PackLab simulation. Set
 ``INCLUDE_COMPOSITION_PANEL`` to ``False`` for a compact two-panel version.
 """
 
+from io import BytesIO
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
-from matplotlib.patches import Circle
 import numpy as np
 from MPSPlots.styles import scientific
 
@@ -33,7 +33,6 @@ TARGET_PACKING_FRACTION = 0.20
 
 # --- Figure parameters -----------------------------------------------------
 INCLUDE_COMPOSITION_PANEL = False
-SLICE_THICKNESS = 0.55  # micrometres
 PAIR_CORRELATION_BINS = 500
 PAIR_CORRELATION_MAXIMUM_RADIUS = 2.0  # micrometres
 ESTIMATOR_SAMPLES = 64
@@ -83,56 +82,6 @@ def estimate_pair_correlation():
     )
     estimate = estimator.estimate(number_of_samples=ESTIMATOR_SAMPLES)
     return estimate, estimator.statistics
-
-
-def plot_cross_section(
-    axes: Axes,
-    positions_um: np.ndarray,
-    radii_um: np.ndarray,
-    class_index: np.ndarray,
-    box_length_um: float,
-) -> None:
-    """Plot the physical intersections of spheres with the central z-slice."""
-    slice_center = box_length_um / 2.0
-    displacement = positions_um[:, 2] - slice_center
-    displacement -= box_length_um * np.round(displacement / box_length_um)
-    in_slice = np.abs(displacement) <= np.minimum(radii_um, SLICE_THICKNESS / 2.0)
-
-    for position, radius, particle_class, offset in zip(
-        positions_um[in_slice],
-        radii_um[in_slice],
-        class_index[in_slice],
-        displacement[in_slice],
-    ):
-        cross_section_radius = np.sqrt(max(radius**2 - offset**2, 0.0))
-        axes.add_patch(
-            Circle(
-                (position[0], position[1]),
-                cross_section_radius,
-                facecolor=COLOURS[particle_class],
-                edgecolor="white",
-                linewidth=0.45,
-                alpha=0.83,
-            )
-        )
-
-    axes.set(
-        aspect="equal",
-        xlim=(0, box_length_um),
-        ylim=(0, box_length_um),
-        xlabel=r"$x$ (µm)",
-        ylabel=r"$y$ (µm)",
-    )
-    style_axes(axes)
-    # axes.text(
-    #     0.03,
-    #     0.03,
-    #     f"{in_slice.sum()} intersected spheres\nperiodic domain",
-    #     transform=axes.transAxes,
-    #     fontsize=10,
-    #     color="#334e68",
-    #     va="bottom",
-    # )
 
 
 def plot_composition(
@@ -282,10 +231,8 @@ def plot(
     """
     result = run_simulation()
     estimate, _ = estimate_pair_correlation()
-    positions_um = np.asarray(result.positions.to("micrometer").magnitude)
     radii_um = np.asarray(result.radii.to("micrometer").magnitude)
     class_index = np.asarray(result.sphere_configuration.classes_index)
-    box_length_um = BOX_LENGTH.to("micrometer").magnitude
 
     panel_count = 3 if include_composition_panel else 2
     width_ratios = (1.0, 1.0, 1.65) if include_composition_panel else (1.0, 1.8)
@@ -297,12 +244,16 @@ def plot(
         gridspec_kw={"width_ratios": width_ratios},
     )
     axes = np.atleast_1d(axes)
-    slice_axes, correlation_axes = axes[0], axes[-1]
+    packing_axes, correlation_axes = axes[0], axes[-1]
     figure.set_facecolor("white")
 
-    plot_cross_section(slice_axes, positions_um, radii_um, class_index, box_length_um)
-    add_rsa_statistics(slice_axes, result.statistics)
-    add_panel_label(slice_axes, "(a)", x=-0.23)
+    packing_figure = result.plot_packing_3d(show=False)
+    packing_figure.update_layout(title=None, margin=dict(l=0, r=0, t=0, b=0))
+    image = plt.imread(BytesIO(packing_figure.to_image(format="png", width=800, height=800)))
+    packing_axes.imshow(image)
+    packing_axes.axis("off")
+    add_rsa_statistics(packing_axes, result.statistics)
+    add_panel_label(packing_axes, "(a)", x=-0.23)
     if include_composition_panel:
         plot_composition(
             axes[1],

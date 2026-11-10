@@ -4,7 +4,9 @@
 PDF is committed because `pdflatex` includes PDF figures directly.
 
 `create_figure2.py` creates Figure 2 from a fixed-seed PackLab simulation. It
-outputs the editable SVG and the PDF included by the manuscript:
+outputs an SVG and the PDF included by the manuscript. The Plotly 3D panel is
+rasterized within those files; static export requires Kaleido and Chrome (install
+the `documentation` extra and run `plotly_get_chrome` if needed):
 
 ```bash
 python create_figure2.py

@@ -79,35 +79,20 @@ def test_packing_result_properties_delegation_and_plots():
     figures = [
         result.plot_centers_3d(show=False),
         result.plot_radius_distribution(show=False, density=False),
-        result.plot_slice_2d(slice_axis="x", show=False),
-        result.plot_slice_2d(slice_axis="y", show=False),
         result.plot_pair_correlation(show=False),
     ]
     assert all(len(figure.axes) for figure in figures)
 
 
-@pytest.mark.parametrize(
-    ("kwargs", "message"),
-    [
-        ({"slice_center_fraction": -0.1}, "slice_center_fraction"),
-        ({"slice_thickness_fraction": 1.1}, "slice_thickness_fraction"),
-        ({"slice_axis": "q"}, "q"),
-    ],
-)
-def test_packing_result_slice_validates_controls(kwargs, message):
-    with pytest.raises((ValueError, KeyError), match=message):
-        PackingResult(_Binding()).plot_slice_2d(show=False, **kwargs)
-
-
-def test_result_slice_mask_handles_periodic_and_nonperiodic_domains():
+def test_packing_3d_represents_each_sphere_and_box():
     result = PackingResult(_Binding())
-    coord = np.array([0.1, 3.9])
-    periodic = result._compute_slice_mask(coord, 0.0, 0.4, 4.0)
-    assert periodic.tolist() == [True, True]
-    result.domain.use_periodic_boundaries = False
-    nonperiodic = result._compute_slice_mask(coord, 0.0, 0.4, 4.0)
-    assert nonperiodic.tolist() == [True, False]
-    result.domain.use_periodic_boundaries = True
+    figure = result.plot_packing_3d(show=False)
+    mesh, box = figure.data
+    vertices = np.column_stack((mesh.x, mesh.y, mesh.z)).reshape(2, -1, 3)
+    np.testing.assert_allclose(vertices[0].max(axis=0), [0.6e6] * 3)
+    np.testing.assert_allclose(vertices[1].max(axis=0), [2.2e6] * 3)
+    assert len(box.x) == 36
+    assert figure.layout.scene.aspectmode == "data"
 
 
 def test_analytical_and_structure_grid_validation_errors():

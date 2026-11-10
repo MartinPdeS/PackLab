@@ -219,7 +219,7 @@ The result contains centres, radii, class labels, packing statistics, and total 
 \subsection{Complementary configuration workflows}
 
 Figure~\ref{fig:rsa} shows a fixed-seed periodic \gls{rsa} realisation of a binary mixture. %
-The cross-section provides a direct geometric diagnostic of one generated configuration, while the correlation panel reports ensemble statistics for the same mixture. %
+The three-dimensional packing view illustrates one generated configuration, while the correlation panel reports ensemble statistics for the same mixture. %
 All quantitative figures are reproducible from the public \gls{api} using the
 workflows distributed with the repository; the external reference data used
 for validation are versioned alongside the manuscript. %
@@ -231,7 +231,7 @@ controls for all quantitative figures. %
 	\includegraphics[width=\linewidth]{figures/figure2_rsa_example.pdf}
 \caption{Reproducible periodic \gls{rsa} demonstration for a two-radius mixture. %
 	The cubic domain has side length $10~\mathrm{\mu m}$; sphere radii are 100 and 200~nm with requested number fractions 0.65 and 0.35; the target packing fraction is 0.20; and the random seed is 20260828. %
-	(a) Central cross-section of the accepted three-dimensional configuration, with colour indicating radius class. %
+	(a) Three-dimensional view of all accepted spheres and the simulation box; spheres at periodic boundaries are shown whole at their stored centres. %
 (b) The unique partial pair correlations, $g_{00}(r)$, $g_{01}(r)=g_{10}(r)$, and $g_{11}(r)$, estimated from 64 independent \gls{rsa} realisations. %
 The legend identifies each ensemble-mean coloured line; its matching same-colour band shows $\pm1\sigma$, where $\sigma$ is the sample standard deviation across realisations. %
 	The red shaded interval is the exclusion range shared by all pairs, while the red dotted lines mark the three contact separations, $0.20$, $0.30$, and $0.40~\mathrm{\mu m}$. %

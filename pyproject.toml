@@ -43,6 +43,7 @@ classifiers = [
 ]
 dependencies = [
     "matplotlib",
+    "plotly>=6.1.1",
     "numpy",
     "TypedUnit>=0.2.9",
 ]
@@ -67,6 +68,7 @@ testing = ["martinpdes-maintenance[testing]==0.2.3", "pytest-json-report==1.5.0"
 
 documentation = [
     "MartinPdeS-docs>=0.4.0,<0.5",
+    "kaleido>=1",
     "PyMieSim>=6.0.4,<6.1",
 ]
 

@@ -52,7 +52,7 @@ visualisation and statistics. For example:
 .. code-block:: python
 
    print(result)
-   figure = result.plot_slice_2d()
+   figure = result.plot_packing_3d()
 
 For a radial pair-correlation estimate, build a ``PackingStatistics`` instance
 from the result and choose bins appropriate to the box dimensions. Periodic
