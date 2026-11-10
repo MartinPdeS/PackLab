@@ -305,7 +305,7 @@ hard-sphere workflow with fixed particle count and radii.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example creates a small periodic RSA packing from a uniform radius distribution. It then visualises a central two-dimensional slice of the accepted sphere configuration.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example creates a small periodic RSA packing from a uniform radius distribution. It then visualises the complete three-dimensional accepted sphere configuration.">
 
 .. only:: html
 

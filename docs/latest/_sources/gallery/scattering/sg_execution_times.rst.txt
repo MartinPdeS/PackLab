@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.350** total execution time for 5 files **from gallery/scattering**:
+**00:00.353** total execution time for 5 files **from gallery/scattering**:
 
 .. container::
 
@@ -33,7 +33,7 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_scattering_01_single_particle_amplitudes.py` (``01_single_particle_amplitudes.py``)
-     - 00:00.112
+     - 00:00.115
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_04_refractive_index.py` (``04_refractive_index.py``)
      - 00:00.068
@@ -42,8 +42,8 @@ Computation times
      - 00:00.063
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_05_independent_mixture.py` (``05_independent_mixture.py``)
-     - 00:00.058
+     - 00:00.057
      - 0.0
    * - :ref:`sphx_glr_gallery_scattering_02_structure_factor_phase_function.py` (``02_structure_factor_phase_function.py``)
-     - 00:00.049
+     - 00:00.050
      - 0.0

@@ -24,13 +24,13 @@ contains summary quantities such as sphere count and geometric packing
 fraction. ``centers`` carries length units and ``g_ij`` has shape
 ``(number_of_classes, number_of_classes, number_of_bins)``.
 
-The plotting helpers return Matplotlib figures, so they can be labelled,
-saved, or embedded in a larger figure:
+The packing view returns an interactive Plotly figure. Save it as HTML to retain
+rotation and zoom; the other plotting helpers return Matplotlib figures:
 
 .. code-block:: python
 
-   figure = result.plot_slice_2d(show=False)
-   figure.savefig("packing-slice.png", dpi=200)
+   figure = result.plot_packing_3d(show=False)
+   figure.write_html("packing.html")
 
 Percus--Yevick results
 ----------------------

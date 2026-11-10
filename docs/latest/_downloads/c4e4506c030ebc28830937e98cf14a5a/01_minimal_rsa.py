@@ -3,7 +3,7 @@ Minimal random sequential adsorption
 ====================================
 
 This example creates a small periodic RSA packing from a uniform radius
-distribution. It then visualises a central two-dimensional slice of the
+distribution. It then visualises the complete three-dimensional
 accepted sphere configuration.
 """
 
@@ -35,5 +35,6 @@ result = monte_carlo.RSASimulator(domain, radius_sampler, options).run()
 print(result)
 print(f"Packing fraction: {result.statistics.packing_fraction_geometry:.3f}")
 
-figure = result.plot_slice_2d(show=False)
-_ = figure.suptitle("Central slice of a periodic RSA packing")
+figure = result.plot_packing_3d(show=False)
+figure.update_layout(title="Periodic RSA packing")
+figure.show()

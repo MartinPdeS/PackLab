@@ -31,14 +31,13 @@ For a production equilibrium calculation, check that observables have reached
 stationarity and estimate their uncertainty from independent samples. The
 acceptance rate printed below helps tune the proposal displacement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-20
+.. GENERATED FROM PYTHON SOURCE LINES 15-19
 
 .. code-block:: Python
 
 
     from PackLab import monte_carlo, samplers
     from PackLab.units import ureg
-    import matplotlib.pyplot as plt
 
 
 
@@ -47,12 +46,12 @@ acceptance rate printed below helps tune the proposal displacement.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-23
+.. GENERATED FROM PYTHON SOURCE LINES 20-22
 
 Create a convenient non-overlapping initial state with RSA
 -----------------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-39
+.. GENERATED FROM PYTHON SOURCE LINES 22-38
 
 .. code-block:: Python
 
@@ -79,12 +78,12 @@ Create a convenient non-overlapping initial state with RSA
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 39-41
 
 Equilibrate with fixed-volume Metropolis sampling
 -------------------------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-63
+.. GENERATED FROM PYTHON SOURCE LINES 41-62
 
 .. code-block:: Python
 
@@ -106,16 +105,11 @@ Equilibrate with fixed-volume Metropolis sampling
     print(f"Completed sweeps: {statistics.completed_sweeps}")
     print(f"Packing fraction: {equilibrated_result.statistics.packing_fraction_geometry:.3f}")
 
-    figure = equilibrated_result.plot_slice_2d(show=False)
-    _ = figure.suptitle("Hard-sphere configuration after Metropolis equilibration")
-    plt.show()
+    figure = equilibrated_result.plot_packing_3d(show=False)
+    figure.update_layout(title="Hard-sphere configuration after Metropolis equilibration")
+    figure.show()
 
 
-
-.. image-sg:: /gallery/monte_carlo/images/sphx_glr_04_metropolis_equilibration_001.png
-   :alt: Hard-sphere configuration after Metropolis equilibration, 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 61 spheres
-   :srcset: /gallery/monte_carlo/images/sphx_glr_04_metropolis_equilibration_001.png
-   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -132,7 +126,7 @@ Equilibrate with fixed-volume Metropolis sampling
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.077 seconds)
+   **Total running time of the script:** (0 minutes 3.638 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_04_metropolis_equilibration.py:

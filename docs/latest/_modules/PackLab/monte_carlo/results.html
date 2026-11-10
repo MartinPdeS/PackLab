@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PackLab.monte_carlo.results &#8212; PackLab 0.8.18 documentation</title>
+    <title>PackLab.monte_carlo.results &#8212; PackLab 0.8.19 documentation</title>
   
   
   
@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery.css?v=c83e6b79" />
@@ -39,21 +39,21 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/layout.css?v=ff7c2d1f" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=39a4dd29"></script>
+    <script src="../../../_static/documentation_options.js?v=90e4a94f"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/PackLab/monte_carlo/results';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.18';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.19';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.18" />
+  <meta name="docsearch:version" content="0.8.19" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -112,7 +112,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -227,14 +227,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -303,7 +303,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -387,14 +387,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -471,7 +471,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -495,17 +495,12 @@
                 <article class="bd-article">
                   
   <h1>Source code for PackLab.monte_carlo.results</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">cached_property</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Circle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.graph_objects</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">go</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">TypedUnit.units</span><span class="w"> </span><span class="kn">import</span> <span class="n">ureg</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_minimum_image_displacement</span><span class="p">(</span><span class="n">delta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">box_length</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">delta</span> <span class="o">-</span> <span class="n">box_length</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">delta</span> <span class="o">/</span> <span class="n">box_length</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="post_mpl_plot">
@@ -798,128 +793,115 @@
         <span class="k">return</span> <span class="n">figure</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_compute_slice_mask</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">coord</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">slice_center</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">slice_thickness</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">box_length</span><span class="p">:</span> <span class="nb">float</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Compute the mask for particles within the slice thickness.</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">use_periodic_boundaries</span><span class="p">:</span>
-            <span class="n">delta</span> <span class="o">=</span> <span class="n">_minimum_image_displacement</span><span class="p">(</span><span class="n">coord</span> <span class="o">-</span> <span class="n">slice_center</span><span class="p">,</span> <span class="n">box_length</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">slice_thickness</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coord</span> <span class="o">-</span> <span class="n">slice_center</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">slice_thickness</span>
-
-<div class="viewcode-block" id="PackingResult.plot_slice_2d">
-<a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.plot_slice_2d">[docs]</a>
-    <span class="nd">@post_mpl_plot</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">plot_slice_2d</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">slice_axis</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"z"</span><span class="p">,</span>
-        <span class="n">slice_center_fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
-        <span class="n">slice_thickness_fraction</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.08</span><span class="p">,</span>
-        <span class="n">maximum_circles_in_slice</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2500</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">plt</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""</span>
-<span class="sd">        Plot a 2D slice of the sphere configuration.</span>
+<div class="viewcode-block" id="PackingResult.plot_packing_3d">
+<a class="viewcode-back" href="../../../code.html#PackLab.monte_carlo.results.PackingResult.plot_packing_3d">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_packing_3d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Show all spheres and the simulation box in an interactive 3D view.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        slice_axis : Literal["x", "y", "z"]</span>
-<span class="sd">            Axis along which to take the slice.</span>
-<span class="sd">        slice_center_fraction : float</span>
-<span class="sd">            Fractional position along the slice axis where the slice is centered (0.0 to 1.0).</span>
-<span class="sd">        slice_thickness_fraction : float</span>
-<span class="sd">            Fractional thickness of the slice relative to the box length along the slice axis</span>
-<span class="sd">            (0.0 to 1.0).</span>
-<span class="sd">        maximum_circles_in_slice : int</span>
-<span class="sd">            Maximum number of circles to plot in the slice (subsampling if necessary).</span>
+<span class="sd">        show : bool, default=True</span>
+<span class="sd">            Open the Plotly figure after constructing it.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plotly.graph_objects.Figure</span>
+<span class="sd">            A figure in micrometres, with sphere radii represented geometrically.</span>
+<span class="sd">            Spheres are shown whole at their stored centres; periodic images are</span>
+<span class="sd">            not drawn, so particles at a periodic boundary can extend outside the box.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Every particle is rendered as a triangulated sphere. Large packings can</span>
+<span class="sd">        require substantial browser memory and take time to render.</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">slice_center_fraction</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"slice_center_fraction must be between 0.0 and 1.0"</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">slice_thickness_fraction</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"slice_thickness_fraction must be between 0.0 and 1.0"</span><span class="p">)</span>
-
-        <span class="n">axis_map</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">:</span> <span class="mi">2</span><span class="p">}</span>
-        <span class="n">slice_idx</span> <span class="o">=</span> <span class="n">axis_map</span><span class="p">[</span><span class="n">slice_axis</span><span class="p">]</span>
-
-        <span class="c1"># Determine plot axes indices (a, b) such that slice_idx is excluded</span>
-        <span class="c1"># For 'z' (2) -&gt; x(0), y(1)</span>
-        <span class="c1"># For 'y' (1) -&gt; x(0), z(2)</span>
-        <span class="c1"># For 'x' (0) -&gt; y(1), z(2)</span>
-        <span class="n">remaining_axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">slice_idx</span><span class="p">]</span>
-        <span class="n">a_idx</span><span class="p">,</span> <span class="n">b_idx</span> <span class="o">=</span> <span class="n">remaining_axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">remaining_axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"x"</span><span class="p">,</span> <span class="s2">"y"</span><span class="p">,</span> <span class="s2">"z"</span><span class="p">]</span>
-        <span class="n">a_label</span><span class="p">,</span> <span class="n">b_label</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">a_idx</span><span class="p">],</span> <span class="n">labels</span><span class="p">[</span><span class="n">b_idx</span><span class="p">]</span>
-
-        <span class="c1"># box_lengths = np.array([self.domain.length_x, self.domain.length_y, self.domain.length_z])</span>
-        <span class="n">box_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_z</span><span class="p">]</span>
-
-        <span class="c1"># Dimensions for plot</span>
-        <span class="n">a_max</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="n">a_idx</span><span class="p">]</span>
-        <span class="n">b_max</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="n">b_idx</span><span class="p">]</span>
-
-        <span class="c1"># Slice parameters</span>
-        <span class="n">L_slice</span> <span class="o">=</span> <span class="n">box_lengths</span><span class="p">[</span><span class="n">slice_idx</span><span class="p">]</span>
-        <span class="n">slice_center</span> <span class="o">=</span> <span class="n">slice_center_fraction</span> <span class="o">*</span> <span class="n">L_slice</span>
-        <span class="n">slice_thickness</span> <span class="o">=</span> <span class="n">slice_thickness_fraction</span> <span class="o">*</span> <span class="n">L_slice</span>
-
-        <span class="c1"># Compute mask</span>
-        <span class="n">coord</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[:,</span> <span class="n">slice_idx</span><span class="p">]</span>
-        <span class="n">slice_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_slice_mask</span><span class="p">(</span><span class="n">coord</span><span class="p">,</span> <span class="n">slice_center</span><span class="p">,</span> <span class="n">slice_thickness</span><span class="p">,</span> <span class="n">L_slice</span><span class="p">)</span>
-
-        <span class="n">slice_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="n">slice_mask</span><span class="p">]</span>
-        <span class="n">slice_radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span><span class="p">[</span><span class="n">slice_mask</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">a_max</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
-            <span class="n">a_max_val</span> <span class="o">=</span> <span class="n">a_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="n">b_max_val</span> <span class="o">=</span> <span class="n">b_max</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_positions</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-            <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"meter"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">a_max_val</span> <span class="o">=</span> <span class="n">a_max</span>
-            <span class="n">b_max_val</span> <span class="o">=</span> <span class="n">b_max</span>
-            <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_positions</span>
-            <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii</span>
-
-        <span class="c1"># Subsampling</span>
-        <span class="n">n_spheres</span> <span class="o">=</span> <span class="n">slice_positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">n_spheres</span> <span class="o">&gt;</span> <span class="n">maximum_circles_in_slice</span><span class="p">:</span>
-            <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">()</span>
-            <span class="n">indices</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n_spheres</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">maximum_circles_in_slice</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="n">slice_pos_val</span> <span class="o">=</span> <span class="n">slice_pos_val</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-            <span class="n">slice_radii_val</span> <span class="o">=</span> <span class="n">slice_radii_val</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
-
-        <span class="n">figure</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-        <span class="n">axes</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s2">"equal"</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s2">"box"</span><span class="p">)</span>
-        <span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">)</span>
-        <span class="n">axes</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">)</span>
-        <span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">a_label</span><span class="p">)</span>
-        <span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">b_label</span><span class="p">)</span>
-        <span class="n">axes</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"2D slice at </span><span class="si">{</span><span class="n">slice_axis</span><span class="si">}</span><span class="s2">≈</span><span class="si">{</span><span class="n">slice_center</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, thickness </span><span class="si">{</span><span class="n">slice_thickness</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">" | showing </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">slice_mask</span><span class="p">))</span><span class="si">}</span><span class="s2"> spheres"</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span>
+        <span class="n">radii</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">radii</span>
+        <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+            <span class="n">positions</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"micrometer"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">positions</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">positions</span> <span class="o">*</span> <span class="mf">1e6</span>
         <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">slice_pos_val</span><span class="p">,</span> <span class="n">slice_radii_val</span><span class="p">):</span>
-            <span class="n">axes</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span>
-                <span class="n">Circle</span><span class="p">(</span>
-                    <span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="n">a_idx</span><span class="p">],</span> <span class="n">center</span><span class="p">[</span><span class="n">b_idx</span><span class="p">]),</span>
-                    <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
-                    <span class="n">fill</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                    <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-                    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+        <span class="n">radii</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+            <span class="n">radii</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"micrometer"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">radii</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">radii</span> <span class="o">*</span> <span class="mf">1e6</span>
+        <span class="p">)</span>
+        <span class="n">lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">length</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"micrometer"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="s2">"to"</span><span class="p">)</span> <span class="k">else</span> <span class="n">length</span> <span class="o">*</span> <span class="mf">1e6</span>
+                <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">domain</span><span class="o">.</span><span class="n">length_z</span><span class="p">)</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">longitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">13</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+        <span class="n">theta</span><span class="p">,</span> <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+        <span class="n">unit_vertices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">vertices_per_sphere</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">unit_vertices</span><span class="p">)</span>
+        <span class="n">vertices</span> <span class="o">=</span> <span class="p">(</span><span class="n">positions</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">radii</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">unit_vertices</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">triangles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">)):</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="n">row</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span> <span class="o">+</span> <span class="n">column</span>
+                <span class="n">second</span> <span class="o">=</span> <span class="n">row</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+                <span class="n">triangles</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                    <span class="p">(</span>
+                        <span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">first</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">)),</span>
+                        <span class="p">(</span><span class="n">second</span><span class="p">,</span> <span class="n">second</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">),</span> <span class="n">first</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">longitude</span><span class="p">)),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="n">triangles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">triangles</span><span class="p">)</span>
+        <span class="n">triangles</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">triangles</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">))[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">vertices_per_sphere</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">):</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Mesh3d</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">vertices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">vertices</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">z</span><span class="o">=</span><span class="n">vertices</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                    <span class="n">i</span><span class="o">=</span><span class="n">triangles</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                    <span class="n">j</span><span class="o">=</span><span class="n">triangles</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                    <span class="n">k</span><span class="o">=</span><span class="n">triangles</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="s2">"#2583b8"</span><span class="p">,</span>
+                    <span class="n">opacity</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">flatshading</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">lighting</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">ambient</span><span class="o">=</span><span class="mf">0.55</span><span class="p">,</span> <span class="n">diffuse</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">specular</span><span class="o">=</span><span class="mf">0.25</span><span class="p">),</span>
+                    <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">"skip"</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">"Particles"</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
-
-        <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">,</span> <span class="n">a_max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-            <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">,</span> <span class="n">b_max_val</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-            <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span><span class="p">,</span>
+        <span class="n">corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[[</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lengths</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lengths</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lengths</span><span class="p">[</span><span class="mi">2</span><span class="p">])]</span>
         <span class="p">)</span>
-
+        <span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="k">if</span> <span class="nb">bin</span><span class="p">(</span><span class="n">i</span> <span class="o">^</span> <span class="n">j</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"1"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">coordinates</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">[</span><span class="n">value</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">edges</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="n">corners</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">axis</span><span class="p">],</span> <span class="n">corners</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">axis</span><span class="p">],</span> <span class="kc">None</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+            <span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
+                <span class="n">x</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">y</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="n">z</span><span class="o">=</span><span class="n">coordinates</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                <span class="n">mode</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">"#263746"</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">),</span>
+                <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">"skip"</span><span class="p">,</span>
+                <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">scene</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span>
+                <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">"x (µm)"</span><span class="p">,</span> <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">"y (µm)"</span><span class="p">,</span> <span class="n">zaxis_title</span><span class="o">=</span><span class="s2">"z (µm)"</span><span class="p">,</span> <span class="n">aspectmode</span><span class="o">=</span><span class="s2">"data"</span>
+            <span class="p">),</span>
+            <span class="n">margin</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">l</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Packing: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">radii</span><span class="p">)</span><span class="si">}</span><span class="s2"> spheres"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">figure</span></div>
 
 
@@ -1022,8 +1004,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

@@ -22,24 +22,19 @@ Minimal random sequential adsorption
 ====================================
 
 This example creates a small periodic RSA packing from a uniform radius
-distribution. It then visualises a central two-dimensional slice of the
+distribution. It then visualises the complete three-dimensional
 accepted sphere configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-40
+.. GENERATED FROM PYTHON SOURCE LINES 9-41
 
 
-
-.. image-sg:: /gallery/monte_carlo/images/sphx_glr_01_minimal_rsa_001.png
-   :alt: Central slice of a periodic RSA packing, 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 89 spheres
-   :srcset: /gallery/monte_carlo/images/sphx_glr_01_minimal_rsa_001.png
-   :class: sphx-glr-single-img
 
 
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
 
-    <PackLab.monte_carlo.results.PackingResult object at 0x7f4d1a099650>
+    <PackLab.monte_carlo.results.PackingResult object at 0x7cc0a80dcb10>
     Packing fraction: 0.080
 
 
@@ -80,13 +75,14 @@ accepted sphere configuration.
     print(result)
     print(f"Packing fraction: {result.statistics.packing_fraction_geometry:.3f}")
 
-    figure = result.plot_slice_2d(show=False)
-    _ = figure.suptitle("Central slice of a periodic RSA packing")
+    figure = result.plot_packing_3d(show=False)
+    figure.update_layout(title="Periodic RSA packing")
+    figure.show()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.147 seconds)
+   **Total running time of the script:** (0 minutes 0.197 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_01_minimal_rsa.py:

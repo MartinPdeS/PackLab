@@ -15,7 +15,6 @@ acceptance rate printed below helps tune the proposal displacement.
 
 from PackLab import monte_carlo, samplers
 from PackLab.units import ureg
-import matplotlib.pyplot as plt
 
 # %%
 # Create a convenient non-overlapping initial state with RSA
@@ -57,6 +56,6 @@ print(f"Metropolis acceptance rate: {statistics.acceptance_rate:.3f}")
 print(f"Completed sweeps: {statistics.completed_sweeps}")
 print(f"Packing fraction: {equilibrated_result.statistics.packing_fraction_geometry:.3f}")
 
-figure = equilibrated_result.plot_slice_2d(show=False)
-_ = figure.suptitle("Hard-sphere configuration after Metropolis equilibration")
-plt.show()
+figure = equilibrated_result.plot_packing_3d(show=False)
+figure.update_layout(title="Hard-sphere configuration after Metropolis equilibration")
+figure.show()

@@ -56,15 +56,10 @@ result = rsa_simulator.run()
 result.statistics.print()
 
 # %%
-# Visualise a central slice
-# -------------------------
+# Visualise the full packing
+# --------------------------
 
-_ = result.plot_slice_2d(
-    slice_axis="z",
-    slice_center_fraction=0.5,
-    slice_thickness_fraction=0.08,
-    maximum_circles_in_slice=2500,
-)
+_ = result.plot_packing_3d()
 
 # %%
 # Plot the pair correlation

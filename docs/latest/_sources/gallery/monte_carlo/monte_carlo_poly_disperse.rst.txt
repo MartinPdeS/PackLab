@@ -100,39 +100,29 @@ Here we use periodic boundary conditions on a cubic box.
 
 .. GENERATED FROM PYTHON SOURCE LINES 59-61
 
-Visualise a central slice
--------------------------
+Visualise the full packing
+--------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-69
+.. GENERATED FROM PYTHON SOURCE LINES 61-64
 
 .. code-block:: Python
 
 
-    _ = result.plot_slice_2d(
-        slice_axis="z",
-        slice_center_fraction=0.5,
-        slice_thickness_fraction=0.08,
-        maximum_circles_in_slice=2500,
-    )
-
-
-
-
-.. image-sg:: /gallery/monte_carlo/images/sphx_glr_monte_carlo_poly_disperse_001.png
-   :alt: 2D slice at z≈0.00 meter, thickness 0.00 meter | showing 143 spheres
-   :srcset: /gallery/monte_carlo/images/sphx_glr_monte_carlo_poly_disperse_001.png
-   :class: sphx-glr-single-img
+    _ = result.plot_packing_3d()
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-72
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 65-67
 
 Plot the pair correlation
 -------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-77
+.. GENERATED FROM PYTHON SOURCE LINES 67-72
 
 .. code-block:: Python
 
@@ -144,9 +134,9 @@ Plot the pair correlation
 
 
 
-.. image-sg:: /gallery/monte_carlo/images/sphx_glr_monte_carlo_poly_disperse_002.png
+.. image-sg:: /gallery/monte_carlo/images/sphx_glr_monte_carlo_poly_disperse_001.png
    :alt: Partial pair correlation functions g_ij(r), K=2, periodic=True
-   :srcset: /gallery/monte_carlo/images/sphx_glr_monte_carlo_poly_disperse_002.png
+   :srcset: /gallery/monte_carlo/images/sphx_glr_monte_carlo_poly_disperse_001.png
    :class: sphx-glr-single-img
 
 
@@ -156,7 +146,7 @@ Plot the pair correlation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.315 seconds)
+   **Total running time of the script:** (0 minutes 0.135 seconds)
 
 
 .. _sphx_glr_download_gallery_monte_carlo_monte_carlo_poly_disperse.py:
