@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Metropolis sampling cost per sweep &#8212; PackLab 0.8.19 documentation</title>
+    <title>Metropolis sampling cost per sweep &#8212; PackLab 0.8.20 documentation</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css?v=02978338" />
     <link rel="stylesheet" type="text/css" href="../../_static/martinpdes_layout.css?v=a8cc01cd" />
     <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=ff7c2d1f" />
@@ -45,16 +45,16 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=90e4a94f"></script>
+    <script src="../../_static/documentation_options.js?v=4408e7b4"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'gallery/benchmarks/metropolis_sweep_scaling';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/PackLab/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.19';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.20';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.19" />
+  <meta name="docsearch:version" content="0.8.20" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -576,10 +576,10 @@ several sweep counts. Each measurement starts a new sampler with the same
 seed; the reported median of three runs includes sampler construction.
 These short timings measure work, not equilibration or statistical accuracy.
 Report hardware, package version, and thread settings with results.</p>
-<img src="../../_images/sphx_glr_metropolis_sweep_scaling_001.png" srcset="../../_images/sphx_glr_metropolis_sweep_scaling_001.png" alt="Metropolis sampling cost" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>20 sweeps, 191 spheres: median 0.0106 s
-50 sweeps, 191 spheres: median 0.0253 s
-100 sweeps, 191 spheres: median 0.0511 s
-200 sweeps, 191 spheres: median 0.1009 s
+<img src="../../_images/sphx_glr_metropolis_sweep_scaling_001.png" srcset="../../_images/sphx_glr_metropolis_sweep_scaling_001.png" alt="Metropolis sampling cost" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>20 sweeps, 191 spheres: median 0.0114 s
+50 sweeps, 191 spheres: median 0.0281 s
+100 sweeps, 191 spheres: median 0.0559 s
+200 sweeps, 191 spheres: median 0.1118 s
 </pre></div>
 </div>
 <div class="line-block">
@@ -621,7 +621,7 @@ Report hardware, package version, and thread settings with results.</p>
 </span><span class="n">axis</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span><span class="w">
 </span><span class="n">figure</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.621 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.702 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-benchmarks-metropolis-sweep-scaling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/340505f2b357cdd1f14937a205d90eb9/metropolis_sweep_scaling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">metropolis_sweep_scaling.ipynb</span></code></a></p>
@@ -679,7 +679,7 @@ Report hardware, package version, and thread settings with results.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.19/docs/source/gallery/benchmarks/metropolis_sweep_scaling.rst">
+    <a href="https://github.com/MartinPdeS/PackLab/edit/v0.8.20/docs/source/gallery/benchmarks/metropolis_sweep_scaling.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

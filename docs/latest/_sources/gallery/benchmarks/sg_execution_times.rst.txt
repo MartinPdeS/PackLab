@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.288** total execution time for 6 files **from gallery/benchmarks**:
+**00:01.739** total execution time for 6 files **from gallery/benchmarks**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_benchmarks_metropolis_sweep_scaling.py` (``metropolis_sweep_scaling.py``)
-     - 00:00.621
+     - 00:00.702
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_analytical_distance_scaling.py` (``analytical_distance_scaling.py``)
-     - 00:00.283
+     - 00:00.460
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_analytical_species_scaling.py` (``analytical_species_scaling.py``)
-     - 00:00.150
+     - 00:00.238
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_rsa_box_scaling.py` (``rsa_box_scaling.py``)
-     - 00:00.084
+     - 00:00.123
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_analytical_grid_scaling.py` (``analytical_grid_scaling.py``)
-     - 00:00.077
+     - 00:00.121
      - 0.0
    * - :ref:`sphx_glr_gallery_benchmarks_rsa_density_scaling.py` (``rsa_density_scaling.py``)
-     - 00:00.073
+     - 00:00.096
      - 0.0

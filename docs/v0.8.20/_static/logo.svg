@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" role="img" aria-labelledby="title desc">
+  <title id="title">PackLab</title>
+  <desc id="desc">A scientific seal containing a polydisperse hard-sphere packing beside the PackLab wordmark.</desc>
+  <defs><clipPath id="seal"><circle cx="150" cy="150" r="107"/></clipPath></defs>
+  <circle cx="150" cy="150" r="113" fill="#fffdf8" stroke="#07345c" stroke-width="8"/>
+  <g clip-path="url(#seal)" fill="#07345c"><circle cx="102" cy="93" r="29"/><circle cx="176" cy="82" r="12"/><circle cx="214" cy="100" r="18"/><circle cx="74" cy="139" r="18"/><circle cx="128" cy="139" r="27"/><circle cx="187" cy="137" r="32"/><circle cx="231" cy="148" r="22"/><circle cx="95" cy="190" r="30"/><circle cx="155" cy="187" r="13"/><circle cx="207" cy="193" r="27"/><circle cx="135" cy="237" r="22"/><circle cx="188" cy="240" r="17"/></g>
+  <g clip-path="url(#seal)" fill="#c8783f"><circle cx="160" cy="112" r="28"/><circle cx="57" cy="99" r="14"/><circle cx="230" cy="78" r="12"/><circle cx="84" cy="155" r="14"/><circle cx="215" cy="168" r="15"/><circle cx="64" cy="224" r="17"/><circle cx="173" cy="224" r="23"/><circle cx="232" cy="220" r="13"/></g>
+  <g clip-path="url(#seal)" fill="#55534f"><circle cx="114" cy="120" r="9"/><circle cx="194" cy="113" r="9"/><circle cx="140" cy="164" r="9"/><circle cx="178" cy="157" r="8"/></g>
+  <text x="300" y="177" fill="#07345c" font-family="Georgia, 'Times New Roman', serif" font-size="108" font-weight="600" letter-spacing="-4">Pack<tspan fill="#c8783f">Lab</tspan></text>
+</svg>

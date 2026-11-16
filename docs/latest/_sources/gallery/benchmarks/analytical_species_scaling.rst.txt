@@ -45,10 +45,10 @@ on hardware, compiler, package versions and thread settings.
 
  .. code-block:: none
 
-    1 classes, 901 wavenumbers: 0.0012 s
-    2 classes, 901 wavenumbers: 0.0014 s
-    4 classes, 901 wavenumbers: 0.0024 s
-    8 classes, 901 wavenumbers: 0.0061 s
+    1 classes, 901 wavenumbers: 0.0019 s
+    2 classes, 901 wavenumbers: 0.0024 s
+    4 classes, 901 wavenumbers: 0.0042 s
+    8 classes, 901 wavenumbers: 0.0112 s
 
 
 
@@ -110,7 +110,7 @@ on hardware, compiler, package versions and thread settings.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.150 seconds)
+   **Total running time of the script:** (0 minutes 0.238 seconds)
 
 
 .. _sphx_glr_download_gallery_benchmarks_analytical_species_scaling.py:
