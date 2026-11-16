@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any
 
-from TypedUnit import ureg
+from TypedUnit import ureg, validate_quantity
 from numpy.typing import NDArray
 import numpy as np
 
@@ -116,14 +116,23 @@ class ScatteringDataset(list):
         self.S1 = np.asarray([d.S1.magnitude for d in self])
         self.S2 = np.asarray([d.S2.magnitude for d in self])
 
-        self.Csca = np.asarray([d.Csca.to("meter**2").magnitude for d in self]) * ureg.meter**2
+        cross_sections = []
+        for data in self:
+            validate_quantity(
+                data.Csca,
+                unit="meter**2",
+                name="Csca",
+                registry=ureg,
+                scalar=True,
+                nonnegative=True,
+            )
+            cross_sections.append(data.Csca.to("meter**2").magnitude)
+        self.Csca = np.asarray(cross_sections) * ureg.meter**2
 
     def _validated_phi(self) -> np.ndarray:
         """Return the polar-angle grid in radians after validating it."""
-        try:
-            phi = np.asarray(self.phi.to("radian").magnitude, dtype=float)
-        except AttributeError as error:
-            raise TypeError("phi must be a unit-bearing angle quantity.") from error
+        validate_quantity(self.phi, unit="radian", name="phi", registry=ureg)
+        phi = np.asarray(self.phi.to("radian").magnitude, dtype=float)
         if phi.ndim != 1 or phi.size < 2:
             raise ValueError("phi must be a one-dimensional angle grid with at least two points.")
         if not np.all(np.isfinite(phi)) or np.any(np.diff(phi) <= 0):
@@ -139,18 +148,31 @@ class ScatteringDataset(list):
         self.process()
         if not hasattr(self, "k"):
             raise ValueError("ScatteringDataset.k must be set before mixture calculations.")
-        try:
-            k = self.k.to("1 / meter")
-            density_values = np.asarray(densities.to("1 / meter**3").magnitude, dtype=float)
-            wavenumber_values = np.asarray(wavenumber.to("1 / meter").magnitude, dtype=float)
-        except AttributeError as error:
-            raise TypeError("densities and wavenumber must be unit-bearing quantities.") from error
-        if not np.isfinite(k.magnitude) or k.magnitude <= 0:
-            raise ValueError("k must be finite and positive.")
+        validate_quantity(
+            self.k,
+            unit="1 / meter",
+            name="k",
+            registry=ureg,
+            scalar=True,
+            positive=True,
+        )
+        validate_quantity(
+            densities,
+            unit="1 / meter**3",
+            name="densities",
+            registry=ureg,
+            nonnegative=True,
+        )
+        validate_quantity(
+            wavenumber,
+            unit="1 / meter",
+            name="wavenumber",
+            registry=ureg,
+        )
+        density_values = np.asarray(densities.to("1 / meter**3").magnitude, dtype=float)
+        wavenumber_values = np.asarray(wavenumber.to("1 / meter").magnitude, dtype=float)
         if density_values.ndim != 1 or density_values.size != len(self):
             raise ValueError("densities must be one-dimensional with one value per species.")
-        if not np.all(np.isfinite(density_values)) or np.any(density_values < 0):
-            raise ValueError("densities must be finite and non-negative.")
         if wavenumber_values.ndim != 1 or wavenumber_values.size < 2:
             raise ValueError("wavenumber must be a one-dimensional grid with at least two points.")
         if not np.all(np.isfinite(wavenumber_values)) or np.any(np.diff(wavenumber_values) <= 0):
@@ -267,14 +289,15 @@ class ScatteringDataset(list):
         The supplied density vector is validated against the number of species.
         """
         self.process()
-        try:
-            n_alpha = densities.to("1 / meter**3")
-        except AttributeError as error:
-            raise TypeError("densities must be a unit-bearing quantity.") from error
-        if np.asarray(n_alpha.magnitude).shape != (len(self),):
-            raise ValueError("densities must contain one value per species.")
-        if not np.all(np.isfinite(n_alpha.magnitude)) or np.any(n_alpha.magnitude < 0):
-            raise ValueError("densities must be finite and non-negative.")
+        validate_quantity(
+            densities,
+            unit="1 / meter**3",
+            name="densities",
+            registry=ureg,
+            shape=(len(self),),
+            nonnegative=True,
+        )
+        n_alpha = densities.to("1 / meter**3")
         mu_independant_scattering = np.einsum("i,i -> ", self.Csca, n_alpha).to("1/meter")
 
         return mu_independant_scattering

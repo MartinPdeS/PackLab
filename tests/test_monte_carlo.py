@@ -277,11 +277,19 @@ def test_metropolis_requires_a_positive_unit_bearing_displacement():
     """Proposal lengths are validated at the dimensional Python boundary."""
     options = monte_carlo.MetropolisOptions()
 
-    with pytest.raises(ValueError, match="finite and positive"):
+    with pytest.raises(ValueError, match="positive"):
         options.maximum_displacement = 0.0 * ureg.meter
 
-    with pytest.raises(TypeError, match="pint.Quantity"):
+    with pytest.raises(ValueError, match="explicit quantity"):
         options.maximum_displacement = 0.1
+
+    with pytest.raises(ValueError, match="compatible with meter"):
+        monte_carlo.PackingDomain(
+            1.0 * ureg.second,
+            1.0 * ureg.meter,
+            1.0 * ureg.meter,
+            use_periodic_boundaries=True,
+        )
 
 
 def test_packing_archive_roundtrip_reconstructs_a_metropolis_usable_configuration(

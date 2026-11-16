@@ -6,6 +6,7 @@ import warnings
 from typing import Any, Literal
 
 import numpy as np
+from TypedUnit import validate_quantity
 
 from PackLab.analytical.grid import make_wavenumber_grid
 from PackLab.units import ureg
@@ -47,20 +48,17 @@ class EmpiricalStructure:
 
 
 def _validate_wavenumber(wavenumber: Any) -> np.ndarray:
-    try:
-        values = np.asarray(wavenumber.to("1 / meter").magnitude, dtype=float)
-    except AttributeError as error:
-        raise TypeError(
-            "wavenumber must be a unit-bearing quantity convertible to 1 / meter."
-        ) from error
+    validate_quantity(
+        wavenumber,
+        unit="1 / meter",
+        name="wavenumber",
+        registry=ureg,
+    )
+    values = np.asarray(wavenumber.to("1 / meter").magnitude, dtype=float)
     if values.ndim != 1 or values.size < 2:
         raise ValueError("wavenumber must be one-dimensional with at least two points.")
-    if (
-        not np.all(np.isfinite(values))
-        or np.any(values < 0.0)
-        or np.any(np.diff(values) <= 0.0)
-    ):
-        raise ValueError("wavenumber must be finite, non-negative, and strictly increasing.")
+    if np.any(values < 0.0) or np.any(np.diff(values) <= 0.0):
+        raise ValueError("wavenumber must be non-negative and strictly increasing.")
     return values
 
 

@@ -59,7 +59,7 @@ def test_scattering_dataset_rejects_invalid_mixture_values():
     wavenumber = np.array([0.0, 1.0, 2.0, 3.0]) / ureg.meter
     H = np.zeros((1, 1, 4))
 
-    with pytest.raises(ValueError, match="non-negative"):
+    with pytest.raises(ValueError, match="non.?negative"):
         dataset.get_mu_independant(np.array([-1.0]) / ureg.meter**3)
     with pytest.raises(ValueError, match="at least 2"):
         dataset.get_phase_function(

@@ -1,3 +1,4 @@
+from TypedUnit import validate_quantity
 from TypedUnit.units import ureg, Length, RefractiveIndex, Angle
 from PackLab.scattering.data import ScatteringDataset, ScatteringData
 import numpy as np
@@ -58,6 +59,35 @@ def compute_scattering_amplitudes(
     diameters = tuple(diameters)
     if not diameters:
         raise ValueError("diameters must contain at least one diameter")
+
+    validate_quantity(
+        wavelength,
+        unit="meter",
+        name="wavelength",
+        registry=ureg,
+        scalar=True,
+        positive=True,
+    )
+    validate_quantity(phi, unit="radian", name="phi", registry=ureg)
+    phi_values = np.asarray(phi.to("radian").magnitude, dtype=float)
+    if phi_values.ndim != 1 or phi_values.size < 2:
+        raise ValueError("phi must be a one-dimensional angle grid with at least two points.")
+    for diameter in diameters:
+        validate_quantity(
+            diameter,
+            unit="meter",
+            name="diameter",
+            registry=ureg,
+            scalar=True,
+            positive=True,
+        )
+    validate_quantity(
+        polarization,
+        unit="radian",
+        name="polarization",
+        registry=ureg,
+        scalar=True,
+    )
 
     # Keep importing the data containers lightweight; PyMieSim is only needed when
     # this numerical helper is actually called.

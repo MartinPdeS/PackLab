@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+from TypedUnit import validate_quantity
 
 from PackLab.monte_carlo.domain import PackingDomain
 from PackLab.monte_carlo.simulator import PackingConfiguration
@@ -94,13 +95,8 @@ class LoadedPackingConfiguration:
 
 
 def _quantity_values(value: Any, unit: str, name: str) -> np.ndarray:
-    try:
-        values = np.asarray(value.to(unit).magnitude, dtype=float)
-    except AttributeError as error:
-        raise TypeError(
-            f"{name} must be a unit-bearing quantity convertible to {unit}."
-        ) from error
-    return values
+    validate_quantity(value, unit=unit, name=name, registry=ureg)
+    return np.asarray(value.to(unit).magnitude, dtype=float)
 
 
 def _extract_packing(

@@ -54,6 +54,25 @@ Function to retrieve the shared pint UnitRegistry singleton.
 */
 py::object get_shared_ureg();
 
+/* Validate a public quantity with TypedUnit before converting it for a kernel. */
+py::object validate_quantity(
+    py::handle value,
+    const std::string& unit,
+    const std::string& name,
+    bool scalar = false,
+    bool positive = false,
+    bool nonnegative = false
+);
+
+py::object to_validated_units(
+    py::handle value,
+    const std::string& unit,
+    const std::string& name,
+    bool scalar = false,
+    bool positive = false,
+    bool nonnegative = false
+);
+
 /*
 Function to convert a pint.Quantity length to double in meters.
 @param value A pint.Quantity object representing a length.

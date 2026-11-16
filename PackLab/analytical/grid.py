@@ -3,6 +3,7 @@
 from typing import Any
 
 import numpy as np
+from TypedUnit import validate_quantity
 
 from PackLab.units import ureg
 
@@ -35,13 +36,25 @@ def make_wavenumber_grid(
     if samples_per_oscillation < 2:
         raise ValueError("samples_per_oscillation must be at least 2.")
 
+    validate_quantity(
+        radial_resolution,
+        unit="meter",
+        name="radial_resolution",
+        registry=ureg,
+        scalar=True,
+        positive=True,
+    )
+    validate_quantity(
+        maximum_distance,
+        unit="meter",
+        name="maximum_distance",
+        registry=ureg,
+        scalar=True,
+        positive=True,
+    )
+
     resolution_m = radial_resolution.to("meter")
     maximum_distance_m = maximum_distance.to("meter")
-    if resolution_m.magnitude <= 0:
-        raise ValueError("radial_resolution must be positive.")
-    if maximum_distance_m.magnitude <= 0:
-        raise ValueError("maximum_distance must be positive.")
-
     maximum_wavenumber = np.pi / resolution_m
     wavenumber_step = 2 * np.pi / (samples_per_oscillation * maximum_distance_m)
     number_of_points = int(

@@ -40,6 +40,14 @@ def test_solver_rejects_non_increasing_wavenumber_grid():
         _solver(np.array([0.0, 2.0, 1.0]) / ureg.meter)
 
 
+def test_solver_requires_typed_unit_inputs():
+    with pytest.raises(ValueError, match=r"compatible with 1/meter\*\*3"):
+        analytical.PercusYevickSolver(
+            densities=np.array([0.1]) / ureg.meter**2,
+            radii=np.array([0.1]) * ureg.meter,
+        )
+
+
 def test_solver_does_not_accept_the_removed_p_keyword():
     with pytest.raises(TypeError):
         analytical.PercusYevickSolver(

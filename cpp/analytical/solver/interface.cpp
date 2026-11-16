@@ -8,13 +8,24 @@
 
 namespace py = pybind11;
 
-static double quantity_scalar_to_double_in_units(py::object quantity, const char* unit_string) {
-    py::object converted = quantity.attr("to")(py::str(unit_string));
+static double quantity_scalar_to_double_in_units(
+    py::object quantity,
+    const char* unit_string,
+    bool positive = false
+) {
+    py::object converted = to_validated_units(quantity, unit_string, "value", true, positive);
     return py::float_(converted.attr("magnitude"));
 }
 
-static std::vector<double> quantity_1d_to_double_vector_in_units(py::object quantity, const char* unit_string) {
-    py::object converted = quantity.attr("to")(py::str(unit_string));
+static std::vector<double> quantity_1d_to_double_vector_in_units(
+    py::object quantity,
+    const char* unit_string,
+    bool positive = false,
+    bool nonnegative = false
+) {
+    py::object converted = to_validated_units(
+        quantity, unit_string, "value", false, positive, nonnegative
+    );
     py::object magnitude = converted.attr("magnitude");
 
     py::module_ numpy = py::module_::import("numpy");
@@ -176,8 +187,12 @@ has fewer than eight samples per kernel oscillation. Use
                 py::object radial_resolution_py,
                 int samples_per_oscillation
             ) {
-                const std::vector<double> densities_per_m3 = quantity_1d_to_double_vector_in_units(densities_py, "1/meter**3");
-                const std::vector<double> radii_m = quantity_1d_to_double_vector_in_units(radii_py, "meter");
+                const std::vector<double> densities_per_m3 = quantity_1d_to_double_vector_in_units(
+                    densities_py, "1/meter**3", false, true
+                );
+                const std::vector<double> radii_m = quantity_1d_to_double_vector_in_units(
+                    radii_py, "meter", true
+                );
 
                 if (py::isinstance<py::str>(wavenumber_py)) {
                     const std::string mode = py::cast<std::string>(wavenumber_py);
@@ -186,7 +201,7 @@ has fewer than eight samples per kernel oscillation. Use
                     }
                     const double radial_resolution_m = radial_resolution_py.is_none()
                         ? 0.0
-                        : quantity_scalar_to_double_in_units(radial_resolution_py, "meter");
+                        : quantity_scalar_to_double_in_units(radial_resolution_py, "meter", true);
                     return std::make_shared<PercusYevickSolver>(
                         densities_per_m3,
                         radii_m,
@@ -200,7 +215,9 @@ has fewer than eight samples per kernel oscillation. Use
                         "radial_resolution and samples_per_oscillation are only available when wavenumber='auto'."
                     );
                 }
-                const std::vector<double> wavenumber_per_m = quantity_1d_to_double_vector_in_units(wavenumber_py, "1/meter");
+                const std::vector<double> wavenumber_per_m = quantity_1d_to_double_vector_in_units(
+                    wavenumber_py, "1/meter", false, true
+                );
                 return std::make_shared<PercusYevickSolver>(densities_per_m3, radii_m, wavenumber_per_m);
             }),
             py::arg("densities"),
@@ -213,7 +230,9 @@ has fewer than eight samples per kernel oscillation. Use
         .def(
             "compute",
             [](const PercusYevickSolver& self, py::object distances_py) {
-                const std::vector<double> distances_m = quantity_1d_to_double_vector_in_units(distances_py, "meter");
+                const std::vector<double> distances_m = quantity_1d_to_double_vector_in_units(
+                    distances_py, "meter", false, true
+                );
                 if (!self.uses_automatic_wavenumber()) {
                     if (const auto warning = self.radial_grid_warning(distances_m)) {
                         if (PyErr_WarnEx(PyExc_RuntimeWarning, warning->c_str(), 2) != 0) {

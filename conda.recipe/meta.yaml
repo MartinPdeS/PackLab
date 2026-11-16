@@ -33,7 +33,7 @@ requirements:
     - numpy >=2.3.3,<3  # [py>=314]
   run:
     - python {{ PY_VER }}
-    - martinpdes::typedunit >=0.2.9
+    - martinpdes::typedunit >=0.6.0,<0.7
     - matplotlib >=3.9,<4
     - plotly >=6.1.1
     - numpy >=2.0,<3  # [py<314]

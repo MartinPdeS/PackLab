@@ -231,7 +231,9 @@ bins : int, default=0
                 ) {
 
                     // const double mediam_radius_m = to_meters_strict(median_radius_py);
-                    const double median_radius_m = median_radius_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                    const double median_radius_m = to_validated_units(
+                        median_radius_py, "meter", "median_radius", true, true
+                    ).attr("magnitude").cast<double>();
 
                     if (!(geometric_standard_deviation > 1.0)) {
                         throw py::value_error("geometric_standard_deviation must be > 1.");
@@ -316,8 +318,12 @@ bins : int, default=0
                         py::object maximum_clip_py,
                         int bins
                     ) {
-                        const double mean_radius_m = mean_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
-                        const double sigma_radius_m = standard_deviation_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                        const double mean_radius_m = to_validated_units(
+                            mean_py, "meter", "mean", true, false, true
+                        ).attr("magnitude").cast<double>();
+                        const double sigma_radius_m = to_validated_units(
+                            standard_deviation_py, "meter", "standard_deviation", true, false, true
+                        ).attr("magnitude").cast<double>();
 
                         if (!std::isfinite(sigma_radius_m) || sigma_radius_m < 0.0) {
                             throw py::value_error("standard_deviation must be >= 0 and finite.");
@@ -326,7 +332,9 @@ bins : int, default=0
                         if (maximum_clip_py.is(py::none()))
                             maximum_clip_py = mean_py + py::float_(5.0) * standard_deviation_py;
 
-                        const double maximum_clip_m = maximum_clip_py.attr("to")(ureg.attr("meter")).attr("magnitude").cast<double>();
+                        const double maximum_clip_m = to_validated_units(
+                            maximum_clip_py, "meter", "maximum_clip", true, true
+                        ).attr("magnitude").cast<double>();
                         return std::make_shared<Normal>(mean_radius_m, sigma_radius_m, maximum_clip_m, bins);
                     }
                 ),

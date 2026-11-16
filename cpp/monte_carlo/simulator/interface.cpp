@@ -45,10 +45,10 @@ static std::shared_ptr<SphereConfiguration> configuration_from_arrays(
         throw py::type_error("classes_index must be an integer array.");
     }
     py::array_t<double, py::array::c_style | py::array::forcecast> positions(
-        positions_quantity.attr("to")("meter").attr("magnitude")
+        to_validated_units(positions_quantity, "meter", "positions").attr("magnitude")
     );
     py::array_t<double, py::array::c_style | py::array::forcecast> radii(
-        radii_quantity.attr("to")("meter").attr("magnitude")
+        to_validated_units(radii_quantity, "meter", "radii", false, true).attr("magnitude")
     );
     py::array_t<int, py::array::c_style | py::array::forcecast> class_indices(class_array);
 

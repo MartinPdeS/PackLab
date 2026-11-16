@@ -113,7 +113,7 @@ def test_analytical_and_structure_grid_validation_errors():
         with pytest.raises(ValueError, match=message):
             make_wavenumber_grid(**values)
 
-    with pytest.raises(TypeError, match="unit-bearing"):
+    with pytest.raises(ValueError, match="explicit quantity"):
         _validate_wavenumber([0.0, 1.0])
     with pytest.raises(ValueError, match="at least two"):
         _validate_wavenumber(np.array([0.0]) / ureg.meter)
@@ -194,7 +194,7 @@ def test_persistence_array_and_quantity_validation():
         with pytest.raises(ValueError, match=message):
             _validate_arrays(positions, radii, classes, lengths, periodic)
 
-    with pytest.raises(TypeError, match="unit-bearing"):
+    with pytest.raises(ValueError, match="explicit quantity"):
         _quantity_values(2.0, "meter", "length")
 
 
