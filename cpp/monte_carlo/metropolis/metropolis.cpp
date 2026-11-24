@@ -210,5 +210,10 @@ Result MetropolisSimulator::run_sweeps(std::size_t number_of_sweeps) {
         }
         number_of_classes = std::max(number_of_classes, static_cast<std::size_t>(class_index + 1));
     }
-    return Result(sphere_configuration, domain, result_statistics(), number_of_classes);
+    return Result(
+        copy_configuration(sphere_configuration),
+        std::make_shared<MCDomain>(*domain),
+        result_statistics(),
+        number_of_classes
+    );
 }

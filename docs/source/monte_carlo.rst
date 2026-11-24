@@ -32,9 +32,9 @@ log-normal, and discrete distributions.
 Run RSA
 -------
 
-``maximum_attempts`` limits the outer insertion loop; with radius retries
-enabled, one iteration can attempt several placements. ``target_packing_fraction`` is optional and stops the simulation as
-soon as the requested fraction is reached.
+``maximum_attempts`` limits the number of placement attempts per call to
+``run()``, including retries of the same radius. ``target_packing_fraction`` is
+optional and stops the simulation as soon as the requested fraction is reached.
 
 .. code-block:: python
 
@@ -47,7 +47,8 @@ Inspecting results
 ------------------
 
 ``PackingResult`` exposes the accepted configuration and helper methods for
-visualisation and statistics. For example:
+visualisation and statistics. Each result captures the configuration and
+box dimensions at the end of its RSA run or Metropolis sweep call. For example:
 
 .. code-block:: python
 

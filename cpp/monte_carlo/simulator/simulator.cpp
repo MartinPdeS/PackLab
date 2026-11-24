@@ -1,6 +1,9 @@
 // simulator.cpp
 #include "simulator.h"
 
+#include <optional>
+#include <ranges>
+
 Simulator::Simulator(std::shared_ptr<MCDomain> _domain, std::shared_ptr<RadiusSampler> _radius_sampler, std::shared_ptr<Options> _options):
     domain(std::move(_domain)),
     radius_sampler(std::move(_radius_sampler)),
@@ -98,32 +101,43 @@ bool Simulator::overlaps_any_existing_sphere(const Vector3d& center_position, do
 
     const double extra_separation = std::max(0.0, options->minimum_center_separation_addition);
 
-    const auto neighbor_indices = spatial_grid_index->query_neighbor_sphere_indices(center_position);
-
-    for (std::size_t neighbor_index : neighbor_indices) {
+    const auto overlaps_neighbor = [&](std::size_t neighbor_index) {
         const Vector3d& neighbor_position = sphere_configuration->center_positions[neighbor_index];
         const double neighbor_radius = sphere_configuration->radii_values[neighbor_index];
-
-        const double required_distance = (radius + neighbor_radius + extra_separation);
-        const double required_distance_squared = required_distance * required_distance;
-
+        const double required_distance = radius + neighbor_radius + extra_separation;
         const double actual_distance_squared = domain->use_periodic_boundaries
             ? periodic_center_distance_squared(center_position, neighbor_position)
             : nonperiodic_center_distance_squared(center_position, neighbor_position);
 
-        if (actual_distance_squared < required_distance_squared) {
-            return true;
-        }
+        return actual_distance_squared < required_distance * required_distance;
+    };
+
+    const double search_distance = radius + maximum_radius_observed + extra_separation;
+    const double cell_range = std::ceil(search_distance / spatial_grid_index->cell_size());
+    const double cells_per_axis = 2.0 * cell_range + 1.0;
+    const std::size_t sphere_count = sphere_configuration->center_positions.size();
+
+    // A fine grid can cost more to search than checking the current spheres.
+    if (cells_per_axis * cells_per_axis * cells_per_axis >= sphere_count) {
+        return std::ranges::any_of(
+            std::views::iota(std::size_t{0}, sphere_count), overlaps_neighbor
+        );
     }
 
-    return false;
+    return std::ranges::any_of(
+        spatial_grid_index->query_neighbor_sphere_indices(
+            center_position, static_cast<std::int64_t>(cell_range)
+        ),
+        overlaps_neighbor
+    );
 }
 
-
 bool Simulator::attempt_single_insertion() {
-    this->statistics.attempted_insertions += 1;
+    return attempt_single_insertion_with_radius(radius_sampler->sample_radius(random_generator));
+}
 
-    const double radius = radius_sampler->sample_radius(random_generator);
+bool Simulator::attempt_single_insertion_with_radius(double radius) {
+    this->statistics.attempted_insertions += 1;
 
     maximum_radius_observed = std::max(maximum_radius_observed, radius);
     rebuild_grid_if_needed(std::max(maximum_radius_observed, radius_sampler->maximum_possible_radius()));
@@ -131,13 +145,8 @@ bool Simulator::attempt_single_insertion() {
     const double margin = radius + std::max(0.0, options->containment_padding);
     Vector3d proposed_center = domain->sample_uniform_position(random_generator, margin);
 
-    if (!sphere_fits_inside_domain_if_walls(proposed_center, radius)) {
-        this->statistics.rejected_insertions += 1;
-        this->statistics.consecutive_rejections += 1;
-        return false;
-    }
-
-    if (overlaps_any_existing_sphere(proposed_center, radius)) {
+    if (!sphere_fits_inside_domain_if_walls(proposed_center, radius) ||
+        overlaps_any_existing_sphere(proposed_center, radius)) {
         this->statistics.rejected_insertions += 1;
         this->statistics.consecutive_rejections += 1;
         return false;
@@ -184,50 +193,8 @@ bool Simulator::attempt_single_insertion() {
 }
 
 
-bool Simulator::attempt_single_insertion_with_radius(double radius) {
-    this->statistics.attempted_insertions += 1;
-
-    maximum_radius_observed = std::max(maximum_radius_observed, radius);
-    rebuild_grid_if_needed(std::max(maximum_radius_observed, radius_sampler->maximum_possible_radius()));
-
-    const double margin = radius + std::max(0.0, options->containment_padding);
-    Vector3d proposed_center = domain->sample_uniform_position(random_generator, margin);
-
-    if (!sphere_fits_inside_domain_if_walls(proposed_center, radius)) {
-        this->statistics.rejected_insertions += 1;
-        this->statistics.consecutive_rejections += 1;
-        return false;
-    }
-
-    if (overlaps_any_existing_sphere(proposed_center, radius)) {
-        this->statistics.rejected_insertions += 1;
-        this->statistics.consecutive_rejections += 1;
-        return false;
-    }
-
-    proposed_center = domain->wrap_position_if_periodic(proposed_center);
-
-    const std::size_t new_index = sphere_configuration->center_positions.size();
-    sphere_configuration->center_positions.push_back(proposed_center);
-    sphere_configuration->radii_values.push_back(radius);
-
-    const int cls = radius_sampler->bin_index(radius);
-    sphere_configuration->class_index_values.push_back(cls);
-
-    spatial_grid_index->insert_sphere(new_index, proposed_center);
-
-    this->statistics.accepted_insertions += 1;
-    this->statistics.consecutive_rejections = 0;
-
-    this->statistics.sphere_count = sphere_configuration->radii_values.size();
-    this->statistics.packing_fraction_simulator =
-        sphere_configuration->total_sphere_volume() / domain->volume;
-
-    return true;
-}
-
 Result Simulator::run() {
-    bool placed_any = false;
+    std::optional<double> pending_radius;
 
     for (std::size_t attempt_index = 0; attempt_index < options->maximum_attempts; ++attempt_index) {
         if (options->maximum_spheres > 0 && sphere_configuration->radii_values.size() >= options->maximum_spheres)
@@ -239,27 +206,11 @@ Result Simulator::run() {
         if (options->maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options->maximum_consecutive_rejections)
             break;
 
-        if (!options->enforce_radii_distribution) {
-            const bool accepted = this->attempt_single_insertion();
-            placed_any = placed_any || accepted;
-            continue;
+        if (!pending_radius) {
+            pending_radius = radius_sampler->sample_radius(random_generator);
         }
-
-        const double radius = radius_sampler->sample_radius(random_generator);
-
-        bool accepted = false;
-        while (!accepted) {
-            if (options->maximum_spheres > 0 && sphere_configuration->radii_values.size() >= options->maximum_spheres)
-                break;
-
-            if (options->target_packing_fraction > 0.0 && this->statistics.packing_fraction_simulator >= options->target_packing_fraction)
-                break;
-
-            if (options->maximum_consecutive_rejections > 0 && this->statistics.consecutive_rejections >= options->maximum_consecutive_rejections)
-                break;
-
-            accepted = this->attempt_single_insertion_with_radius(radius);
-            placed_any = placed_any || accepted;
+        if (attempt_single_insertion_with_radius(*pending_radius) || !options->enforce_radii_distribution) {
+            pending_radius.reset();
         }
     }
 
@@ -303,8 +254,8 @@ Result Simulator::run() {
     }
 
     Result result{
-        this->sphere_configuration,
-        this->domain,
+        std::make_shared<SphereConfiguration>(*sphere_configuration),
+        std::make_shared<MCDomain>(*domain),
         this->statistics,
         number_of_classes
     };

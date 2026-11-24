@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <vector>
 #include <memory>
+#include <limits>
 
 #include "monte_carlo/domain/domain.h"
 
@@ -19,23 +20,22 @@ public:
           length_z_value_(domain->length_z),
           use_periodic_boundaries(domain->use_periodic_boundaries)
     {
-        if (cell_size_value_ <= 0.0) {
-            throw std::invalid_argument("cell_size must be positive.");
+        if (!(cell_size_value_ > 0.0) || !std::isfinite(cell_size_value_)) {
+            throw std::invalid_argument("cell_size must be finite and positive.");
         }
 
-        if (length_x_value_ <= 0.0 || length_y_value_ <= 0.0 || length_z_value_ <= 0.0) {
-            throw std::invalid_argument("Box lengths must be positive.");
-        }
-
-        number_of_cells_x_value_ = std::max<std::int64_t>(
-            1, static_cast<std::int64_t>(std::floor(length_x_value_ / cell_size_value_))
-        );
-        number_of_cells_y_value_ = std::max<std::int64_t>(
-            1, static_cast<std::int64_t>(std::floor(length_y_value_ / cell_size_value_))
-        );
-        number_of_cells_z_value_ = std::max<std::int64_t>(
-            1, static_cast<std::int64_t>(std::floor(length_z_value_ / cell_size_value_))
-        );
+        const auto cell_count = [cell_size](double length) {
+            const double count = std::floor(length / cell_size);
+            // The signed upper bound is exclusive after rounding to double.
+            const double index_limit = std::ldexp(1.0, std::numeric_limits<std::int64_t>::digits);
+            if (!(length > 0.0) || !(count < index_limit)) {
+                throw std::invalid_argument("Box length or spatial grid cell size is out of range.");
+            }
+            return std::max<std::int64_t>(1, static_cast<std::int64_t>(count));
+        };
+        number_of_cells_x_value_ = cell_count(length_x_value_);
+        number_of_cells_y_value_ = cell_count(length_y_value_);
+        number_of_cells_z_value_ = cell_count(length_z_value_);
     }
 
     void clear() {

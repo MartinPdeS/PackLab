@@ -103,6 +103,92 @@ def test_periodic_rsa_rejects_self_image_overlap_but_allows_contact(enforce, rad
     assert result.sphere_configuration.count == expected
 
 
+@pytest.mark.parametrize("periodic", [False, True])
+@pytest.mark.parametrize(
+    "cell_size, extra_separation", [(0.2, 0.0), (0.55, 0.0), (0.0, 0.3)]
+)
+def test_rsa_search_covers_required_separation(periodic, cell_size, extra_separation):
+    """Grid searches must enforce contact and any additional separation."""
+    lengths = np.array([11.3, 12.7, 10.9])
+    domain = monte_carlo.PackingDomain(*(lengths * ureg.meter), periodic)
+    options = monte_carlo.RSAOptions()
+    options.random_seed = 42
+    options.maximum_attempts = 400
+    options.spatial_grid_cell_size = cell_size
+    options.minimum_center_separation_addition = extra_separation
+
+    result = monte_carlo.RSASimulator(
+        domain, samplers.ConstantRadiusSampler(0.5 * ureg.meter), options
+    ).run()
+
+    positions = result.positions.to("meter").magnitude
+    assert len(positions) > 125
+    first, second = np.triu_indices(len(positions), k=1)
+    separation = positions[first] - positions[second]
+    if periodic:
+        separation -= lengths * np.round(separation / lengths)
+    assert np.all(np.linalg.norm(separation, axis=1) >= 1.0 + extra_separation)
+
+
+def test_rsa_attempt_budget_includes_retries():
+    """An unplaceable radius must spend at most the per-run attempt budget."""
+    domain = monte_carlo.PackingDomain(*(2 * ureg.meter for _ in range(3)), True)
+    options = monte_carlo.RSAOptions()
+    options.random_seed = 42
+    options.maximum_attempts = 2
+    options.maximum_consecutive_rejections = 5
+    options.enforce_radii_distribution = True
+    simulator = monte_carlo.RSASimulator(
+        domain, samplers.ConstantRadiusSampler(1.01 * ureg.meter), options
+    )
+
+    first = simulator.run()
+    second = simulator.run()
+
+    assert first.statistics.attempted_insertions == 2
+    assert second.statistics.attempted_insertions == 4
+    assert second.statistics.rejected_insertions == 4
+    assert second.statistics.sphere_count == 0
+
+
+def test_rsa_result_preserves_configuration_and_domain():
+    """Continuing RSA must keep earlier coordinates and counters consistent."""
+    domain = monte_carlo.PackingDomain(*(10 * ureg.meter for _ in range(3)), True)
+    options = monte_carlo.RSAOptions()
+    options.random_seed = 42
+    options.maximum_attempts = 10
+    options.enforce_radii_distribution = True
+    simulator = monte_carlo.RSASimulator(
+        domain, samplers.ConstantRadiusSampler(0.1 * ureg.meter), options
+    )
+
+    first = simulator.run()
+    positions = first.positions.magnitude.copy()
+    second = simulator.run()
+    domain.scale(2)
+
+    assert second.statistics.sphere_count > first.statistics.sphere_count
+    assert first.sphere_configuration.count == first.statistics.sphere_count
+    assert first.statistics.radius_mean == pytest.approx(0.1)
+    assert first.domain.length_x == 10 * ureg.meter
+    np.testing.assert_array_equal(first.positions.magnitude, positions)
+
+
+def test_metropolis_result_preserves_configuration_and_domain():
+    """Saved trajectory samples must retain the positions from their own sweep."""
+    domain = monte_carlo.PackingDomain(*(2 * ureg.meter for _ in range(3)), True)
+    simulator = _metropolis(domain, _configuration([[1.0, 1.0, 1.0]], [0.1]))
+
+    first = simulator.run_sweeps(0)
+    positions = first.positions.magnitude.copy()
+    second = simulator.run_sweeps(1)
+    domain.scale(2)
+
+    assert not np.array_equal(second.positions.magnitude, positions)
+    assert first.domain.length_x == 2 * ureg.meter
+    np.testing.assert_array_equal(first.positions.magnitude, positions)
+
+
 def test_metropolis_and_archives_reject_periodic_self_image_overlap(tmp_path):
     domain = monte_carlo.PackingDomain(2 * ureg.meter, 3 * ureg.meter, 4 * ureg.meter, True)
     oversized = _configuration([[1, 1, 1]], [1.01])

@@ -88,7 +88,7 @@ the sphere never moves; a rejected proposal is discarded. Early accepted
 spheres can therefore block positions permanently, making the final packing
 depend on the random proposal order. RSA produces a physically valid,
 history-dependent deposition configuration, not an equilibrium hard-sphere
-sample. In PackLab, ``maximum_attempts`` limits outer insertion iterations and
+sample. In PackLab, ``maximum_attempts`` limits all placement attempts per call and
 ``target_packing_fraction`` provides an optional earlier stopping condition.
 
 For spheres with radii :math:`r_i` in a domain of volume :math:`V`, the packing

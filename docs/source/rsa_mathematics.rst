@@ -140,10 +140,9 @@ with more pairs and independent packings. Reordering particles leaves full
 pair counts unchanged; capped estimates agree statistically, not necessarily
 for the same seed.
 
-``maximum_attempts`` limits the outer insertion loop;
-``maximum_consecutive_rejections``, ``maximum_spheres``, and
-``target_packing_fraction`` provide other stopping conditions. When radius
-retries are enabled, one outer iteration can make several placement attempts.
+``maximum_attempts`` limits all placement attempts per call, including retries
+of the same radius. ``maximum_consecutive_rejections``, ``maximum_spheres``, and
+``target_packing_fraction`` provide other stopping conditions.
 A rejection limit is not a proof of **saturation**, meaning no admissible
 insertion remains. Report the seed, stopping rule, realised composition,
 volume fraction, and box dimensions. RSA is neither close packing nor an

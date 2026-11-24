@@ -247,7 +247,7 @@ Stopping criteria and numerical settings for an RSA simulation.
 Attributes
 ----------
 maximum_attempts : int
-    Total trial-insertion limit.
+    Trial-insertion limit per run, including retries of the same radius.
 maximum_spheres : int
     Sphere-count limit; zero disables this criterion.
 target_packing_fraction : float
