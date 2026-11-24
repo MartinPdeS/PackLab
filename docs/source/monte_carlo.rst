@@ -55,10 +55,19 @@ box dimensions at the end of its RSA run or Metropolis sweep call. For example:
    print(result)
    figure = result.plot_packing_3d()
 
-For a radial pair-correlation estimate, build a ``PackingStatistics`` instance
-from the result and choose bins appropriate to the box dimensions. Periodic
-domains are generally the right choice for bulk correlation estimates because
-they avoid treating the box faces as physical boundaries.
+Compute partial radial pair correlations directly from the result:
+
+.. code-block:: python
+
+   centers, partial_pair_correlations = result.compute_partial_pair_correlation_function(
+       n_bins=80,
+   )
+
+The bin centres have length units. The first two axes of
+``partial_pair_correlations`` select the radius classes, and the last selects
+the distance bin. Choose the bin count for the distances you need to resolve.
+Periodic domains are generally the right choice for bulk correlation estimates
+because they avoid treating the box faces as physical boundaries.
 
 Equilibrating a configuration with Metropolis moves
 ---------------------------------------------------

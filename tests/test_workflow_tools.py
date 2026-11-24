@@ -3,7 +3,9 @@
 import importlib.util
 from importlib.metadata import version as distribution_version
 from pathlib import Path
+import re
 import runpy
+from textwrap import dedent
 from types import ModuleType
 
 from packaging.version import Version
@@ -48,6 +50,38 @@ def test_release_versions_are_aligned() -> None:
     _, config = load(REPOSITORY_ROOT)
     declared = versions(REPOSITORY_ROOT, config)
     assert len(set(declared.values())) == 1
+
+
+def run_first_documented_example(*, page: str) -> dict:
+    """Execute the first Python code block on a documentation page."""
+    path = REPOSITORY_ROOT / "docs" / "source" / f"{page}.rst"
+    _, _, code_and_text = path.read_text().partition(".. code-block:: python\n\n")
+    code_block = re.match(r"(?: {3}[^\n]*\n|\n)+", code_and_text)
+    assert code_block is not None, f"No Python example found in {path}"
+    namespace = {}
+    exec(compile(dedent(code_block[0]), str(path), "exec"), namespace)
+    return namespace
+
+
+def test_getting_started_runs_rsa_with_continuous_radii() -> None:
+    """The documented sampler keeps distinct radii in one correlation class."""
+    result = run_first_documented_example(page="getting_started")["result"]
+
+    assert result.statistics.packing_fraction_geometry == pytest.approx(0.08, abs=0.001)
+    assert set(result.sphere_configuration.classes_index) == {0}
+    assert len(set(result.radii.magnitude)) > 1
+    centers, correlations = result.compute_partial_pair_correlation_function(n_bins=20)
+    assert centers.shape == (20,)
+    assert correlations.shape == (1, 1, 20)
+
+
+def test_analytical_example_exposes_pair_correlations_and_structure_factors() -> None:
+    """The documented outputs use species axes followed by the evaluation grid."""
+    example = run_first_documented_example(page="analytical")
+
+    assert example["partial_pair_correlations"].shape == (2, 2, 300)
+    wavenumber_count = len(example["result"].wavenumber)
+    assert example["partial_structure_factors"].shape == (2, 2, wavenumber_count)
 
 
 def test_docs_version_uses_package_version(monkeypatch) -> None:

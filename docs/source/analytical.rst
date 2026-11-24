@@ -27,9 +27,17 @@ explicit packing configuration.
        wavenumber="auto",
    )
    result = solver.compute(distances=distances)
+   partial_pair_correlations = result.g
+   partial_structure_factors = np.eye(len(radii))[:, :, None] + result.H
+   print(partial_pair_correlations.shape)
 
-The solver result contains the evaluated wavenumber grid and the associated
-structure factor. With ``wavenumber="auto"``, PackLab uses zero as the minimum,
+The pair correlations have shape ``(2, 2, 300)``: the first two axes select
+the pair of species and the last axis selects distance. The partial structure
+factors use the same species axes and ``result.wavenumber`` for the last axis.
+The convention is :math:`S_{ij}(k) = \delta_{ij} + H_{ij}(k)`.
+See :doc:`percus_yevick_mathematics` for the normalization.
+
+With ``wavenumber="auto"``, PackLab uses zero as the minimum,
 one twentieth of the smallest particle radius as the real-space resolution, and
 12 samples per sinc-kernel oscillation at the largest requested distance. Pass
 ``radial_resolution=...`` or ``samples_per_oscillation=...`` to tune that

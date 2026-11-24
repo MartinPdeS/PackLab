@@ -158,8 +158,10 @@ bool Simulator::attempt_single_insertion_with_radius(double radius) {
     sphere_configuration->center_positions.push_back(proposed_center);
 
     sphere_configuration->radii_values.push_back(radius);
-    const int cls = radius_sampler->bin_index(radius);
-    sphere_configuration->class_index_values.push_back(cls);
+    const int class_index = radius_sampler->number_of_bins() == 0
+        ? 0
+        : radius_sampler->bin_index(radius);
+    sphere_configuration->class_index_values.push_back(class_index);
 
     spatial_grid_index->insert_sphere(new_index, proposed_center);
 

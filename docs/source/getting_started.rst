@@ -40,15 +40,20 @@ increase the domain size and proposal budget for production work.
        maximum_radius=120 * ureg.nanometer,
    )
    options = monte_carlo.RSAOptions()
+   options.random_seed = 42
    options.maximum_attempts = 20_000
    options.target_packing_fraction = 0.08
 
    result = monte_carlo.RSASimulator(domain, sampler, options).run()
    print(result.statistics.packing_fraction_geometry)
 
+The printed geometric packing fraction should be close to 0.08.
 ``PackingResult`` stores the accepted centres, sampled radii, and derived
-statistics. See :doc:`monte_carlo` for inspecting and plotting a result, and
-the :doc:`gallery/index` for complete runnable examples.
+statistics. The default sampler draws continuous radii and groups them into
+one class for correlation estimates. Choose a positive ``bins`` value to
+sample discretized radii and resolve correlations by radius class. See
+:doc:`monte_carlo` for inspecting and plotting a result, and
+:doc:`gallery/index` for complete runnable examples.
 
 Choosing a workflow
 -------------------
