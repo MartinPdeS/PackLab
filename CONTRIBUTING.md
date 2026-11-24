@@ -53,10 +53,10 @@ first, followed by the full local check when changing native code or public
 behavior:
 
 ```bash
-python -m pytest tests/test_analytical.py
-python -m pytest tests/test_monte_carlo.py
-python -m pytest tests/test_samplers.py
-python -m pytest tests/test_scattering.py
+python -m pytest tests/numerics/test_analytical.py
+python -m pytest tests/physics/test_monte_carlo.py
+python -m pytest tests/api/test_samplers.py
+python -m pytest tests/api/test_scattering.py
 make check
 ```
 

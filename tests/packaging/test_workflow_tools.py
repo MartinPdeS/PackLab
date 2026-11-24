@@ -14,7 +14,7 @@ import pytest
 from martinpdes_maintenance.cli import load, versions
 
 
-REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+REPOSITORY_ROOT = Path(__file__).resolve().parents[2]
 TOOLS_DIRECTORY = REPOSITORY_ROOT / "tools"
 
 if not TOOLS_DIRECTORY.is_dir():

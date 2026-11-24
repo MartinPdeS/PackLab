@@ -52,10 +52,10 @@ python -m sphinx -E -b html docs/source docs/build/html
 Useful focused checks:
 
 ```bash
-python -m pytest tests/test_monte_carlo.py
-python -m pytest tests/test_analytical.py
-python -m pytest tests/test_samplers.py
-python -m pytest tests/test_scattering.py
+python -m pytest tests/physics/test_monte_carlo.py
+python -m pytest tests/numerics/test_analytical.py
+python -m pytest tests/api/test_samplers.py
+python -m pytest tests/api/test_scattering.py
 ```
 
 After modifying C++ sources, rebuild the editable install before testing. Do

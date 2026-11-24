@@ -21,7 +21,7 @@ MANUSCRIPT_FIGURES := \
 LINT_PATHS := PackLab tests tools development/compare_mctpy.py \
 	development/extract_mctpy_reference.py $(MANUSCRIPT_DIR)/figures
 FORMAT_PATHS := tools/check_manuscript.py tools/clean.py \
-	tools/project_doctor.py tests/test_workflow_tools.py \
+	tools/project_doctor.py tests/packaging/test_workflow_tools.py \
 	development/compare_mctpy.py development/extract_mctpy_reference.py \
 	$(MANUSCRIPT_DIR)/figures
 
