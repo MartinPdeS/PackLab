@@ -32,7 +32,9 @@ make setup
 make doctor
 ```
 
-After changing C++ code, rebuild the editable installation before testing.
+After pulling changes to the C++ sources or package dependencies, run
+`make editable PYTHON=path/to/venv/bin/python` in the environment used for
+testing. This rebuilds the native extensions and resolves the runtime dependencies.
 Do not edit `PackLab/_version.py`; the shared release helper maintains it alongside explicit project metadata.
 
 ## Contribution expectations

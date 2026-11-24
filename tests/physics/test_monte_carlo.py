@@ -14,12 +14,9 @@ from PackLab import monte_carlo, samplers
 
 
 @pytest.fixture
-def packing_archive_path():
-    """Provide a short-lived archive path inside the current worktree."""
-    path = Path(".packlab-persistence-test.npz")
-    path.unlink(missing_ok=True)
-    yield path
-    path.unlink(missing_ok=True)
+def packing_archive_path(*, tmp_path: Path) -> Path:
+    """Give each persistence test its own archive in the pytest temporary directory."""
+    return tmp_path / "packing.npz"
 
 
 # ----------------------------------------------------------

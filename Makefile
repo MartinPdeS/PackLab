@@ -89,7 +89,8 @@ quick: configure build install
 
 rebuild: configure build install
 
-editable: configure build install
+editable:
+	$(PYTHON) -m pip install -e .
 
 test: workflow-dirs
 	$(PYTHON) -m pytest
