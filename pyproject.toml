@@ -19,7 +19,7 @@ sdist.exclude = [
 [project]
 name = "PackLab"
 version = "0.8.20"
-description = "Random Sequential Addition (RSA) particle packing with a fast C++ core."
+description = "PackLab computes correlations and generates particle configurations for three-dimensional hard-sphere mixtures."
 license = "MIT"
 readme = "README.rst"
 requires-python = ">=3.10"
@@ -49,6 +49,7 @@ dependencies = [
 ]
 
 [project.urls]
+Zenodo = "https://doi.org/10.5281/zenodo.20207570"
 Homepage = "https://github.com/MartinPdeS/PackLab"
 Repository = "https://github.com/MartinPdeS/PackLab"
 Issues = "https://github.com/MartinPdeS/PackLab/issues"
@@ -110,6 +111,9 @@ test-command = 'cd /tmp && python -m pytest --import-mode=importlib --config-fil
 archs = ["AMD64"]
 build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 test-command = 'cd /d %TEMP% && python -m pytest --import-mode=importlib --config-file={project}/pytest.ini {project}/tests'
+
+[dependency-groups]
+readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@af10cca99170e7e03225da3ca62f319213295582"]
 
 [tool.mps-maintenance]
 version-file = "PackLab/_version.py"

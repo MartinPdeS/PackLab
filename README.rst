@@ -1,96 +1,99 @@
-|logo|
-
 PackLab
 =======
 
-**PackLab computes structure in three-dimensional hard-sphere systems.** Its
-primary analytical workflow evaluates the Percus--Yevick (PY) approximation
-for equilibrium mixtures. It also generates explicit random sequential
-adsorption (RSA) configurations and samples fixed-volume equilibrium
-configurations with Metropolis Monte Carlo (MC).
+.. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/HEAD/docs/images/logo.svg
+   :alt: PackLab logo
+   :width: 100%
 
 .. list-table::
+   :width: 100%
    :widths: 35 65
    :header-rows: 1
 
    * - Badge
      - Status
    * - Python versions
-     - |python|
+     - |mps-python|
    * - Documentation
-     - |docs|
+     - |mps-docs|
    * - Continuous integration
-     - |ci/cd|
+     - |mps-ci|
    * - Test coverage
-     - |coverage|
+     - |mps-coverage|
    * - PyPI package
-     - |PyPI|
+     - |mps-pypi|
    * - PyPI downloads
-     - |pepy_download|
+     - |mps-downloads|
    * - Anaconda package
-     - |anaconda|
+     - |mps-conda|
    * - Anaconda downloads
-     - |anaconda_download|
+     - |mps-conda-downloads|
    * - Latest Anaconda release
-     - |anaconda_date|
-   * - Citation
-     - |doi|
+     - |mps-conda-release|
+   * - Zenodo DOI
+     - |mps-zenodo|
 
-The workflows share physical inputs such as particle radii, number fractions,
-and volume fraction, but they answer different questions:
+PackLab computes correlations and generates particle configurations for three-dimensional hard-sphere mixtures.
 
-* **PY** is a fast analytical equilibrium reference for pair correlations,
-  structure factors, and structure-aware scattering calculations.
-* **RSA** creates an explicit, non-overlapping deposition configuration. It is
-  irreversible and retains the history of accepted particles.
-* **Metropolis MC** moves particles in a valid configuration to sample an
-  equilibrium hard-sphere system at fixed volume, particle count, and radii.
+Use the Percus–Yevick approximation to compute pair correlations and structure
+factors for an equilibrium hard-sphere mixture. For explicit particle
+positions, choose a sampling method that matches the physical process:
+
+* Random sequential adsorption (RSA) deposits spheres without overlap.
+  Accepted spheres stay in place, so the packing retains its deposition history.
+* Metropolis Monte Carlo moves spheres at fixed volume and composition.
+  Check equilibration and autocorrelation before using samples for equilibrium averages.
 
 Installation
 ------------
 
-Install the core package from PyPI:
+Requires Python ``>=3.10``.
 
-.. code-block:: bash
+.. code-block:: console
 
-   pip install packlab
+   $ python -m pip install PackLab
 
-For scattering calculations, install the optional PyMieSim integration:
+Install from the ``martinpdes`` Conda channel:
 
-.. code-block:: bash
+.. code-block:: console
 
-   pip install "packlab[scattering]"
+   $ conda install -c martinpdes packlab
 
-Or install the Conda package:
+For an editable source installation:
 
-.. code-block:: bash
+.. code-block:: console
 
-   conda install -c martinpdes packlab
+   $ git clone https://github.com/MartinPdeS/PackLab.git
+   $ cd PackLab
+   $ python -m pip install -e .
 
-Verify the compiled package with:
+Compute pair correlations in a binary mixture
+---------------------------------------------
 
-.. code-block:: bash
-
-   python -c "import PackLab; print(PackLab.__version__)"
-
-1. Compute a Percus--Yevick equilibrium reference
---------------------------------------------------
-
-Use PY when you need equilibrium mixture correlations without generating an
-explicit packing. PackLab computes the partial pair correlations
-:math:`g_{ij}(r)` and reciprocal-space correlations on an automatically
-resolved wavenumber grid.
-
-.. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_percus_yevick.png
-   :alt: Partial pair correlations of a binary Percus--Yevick hard-sphere mixture.
-   :width: 62%
-   :align: center
+Mix spheres of radius 75 nm and 140 nm in a 70:30 number ratio at a total
+volume fraction of 0.25. The example uses an automatic wavenumber grid and
+plots the pair correlation for each combination of species.
 
 .. code-block:: python
 
+   """
+   Binary-mixture Percus--Yevick pair correlations
+   ================================================
+
+   Evaluate the three distinct partial pair correlations of a binary hard-sphere
+   mixture.  The hard-core cutoffs occur at the corresponding contact distances
+   :math:`2a_1`, :math:`a_1+a_2`, and :math:`2a_2`.
+   """
+
+   import matplotlib.pyplot as plt
    import numpy as np
 
    from PackLab import analytical, ureg
+
+
+   # %%
+   # Define and solve a binary equilibrium reference
+   # ------------------------------------------------
 
    radii = np.array([75, 140]) * ureg.nanometer
    domain = analytical.PercusYevickDomain(
@@ -106,168 +109,107 @@ resolved wavenumber grid.
        wavenumber="auto",
    ).compute(distances)
 
-   g_12 = result.g[0, 1]
-   wavenumber = result.wavenumber
 
-The automatic grid is a useful default. For a resolution study, use
-``analytical.make_wavenumber_grid(...)`` and compare the resulting curves.
-PY is an analytical approximation to an equilibrium hard-sphere mixture; it
-does not create particle centres or reproduce the irreversible RSA process.
+   # %%
+   # Compare like- and unlike-species correlations
+   # ----------------------------------------------
 
-2. Generate an explicit RSA packing
-------------------------------------
+   figure, axis = plt.subplots(figsize=(6.5, 4))
+   for i, j, label in ((0, 0, r"$g_{11}$"), (0, 1, r"$g_{12}$"), (1, 1, r"$g_{22}$")):
+       _ = axis.plot(distances.to("micrometer").magnitude, result.g[i, j], label=label)
 
-RSA proposes particles one at a time and keeps only non-overlapping proposals.
-Accepted particles never move, so the final configuration is physically valid
-but history-dependent rather than an equilibrium sample.
-
-.. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_rsa_packing.png
-   :alt: Three-dimensional view of a periodic random sequential adsorption packing.
-   :width: 62%
-   :align: center
-
-.. code-block:: python
-
-   from PackLab import monte_carlo, samplers, ureg
-
-   domain = monte_carlo.PackingDomain(
-       5 * ureg.micrometer,
-       5 * ureg.micrometer,
-       5 * ureg.micrometer,
-       use_periodic_boundaries=True,
+   _ = axis.set(
+       xlabel=r"separation $r$ ($\mu$m)",
+       ylabel=r"partial pair correlation $g_{ij}(r)$",
+       title="Binary Percus--Yevick hard-sphere mixture",
    )
-   sampler = samplers.UniformRadiusSampler(
-       90 * ureg.nanometer,
-       170 * ureg.nanometer,
-       bins=8,
-   )
-   options = monte_carlo.RSAOptions()
-   options.random_seed = 42
-   options.maximum_attempts = 40_000
-   options.target_packing_fraction = 0.12
+   _ = axis.legend()
+   axis.grid(alpha=0.2)
+   figure.tight_layout()
 
-   rsa_result = monte_carlo.RSASimulator(domain, sampler, options).run()
-   print(rsa_result.statistics.packing_fraction_geometry)
-   figure = rsa_result.plot_packing_3d(show=False)
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/PackLab/HEAD/docs/images/readme_percus_yevick.png
 
-``PackingResult`` provides accepted centres, sampled radii, packing
-statistics, pair-correlation estimators, and plotting helpers. The interactive
-3D view shows whole spheres at their stored centres; periodic images are not
-drawn. Large packings can be slow to render. Radius samplers
-support constant, uniform, normal, log-normal, and discrete distributions.
+   The three curves have different contact distances. Two small spheres touch
+   at 150 nm, a mixed pair at 215 nm, and two large spheres at 280 nm.
 
-3. Equilibrate hard spheres with Metropolis MC
-----------------------------------------------
+Documentation
+-------------
 
-Use Metropolis MC when an equilibrium configuration is needed. It can start
-from the valid RSA configuration above, but then proposes particle
-displacements; particle count, radii, and class labels remain fixed.
+Use the `PackLab documentation <https://martinpdes.github.io/PackLab/docs/latest/index.html>`__ to work through
+examples and look up the inputs and return values of individual functions.
 
-.. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/master/docs/images/readme_metropolis.png
-   :alt: Three-dimensional view of a hard-sphere configuration after Metropolis Monte Carlo moves.
-   :width: 62%
-   :align: center
+Optical scattering
+------------------
 
-.. code-block:: python
-
-   options = monte_carlo.MetropolisOptions()
-   options.random_seed = 34
-   options.number_of_sweeps = 500
-   options.maximum_displacement = 50 * ureg.nanometer
-
-   simulator = monte_carlo.MetropolisSimulator(
-       domain,
-       rsa_result.sphere_configuration,
-       options,
-   )
-   mc_result = simulator.run()
-   print(simulator.statistics.acceptance_rate)
-   figure = mc_result.plot_packing_3d(show=False)
-
-The number of sweeps alone does not establish equilibration. Discard an
-initial burn-in interval, assess autocorrelation for the quantity of interest,
-and compare larger systems when finite-size effects may matter.
-
-Choosing the right workflow
----------------------------
-
-.. list-table::
-   :widths: 22 39 39
-   :header-rows: 1
-
-   * - Workflow
-     - Use it when you need
-     - Important limitation
-   * - PY analytical
-     - Fast equilibrium pair correlations, structure factors, parameter
-       sweeps, or scattering inputs.
-     - It is an equilibrium approximation, not an explicit packing.
-   * - RSA
-     - Particle centres, radius-sampling effects, deposition history, or a
-       finite non-overlapping configuration.
-     - It is irreversible and is not an equilibrium sampler.
-   * - Metropolis MC
-     - An explicit equilibrium hard-sphere configuration at fixed volume and
-       composition.
-     - Equilibration, autocorrelation, and finite-size effects require checks.
-
-Scattering
-----------
-
-The optional ``PackLab.scattering`` workflow computes optical amplitudes with
-PyMieSim. Combine them with the PY correlation tensor when you need a
-structure-corrected mixture phase function. See the
+Install the PyMieSim integration with ``python -m pip install "PackLab[scattering]"``
+to combine single-particle amplitudes with mixture correlations. The
 `scattering examples <https://martinpdes.github.io/PackLab/docs/latest/scattering.html>`_
-for runnable single-particle and mixture calculations.
+show how to compute a structure-corrected phase function.
 
-Documentation, validation, and citation
-----------------------------------------
+Citation
+--------
 
-The `online documentation <https://martinpdes.github.io/PackLab/docs/latest/index.html>`_
-contains theory, API reference, output conventions, assumptions, and
-executable galleries for PY, RSA, Metropolis MC, scattering, validation, and
-benchmarks.
+Cite PackLab using DOI `10.5281/zenodo.20207570 <https://doi.org/10.5281/zenodo.20207570>`__.
+The Zenodo record provides the citation in BibTeX and other formats.
 
-For development:
+Contributing
+------------
 
-.. code-block:: bash
+Bug reports, worked examples, and documentation corrections are welcome.
+To set up a development checkout and run the tests, follow the `contributing guide <https://github.com/MartinPdeS/PackLab/blob/HEAD/CONTRIBUTING.md>`__.
 
-   git clone https://github.com/MartinPdeS/PackLab.git
-   cd PackLab
-   pip install -e ".[testing,documentation]"
-   pytest
+Contact
+-------
 
-If PackLab contributes to academic work, cite the archived Zenodo release you
-used. Release metadata is included in ``.zenodo.json``.
+For questions about using PackLab in your research, get in touch below.
+If a calculation gives an unexpected result, include the package version
+and a small example that reproduces it.
 
-.. |logo| image:: https://github.com/MartinPdeS/PackLab/raw/master/docs/images/logo.png
-   :alt: PackLab logo - sphere packing and correlation curve.
-.. |python| image:: https://img.shields.io/pypi/pyversions/packlab.svg
+* `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=PackLab>`__
+
+License
+-------
+
+PackLab is distributed under ``MIT``.
+
+See the `license text <https://github.com/MartinPdeS/PackLab/blob/HEAD/LICENSE>`__.
+
+.. |mps-python| image:: https://img.shields.io/pypi/pyversions/packlab.svg
    :alt: Supported Python versions
-   :target: https://www.python.org/
-.. |docs| image:: https://github.com/martinpdes/packlab/actions/workflows/deploy_documentation.yml/badge.svg
-   :alt: Documentation status
-   :target: https://martinpdes.github.io/PackLab/
-.. |ci/cd| image:: https://github.com/martinpdes/packlab/actions/workflows/deploy_coverage.yml/badge.svg
-   :alt: Continuous integration status
-.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/python-coverage-comment-action-data/badge.svg
+   :target: https://pypi.org/project/packlab/
+
+.. |mps-pypi| image:: https://img.shields.io/pypi/v/packlab.svg
+   :alt: PyPI version
+   :target: https://pypi.org/project/packlab/
+
+.. |mps-downloads| image:: https://img.shields.io/pypi/dm/packlab.svg
+   :alt: Monthly PyPI downloads
+   :target: https://pypistats.org/packages/packlab
+
+.. |mps-docs| image:: https://github.com/MartinPdeS/PackLab/actions/workflows/deploy_documentation.yml/badge.svg
+   :alt: Documentation
+   :target: https://martinpdes.github.io/PackLab/docs/latest/index.html
+
+.. |mps-ci| image:: https://github.com/MartinPdeS/PackLab/actions/workflows/deploy_coverage.yml/badge.svg
+   :alt: Continuous integration
+   :target: https://github.com/MartinPdeS/PackLab/actions/workflows/deploy_coverage.yml
+
+.. |mps-coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/python-coverage-comment-action-data/badge.svg
    :alt: Test coverage
    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/PackLab/blob/python-coverage-comment-action-data/htmlcov/index.html
-.. |PyPI| image:: https://badge.fury.io/py/packlab.svg
-   :alt: PyPI version
-   :target: https://badge.fury.io/py/PackLab
-.. |pepy_download| image:: https://static.pepy.tech/badge/packlab/month
-   :alt: Monthly PackLab downloads
-   :target: https://pepy.tech/projects/packlab
-.. |anaconda| image:: https://anaconda.org/martinpdes/packlab/badges/version.svg
+
+.. |mps-conda| image:: https://anaconda.org/martinpdes/packlab/badges/version.svg
    :alt: Anaconda version
    :target: https://anaconda.org/martinpdes/packlab
-.. |anaconda_download| image:: https://anaconda.org/martinpdes/packlab/badges/downloads.svg
+
+.. |mps-conda-downloads| image:: https://anaconda.org/martinpdes/packlab/badges/downloads.svg
    :alt: Anaconda downloads
    :target: https://anaconda.org/martinpdes/packlab
-.. |anaconda_date| image:: https://anaconda.org/martinpdes/packlab/badges/latest_release_relative_date.svg
-   :alt: Latest Anaconda release date
+
+.. |mps-conda-release| image:: https://anaconda.org/martinpdes/packlab/badges/latest_release_relative_date.svg
+   :alt: Latest Anaconda release
    :target: https://anaconda.org/martinpdes/packlab
-.. |doi| image:: https://zenodo.org/badge/1105416581.svg
+
+.. |mps-zenodo| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.20207570.svg
    :alt: Cite PackLab on Zenodo
    :target: https://doi.org/10.5281/zenodo.20207570

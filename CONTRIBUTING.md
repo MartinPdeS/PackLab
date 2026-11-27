@@ -37,6 +37,22 @@ After pulling changes to the C++ sources or package dependencies, run
 testing. This rebuilds the native extensions and resolves the runtime dependencies.
 Do not edit `PackLab/_version.py`; the shared release helper maintains it alongside explicit project metadata.
 
+## Updating the README
+
+Edit `readme.yml` to change the introduction, example selection, or figure caption.
+The generator embeds the selected gallery script and reads package metadata
+from `pyproject.toml`. From the repository root, run:
+
+```bash
+python -m pip install --group readme
+make readme PYTHON=python
+mps-maintenance readme --check
+git diff -- README.rst
+```
+
+Commit the generated `README.rst` with its input changes. CI runs the same
+read-only check.
+
 ## Contribution expectations
 
 - Add or update tests for behavior changes. Numerical features need an accuracy

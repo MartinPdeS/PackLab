@@ -25,7 +25,7 @@ FORMAT_PATHS := tools/check_manuscript.py tools/clean.py \
 	development/compare_mctpy.py development/extract_mctpy_reference.py \
 	$(MANUSCRIPT_DIR)/figures
 
-.PHONY: help setup workflow-dirs configure build install uninstall quick rebuild editable \
+.PHONY: help readme setup workflow-dirs configure build install uninstall quick rebuild editable \
 	test test-fast docs manuscript manuscript-figures manuscript-validation \
 	manuscript-check manuscript-clean reproduce-paper quality check doctor \
 	release-check tag release major minor patch clean
@@ -40,6 +40,7 @@ help:
 	@echo "  make test                  Run the full test suite with coverage"
 	@echo "  make test-fast             Run tests without coverage reporting"
 	@echo "  make quality               Check formatting and linting"
+	@echo "  make readme                Regenerate README.rst from readme.yml"
 	@echo "  make docs                  Build the Sphinx documentation"
 	@echo "  make manuscript            Build the SoftwareX manuscript"
 	@echo "  make manuscript-figures    Regenerate quantitative manuscript figures"
@@ -54,6 +55,9 @@ help:
 	@echo "  make release minor         Create the next minor release and tag"
 	@echo "  make release major         Create the next major release and tag"
 	@echo "  make clean                 Remove generated build and manuscript files"
+
+readme:
+	$(PYTHON) -m martinpdes_maintenance.cli readme
 
 setup:
 	$(PYTHON) -m pip install -e ".[testing,documentation,dev,scattering]"

@@ -1,0 +1,30 @@
+introduction: |
+  Use the Percus–Yevick approximation to compute pair correlations and structure
+  factors for an equilibrium hard-sphere mixture. For explicit particle
+  positions, choose a sampling method that matches the physical process:
+
+  * Random sequential adsorption (RSA) deposits spheres without overlap.
+    Accepted spheres stay in place, so the packing retains its deposition history.
+  * Metropolis Monte Carlo moves spheres at fixed volume and composition.
+    Check equilibration and autocorrelation before using samples for equilibrium averages.
+
+quickstart:
+  title: Compute pair correlations in a binary mixture
+  description: |
+    Mix spheres of radius 75 nm and 140 nm in a 70:30 number ratio at a total
+    volume fraction of 0.25. The example uses an automatic wavenumber grid and
+    plots the pair correlation for each combination of species.
+  source: docs/examples/analytical/02_binary_mixture_pair_correlations.py
+  figure:
+    path: docs/images/readme_percus_yevick.png
+    caption: |
+      The three curves have different contact distances. Two small spheres touch
+      at 150 nm, a mixed pair at 215 nm, and two large spheres at 280 nm.
+
+sections:
+  - title: Optical scattering
+    content: |
+      Install the PyMieSim integration with ``python -m pip install "PackLab[scattering]"``
+      to combine single-particle amplitudes with mixture correlations. The
+      `scattering examples <https://martinpdes.github.io/PackLab/docs/latest/scattering.html>`_
+      show how to compute a structure-corrected phase function.
