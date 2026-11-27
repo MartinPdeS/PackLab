@@ -16,20 +16,12 @@ PackLab
      - |mps-python|
    * - Documentation
      - |mps-docs|
-   * - Continuous integration
-     - |mps-ci|
-   * - Test coverage
-     - |mps-coverage|
-   * - PyPI package
-     - |mps-pypi|
-   * - PyPI downloads
-     - |mps-downloads|
-   * - Anaconda package
-     - |mps-conda|
-   * - Anaconda downloads
-     - |mps-conda-downloads|
-   * - Latest Anaconda release
-     - |mps-conda-release|
+   * - Tests
+     - |mps-ci| |mps-coverage|
+   * - PyPI
+     - |mps-pypi| |mps-downloads|
+   * - Conda
+     - |mps-conda| |mps-conda-downloads| |mps-conda-release|
    * - Zenodo DOI
      - |mps-zenodo|
 
@@ -161,18 +153,12 @@ To set up a development checkout and run the tests, follow the `contributing gui
 Contact
 -------
 
-For questions about using PackLab in your research, get in touch below.
-If a calculation gives an unexpected result, include the package version
-and a small example that reproduces it.
-
-* `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=PackLab>`__
+For questions, contact `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=PackLab>`__.
 
 License
 -------
 
-PackLab is distributed under ``MIT``.
-
-See the `license text <https://github.com/MartinPdeS/PackLab/blob/HEAD/LICENSE>`__.
+PackLab is licensed under `MIT <https://github.com/MartinPdeS/PackLab/blob/HEAD/LICENSE>`__.
 
 .. |mps-python| image:: https://img.shields.io/pypi/pyversions/packlab.svg
    :alt: Supported Python versions
@@ -190,9 +176,9 @@ See the `license text <https://github.com/MartinPdeS/PackLab/blob/HEAD/LICENSE>`
    :alt: Documentation
    :target: https://martinpdes.github.io/PackLab/docs/latest/index.html
 
-.. |mps-ci| image:: https://github.com/MartinPdeS/PackLab/actions/workflows/deploy_coverage.yml/badge.svg
-   :alt: Continuous integration
-   :target: https://github.com/MartinPdeS/PackLab/actions/workflows/deploy_coverage.yml
+.. |mps-ci| image:: https://github.com/MartinPdeS/PackLab/actions/workflows/tests.yml/badge.svg
+   :alt: Tests
+   :target: https://github.com/MartinPdeS/PackLab/actions/workflows/tests.yml
 
 .. |mps-coverage| image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/python-coverage-comment-action-data/badge.svg
    :alt: Test coverage
