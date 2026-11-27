@@ -1,5 +1,5 @@
 PackLab
-=======
+========
 
 .. image:: https://raw.githubusercontent.com/MartinPdeS/PackLab/HEAD/docs/images/logo.svg
    :alt: PackLab logo

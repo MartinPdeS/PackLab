@@ -113,7 +113,7 @@ build = ["cp311-*", "cp312-*", "cp313-*", "cp314-*"]
 test-command = 'cd /d %TEMP% && python -m pytest --import-mode=importlib --config-file={project}/pytest.ini {project}/tests'
 
 [dependency-groups]
-readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@4471921aa949db344a10e9acbed9f78093abef32"]
+readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@1f47c0ca92f8d6fd7440190aa16c7bea662cd26d"]
 
 [tool.mps-maintenance]
 version-file = "PackLab/_version.py"
